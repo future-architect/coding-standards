@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="Pragma" content="no-cache" >
+	<meta http-equiv="Cache-Control" content="no-cache" >
+	<meta http-equiv="expires" content="0" >
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" >
+	<meta http-equiv="content-script-type" content="text/javascript" >
+	<title>Future Enterprise Coding Standards</title>
+	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" >
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css" rel="stylesheet" >
+	<link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" >
+	<link href="css/style.css" rel="stylesheet" />
+</head>
+
+<body>
+	<nav class="white" >
+		<div class="nav-wrapper container">
+			<span class="brand-logo main-logo"><img src="images/logo.png" alt="" ></span>
+			<a href="#" data-activates="mobile-nav" class="button-collapse blue-text text-lighten-1" ><i class="material-icons" >menu</i></a>
+			<ul class="right hide-on-med-and-down" >
+				<li class="gh-button" ><a class="github-button" href="https://github.com/future-architect/coding-standards" data-style="mega" data-count-href="/future-architect/coding-standards/stargazers" data-count-api="/repos/future-architect/coding-standards#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star future-architect/coding-standards on GitHub">Star</a></li>
+				<li><a href="https://github.com/future-architect/coding-standards" >GitHub</a></li>
+				<li><a href="http://future-architect.github.io/" >Blog</a></li>
+			</ul>
+			<ul class="side-nav" id="mobile-nav" >
+				<li class="gh-button" ><a class="github-button" href="https://github.com/future-architect/coding-standards" data-style="mega" data-count-href="/future-architect/coding-standards/stargazers" data-count-api="/repos/future-architect/coding-standards#stargazers_count" data-count-aria-label="# stargazers on GitHub" aria-label="Star future-architect/coding-standards on GitHub">Star</a></li>
+				<li><a href="https://github.com/future-architect/coding-standards" >GitHub</a></li>
+				<li><a href="http://future-architect.github.io/" >Blog</a></li>
+			</ul>
+		</div>
+	</nav>
+	<div id="index-banner" class="parallax-container" >
+		<div class="section no-pad-bot" >
+			<div class="container" >
+				<br><br>
+				<h1 class="header center blue-text text-lighten-2" >Future Enterprise Coding Standards</h1>
+				<div class="row center">
+					<div class="header col s12 light grey-text text-darken-3" >
+						<p>
+							フューチャーアーキテクトが作成するエンタープライズ領域に特化したコーディング規約
+						</p>
+					</div>
+				</div>
+				<br><br>
+
+			</div>
+		</div>
+		<div class="parallax top-image-wrapper"><img src="images/background1.png" alt="" ></div>
+	</div>
+
+
+	<div class="container">
+		<div class="section">
+
+			<!--	 Icon Section	 -->
+			<div class="row">
+				<div class="col s12 m6 l4">
+					<div class="icon-block">
+						<h2 class="center blue-text text-darken-1"><i class="material-icons">visibility</i></h2>
+						<h5 class="center">Readability</h5>
+
+						<p class="light">
+							ソースコードの可読性を高く保つことで、保守性・拡張性の高いソフトウェアを作ることができます。
+							しかし、可読性の指標は複数の考え方があるため、デベロッパーごとに判断がブレてしまい、それぞれのスタイルで記述した結果、ソフトウェア全体で見たときの可読性が下がってしまいます。
+							本コーディング規約は、判断のブレが起こらないよう心がけています。
+						</p>
+					</div>
+				</div>
+
+				<div class="col s12 m6 l4">
+					<div class="icon-block">
+						<h2 class="center blue-text text-darken-1"><i class="material-icons">business</i></h2>
+						<h5 class="center">Enterprise</h5>
+
+						<p class="light">
+							エンタープライズ領域では、社員・パートナーの方々を合わせて、数百人が同時に開発することも珍しくありません。
+							ちょっとした悩み、失敗も、人数が集まれば大変なコスト・リスクになります。
+							誰もが引っかかる落とし穴、悩みの種をあらかじめ排除します。
+						</p>
+					</div>
+				</div>
+
+				<div class="col s12 m6 l4">
+					<div class="icon-block">
+						<h2 class="center blue-text text-darken-1"><i class="material-icons">trending_up</i></h2>
+						<h5 class="center">Performance</h5>
+
+						<p class="light">
+							時に読みやすいソースコードはパフォーマンス劣化を招くことがあります。
+							しかし、常にパフォーマンスを優先したソースコードは人間の読めないソースコードになりがちです。
+							今、書こうとしているソースコードが、どの程度のパフォーマンスになるのか、指標を示すことで、ソフトウェア開発プロジェクトごとに判断することができます。
+						</p>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+
+	<div class="parallax-container valign-wrapper" style="min-height: 434px;">
+		<div class="section no-pad-bot">
+			<div class="container">
+				<div class="row center">
+					<h3 id="forjava" class="header col s12 light">for<br>Java</h3>
+				</div>
+			</div>
+		</div>
+		<div class="java-image-wrapper" ><img src="images/JavaBeeBlack.png" alt="JavaBee"></div>
+	</div>
+
+	<div class="container">
+		<div class="section">
+
+			<div class="row">
+				<div class="col s12 center">
+					<img src="images/JavaBee100.png" alt="JavaBee" class="lang-image" >
+					<h4>Future Enterprise Coding Standards for Java</h4>
+					<p class="light">
+						一般的に行われているコーディング規約だけでなく、Stream APIやラムダ式といったJava8の目玉機能について、性能やコーディングスタイルについてまとめています
+					</p>
+
+					<div class="row">
+						<div class="col s12 m4">
+							<div class="icon-block">
+								<a href="https://github.com/future-architect/coding-standards/master/documents/forJava/Javaコーディング規約.md">
+									<h2 class="center blue-text text-darken-1"><i class="fa fa-file-code-o"></i>
+									</h2>
+									<h5 class="center">Markdown</h5>
+								</a>
+							</div>
+						</div>
+
+						<div class="col s12 m4">
+							<div class="icon-block">
+								<a href="documents/forJava/Javaコーディング規約.html">
+									<h2 class="center blue-text text-darken-1"><i class="fa fa-html5"></i></h2>
+									<h5 class="center">HTML</h5>
+								</a>
+							</div>
+						</div>
+
+						<div class="col s12 m4">
+							<div class="icon-block">
+								<a href="documents/forJava/Javaコーディング規約.docx">
+									<h2 class="center blue-text text-darken-1"><i class="fa fa-file-word-o"></i></h2>
+									<h5 class="center">Word</h5>
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+
+	<div class="parallax-container valign-wrapper">
+		<div class="section no-pad-bot">
+			<div class="container ">
+				<div class="row center">
+					<h5 class="header col s12 light blue-text text-lighten-2 white">他の開発言語のコーディング規約も順次作成中です</h5>
+				</div>
+			</div>
+		</div>
+		<div class="parallax last-image-wrapper"><img src="images/background3.jpg" alt=""></div>
+	</div>
+
+	<footer class="page-footer blue darken-4">
+		<div class="container">
+			<div class="row">
+				<div class="col l6 s12">
+					<h5 class="white-text">About Us</h5>
+					<ul class="white-text">
+						<li>
+							<pre>フューチャーアーキテクト株式会社
+Future Architect, Inc.</pre>
+						</li>
+						<li><a class="blue-text text-lighten-4" href="http://www.future.co.jp/">http://www.future.co.jp/</a></li>
+					</ul>
+					
+				</div>
+				<div class="col l6 s12">
+					<h5 class="white-text">Connect</h5>
+					<ul class="white-text">
+						<li>
+							<pre>東京都品川区大崎
+1-2-2
+アートヴィレッジ大崎セントラルタワー</pre>
+						</li>
+						<li>Phone: 03-5740-5721</li>
+						<li>Email: <a class="blue-text text-lighten-4" href="mailto:techblog@future.co.jp">techblog@future.co.jp</a></li>
+					</ul>
+
+				</div>
+			</div>
+		</div>
+		<div class="footer-copyright">
+			<div class="container">
+				<div class="row">
+					<div class="col l6">
+						© 2016 Future Enterprise Coding Standards - Future Architect
+					</div>
+					<div class="col l6">
+						<ul class="social-footer list-unstyled list-inline pull-right">
+							<li><a href="https://github.com/future-architect"><i class="fa fa-github blue-text text-lighten-4"></i></a></li>
+							<li><a href="https://twitter.com/future_techblog"><i class="fa fa-twitter blue-text text-lighten-4"></i></a></li>
+							<li><a href="https://www.facebook.com/future.saiyo"><i class="fa fa-facebook blue-text text-lighten-4"></i></a></li>
+							<li><a href="http://qiita.com/organizations/future"><i class="fa fa-pencil-square-o blue-text text-lighten-4"></i></a></li>
+							<li><a href="http://future-architect.github.io/"><i class="material-icons blue-text text-lighten-4" style="font-size: 17px;vertical-align: text-top;">memory</i></a></li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+	<script src="https://code.jquery.com/jquery-2.2.4.js" ></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.js" ></script>
+	<script async defer src="https://buttons.github.io/buttons.js"></script>
+	<script>
+		(function($) {
+			$('.button-collapse').sideNav();
+			$('.parallax').parallax();
+		})(jQuery);
+	</script>
+</body>
+</html>
