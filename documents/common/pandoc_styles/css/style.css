@@ -143,6 +143,10 @@ table tr td {
 table tr:nth-child(2n) {
   background-color: #f8f8f8;
 }
+table * {
+  word-wrap: break-word;
+  word-break: break-all;
+}
 
 pre {
   background-color: #f8f8f8;
@@ -190,6 +194,16 @@ blockquote > :last-child {
     margin-bottom: 0;
 }
 
+code.comment-code {
+  display: block;
+  white-space: pre;
+}
+
+table {
+  overflow: auto;
+  display: block;
+}
+
 @media screen and (max-width: 1300px) and (min-width: 1001px) {
   #TOC {
     font-size: 80%;
@@ -232,3 +246,4 @@ blockquote > :last-child {
     font-size: 60%;
   }
 }
+
