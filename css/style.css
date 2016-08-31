@@ -65,6 +65,12 @@ footer.page-footer {
     padding-left: 5px;
 }
 
+@media only screen and (max-width: 600px) {
+    #index-banner {
+        min-height: 390px;
+    }
+}
+
 .java-image-wrapper{
     width: 600px;
     position: absolute;
