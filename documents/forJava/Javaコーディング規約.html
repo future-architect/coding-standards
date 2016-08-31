@@ -857,7 +857,19 @@ s = codingKind.<span class="fu">decode</span>(d);</code></pre></div>
 <span class="kw">default</span>:
     <span class="kw">break</span>;
 }</code></pre></div></li>
-<li><p>繰り返し処理の内部で <code>try</code> ブロックを利用しない(例外あり)</p></li>
+<li><p>繰り返し処理の内部で <code>try</code> ブロックを利用しない<br />
+特に理由がない場合は繰り返し処理の外に<code>try</code>ブロックを記載する。<br />
+ただし、繰り返し処理内部で例外をキャッチし処理を行いたい場合は繰り返し処理の内部で<code>try</code>ブロックを利用してもよい。</p>
+<p>良い例：</p>
+<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="kw">for</span> (String s : array) {
+    <span class="dt">int</span> num;
+    <span class="kw">try</span> {
+        num = Integer.<span class="fu">parseInt</span>(s);
+    } <span class="kw">catch</span> (NumberFormatException e) {
+        num = -<span class="dv">1</span>;
+    }
+    <span class="co">//・・・</span>
+}</code></pre></div></li>
 </ul>
 <h2 id="文字列操作"><span class="header-section-number">4.18</span> 文字列操作</h2>
 <ul>
