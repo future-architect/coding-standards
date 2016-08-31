@@ -71,6 +71,10 @@ footer.page-footer {
     }
 }
 
+.parallax-container .lang-title.section {
+    position: static;
+}
+
 .java-image-wrapper{
     width: 600px;
     position: absolute;
