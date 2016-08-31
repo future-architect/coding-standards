@@ -65,13 +65,21 @@ footer.page-footer {
     padding-left: 5px;
 }
 
+@media only screen and (max-width: 600px) {
+    #index-banner {
+        min-height: 390px;
+    }
+}
+
+.parallax-container .lang-title.section {
+    position: static;
+}
+
 .java-image-wrapper{
     width: 600px;
-    margin-left: auto;
-    margin-right: auto;
     position: absolute;
     top: -93px;
-    left: 0;
+    left: 50%;
     right: 0;
     bottom: 0;
     z-index: -1;
@@ -80,6 +88,7 @@ footer.page-footer {
 
 .java-image-wrapper img{
     width: 100%;
+    transform: translate3d(-50%, 0px, 0px);
 }
 
 .top-image-wrapper {
@@ -98,14 +107,19 @@ footer.page-footer {
   	max-height: 100px;
 }
 
-.main-logo img{
+.main-logo img {
     vertical-align: middle;
 }
 
-li.gh-button iframe{
+li.gh-button iframe {
     vertical-align: middle;
 }
 
-.side-nav li.gh-button{
+.side-nav li.gh-button {
     padding: 0 16px;
+}
+
+.java-title-wrapper {
+    min-height: 434px;
+    height: 434px;
 }
