@@ -67,11 +67,9 @@ footer.page-footer {
 
 .java-image-wrapper{
     width: 600px;
-    margin-left: auto;
-    margin-right: auto;
     position: absolute;
     top: -93px;
-    left: 0;
+    left: 50%;
     right: 0;
     bottom: 0;
     z-index: -1;
@@ -80,6 +78,7 @@ footer.page-footer {
 
 .java-image-wrapper img{
     width: 100%;
+    transform: translate3d(-50%, 0px, 0px);
 }
 
 .top-image-wrapper {
