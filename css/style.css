@@ -107,14 +107,19 @@ footer.page-footer {
   	max-height: 100px;
 }
 
-.main-logo img{
+.main-logo img {
     vertical-align: middle;
 }
 
-li.gh-button iframe{
+li.gh-button iframe {
     vertical-align: middle;
 }
 
-.side-nav li.gh-button{
+.side-nav li.gh-button {
     padding: 0 16px;
+}
+
+.java-title-wrapper {
+    min-height: 434px;
+    height: 434px;
 }
