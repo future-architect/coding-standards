@@ -50,7 +50,11 @@ body {
     display: none;
   }
 }
-
+@media print {
+  .print-hidden {
+    display: none;
+  }
+}
 h1.title {
   font-size: 42px;
   border-bottom: 2px solid #cccccc;
