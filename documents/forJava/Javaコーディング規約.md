@@ -374,12 +374,12 @@
     良い例：  
 
     ```java
-    if(hasStock)
+    if (hasStock)
     ```
     悪い例：  
 
     ```java
-    if(hasStock == true)
+    if (hasStock == true)
     ```
 
 * 不等号の向きは左向き（ `<` 、 `<=` ）にする  
@@ -1428,7 +1428,7 @@ JUnitの作成やフレームワークとしてstaticインポートが推奨さ
     どこかソースコード中か別な文書にコメントされていない限り、それがなぜなのかを知ることはできない。  
 
     ```java
-    if(grandTotal >= 1000.00) {
+    if (grandTotal >= 1000.00) {
         grandTotal = grandTotal * 0.95;
     }
     ```
