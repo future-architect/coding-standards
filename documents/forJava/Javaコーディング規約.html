@@ -52,7 +52,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
   <meta name="description" content="SEOTOOLSは、無料で使えるSEOツールを 提供しております。御社のEコマースサイトのSEO対策に、SEOアクセス解析ツール、 順位チェックツールをご利用下さい。">
 </head>
 <body>
-<div class="print-hidden" style="text-align: right;padding-top: 30px;">
+<div class="print-hidden" style="text-align: right;">
 	<span style="display: inline-block;">
     	<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://future-architect.github.io/coding-standards/documents/forJava/Java%E3%82%B3%E3%83%BC%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0%E8%A6%8F%E7%B4%84.html">Tweet</a>
     </span>
@@ -458,9 +458,9 @@ a+= <span class="dv">10</span>;</code></pre></div></li>
 <div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="kw">return</span> ((a + b + c) * d);</code></pre></div></li>
 <li><p>ifなどの条件式でbooleanの変数を比較しない</p>
 <p>良い例：</p>
-<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="kw">if</span>(hasStock)</code></pre></div>
+<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="kw">if</span> (hasStock)</code></pre></div>
 <p>悪い例：</p>
-<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="kw">if</span>(hasStock == <span class="kw">true</span>)</code></pre></div></li>
+<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="kw">if</span> (hasStock == <span class="kw">true</span>)</code></pre></div></li>
 <li><p>不等号の向きは左向き（ <code>&lt;</code> 、 <code>&lt;=</code> ）にする<br />
 良い例：</p>
 <div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="kw">if</span> (from &lt;= x &amp;&amp; x &lt;= to) {</code></pre></div>
@@ -1251,7 +1251,7 @@ Optional&lt;Employee&gt; employee = <span class="fu">findEmployee</span>(employe
 <li><p>コメントには、なぜそうなのかを書く。コードを読めば分かることを書かない<br />
 基本的に、コードの一部分を見ればそれが何かを理解することはできる。例えば、以下のコードを見て、$1000以上の注文については5%ディスカウントされることは理解できる。なぜそうなのか？大きな注文ではディスカウントがつきものだというビジネスルールがあるのだろうか？大きな注文に時間限定サービスがあるのか、それともずっとサービスがあるのか？これを書いたプログラマの気前がよかったのか？<br />
 どこかソースコード中か別な文書にコメントされていない限り、それがなぜなのかを知ることはできない。</p>
-<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="kw">if</span>(grandTotal &gt;= <span class="fl">1000.00</span>) {
+<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="kw">if</span> (grandTotal &gt;= <span class="fl">1000.00</span>) {
     grandTotal = grandTotal * <span class="fl">0.95</span>;
 }</code></pre></div>
 なお、メソッドコメントには、適切なjavadocコメント（タグ）のほかに、以下の内容も可能な限り明記すること。
