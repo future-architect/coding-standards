@@ -49,7 +49,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
   <!--[if lt IE 9]>
     <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
   <![endif]-->
-  <meta name="description" content="SEOTOOLSは、無料で使えるSEOツールを 提供しております。御社のEコマースサイトのSEO対策に、SEOアクセス解析ツール、 順位チェックツールをご利用下さい。">
+  <meta name="description" content="Javaコーディング規約">
 </head>
 <body>
 <div class="print-hidden" style="text-align: right;">
@@ -650,19 +650,19 @@ JUnitの作成やフレームワークとしてstaticインポートが推奨さ
 <ul>
 <li><p><code>public static final</code> 宣言した配列を利用しない<br />
 悪い例：</p>
-<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="kw">public</span> <span class="dt">static</span> <span class="dt">final</span> <span class="dt">int</span>[] VALUES = { <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span> };</code></pre></div></li>
+<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="kw">public</span> <span class="dt">static</span> <span class="dt">final</span> <span class="dt">int</span>[] VALUES = { <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span> };</code></pre></div>
+<p><code>final</code>で配列を宣言していても、不変なのは配列のサイズのみであり、配列の要素は変更可能なので、保持している要素を変えられたくない場合は、<code>Collections</code>クラスの<code>unmodifiableList()</code>メソッド等を使用し、読み取り専用のコレクションを生成すること。</p>
+<p>良い例：</p>
+<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="kw">public</span> <span class="dt">static</span> <span class="dt">final</span> List&lt;Integer&gt; VALUES = Collections.<span class="fu">unmodifiableList</span>(Arrays.<span class="fu">asList</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>));</code></pre></div>
+<p>悪い例：</p>
+<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="kw">public</span> <span class="dt">static</span> <span class="dt">final</span> List&lt;Integer&gt; VALUES = Arrays.<span class="fu">asList</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>);</code></pre></div></li>
 <li><p>クラス変数にはクラス名を使用してアクセスすること</p>
 <p>良い例：</p>
 <div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java">BigDecimal b = BigDecimal.<span class="fu">ZERO</span>;</code></pre></div>
 <p>悪い例：</p>
 <div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java">BigDecimal a = <span class="co">//</span>
 BigDecimal b = a.<span class="fu">ZERO</span>;</code></pre></div>
-<p><br></p>
-<p><code>final</code>で配列を宣言していても、不変なのは配列のサイズのみであり、配列の要素は変更可能なので、保持している要素を変えられたくない場合は、<code>Collections</code>クラスの<code>unmodifiableList()</code>メソッド等を使用し、読み取り専用のコレクションを生成すること。</p>
-<p>良い例：</p>
-<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="kw">public</span> <span class="dt">static</span> <span class="dt">final</span> List&lt;Integer&gt; VALUES = Collections.<span class="fu">unmodifiableList</span>(Arrays.<span class="fu">asList</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>));</code></pre></div>
-<p>悪い例：</p>
-<div class="sourceCode"><pre class="sourceCode java"><code class="sourceCode java"><span class="kw">public</span> <span class="dt">static</span> <span class="dt">final</span> List&lt;Integer&gt; VALUES = Arrays.<span class="fu">asList</span>(<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">5</span>);</code></pre></div></li>
+<p><br></p></li>
 </ul>
 <h2 id="ローカル変数-1"><span class="header-section-number">4.11</span> ローカル変数</h2>
 <ul>

@@ -635,6 +635,19 @@ JUnitの作成やフレームワークとしてstaticインポートが推奨さ
     public static final int[] VALUES = { 1, 2, 3, 4, 5 };
     ```
 
+    `final`で配列を宣言していても、不変なのは配列のサイズのみであり、配列の要素は変更可能なので、保持している要素を変えられたくない場合は、`Collections`クラスの`unmodifiableList()`メソッド等を使用し、読み取り専用のコレクションを生成すること。  
+
+    良い例：  
+
+    ```java
+    public static final List<Integer> VALUES = Collections.unmodifiableList(Arrays.asList(1, 2, 3, 4, 5));
+    ```
+    悪い例：  
+
+    ```java
+    public static final List<Integer> VALUES = Arrays.asList(1, 2, 3, 4, 5);
+    ```
+
 * クラス変数にはクラス名を使用してアクセスすること  
 
     良い例：  
@@ -649,19 +662,6 @@ JUnitの作成やフレームワークとしてstaticインポートが推奨さ
     BigDecimal b = a.ZERO;
     ```
     <br>
-
-    `final`で配列を宣言していても、不変なのは配列のサイズのみであり、配列の要素は変更可能なので、保持している要素を変えられたくない場合は、`Collections`クラスの`unmodifiableList()`メソッド等を使用し、読み取り専用のコレクションを生成すること。  
-
-    良い例：  
-
-    ```java
-    public static final List<Integer> VALUES = Collections.unmodifiableList(Arrays.asList(1, 2, 3, 4, 5));
-    ```
-    悪い例：  
-
-    ```java
-    public static final List<Integer> VALUES = Arrays.asList(1, 2, 3, 4, 5);
-    ```
 
 
 ## ローカル変数
