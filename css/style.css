@@ -75,6 +75,11 @@ footer.page-footer {
     position: static;
 }
 
+.java-title-wrapper {
+    min-height: 434px;
+    height: 434px;
+}
+
 .java-image-wrapper{
     width: 600px;
     position: absolute;
@@ -87,6 +92,27 @@ footer.page-footer {
 }
 
 .java-image-wrapper img{
+    width: 100%;
+    transform: translate3d(-50%, 0px, 0px);
+}
+
+
+.sql-title-wrapper {
+    min-height: 434px;
+    height: 434px;
+}
+
+.sql-image-wrapper{
+    width: 400px;
+    position: absolute;
+    top: 46px;
+    left: 50%;
+    right: 0;
+    bottom: 0;
+    z-index: -1;
+}
+
+.sql-image-wrapper img{
     width: 100%;
     transform: translate3d(-50%, 0px, 0px);
 }
@@ -117,9 +143,4 @@ li.gh-button iframe {
 
 .side-nav li.gh-button {
     padding: 0 16px;
-}
-
-.java-title-wrapper {
-    min-height: 434px;
-    height: 434px;
 }
