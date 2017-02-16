@@ -505,7 +505,7 @@ WHERE句でカラムと式を比較する際は左辺がカラムになるよう
 <div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="co">/* NGパターン 右辺に関数を通してください */</span>  
 <span class="fu">TO_CHAR</span>(TBL1.COL1, <span class="st">'YYYYMMDD'</span>)  &gt;   <span class="st">'20151231'</span></code></pre></div>
 <p>良い例：</p>
-<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql">TBL1.COL1   &gt;   <span class="fu">TO_DATE</span>(<span class="st">'20151231'</span>, <span class="st">'YYYYMMDD'</span>)</code></pre></div></li>
+<div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql">TBL1.COL1   &gt;=  <span class="fu">TO_DATE</span>(<span class="st">'20160101'</span>, <span class="st">'YYYYMMDD'</span>)</code></pre></div></li>
 <li><p>インデックスカラムを<code>OR</code>で条件指定（禁止ではないが原則行わない）</p>
 <p>悪い例：</p>
 <div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql">(
@@ -538,7 +538,7 @@ WHERE句でカラムと式を比較する際は左辺がカラムになるよう
 <h2 id="with句-1"><span class="header-section-number">3.5</span> WITH句</h2>
 <p>WITH句の誤った使い方はパフォーマンスの劣化を招くため、WITH句を利用する場合はDBAに相談する。</p>
 <h2 id="distinct句"><span class="header-section-number">3.6</span> DISTINCT句</h2>
-<p>DISTINCTは、暗黙のソート処理が行われるため性能劣化につながる。<br />
+<p>DISTINCTは、暗黙のソート処理が行われる可能性があるため性能劣化につながる。<br />
 EXISTS句の使用・代替を検討すること。</p>
 <p>悪い例：</p>
 <div class="sourceCode"><pre class="sourceCode sql"><code class="sourceCode sql"><span class="kw">SELECT</span>
