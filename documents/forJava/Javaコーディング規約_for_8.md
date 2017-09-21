@@ -224,7 +224,7 @@
        //変数sを利用した処理
     }
     ```
-    変数`s`の利用範囲が広いので役割が明確になる変数名に変更する。  
+    変数`s`の利用範囲が広いので役割が明確になる編素名に変更する。  
 
 * for 文のループカウンタは、ネストごとに"`i`","`j`","`k`"・・・を使う  
 
@@ -503,7 +503,7 @@ JUnitの作成やフレームワークとしてstaticインポートが推奨さ
         if (s == null || s.isEmpty()) {
             return Collections.emptyList();
         }
-        return List.of(s);
+        return Arrays.asList(s);
     }
     ```
     悪い例：  
@@ -520,7 +520,7 @@ JUnitの作成やフレームワークとしてstaticインポートが推奨さ
         if (s == null || s.isEmpty()) {
             return null;
         }
-        return List.of(s);
+        return Arrays.asList(s);
     }
     ```
 
@@ -617,12 +617,12 @@ JUnitの作成やフレームワークとしてstaticインポートが推奨さ
 
 * 定数は、プリミティブ型もしくは、不変（Immutable）オブジェクトで参照する  
 
-    * 不変`List`の生成には`List.of()`を利用する   
+    * 不変`List`の生成には`Collections`クラスの`unmodifiableList()`メソッドを利用する   
 
         良い例：  
 
         ```java
-        public static final List<Integer> VALUES = List.of(1, 2, 3, 4, 5);
+        public static final List<Integer> VALUES = Collections.unmodifiableList(Arrays.asList(1, 2, 3, 4, 5));
         ```
 
         悪い例：  
@@ -631,14 +631,20 @@ JUnitの作成やフレームワークとしてstaticインポートが推奨さ
         public static final List<Integer> VALUES = Arrays.asList(1, 2, 3, 4, 5);
         ```
 
-    * 不変`Set`の生成には`Set.of()`を利用する   
+    * 不変`Set`の生成には`Collections`クラスの`unmodifiableSet()`メソッドを利用する   
 
-    * 不変`Map`の生成には`Map.of()`を利用する  
+    * 不変`Map`の生成には`Collections`クラスの`unmodifiableMap()`メソッドを利用する  
 
         良い例：  
 
         ```java
-        public static final Map<Integer, String> VALUES_MAP = Map.of(1, "A", 2, "B", 3, "C");
+        public static final Map<Integer, String> VALUES_MAP = Collections.unmodifiableMap(new HashMap<>() {
+            {
+                put(1, "A");
+                put(2, "B");
+                put(3, "C");
+            }
+        });
         ```
 
         悪い例：  
@@ -658,7 +664,7 @@ JUnitの作成やフレームワークとしてstaticインポートが推奨さ
         良い例：  
 
         ```java
-        public static final List<Integer> VALUES = List.of(1, 2, 3, 4, 5);
+        public static final List<Integer> VALUES = Collections.unmodifiableList(Arrays.asList(1, 2, 3, 4, 5));
         ```
 
         悪い例：  
@@ -1076,23 +1082,6 @@ JUnitの作成やフレームワークとしてstaticインポートが推奨さ
 
     [※パフォーマンスについても記載しているので参考にしてください](#文字列連結)  
 
-* １ステートメントのみで行われる文字列の連結には`+`演算子を利用する  
-
-    良い例：  
-
-    ```java
-    String s = s1 + s2;
-
-    return s1 + s2 + s3 + s4 + s5;
-    ```
-    悪い例：  
-
-    ```java
-    String s = new StringBuilder(s1).append(s2).toString();
-
-    return new StringBuilder(s1).append(s2).append(s3).append(s4).append(s5).toString();
-    ```
-
 * 更新されない文字列には`String` クラスを利用する  
 * 文字列リテラルと定数を比較するときは、文字列リテラルの`equals()`メソッドを利用する  
     良い例：  
@@ -1204,7 +1193,7 @@ JUnitの作成やフレームワークとしてstaticインポートが推奨さ
     良い例：  
 
     ```java
-    for(String s : List.of("A", "B")) {
+    for(String s : Arrays.asList("A", "B")) {
         //処理
     }
     ```
@@ -1212,7 +1201,7 @@ JUnitの作成やフレームワークとしてstaticインポートが推奨さ
     悪い例：  
 
     ```java
-    List.of("A", "B").forEach(s -> {
+    Arrays.asList("A", "B").forEach(s -> {
         //処理
     });
     ```
@@ -1223,26 +1212,16 @@ JUnitの作成やフレームワークとしてstaticインポートが推奨さ
     良い例：  
 
     ```java
-    List.of("A", "B").forEach(this::process);
+    Arrays.asList("A", "B").forEach(this::process);
     ```
 
     悪い例：  
 
     ```java
-    for(String s : List.of("A", "B")) {
+    for(String s : Arrays.asList("A", "B")) {
         this.process(s);
     }
     ```
-
-* `Arrays.asList()`は利用せず、`List.of()`を利用する  
-    Java9で追加されたメソッド。  
-    配列を`List`に置き換える場合や、単純な固定の`List`を生成する際には`List.of()`を利用する。  
-
-    * `Arrays.asList()`と`List.of()`の違い  
-        `List.of()`で生成した`List`は、完全に不変（Immutable）な`List`で、  
-        `Arrays.asList()`で生成した`List`は、サイズのみ不変で、`set`等による値の操作が可能な`List`です。  
-        また、`set`を行った場合、`Arrays.asList()`に与えられた配列インスタンスにも影響します。  
-
 
 
 ## ラムダ式・メソッド参照・コンストラクタ参照
