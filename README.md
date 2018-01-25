@@ -3,7 +3,7 @@
 http://future-architect.github.io/coding-standards/
 
 [![GitHub last commit](https://img.shields.io/github/last-commit/future-architect/coding-standards.svg)](https://github.com/future-architect/coding-standards)
-[![GitHub stars](https://img.shields.io/github/stars/future-architect/coding-standards.svg?style=social&label=Stars)](https://github.com/future-architect/coding-standards/stargazers)
+[![GitHub stars](https://img.shields.io/github/stars/future-architect/coding-standards.svg?style=social&label=Stars&logo=github)](https://github.com/future-architect/coding-standards/stargazers)
 
 * [for Java](https://future-architect.github.io/coding-standards/documents/forJava/Javaコーディング規約.html)  
 [![Facebook share](https://img.shields.io/badge/dynamic/json.svg?label=Facebook&prefix=share+&query=$.share.share_count&uri=https://graph.facebook.com/?id=https://future-architect.github.io/coding-standards/documents/forJava/Javaコーディング規約.html&colorB=4267b2&maxAge=3600)](https://future-architect.github.io/coding-standards/documents/forJava/Javaコーディング規約.html)
