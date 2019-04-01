@@ -1,9 +1,16 @@
-% Javaコーディング規約
-% Future Enterprise Coding Standards
+---
+sidebarDepth: 4
+title: Javaコーディング規約
+author: Future Enterprise Coding Standards
+meta:
+  - name: keywords
+    content: Javaコーディング規約,Java11,コーディング規約,Java,Java9
+---
 
------
+<page-title/>
+
 本コーディング規約は、世の中のシステム開発プロジェクトのために無償で提供致します。  
-ただし、掲載内容および利用に際して発生した問題、それに伴う損害については、フューチャーアーキテクト株式会社は一切の責務を負わないものとします。  
+ただし、掲載内容および利用に際して発生した問題、それに伴う損害については、フューチャー株式会社は一切の責務を負わないものとします。  
 また、掲載している情報は予告なく変更することがございますので、あらかじめご了承下さい。  
 
 # はじめに  
@@ -1244,10 +1251,9 @@ JUnitの作成やフレームワークとしてstaticインポートが推奨さ
         また、`set`を行った場合、`Arrays.asList()`に与えられた配列インスタンスにも影響します。  
 
 
-
 ## ラムダ式・メソッド参照・コンストラクタ参照
 * ラムダ式が利用できる箇所はラムダ式を利用してよい  
-[※パフォーマンスについても記載しているので参考にしてください](#ラムダ式メソッド参照コンストラクタ参照-1)  
+[※パフォーマンスについても記載しているので参考にしてください](#ラムダ式・メソッド参照・コンストラクタ参照-2)  
 * ただし、メソッド参照・コンストラクタ参照が利用できる場合はメソッド参照・コンストラクタ参照を利用する  
 
     良い例：  
@@ -1330,7 +1336,7 @@ JUnitの作成やフレームワークとしてstaticインポートが推奨さ
 
 ## Stream API
 * 利用してよい  
-[※パフォーマンスについても記載しているので参考にしてください](#stream-api-1)  
+[※パフォーマンスについても記載しているので参考にしてください](#stream-api-2)  
 * 並列ストリームは利用しないこと  
     悪い例：  
 
@@ -1404,7 +1410,7 @@ JUnitの作成やフレームワークとしてstaticインポートが推奨さ
     List<String> list1 = Stream.of("A", "B", "C")
             .map(String::toLowerCase)
             .collect(Collectors.toList());
-    
+
     List<String> list2 = Stream.of("A", "B", "C")
             .map(s -> s + s)
             .collect(Collectors.toList());
@@ -1461,6 +1467,77 @@ JUnitの作成やフレームワークとしてstaticインポートが推奨さ
     return employee;
     ```    
 
+## var (Local-Variable Type Inference)
+
+次のリンクも参考にしてください。  
+[Style Guidelines for Local Variable Type Inference in Java](https://openjdk.java.net/projects/amber/LVTIstyle.html)
+
+* 明確な方針で、利用する・利用しないを統一すること  
+    方針無く、`var`を混在させるとソースコードの見通しと保守性が悪くなります。  
+    各プロジェクトで、例えば以下ののような方針で統一してください。  
+    1. `var`を利用しない
+    2. 原則`var`を利用する
+    3. 右辺で、明確に型がわかる場合は`var`を利用する
+
+    以下で`2`、`3`について例を示します。
+
+    * 原則`var`を利用する  
+
+        利用できる箇所は全て`var`を利用します。
+
+        良い例：  
+
+        ```java
+        var a = "";
+        var b = 123;
+        var c = new ArrayList<String>();
+        ```
+
+        悪い例：  
+
+        ```java
+        var a = "";
+        int b = 123;
+        List<String> c = new ArrayList<>();
+        ```
+
+        ```java
+        void methodA() {
+            var a = "";
+        }
+        void methodB() {
+            String a = "";
+        }
+        ```
+
+    * 右辺で、明確に型がわかる場合は`var`を利用する
+
+        右辺をみて型がわかる場合は、全て`var`を利用します。
+        それ以外は`var`を利用してはいけません。
+
+        良い例：  
+
+        ```java
+        var s = ""; // リテラルによって型が明確に判断できます
+        var list1 = new ArrayList<String>(); // newによって型が明確に判断できます
+        var list2 = (List<String>) map.get("p"); // キャストによって型が明確に判断できます
+        var list3 = List.of("A", "B", "C"); // ファクトリーによって型が明確に判断できます
+        ```
+
+        プロジェクトで観点を決めるべき例：  
+
+        ```java
+        var b1 = s.isEmpty(); // `is`で始まるメソッドは通例としてbooleanを返します
+        var b2 = Objects.equals(s1, s2); // `equals`メソッドは通例としてbooleanを返します
+        var i1 = Objects.hash(s); // `hash`、`hashCode`メソッドは通例としてintを返します
+        var i2 = Objects.compare(s1, s2); // `compare`、`compareTo`メソッドは通例としてintを返します
+        ```
+
+        悪い例：  
+
+        ```java
+        var a = e.getData(); // `e`の型と、メソッド定義がわからなければ型が判断できません
+        ```
 
 ## ストリーム（InputStream OutputStream）
 * ストリームを扱うAPI を利用するときは、try-with-resources文で後処理をする  
@@ -1583,6 +1660,8 @@ Javaでは3種類のコメントが使える。javadocコメントは`/**`で開
 
 ※ 性能計測結果についての記載がありますが、あくまでも参考値です。性能を保証するものではありません。    
 
+<a id="stream-api-2"></a>
+
 ## Stream API
 Java8で追加されたStream APIでの記述は、可読性も高く、簡潔に書けますが、パフォーマンス・性能面で注意が必要な場合があります。  
 
@@ -1623,7 +1702,7 @@ Listの処理を行う際、拡張for文で処理する場合はIteratorイン�
 小中規模の処理量であれば考慮するほどの性能差はありませんが、大量の処理が見込まれる場合は考慮が必要です。  
 また、Stream APIは並列処理（スレッド処理）の機能をサポートしていますので、利用できる場合は並列処理も含めての検証が必要です。    
 
-
+<a id="ラムダ式・メソッド参照・コンストラクタ参照-2"></a>
 
 ## ラムダ式・メソッド参照・コンストラクタ参照  
 Java8で追加されたラムダ式・メソッド参照・コンストラクタ参照は、匿名クラスを利用するよりも効率的です。  
@@ -1862,76 +1941,6 @@ private static final String CONST_AB = new StringBuilder(CONST_A).append(CONST_B
 ランダムアクセスをサポートしている`List`がシーケンシャルアクセス（iteratorを利用した処理など）で遅いということはないので、  
 ループの処理は拡張for文等、Iteratorによるループで記述するのが無難です。    
 `List#get`での処理をすべて禁止することはできませんが、高いパフォーマンスが求められる場合は`List`の種類にも注目してみてください。  
-
-
-## オートボクシング  
-Javaには`int`のようなプリミティブ型と、`Integer`のようなプリミティブ型の値をクラスとして扱うためのラッパークラスが存在し、  
-これらを意識せずコードを記述できるオートボクシングという機能があります。  
-
-しかし、オートボクシングを利用しているためにコーディング時に気づかない不要な処理を行っている可能性があるため、性能問題を避けるためには理解が必要です。  
-
-### オートボクシング例
-下記の2つの処理は等価ではありません。  
-
-* オートボクシングあり  
-
-    ```java
-    int value1 = 1;
-    Integer value2 = value1;
-    int value3 = value2;
-    ```
-
-* キャストなし  
-
-    ```java
-    int value1 = 1;
-    int value2 = value1;
-    int value3 = value2;
-    ```
-
-「オートボクシングあり」の処理を等価なオートボクシングの無い処理に置き換えると以下の処理になります。  
-
-* オートボクシングなし  
-
-    ```java
-    int value1 = 1;
-    Integer value2 = Integer.valueOf(value1);
-    int value3 = value2.intValue();
-    ```
-
-「オートボクシングあり」のコードをコンパイルするとバイトコード上は「オートボクシングなし」の処理を行うこととなり、  
-もし「キャストなし」の処理を意図していたなら、`Integer#valueOf`と`Integer#intValue`の処理が不要な処理です。  
-
-### オートボクシング性能
-
-性能差が少ないため、ほとんど問題にはなりませんが、FindBugs等、静的解析で検出される問題のため、理解が必要です。  
-
-
-以下に計測結果を記載します。  
-
-* オートボクシング    
-
-    ```java
-    int value1 = 1;
-    Integer value2 = value1;
-    int value3 = value2;
-    ```
-
-* オートボクシングなし  
-
-    ```java
-    int value1 = 1;
-    int value2 = value1;
-    int value3 = value2;
-    ```
-
-* 計測結果  
-
-    （単位：マイクロ秒）
-
-    | 処理回数 | オートボクシング (マイクロ秒) | オートボクシングなし (マイクロ秒) |
-    |------------------:|------------------:|------------------:|
-    | 2,000兆回 | 10<br>max:297<br>min:0 | 4<br>max:154<br>min:0 |
 
 ## StringからInteger・Longへの変換  
 数値文字列の`String`を`Integer`に変換するには、`Integer#valueOf(String)`を利用して下記のように記述します。  

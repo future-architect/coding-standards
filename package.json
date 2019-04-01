@@ -1,0 +1,43 @@
+{
+  "name": "future-enterprise-coding-standards",
+  "version": "1.0.0",
+  "description": "Future Enterprise Coding Standards",
+  "main": "index.js",
+  "scripts": {
+    "watch": "vuepress dev . --debug",
+    "build": "vuepress build .",
+    "pandoc": "npm-run-all pandoc:*",
+    "pandoc:java-html": "pandoc ./documents/forJava/Javaコーディング規約.md -s --self-contained --number-sections --toc -t html5 -c ./documents/common/pandoc_styles/css/style.css -o ./documents/forJava/Javaコーディング規約.html",
+    "pandoc:java-word": "pandoc ./documents/forJava/Javaコーディング規約.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./documents/forJava/Javaコーディング規約.docx",
+    "pandoc:sqlo-html": "pandoc ./documents/forSQL/SQLコーディング規約（Oracle）.md -s --self-contained --number-sections --toc -t html5 -c ./documents/common/pandoc_styles/css/style.css -o ./documents/forSQL/SQLコーディング規約（Oracle）.html",
+    "pandoc:sqlo-word": "pandoc ./documents/forSQL/SQLコーディング規約（Oracle）.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./documents/forSQL/SQLコーディング規約（Oracle）.docx"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/future-architect/coding-standards.git"
+  },
+  "keywords": [
+    "codingstandards"
+  ],
+  "author": "Future Corporation",
+  "license": "CC-BY-3.0",
+  "bugs": {
+    "url": "https://github.com/future-architect/coding-standards/issues"
+  },
+  "homepage": "https://future-architect.github.io/coding-standards/",
+  "devDependencies": {
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.16.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-node": "^8.0.1",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "eslint-plugin-vue": "^5.2.2",
+    "markdown-it-task-lists": "^2.1.1",
+    "npm-run-all": "^4.1.5",
+    "vue-github-button": "^1.0.7",
+    "vuepress": "^0.14.10",
+    "webpack-dev-middleware": "3.6.0"
+  }
+}

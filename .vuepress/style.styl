@@ -1,0 +1,16 @@
+.content:not(.custom), .page-edit, .page-nav
+    width 88%
+    max-width 1280px
+
+input[type="checkbox"]
+    zoom: 1.4
+
+@media print
+  .navbar, .page-edit .edit-link
+    display: none
+
+h1, h2
+  page-break-before: always
+
+h1, h2, h3, h4, h5, h6
+  page-break-after: avoid
