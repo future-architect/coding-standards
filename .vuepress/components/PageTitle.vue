@@ -150,6 +150,7 @@ function addPocket (p) {
 .share-buttons {
   display: flex;
   justify-content: flex-end;
+  flex-wrap: wrap;
 }
 
 .vuepress-page-title >>> .share-buttons > * {
