@@ -17,3 +17,13 @@ h1, h2, h3, h4, h5, h6
 
 .navbar .logo
   max-width: 150px;
+
+// for IE
+// IEのflex-basisのバグを回避
+// https://github.com/philipwalton/flexbugs#7-flex-basis-doesnt-account-for-box-sizingborder-box
+.navbar .links .nav-links
+    flex-basis: auto
+
+// IEでinputのheightがline-heightに合わせてくれないバグを回避
+.search-box input
+    height: 2rem
