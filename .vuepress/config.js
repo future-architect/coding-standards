@@ -81,6 +81,10 @@ module.exports = {
             link: 'https://qiita.com/organizations/future'
           },
           {
+            text: 'Qiita Jobs',
+            link: 'https://jobs.qiita.com/employers/future/development_teams/57'
+          },
+          {
             text: 'Twitter',
             link: 'https://twitter.com/future_techblog'
           },
