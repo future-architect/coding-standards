@@ -20,3 +20,9 @@ footer: ©2015 - 2019 Future Enterprise Coding Standards - Future Corporation
 ---
 
 > 他の開発言語のコーディング規約も順次作成中です
+
+---
+
+# License
+
+[![CC-By-4.0](https://licensebuttons.net/l/by/4.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/deed.ja)

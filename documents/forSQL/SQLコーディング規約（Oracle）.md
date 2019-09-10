@@ -654,3 +654,9 @@ IN句は最大1000個まで指定できるが、200個程度でもORAエラー�
 ## 外部結合  
 
 外部結合する際、内部表（駆動表）はなるべく想定件数の少ない表にする。  
+
+---
+
+# License
+
+[![CC-By-4.0](https://licensebuttons.net/l/by/4.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/deed.ja)

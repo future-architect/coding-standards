@@ -2033,3 +2033,9 @@ BigDecimalの正・負・ZEROの判定は`BigDecimal#signum`を利用します�
     | 1京回 | 527<br>max:26,367<br>min:0 | 424<br>max:21,213<br>min:0 |
 
 性能差が少ないので、必ずしもsignumを利用する必要はありませんが、大量に処理する場合など、高いパフォーマンスが求められる場合は意識してください。  
+
+---
+
+# License
+
+[![CC-By-4.0](https://licensebuttons.net/l/by/4.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/deed.ja)
