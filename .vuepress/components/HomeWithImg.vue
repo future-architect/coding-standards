@@ -1,14 +1,19 @@
 <template>
-  <Home
-    class="java-home-page"
-    v-bind="$attrs"
-    v-on="$listeners"
-  />
+  <Layout>
+    <Home
+      slot="top"
+      class="java-home-page"
+      v-bind="$attrs"
+      v-on="$listeners"
+    />
+  </Layout>
 </template>
 <script>
-import Home from '@default-theme/Home.vue'
+import Layout from '@theme/layouts/Layout.vue'
+import Home from '@theme/components/Home.vue'
 export default {
   components: {
+    Layout,
     Home
   }
 }
