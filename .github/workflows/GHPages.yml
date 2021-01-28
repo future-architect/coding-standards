@@ -1,0 +1,34 @@
+name: GHPages
+
+on:
+  push:
+    branches: [master]
+
+jobs:
+  deploy-docs:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - uses: actions/setup-node@v2
+    - name: Install Packages
+      run: npm i
+    - uses: docker://pandoc/core:2.9
+      with:
+        args: ./documents/forJava/Javaコーディング規約.md -s --self-contained --number-sections --toc -t html5 -c ./documents/common/pandoc_styles/css/style.css -o ./documents/forJava/Javaコーディング規約.html
+    - uses: docker://pandoc/core:2.9
+      with:
+        args: ./documents/forJava/Javaコーディング規約.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./documents/forJava/Javaコーディング規約.docx
+    - uses: docker://pandoc/core:2.9
+      with:
+        args: ./documents/forSQL/SQLコーディング規約（Oracle）.md -s --self-contained --number-sections --toc -t html5 -c ./documents/common/pandoc_styles/css/style.css -o ./documents/forSQL/SQLコーディング規約（Oracle）.html
+    - uses: docker://pandoc/core:2.9
+      with:
+        args: ./documents/forSQL/SQLコーディング規約（Oracle）.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./documents/forSQL/SQLコーディング規約（Oracle）.docx
+    - name: Build all
+      run: npm run build
+    - name: Deploy
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./docs
+        force_orphan: true
