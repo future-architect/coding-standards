@@ -70,7 +70,7 @@ import { addTwitter, addFacebook, addHatenaBookmark, addPocket } from './sns'
  * これを回避するためにMarkdownファイルの先頭に`<page-title/>`を記述させることでタイトルを表示させます。
  */
 export default {
-  name: 'page-title',
+  name: 'PageTitle',
   data: function () {
     return {
       GithubButton: 'div'

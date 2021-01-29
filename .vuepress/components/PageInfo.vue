@@ -47,7 +47,7 @@ const loadScript = debounce(function () {
 }, 1000)
 
 export default {
-  name: 'page-info',
+  name: 'PageInfo',
   props: {
     href: {
       type: String,
