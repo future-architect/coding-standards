@@ -158,11 +158,11 @@ meta:
   良い例：
 
   ```java
-  public boolean isAsleep(){
+  public boolean isAsleep() {
   }
-  public boolean exists(){
+  public boolean exists() {
   }
-  public boolean hasExpired(){
+  public boolean hasExpired() {
   }
   ```
 
@@ -238,7 +238,7 @@ meta:
    良い例：
 
   ```java
-  if (・・・){
+  if (・・・) {
       String s = "・・・・";
      //変数sを利用した処理 数行
   }
@@ -248,11 +248,11 @@ meta:
 
   ```java
   String s = "・・・・";
-  if (・・・){
+  if (・・・) {
      //変数sを利用した処理
   }
   ・・・
-  if (・・・){
+  if (・・・) {
      //変数sを利用した処理
   }
   ```
@@ -1693,7 +1693,7 @@ meta:
   良い例：
 
   ```java
-  try (InputStream inputStream = Files.newInputStream(Paths.get("HOGE.txt")){
+  try (InputStream inputStream = Files.newInputStream(Paths.get("HOGE.txt")) {
       //inputStreamに対する処理を記載
   }
   ```
