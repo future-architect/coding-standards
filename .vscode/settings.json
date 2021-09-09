@@ -1,9 +1,6 @@
 {
-  "eslint.validate": [ "javascript", "javascriptreact", "vue" ],
-  "eslint.workingDirectories": [
-    "./",
-    "./.vuepress"
-  ],
+  "eslint.validate": ["javascript", "javascriptreact", "vue"],
+  "eslint.workingDirectories": ["./", "./.vuepress"],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   }

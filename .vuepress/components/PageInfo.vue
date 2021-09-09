@@ -8,7 +8,7 @@
       data-size="small"
       data-show-faces="true"
       data-share="true"
-      style="height: 20px; line-height: 20px;"
+      style="height: 20px; line-height: 20px"
     />
     <a
       :href="hatena"
@@ -22,47 +22,47 @@
         alt="このエントリーをはてなブックマークに追加"
         width="20"
         height="20"
-        style="border: none;"
-      >
+        style="border: none"
+      />
     </a>
   </div>
 </template>
 
 <script>
-import { addFacebook, addHatenaBookmark } from './sns'
+import { addFacebook, addHatenaBookmark } from "./sns";
 
-function debounce (fn, timeout) {
-  let timeoutId
+function debounce(fn, timeout) {
+  let timeoutId;
   return () => {
     if (timeoutId != null) {
-      clearTimeout(timeoutId)
+      clearTimeout(timeoutId);
     }
-    timeoutId = setTimeout(fn, timeout)
-  }
+    timeoutId = setTimeout(fn, timeout);
+  };
 }
 
 const loadScript = debounce(function () {
-  addFacebook()
-  addHatenaBookmark()
-}, 1000)
+  addFacebook();
+  addHatenaBookmark();
+}, 1000);
 
 export default {
-  name: 'PageInfo',
+  name: "PageInfo",
   props: {
     href: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
-    hatena () {
-      return this.href.replace('https://', 'https://b.hatena.ne.jp/entry/s/')
-    }
+    hatena() {
+      return this.href.replace("https://", "https://b.hatena.ne.jp/entry/s/");
+    },
   },
-  mounted () {
-    loadScript()
-  }
-}
+  mounted() {
+    loadScript();
+  },
+};
 </script>
 
 <style scoped>

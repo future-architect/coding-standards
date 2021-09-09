@@ -7,6 +7,7 @@
     "lint": "eslint . .vuepress --ext .js,.vue",
     "watch": "vuepress dev . --debug",
     "build": "vuepress build .",
+    "format": "prettier . --write",
     "pandoc": "npm-run-all pandoc:*",
     "pandoc:java-html": "pandoc ./documents/forJava/Javaコーディング規約.md -s --self-contained --number-sections --toc -t html5 -c ./documents/common/pandoc_styles/css/style.css -o ./documents/forJava/Javaコーディング規約.html",
     "pandoc:java-word": "pandoc ./documents/forJava/Javaコーディング規約.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./documents/forJava/Javaコーディング規約.docx",
@@ -28,6 +29,7 @@
   "homepage": "https://future-architect.github.io/coding-standards/",
   "devDependencies": {
     "eslint": "^7.16.0",
+    "eslint-config-prettier": "^8.3.0",
     "eslint-config-standard": "^16.0.0",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-node": "^11.0.0",
@@ -36,6 +38,7 @@
     "eslint-plugin-vue": "^7.0.0",
     "markdown-it-task-lists": "^2.1.1",
     "npm-run-all": "^4.1.5",
+    "prettier": "^2.4.0",
     "vue-github-button": "^1.0.7",
     "vuepress": "^1.2.0"
   }

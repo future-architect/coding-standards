@@ -19,7 +19,10 @@
         data-share="true"
       />
       <a
-        :href="'http://b.hatena.ne.jp/entry/s/future-architect.github.io/coding-standards'+$page.path"
+        :href="
+          'http://b.hatena.ne.jp/entry/s/future-architect.github.io/coding-standards' +
+          $page.path
+        "
         class="hatena-bookmark-button"
         data-hatena-bookmark-layout="basic-label-counter"
         data-hatena-bookmark-lang="ja"
@@ -30,8 +33,8 @@
           alt="このエントリーをはてなブックマークに追加"
           width="20"
           height="20"
-          style="border: none;"
-        >
+          style="border: none"
+        />
       </a>
 
       <component
@@ -51,7 +54,8 @@
         :data-save-url="pageUrl"
         data-pocket-count="horizontal"
         data-pocket-align="left"
-      >Pocket</a>
+        >Pocket</a
+      >
     </div>
 
     <h1 class="vuepress-page-title__title">
@@ -64,36 +68,37 @@
 </template>
 
 <script>
-import { addTwitter, addFacebook, addHatenaBookmark, addPocket } from './sns'
+import { addTwitter, addFacebook, addHatenaBookmark, addPocket } from "./sns";
 /**
  * `markdown-it-plugin-header-shift`でheaderタグを1つづつずらす前提であるため、Markdownファイルにはタイトルがありません。
  * これを回避するためにMarkdownファイルの先頭に`<page-title/>`を記述させることでタイトルを表示させます。
  */
 export default {
-  name: 'PageTitle',
+  name: "PageTitle",
   data: function () {
     return {
-      GithubButton: 'div'
-    }
+      GithubButton: "div",
+    };
   },
   computed: {
-    pageUrl () {
-      return 'https://future-architect.github.io/coding-standards' + this.$page.path
-    }
+    pageUrl() {
+      return (
+        "https://future-architect.github.io/coding-standards" + this.$page.path
+      );
+    },
   },
-  mounted () {
-    import('vue-github-button').then(({ default: GithubButton }) => {
-      this.GithubButton = GithubButton
-    })
+  mounted() {
+    import("vue-github-button").then(({ default: GithubButton }) => {
+      this.GithubButton = GithubButton;
+    });
     setTimeout(() => {
-      addTwitter()
-      addFacebook()
-      addHatenaBookmark()
-      addPocket()
-    }, 10)
-  }
-}
-
+      addTwitter();
+      addFacebook();
+      addHatenaBookmark();
+      addPocket();
+    }, 10);
+  },
+};
 </script>
 
 <style scoped>
