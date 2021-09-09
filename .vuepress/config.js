@@ -21,14 +21,12 @@ module.exports = {
   serviceWorker: false,
   markdown: {
     lineNumbers: true,
-    config: md => {
+    extendMarkdown: md => {
       md.use(require('./markdown-it-plugin-header-shift'))
       md.use(require('markdown-it-task-lists'))
     }
   },
-  // evergreen: true,
   head: [
-    // ['link', { rel: 'icon', href: '/favicon.ico' }]
   ],
   locales: {
     '/': {
