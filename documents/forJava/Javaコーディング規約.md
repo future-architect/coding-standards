@@ -110,7 +110,7 @@ meta:
   public class entry {
   ```
 
-- インターフェース名はクラス名に準ずる
+- インターフェース名、Enum 名、Record 名はクラス名に準ずる
 
 ## メソッド
 
@@ -260,6 +260,33 @@ meta:
   変数`s`の利用範囲が広いので役割が明確になる変数名に変更する。
 
 - for 文のループカウンタは、ネストごとに"`i`","`j`","`k`"・・・を使う
+
+## Enum
+
+- Enum 名はクラス名と同じく、単語の先頭を大文字にする
+- 列挙定数は定数と同じく、すべて大文字、区切りは"`_`"
+
+  良い例：
+
+  ```java
+  enum Season {
+      WINTER,
+      SPRING,
+      Summer,
+      FALL
+  }
+  ```
+
+  悪い例：
+
+  ```java
+  enum Season {
+      winter,
+      spring,
+      summer,
+      fall
+  }
+  ```
 
 # コーディング規約
 
