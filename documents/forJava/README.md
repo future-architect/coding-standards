@@ -29,7 +29,7 @@ Java8向けのコーディング規約は[こちら](./Javaコーディング規
 
 - [Markdown](https://github.com/future-architect/coding-standards/blob/master/documents/forJava/Javaコーディング規約.md)
 - [Markdown - for Java8](https://github.com/future-architect/coding-standards/blob/master/documents/forJava/Javaコーディング規約_for_8.md)
-- [HTML](https://github.com/future-architect/coding-standards/blob/master/documents/forJava/Javaコーディング規約.html)
-- [Word](https://github.com/future-architect/coding-standards/raw/master/documents/forJava/Javaコーディング規約.docx)
+- [HTML](https://github.com/future-architect/coding-standards/blob/gh-pages/resources/Javaコーディング規約.html)
+- [Word](https://github.com/future-architect/coding-standards/raw/gh-pages/resources/Javaコーディング規約.docx)
 
 [Pandoc]: https://pandoc.org/
