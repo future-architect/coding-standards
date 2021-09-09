@@ -1,10 +1,10 @@
 ---
 sidebarDepth: 4
-title: Javaコーディング規約
+title: Javaコーディング規約 for Java11
 author: Future Enterprise Coding Standards
 meta:
   - name: keywords
-    content: Javaコーディング規約,Java17,コーディング規約,Java
+    content: Javaコーディング規約,Java11,コーディング規約,Java,Java9
 ---
 
 <page-title/>
@@ -158,11 +158,11 @@ meta:
   良い例：
 
   ```java
-  public boolean isAsleep() {
+  public boolean isAsleep(){
   }
-  public boolean exists() {
+  public boolean exists(){
   }
-  public boolean hasExpired() {
+  public boolean hasExpired(){
   }
   ```
 
@@ -238,7 +238,7 @@ meta:
    良い例：
 
   ```java
-  if (・・・) {
+  if (・・・){
       String s = "・・・・";
      //変数sを利用した処理 数行
   }
@@ -248,11 +248,11 @@ meta:
 
   ```java
   String s = "・・・・";
-  if (・・・) {
+  if (・・・){
      //変数sを利用した処理
   }
   ・・・
-  if (・・・) {
+  if (・・・){
      //変数sを利用した処理
   }
   ```
@@ -1273,127 +1273,6 @@ meta:
 - 入れ子の三項演算子の利用は禁止  
    可読性が悪くなるので三項演算子を入れ子で行うのは禁止。
 
-## switch 式
-
-- case 句はなるべく一つの式での記述を推奨する  
-   複雑な式や複雑なステートメントを記述しなければならない場合は、メソッドに分割することを検討してください。
-- 一つの式で記述される case 句はアロー構文を使用する  
-   良い例：
-
-  ```java
-  var day = DayOfWeek.SUNDAY;
-  var shortDay = switch (day) {
-      case MONDAY -> "M";
-      case WEDNESDAY -> "W";
-      case FRIDAY -> "F";
-      case TUESDAY, THURSDAY -> "T";
-      case SUNDAY, SATURDAY -> "S";
-  };
-  ```
-
-  悪い例：
-
-  ```java
-  var day = DayOfWeek.SUNDAY;
-  var shortDay = switch (day) {
-      case MONDAY:
-          yield "M";
-      case WEDNESDAY:
-          yield "W";
-      case FRIDAY:
-          yield "F";
-      case TUESDAY, THURSDAY:
-          yield "T";
-      case SUNDAY, SATURDAY:
-          yield "S";
-  };
-  ```
-
-- Enum 値の switch 式で case 句が全ての Enum 値をカバーする場合は default 句はデッドコードとなるため記述しない  
-   良い例：
-
-  ```java
-  var day = DayOfWeek.SUNDAY;
-  var dayOff = switch (day) {
-      case MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY -> false;
-      case SUNDAY, SATURDAY -> true;
-  };
-  ```
-
-  ```java
-  var day = DayOfWeek.SUNDAY;
-  var dayOff = switch (day) {
-      case SUNDAY, SATURDAY -> true;
-      default -> false;
-  };
-  ```
-
-  悪い例：
-
-  ```java
-  var day = DayOfWeek.SUNDAY;
-  var dayOff = switch (day) {
-      case MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY -> false;
-      case SUNDAY, SATURDAY -> true;
-      default -> false;
-  };
-  ```
-
-## switch 文
-
-- 代わりに switch 式が使用できる箇所は switch 式を使用する
-  - 全ての case 句で`return`を記述する場合は switch 文を使用して良い
-- case 句はなるべく 1 行のステートメントでの記述を推奨する  
-   複雑なステートメントを記述しなければならない場合は、メソッドに分割することを検討してください。
-- 複数の値をマッチさせるときの case 句はカンマを使用して列挙する  
-   良い例：
-
-  ```java
-  var day = DayOfWeek.SUNDAY;
-  boolean dayOff = false;
-  switch (day) {
-      case SUNDAY, SATURDAY:
-        dayOff = true;
-        break;
-  };
-  ```
-
-  悪い例：
-
-  ```java
-  var day = DayOfWeek.SUNDAY;
-  boolean dayOff = false;
-  switch (day) {
-      case SUNDAY:
-      case SATURDAY:
-        dayOff = true;
-        break;
-  };
-  ```
-
-<!-- 要検討 値を返すように見えるため紛らわしいとの意見もある
-* 意図しないフォールスルーを避けるためなるべくアロー構文を使用する
-    良い例：
-
-    ```java
-    var day = DayOfWeek.SUNDAY;
-    boolean dayOff = false;
-    switch (day) {
-        case SUNDAY, SATURDAY -> dayOff = true;
-    };
-    ```
-    悪い例：
-
-    ```java
-    var day = DayOfWeek.SUNDAY;
-    boolean dayOff = false;
-    switch (day) {
-        case SUNDAY, SATURDAY:
-          dayOff = true;
-    };
-    ```
--->
-
 ## コレクション
 
 - Java2 以降のコレクションクラスを利用する  
@@ -1509,31 +1388,30 @@ meta:
 - 原則ラムダ式内の行数は 1 行とする  
   複数行で利用したい場合は、`private`メソッドを作成しメソッド参照を利用する
 
-  良い例：
+      良い例：
 
-  ```java
-  this::getMax
+      ```java
+      this::getMax
 
-  private int getMax(int i1, int i2) {
-      if (i1 > i2) {
-          return i1;
-      } else {
-          return i2;
+      private int getMax(int i1, int i2) {
+          if (i1 > i2) {
+              return i1;
+          } else {
+              return i2;
+          }
       }
-  }
-  ```
+      ```
+      悪い例：
 
-  悪い例：
-
-  ```java
-  (i1, i2) -> {
-      if (i1 > i2) {
-          return i1;
-      } else {
-          return i2;
+      ```java
+      (i1, i2) -> {
+          if (i1 > i2) {
+              return i1;
+          } else {
+              return i2;
+          }
       }
-  }
-  ```
+      ```
 
 - 原則ラムダ式は 1 行記述に限定するので、中カッコ、`return`は必ず省略する
 
@@ -1788,7 +1666,7 @@ meta:
   良い例：
 
   ```java
-  try (InputStream inputStream = Files.newInputStream(Paths.get("HOGE.txt")) {
+  try (InputStream inputStream = Files.newInputStream(Paths.get("HOGE.txt")){
       //inputStreamに対する処理を記載
   }
   ```

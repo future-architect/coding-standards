@@ -1,10 +1,19 @@
 "use strict";
 
 const links = {
-  "/documents/forJava/": [
+  "/documents/forJava/Javaコーディング規約_for_11.html": [
+    "/documents/forJava/",
+    "/documents/forJava/Javaコーディング規約.html",
+    "/documents/forJava/Javaコーディング規約_for_11.html",
+  ],
+  "/documents/forJava/Javaコーディング規約_for_8.html": [
     "/documents/forJava/",
     "/documents/forJava/Javaコーディング規約.html",
     "/documents/forJava/Javaコーディング規約_for_8.html",
+  ],
+  "/documents/forJava/": [
+    "/documents/forJava/",
+    "/documents/forJava/Javaコーディング規約.html",
   ],
   "/documents/forSQL/": [
     "/documents/forSQL/",
@@ -45,8 +54,12 @@ module.exports = {
         text: "Java",
         items: [
           {
-            text: "for Java11",
+            text: "for Java17",
             link: "/documents/forJava/Javaコーディング規約.html",
+          },
+          {
+            text: "for Java11",
+            link: "/documents/forJava/Javaコーディング規約_for_11.html",
           },
           {
             text: "for Java8",
