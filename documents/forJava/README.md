@@ -11,16 +11,16 @@ layout: HomeWithImg
 heroImage: /images/JBee.png
 ---
 
-一般的に行われているコーディング規約だけでなく、Stream APIやラムダ式といったJava8の目玉機能について、性能やコーディングスタイルについてまとめています
-Java9で追加されたメソッド、最新のJava11で追加された構文にも対応しています
+一般的に行われているコーディング規約だけでなく、Stream API やラムダ式といった Java8 の目玉機能について、性能やコーディングスタイルについてまとめています
+Java9 で追加されたメソッド、最新の Java11 で追加された構文にも対応しています
 
 # for Java11
 
-Java11向けのコーディング規約は[こちら](./Javaコーディング規約.md)です。
+Java11 向けのコーディング規約は[こちら](./Javaコーディング規約.md)です。
 
 # for Java8
 
-Java8向けのコーディング規約は[こちら](./Javaコーディング規約_for_8.md)です。
+Java8 向けのコーディング規約は[こちら](./Javaコーディング規約_for_8.md)です。
 
 # Resources
 
@@ -32,4 +32,4 @@ Java8向けのコーディング規約は[こちら](./Javaコーディング規
 - [HTML](https://github.com/future-architect/coding-standards/blob/gh-pages/resources/Javaコーディング規約.html)
 - [Word](https://github.com/future-architect/coding-standards/raw/gh-pages/resources/Javaコーディング規約.docx)
 
-[Pandoc]: https://pandoc.org/
+[pandoc]: https://pandoc.org/
