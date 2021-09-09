@@ -21,7 +21,7 @@ footer: ©2015 - 2019 Future Enterprise Coding Standards - Future Corporation
 (これらのファイルは[Pandoc]を利用して作成しています。)
 
 - [Markdown](https://github.com/future-architect/coding-standards/blob/master/documents/forSQL/SQLコーディング規約（Oracle）.md)
-- [HTML](https://github.com/future-architect/coding-standards/blob/master/documents/forSQL/SQLコーディング規約（Oracle）.html)
-- [Word](https://github.com/future-architect/coding-standards/raw/master/documents/forSQL/SQLコーディング規約（Oracle）.docx)
+- [HTML](https://github.com/future-architect/coding-standards/blob/gh-pages/resources/SQLコーディング規約（Oracle）.html)
+- [Word](https://github.com/future-architect/coding-standards/raw/gh-pages/resources/SQLコーディング規約（Oracle）.docx)
 
 [Pandoc]: https://pandoc.org/
