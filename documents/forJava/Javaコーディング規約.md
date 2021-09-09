@@ -1603,20 +1603,20 @@ meta:
   List<Character> alphabetLower = list.stream()
       .filter(Character::isAlphabetic)
       .map(Character::toLowerCase)
-      .collect(Collectors.toList());
+      .toList();
   ```
 
   悪い例：
 
   ```java
   List<Character> alphabetLower = list.stream().filter(Character::isAlphabetic)
-      .map(Character::toLowerCase).collect(Collectors.toList());
+      .map(Character::toLowerCase).toList();
 
   List<Character> alphabetLower = list
       .stream()
       .filter(Character::isAlphabetic)
       .map(Character::toLowerCase)
-      .collect(Collectors.toList());
+      .toList();
   ```
 
 - インデントは統合開発環境の提供するフォーマッタに合わせる
@@ -1662,11 +1662,11 @@ meta:
   ```java
   List<String> list1 = Stream.of("A", "B", "C")
           .map(String::toLowerCase)
-          .collect(Collectors.toList());
+          .toList();
 
   List<String> list2 = Stream.of("A", "B", "C")
           .map(s -> s + s)
-          .collect(Collectors.toList());
+          .toList();
   ```
 
   悪い例：
@@ -1674,10 +1674,10 @@ meta:
   ```java
   Stream<String> stream = Stream.of("A", "B", "C");
   Stream<String> stream1 = stream.map(String::toLowerCase);
-  List<String> list1 = stream1.collect(Collectors.toList());
+  List<String> list1 = stream1.toList();
 
   Stream<String> stream2 = stream.map(s -> s + s);//コーディングミス streamは使用済のためエラーになる
-  List<String> list2 = stream2.collect(Collectors.toList());
+  List<String> list2 = stream2.toList();
   ```
 
 ## Optional
@@ -1948,7 +1948,7 @@ List の処理を行う際、拡張 for 文で処理する場合は Iterator イ
   List<String> list = //数値文字列のList
   List<String> resultList = list.stream()
       .filter(s -> s.endsWith("0"))
-      .collect(Collectors.toList());
+      .toList();
   return resultList;
   ```
 
