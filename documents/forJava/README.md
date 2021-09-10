@@ -6,6 +6,7 @@ heroText: Javaコーディング規約
 tagline: Future Enterprise Coding Standards for Java
 actionText: Javaコーディング規約 (for Java11)
 actionLink: ./Javaコーディング規約.html
+pageClass: lang-home
 footer: ©2015 - 2019 Future Enterprise Coding Standards - Future Corporation
 layout: HomeWithImg
 heroImage: /images/JBee.png

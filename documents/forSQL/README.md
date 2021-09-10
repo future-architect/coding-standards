@@ -4,6 +4,7 @@ author: フューチャー株式会社
 home: true
 heroText: SQLコーディング規約
 tagline: Future Enterprise Coding Standards for SQL
+pageClass: lang-home
 footer: ©2015 - 2019 Future Enterprise Coding Standards - Future Corporation
 ---
 

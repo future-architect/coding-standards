@@ -1,25 +1,31 @@
 <template>
-  <Layout>
-    <Home slot="top" class="java-home-page" v-bind="$attrs" v-on="$listeners" />
-  </Layout>
+  <Layout class="home-with-img"> </Layout>
 </template>
 <script>
 import Layout from "@theme/layouts/Layout.vue";
-import Home from "@theme/components/Home.vue";
 export default {
   components: {
     Layout,
-    Home,
   },
 };
 </script>
 <style scoped>
-.java-home-page >>> .hero > img {
+.home-with-img >>> .hero {
+  position: relative;
+}
+.home-with-img >>> .hero > img {
   position: absolute;
-  margin-top: 0;
+  margin: auto;
+  top: 0;
   left: 0;
   right: 0;
-  z-index: -1;
+  bottom: 40px;
   opacity: 0.1;
+}
+.home-with-img >>> .hero > #main-title,
+.home-with-img >>> .hero > .description,
+.home-with-img >>> .hero > .action {
+  position: relative;
+  z-index: 1;
 }
 </style>

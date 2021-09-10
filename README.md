@@ -13,9 +13,13 @@ footer: ©2015 - 2019 Future Enterprise Coding Standards - Future Corporation
 [![GitHub last commit](https://img.shields.io/github/last-commit/future-architect/coding-standards.svg)](https://github.com/future-architect/coding-standards)
 [![GitHub stars](https://img.shields.io/github/stars/future-architect/coding-standards.svg?style=social&label=Stars&logo=github)](https://github.com/future-architect/coding-standards/stargazers)
 
-# [for Java](./documents/forJava/) <page-info href="https://future-architect.github.io/coding-standards/documents/forJava/Javaコーディング規約.html"></page-info>
+# [for Java](./documents/forJava/)
 
-# [for SQL](./documents/forSQL/) <page-info href="https://future-architect.github.io/coding-standards/documents/forSQL/SQLコーディング規約（Oracle）.html"></page-info>
+<page-info href="https://future-architect.github.io/coding-standards/documents/forJava/Javaコーディング規約.html"></page-info>
+
+# [for SQL](./documents/forSQL/)
+
+<page-info href="https://future-architect.github.io/coding-standards/documents/forSQL/SQLコーディング規約（Oracle）.html"></page-info>
 
 ---
 
