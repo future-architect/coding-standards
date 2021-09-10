@@ -1332,7 +1332,7 @@ meta:
 
 - case 句はなるべく一つの式での記述を推奨する  
    複雑な式や複雑なステートメントを記述しなければならない場合は、メソッドに分割することを検討してください。
-- switch 式は、思いがけないフォールスルーを避けるため、常にアロー構文を使用する  
+- switch 式は、コーディングミスによるフォールスルーを避けるため、常にアロー構文を使用する  
    [https://docs.oracle.com/javase/jp/16/language/switch-expressions.html](https://docs.oracle.com/javase/jp/16/language/switch-expressions.html)からの引用：
 
   > ノート:`case L ->`ラベルの使用をお薦めします。`case L:`ラベルの使用時は、`break`文または`yield`文の挿入を忘れがちです。これを忘れると、コード内で思いがけないフォール・スルーが発生する場合があります。
@@ -1443,7 +1443,7 @@ meta:
   - case 句で`return`を記述する場合は switch 文を使用して良い
 - case 句はなるべく 1 行のステートメントでの記述を推奨する  
    複雑なステートメントを記述しなければならない場合は、メソッドに分割することを検討してください。
-- switch 文は、思いがけないフォールスルーを避けるため、なるべくアロー構文を使用することを推奨する  
+- switch 文は、コーディングミスによるフォールスルーを避けるため、なるべくアロー構文を使用することを推奨する  
    [https://docs.oracle.com/javase/jp/16/language/switch-expressions.html](https://docs.oracle.com/javase/jp/16/language/switch-expressions.html)からの引用：
 
   > ノート:`case L ->`ラベルの使用をお薦めします。`case L:`ラベルの使用時は、`break`文または`yield`文の挿入を忘れがちです。これを忘れると、コード内で思いがけないフォール・スルーが発生する場合があります。
