@@ -1124,27 +1124,19 @@ meta:
 
   ```java
   switch (kind) {
-  case 1:
+  case 1 ->
       d = encode1(s);
-      break;
-  case 2:
+  case 2 ->
       d = encode2(s);
-      break;
-  default:
-      break;
   }
 
   //---
 
   switch (kind) {
-  case 1:
+  case 1 ->
       s = decode1(d);
-      break;
-  case 2:
+  case 2 ->
       s = decode2(d);
-      break;
-  default:
-      break;
   }
   ```
 
@@ -1340,8 +1332,48 @@ meta:
 
 - case 句はなるべく一つの式での記述を推奨する  
    複雑な式や複雑なステートメントを記述しなければならない場合は、メソッドに分割することを検討してください。
-- 一つの式で記述される case 句はアロー構文を使用する  
-   良い例：
+- switch 式は、思いがけないフォールスルーを避けるため、常にアロー構文を使用する  
+   [https://docs.oracle.com/javase/jp/16/language/switch-expressions.html](https://docs.oracle.com/javase/jp/16/language/switch-expressions.html)からの引用：
+
+  > ノート:`case L ->`ラベルの使用をお薦めします。`case L:`ラベルの使用時は、`break`文または`yield`文の挿入を忘れがちです。これを忘れると、コード内で思いがけないフォール・スルーが発生する場合があります。
+  > `case L ->`ラベルで、複数の文または式でないコード、あるいは`throw`文を指定するには、それらをブロック内に囲みます。`case`ラベルが生成する値を`yield`文で指定します。
+
+  良い例：
+
+  ```java
+  var date = LocalDate.now();
+  var off = switch (date.getDayOfWeek()) {
+      case MONDAY -> {
+          if (myCalendar.isOff(date) || localCalendar.isHoliday(date)) {
+              yield true;
+          }
+          yield localCalendar.isHoliday(date.minusDays(1));
+      }
+      case TUESDAY, WEDNESDAY, THURSDAY, FRIDAY ->
+          myCalendar.isOff(date) || localCalendar.isHoliday(date);
+      case SUNDAY, SATURDAY -> true;
+  };
+  ```
+
+  悪い例：
+
+  ```java
+  var date = LocalDate.now();
+  var off = switch (date.getDayOfWeek()) {
+      case MONDAY:
+          if (myCalendar.isOff(date) || localCalendar.isHoliday(date)) {
+              yield true;
+          }
+          yield localCalendar.isHoliday(date.minusDays(1));
+      case TUESDAY, WEDNESDAY, THURSDAY, FRIDAY:
+          yield myCalendar.isOff(date) || localCalendar.isHoliday(date);
+      case SUNDAY, SATURDAY:
+          yield true;
+  };
+  ```
+
+- アロー構文の、中カッコ、`yield`を省略できる場合は必ず省略する  
+  良い例：
 
   ```java
   var day = DayOfWeek.SUNDAY;
@@ -1359,16 +1391,21 @@ meta:
   ```java
   var day = DayOfWeek.SUNDAY;
   var shortDay = switch (day) {
-      case MONDAY:
+      case MONDAY -> {
           yield "M";
-      case WEDNESDAY:
+      }
+      case WEDNESDAY -> {
           yield "W";
-      case FRIDAY:
+      }
+      case FRIDAY -> {
           yield "F";
-      case TUESDAY, THURSDAY:
+      }
+      case TUESDAY, THURSDAY -> {
           yield "T";
-      case SUNDAY, SATURDAY:
+      }
+      case SUNDAY, SATURDAY -> {
           yield "S";
+      }
   };
   ```
 
@@ -1377,13 +1414,13 @@ meta:
 
   ```java
   var day = DayOfWeek.SUNDAY;
-  var dayOff = switch (day) {
+  var off = switch (day) {
       case MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY -> false;
       case SUNDAY, SATURDAY -> true;
   };
 
   var day = DayOfWeek.SUNDAY;
-  var dayOff = switch (day) {
+  var off = switch (day) {
       case SUNDAY, SATURDAY -> true;
       default -> false;
   };
@@ -1393,7 +1430,7 @@ meta:
 
   ```java
   var day = DayOfWeek.SUNDAY;
-  var dayOff = switch (day) {
+  var off = switch (day) {
       case MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY -> false;
       case SUNDAY, SATURDAY -> true;
       default -> false;
@@ -1406,15 +1443,63 @@ meta:
   - case 句で`return`を記述する場合は switch 文を使用して良い
 - case 句はなるべく 1 行のステートメントでの記述を推奨する  
    複雑なステートメントを記述しなければならない場合は、メソッドに分割することを検討してください。
-- 複数の値をマッチさせるときの case 句はカンマを使用して列挙する  
+- switch 文は、思いがけないフォールスルーを避けるため、なるべくアロー構文を使用することを推奨する  
+   [https://docs.oracle.com/javase/jp/16/language/switch-expressions.html](https://docs.oracle.com/javase/jp/16/language/switch-expressions.html)からの引用：
+
+  > ノート:`case L ->`ラベルの使用をお薦めします。`case L:`ラベルの使用時は、`break`文または`yield`文の挿入を忘れがちです。これを忘れると、コード内で思いがけないフォール・スルーが発生する場合があります。
+  > `case L ->`ラベルで、複数の文または式でないコード、あるいは`throw`文を指定するには、それらをブロック内に囲みます。`case`ラベルが生成する値を`yield`文で指定します。
+
+  良い例：
+
+  ```java
+  var date = LocalDate.now();
+  switch (date.getDayOfWeek()) {
+      case MONDAY -> {
+          if (
+              !myCalendar.isOff(date) && !localCalendar.isHoliday(date) &&
+              !localCalendar.isHoliday(date.minusDays(1))
+          ) {
+              work();
+          }
+      }
+      case TUESDAY, WEDNESDAY, THURSDAY, FRIDAY -> {
+          if (!myCalendar.isOff(date) && !localCalendar.isHoliday(date)) {
+              work();
+          }
+      }
+  }
+  ```
+
+  悪い例：
+
+  ```java
+  var date = LocalDate.now();
+  switch (date.getDayOfWeek()) {
+      case MONDAY:
+          if (
+              !myCalendar.isOff(date) && !localCalendar.isHoliday(date) &&
+              !localCalendar.isHoliday(date.minusDays(1))
+          ) {
+              work();
+          }
+          break;
+      case TUESDAY, WEDNESDAY, THURSDAY, FRIDAY:
+          if (!myCalendar.isOff(date) && !localCalendar.isHoliday(date)) {
+              work();
+          }
+          break;
+  }
+  ```
+
+- アロー構文を使用しない（コロンを使用する）際、複数の値をマッチさせるときの case 句はカンマを使用して列挙する  
    良い例：
 
   ```java
   var day = DayOfWeek.SUNDAY;
-  boolean dayOff = false;
+  boolean off = false;
   switch (day) {
       case SUNDAY, SATURDAY:
-        dayOff = true;
+        off = true;
         break;
   };
   ```
@@ -1423,37 +1508,14 @@ meta:
 
   ```java
   var day = DayOfWeek.SUNDAY;
-  boolean dayOff = false;
+  boolean off = false;
   switch (day) {
       case SUNDAY:
       case SATURDAY:
-        dayOff = true;
+        off = true;
         break;
   };
   ```
-
-<!-- 要検討 値を返すように見えるため紛らわしいとの意見もある
-* 意図しないフォールスルーを避けるためなるべくアロー構文を使用する
-    良い例：
-
-    ```java
-    var day = DayOfWeek.SUNDAY;
-    boolean dayOff = false;
-    switch (day) {
-        case SUNDAY, SATURDAY -> dayOff = true;
-    };
-    ```
-    悪い例：
-
-    ```java
-    var day = DayOfWeek.SUNDAY;
-    boolean dayOff = false;
-    switch (day) {
-        case SUNDAY, SATURDAY:
-          dayOff = true;
-    };
-    ```
--->
 
 ## コレクション
 
