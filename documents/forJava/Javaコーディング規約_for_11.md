@@ -961,13 +961,17 @@ meta:
   良い例：
 
   ```java
-  (o instanceof Foo)
+  if (o instanceof Foo) {
+      // ...
+  }
   ```
 
   悪い例：
 
   ```java
-  ("hoge.Foo".equals(o.getClass().getName()))
+  if ("my.Foo".equals(o.getClass().getName())) {
+      // ...
+  }
   ```
 
 ## 制御構造
@@ -1679,7 +1683,7 @@ meta:
   良い例：
 
   ```java
-  try (InputStream inputStream = Files.newInputStream(Paths.get("HOGE.txt")) {
+  try (InputStream inputStream = Files.newInputStream(Paths.get("foo.txt")) {
       //inputStreamに対する処理を記載
   }
   ```
@@ -1693,7 +1697,7 @@ meta:
   良い例：
 
   ```java
-  try (InputStream inputStream = Files.newInputStream(Paths.get("HOGE.txt")) {
+  try (InputStream inputStream = Files.newInputStream(Paths.get("foo.txt")) {
       //inputStreamに対する処理を記載
   }
   ```
@@ -1708,7 +1712,7 @@ meta:
   良い例：
 
   ```java
-  try (InputStream inputStream = Files.newInputStream(Paths.get("HOGE.txt")) {
+  try (InputStream inputStream = Files.newInputStream(Paths.get("foo.txt")) {
       //・・・
   } catch (IOException e) {
       log.error("Error", e);
@@ -1719,7 +1723,7 @@ meta:
   悪い例：
 
   ```java
-  try (InputStream inputStream = Files.newInputStream(Paths.get("HOGE.txt")) {
+  try (InputStream inputStream = Files.newInputStream(Paths.get("foo.txt")) {
       //・・・
   } catch (Exception e) {//範囲が広すぎる例外クラスの利用はNG
       log.error("Error", e);

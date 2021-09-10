@@ -961,13 +961,49 @@ meta:
   良い例：
 
   ```java
-  (o instanceof Foo)
+  if (o instanceof Foo f) {
+      // ...
+  }
   ```
 
   悪い例：
 
   ```java
-  ("hoge.Foo".equals(o.getClass().getName()))
+  if ("my.Foo".equals(o.getClass().getName())) {
+      Foo f = (Foo)o;
+      // ...
+  }
+  ```
+
+- インスタンスの型キャスト（Class キャスト）が必要な場合はパターンマッチングを使用する
+
+  良い例：
+
+  ```java
+  if (o instanceof String s) {
+      // ...
+  }
+
+  var str = (o instanceof BigDecimal b) ? b.toPlainString() : String.valueOf(o);
+  
+  var empty = o == null ||
+    (o instanceof String s && s.isEmpty()) ||
+    (o instanceof Collection c && c.isEmpty());
+  ```
+
+  悪い例：
+
+  ```java
+  if (o instanceof String) {
+      String s = (String)o;
+      // ...
+  }
+
+  var str = (o instanceof BigDecimal) ? ((BigDecimal)o).toPlainString() : String.valueOf(o);
+
+  var empty = o == null ||
+    (o instanceof String && ((String)o).isEmpty()) ||
+    (o instanceof Collection && ((Collection)o).isEmpty());
   ```
 
 ## 制御構造
@@ -1369,7 +1405,7 @@ meta:
 ## switch 文
 
 - 代わりに switch 式が使用できる箇所は switch 式を使用する
-  - 全ての case 句で`return`を記述する場合は switch 文を使用して良い
+  - case 句で`return`を記述する場合は switch 文を使用して良い
 - case 句はなるべく 1 行のステートメントでの記述を推奨する  
    複雑なステートメントを記述しなければならない場合は、メソッドに分割することを検討してください。
 - 複数の値をマッチさせるときの case 句はカンマを使用して列挙する  
@@ -1629,7 +1665,7 @@ meta:
 
   ```java
   // クラスFooのフィールドStrの値で昇順にソートし、フィールドStrの要素を取得して処理する。
-  hogeList.stream()
+  fooList.stream()
       .sorted(Comparator.comparing(Foo::getStr))
       .map(Foo::getStr)
       .forEach(this::proc);
@@ -1638,13 +1674,13 @@ meta:
   悪い例：
 
   ```java
-  hogeList.stream()
+  fooList.stream()
       .sorted(Comparator.comparing(Foo::getStr)) //クラスFooのフィールドStrの値で昇順にソート
       .map (Foo::getStr) //フィールドStrの要素を取得
       .forEach(this::proc); //処理
 
 
-  hogeList.stream()
+  fooList.stream()
       //クラスFooのフィールドStrの値で昇順にソート
       .sorted(Comparator.comparing(Foo::getStr))
       //フィールドStrの要素を取得
@@ -1801,7 +1837,7 @@ meta:
   良い例：
 
   ```java
-  try (InputStream inputStream = Files.newInputStream(Paths.get("HOGE.txt")) {
+  try (InputStream inputStream = Files.newInputStream(Paths.get("foo.txt")) {
       //inputStreamに対する処理を記載
   }
   ```
@@ -1815,7 +1851,7 @@ meta:
   良い例：
 
   ```java
-  try (InputStream inputStream = Files.newInputStream(Paths.get("HOGE.txt")) {
+  try (InputStream inputStream = Files.newInputStream(Paths.get("foo.txt")) {
       //inputStreamに対する処理を記載
   }
   ```
@@ -1830,7 +1866,7 @@ meta:
   良い例：
 
   ```java
-  try (InputStream inputStream = Files.newInputStream(Paths.get("HOGE.txt")) {
+  try (InputStream inputStream = Files.newInputStream(Paths.get("foo.txt")) {
       //・・・
   } catch (IOException e) {
       log.error("Error", e);
@@ -1841,7 +1877,7 @@ meta:
   悪い例：
 
   ```java
-  try (InputStream inputStream = Files.newInputStream(Paths.get("HOGE.txt")) {
+  try (InputStream inputStream = Files.newInputStream(Paths.get("foo.txt")) {
       //・・・
   } catch (Exception e) {//範囲が広すぎる例外クラスの利用はNG
       log.error("Error", e);
@@ -2202,68 +2238,6 @@ private static final String CONST_AB = new StringBuilder(CONST_A).append(CONST_B
 ランダムアクセスをサポートしている`List`がシーケンシャルアクセス（iterator を利用した処理など）で遅いということはないので、  
 ループの処理は拡張 for 文等、Iterator によるループで記述するのが無難です。  
 `List#get`での処理をすべて禁止することはできませんが、高いパフォーマンスが求められる場合は`List`の種類にも注目してみてください。
-
-## String から Integer・Long への変換
-
-数値文字列の`String`を`Integer`に変換するには、`Integer#valueOf(String)`を利用して下記のように記述します。
-
-```java
-String s = "1";
-Integer value = Integer.valueOf(s);
-```
-
-しかし、下記のようにも記述できます。
-
-```java
-String s = "1";
-Integer value = new Integer(s);
-```
-
-これらの違いは、  
-`new Integer(s)`とした場合、必ず Integer インスタンスが生成されますが、  
-`Integer.valueOf(s)`とした場合は -128 から 127 の間の数値であればキャッシュから取り出すためインスタンスを生成しません。
-
-このため、前者の`Integer#valueOf(String)`を利用した記述のほうが効率的です。  
-`Long#valueOf(String)`も同様です。
-
-性能差が少ないため、ほとんど問題にはなりませんが、FindBugs 等、静的解析で検出される問題のため、理解が必要です。
-
-また、String からの変換だけでなく、int や long からの変換も`#valueOf`が効率的ですが、オートボクシングを利用した場合、コンパイルで自動的にこれらの処理に変換されるため、記述することはありません。
-
-## String から int・long への変換
-
-数値文字列の`String`を`int`に変換するには、`Integer#parseInt(String)`を利用して下記のように記述します。
-
-```java
-String s = "1";
-int value = Integer.parseInt(s);
-```
-
-しかし、オートボクシングが利用できるため、意図せず下記のように記述ミスをする場合があります。
-
-```java
-String s = "1";
-int value = Integer.valueOf(s);//取得したIntegerインスタンスをオートボクシングでintにcastしている
-```
-
-```java
-String s = "1";
-int value = new Integer(s);//生成したIntegerインスタンスをオートボクシングでintにcastしている
-```
-
-「オートボクシング」の説明に記載した通り、性能に差が出るだけでなく、  
-記述から明らかにミスであることが解るため、FindBugs 等、静的解析で検出されるコードです。
-
-`long`への変換の場合は`Long#parseLong(String)`を利用します
-
-以下に計測結果を記載します。
-
-- 計測結果
-
-  |   処理回数 | Integer.valueOf(String) (ms) | Integer#parseInt(String) (ms) |
-  | ---------: | ---------------------------: | ----------------------------: |
-  | 1,000 万回 |                          396 |                           318 |
-  |     1 億回 |                        4,060 |                         3,077 |
 
 ## BigDecimal の ZERO との比較
 
