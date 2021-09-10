@@ -985,7 +985,7 @@ meta:
   }
 
   var str = (o instanceof BigDecimal b) ? b.toPlainString() : String.valueOf(o);
-  
+
   var empty = o == null ||
     (o instanceof String s && s.isEmpty()) ||
     (o instanceof Collection c && c.isEmpty());
@@ -1381,9 +1381,7 @@ meta:
       case MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY -> false;
       case SUNDAY, SATURDAY -> true;
   };
-  ```
 
-  ```java
   var day = DayOfWeek.SUNDAY;
   var dayOff = switch (day) {
       case SUNDAY, SATURDAY -> true;
