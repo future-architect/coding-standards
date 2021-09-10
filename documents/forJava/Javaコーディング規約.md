@@ -1388,30 +1388,31 @@ meta:
 - 原則ラムダ式内の行数は 1 行とする  
   複数行で利用したい場合は、`private`メソッドを作成しメソッド参照を利用する
 
-      良い例：
+  良い例：
 
-      ```java
-      this::getMax
+  ```java
+  this::getMax
 
-      private int getMax(int i1, int i2) {
-          if (i1 > i2) {
-              return i1;
-          } else {
-              return i2;
-          }
+  private int getMax(int i1, int i2) {
+      if (i1 > i2) {
+          return i1;
+      } else {
+          return i2;
       }
-      ```
-      悪い例：
+  }
+  ```
 
-      ```java
-      (i1, i2) -> {
-          if (i1 > i2) {
-              return i1;
-          } else {
-              return i2;
-          }
+  悪い例：
+
+  ```java
+  (i1, i2) -> {
+      if (i1 > i2) {
+          return i1;
+      } else {
+          return i2;
       }
-      ```
+  }
+  ```
 
 - 原則ラムダ式は 1 行記述に限定するので、中カッコ、`return`は必ず省略する
 
