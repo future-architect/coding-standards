@@ -272,7 +272,7 @@ meta:
   enum Season {
       WINTER,
       SPRING,
-      Summer,
+      SUMMER,
       FALL
   }
   ```
