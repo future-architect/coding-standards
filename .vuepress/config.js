@@ -54,15 +54,19 @@ module.exports = {
         text: "Java",
         items: [
           {
-            text: "for Java17",
+            text: "Home",
+            link: "/documents/forJava/",
+          },
+          {
+            text: "For Java17",
             link: "/documents/forJava/Javaコーディング規約.html",
           },
           {
-            text: "for Java11",
+            text: "For Java11",
             link: "/documents/forJava/Javaコーディング規約_for_11.html",
           },
           {
-            text: "for Java8",
+            text: "For Java8",
             link: "/documents/forJava/Javaコーディング規約_for_8.html",
           },
         ],
@@ -71,7 +75,11 @@ module.exports = {
         text: "SQL",
         items: [
           {
-            text: "for Oracle",
+            text: "Home",
+            link: "/documents/forSQL/",
+          },
+          {
+            text: "For Oracle",
             link: "/documents/forSQL/SQLコーディング規約（Oracle）.html",
           },
         ],

@@ -25,7 +25,7 @@ Java17 向けのコーディング規約は[こちら](./Javaコーディング�
 
 # Resources
 
-次のリンクから単一ファイルで取得できます。
+次のリンクから単一ファイルで作成されたコーディング規約を取得できます。  
 (これらのファイルは[Pandoc]を利用して作成しています。)
 
 - [Markdown](https://github.com/future-architect/coding-standards/blob/master/documents/forJava/Javaコーディング規約.md)
