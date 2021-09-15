@@ -1923,7 +1923,6 @@ meta:
   方針例： クラス内で処理する一時的なデータを表現するためだけに`record`を使用しても良い。
 
   ```java
-
   // parentId と id をキーとして、重複を排除した uniqueItems を作成します。
   record Key(int parentId, int id) {
   }
