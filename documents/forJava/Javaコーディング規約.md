@@ -4,7 +4,7 @@ title: Javaコーディング規約
 author: Future Enterprise Coding Standards
 meta:
   - name: keywords
-    content: Javaコーディング規約,Java11,コーディング規約,Java,Java9
+    content: Javaコーディング規約,Java17,コーディング規約,Java
 ---
 
 <page-title/>
@@ -110,7 +110,7 @@ meta:
   public class entry {
   ```
 
-- インターフェース名はクラス名に準ずる
+- インターフェース名、Enum 名、Record 名はクラス名に準ずる
 
 ## メソッド
 
@@ -260,6 +260,33 @@ meta:
   変数`s`の利用範囲が広いので役割が明確になる変数名に変更する。
 
 - for 文のループカウンタは、ネストごとに"`i`","`j`","`k`"・・・を使う
+
+## Enum
+
+- Enum 名はクラス名と同じく、単語の先頭を大文字にする
+- 列挙定数は定数と同じく、すべて大文字、区切りは"`_`"
+
+  良い例：
+
+  ```java
+  enum Season {
+      WINTER,
+      SPRING,
+      SUMMER,
+      FALL
+  }
+  ```
+
+  悪い例：
+
+  ```java
+  enum Season {
+      winter,
+      spring,
+      summer,
+      fall
+  }
+  ```
 
 # コーディング規約
 
@@ -934,13 +961,49 @@ meta:
   良い例：
 
   ```java
-  (o instanceof Foo)
+  if (o instanceof Foo f) {
+      // ...
+  }
   ```
 
   悪い例：
 
   ```java
-  ("hoge.Foo".equals(o.getClass().getName()))
+  if ("my.Foo".equals(o.getClass().getName())) {
+      Foo f = (Foo)o;
+      // ...
+  }
+  ```
+
+- インスタンスの型キャスト（Class キャスト）が必要な場合はパターンマッチングを使用する
+
+  良い例：
+
+  ```java
+  if (o instanceof String s) {
+      // ...
+  }
+
+  var str = (o instanceof BigDecimal b) ? b.toPlainString() : String.valueOf(o);
+
+  var empty = o == null ||
+    (o instanceof String s && s.isEmpty()) ||
+    (o instanceof Collection c && c.isEmpty());
+  ```
+
+  悪い例：
+
+  ```java
+  if (o instanceof String) {
+      String s = (String)o;
+      // ...
+  }
+
+  var str = (o instanceof BigDecimal) ? ((BigDecimal)o).toPlainString() : String.valueOf(o);
+
+  var empty = o == null ||
+    (o instanceof String && ((String)o).isEmpty()) ||
+    (o instanceof Collection && ((Collection)o).isEmpty());
   ```
 
 ## 制御構造
@@ -1061,27 +1124,19 @@ meta:
 
   ```java
   switch (kind) {
-  case 1:
+  case 1 ->
       d = encode1(s);
-      break;
-  case 2:
+  case 2 ->
       d = encode2(s);
-      break;
-  default:
-      break;
   }
 
   //---
 
   switch (kind) {
-  case 1:
+  case 1 ->
       s = decode1(d);
-      break;
-  case 2:
+  case 2 ->
       s = decode2(d);
-      break;
-  default:
-      break;
   }
   ```
 
@@ -1219,7 +1274,7 @@ meta:
   ```
 
 - 文字列の中に、ある文字が含まれているか調べるには、`contains()`メソッドを利用する
-- システム依存記号（ `¥n` 、 `¥r` など）は使用しない。  
+- システム依存記号（ `\n` 、 `\r` など）は使用しない。  
    悪い例：
 
   ```java
@@ -1272,6 +1327,218 @@ meta:
 
 - 入れ子の三項演算子の利用は禁止  
    可読性が悪くなるので三項演算子を入れ子で行うのは禁止。
+
+## switch 式
+
+- 一つの値を変数に代入するための if-else 文は代わりに switch 式の使用を推奨する  
+   switch 式の値を使用することで変数を不変（実質的 final）にでき、代入箇所が分散することによる可読性の低下を防げます。
+
+  良い例：
+
+  ```java
+  var value = switch (op) {
+      case "add" -> a + b;
+      default -> a - b;
+  };
+  ```
+
+  悪い例：
+
+  ```java
+  int value;
+  if (op.equals("add")) {
+      value = a + b;
+  } else {
+      value = a - b;
+  }
+  ```
+
+- case 句はなるべく一つの式での記述を推奨する  
+   複雑な式や複雑なステートメントを記述しなければならない場合は、メソッドに分割することを検討してください。
+- switch 式は、コーディングミスによるフォールスルーを避けるため、常にアロー構文を使用する  
+   [https://docs.oracle.com/javase/jp/16/language/switch-expressions.html](https://docs.oracle.com/javase/jp/16/language/switch-expressions.html)からの引用：
+
+  > ノート:`case L ->`ラベルの使用をお薦めします。`case L:`ラベルの使用時は、`break`文または`yield`文の挿入を忘れがちです。これを忘れると、コード内で思いがけないフォール・スルーが発生する場合があります。
+  > `case L ->`ラベルで、複数の文または式でないコード、あるいは`throw`文を指定するには、それらをブロック内に囲みます。`case`ラベルが生成する値を`yield`文で指定します。
+
+  良い例：
+
+  ```java
+  var date = LocalDate.now();
+  var off = switch (date.getDayOfWeek()) {
+      case MONDAY -> {
+          if (myCalendar.isOff(date) || localCalendar.isHoliday(date)) {
+              yield true;
+          }
+          yield localCalendar.isHoliday(date.minusDays(1));
+      }
+      case TUESDAY, WEDNESDAY, THURSDAY, FRIDAY ->
+          myCalendar.isOff(date) || localCalendar.isHoliday(date);
+      case SUNDAY, SATURDAY -> true;
+  };
+  ```
+
+  悪い例：
+
+  ```java
+  var date = LocalDate.now();
+  var off = switch (date.getDayOfWeek()) {
+      case MONDAY:
+          if (myCalendar.isOff(date) || localCalendar.isHoliday(date)) {
+              yield true;
+          }
+          yield localCalendar.isHoliday(date.minusDays(1));
+      case TUESDAY, WEDNESDAY, THURSDAY, FRIDAY:
+          yield myCalendar.isOff(date) || localCalendar.isHoliday(date);
+      case SUNDAY, SATURDAY:
+          yield true;
+  };
+  ```
+
+- アロー構文の、中カッコ、`yield`を省略できる場合は必ず省略する  
+  良い例：
+
+  ```java
+  var day = DayOfWeek.SUNDAY;
+  var shortDay = switch (day) {
+      case MONDAY -> "M";
+      case WEDNESDAY -> "W";
+      case FRIDAY -> "F";
+      case TUESDAY, THURSDAY -> "T";
+      case SUNDAY, SATURDAY -> "S";
+  };
+  ```
+
+  悪い例：
+
+  ```java
+  var day = DayOfWeek.SUNDAY;
+  var shortDay = switch (day) {
+      case MONDAY -> {
+          yield "M";
+      }
+      case WEDNESDAY -> {
+          yield "W";
+      }
+      case FRIDAY -> {
+          yield "F";
+      }
+      case TUESDAY, THURSDAY -> {
+          yield "T";
+      }
+      case SUNDAY, SATURDAY -> {
+          yield "S";
+      }
+  };
+  ```
+
+- Enum 値の switch 式で case 句が全ての Enum 値をカバーする場合は default 句はデッドコードとなるため記述しない  
+   良い例：
+
+  ```java
+  var day = DayOfWeek.SUNDAY;
+  var off = switch (day) {
+      case MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY -> false;
+      case SUNDAY, SATURDAY -> true;
+  };
+
+  var day = DayOfWeek.SUNDAY;
+  var off = switch (day) {
+      case SUNDAY, SATURDAY -> true;
+      default -> false;
+  };
+  ```
+
+  悪い例：
+
+  ```java
+  var day = DayOfWeek.SUNDAY;
+  var off = switch (day) {
+      case MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY -> false;
+      case SUNDAY, SATURDAY -> true;
+      default -> false;
+  };
+  ```
+
+## switch 文
+
+- 代わりに switch 式が使用できる箇所は switch 式を使用する
+  - case 句で`return`を記述する場合は switch 文を使用して良い
+- case 句はなるべく 1 行のステートメントでの記述を推奨する  
+   複雑なステートメントを記述しなければならない場合は、メソッドに分割することを検討してください。
+- switch 文は、コーディングミスによるフォールスルーを避けるため、なるべくアロー構文を使用することを推奨する  
+   [https://docs.oracle.com/javase/jp/16/language/switch-expressions.html](https://docs.oracle.com/javase/jp/16/language/switch-expressions.html)からの引用：
+
+  > ノート:`case L ->`ラベルの使用をお薦めします。`case L:`ラベルの使用時は、`break`文または`yield`文の挿入を忘れがちです。これを忘れると、コード内で思いがけないフォール・スルーが発生する場合があります。
+  > `case L ->`ラベルで、複数の文または式でないコード、あるいは`throw`文を指定するには、それらをブロック内に囲みます。`case`ラベルが生成する値を`yield`文で指定します。
+
+  良い例：
+
+  ```java
+  var date = LocalDate.now();
+  switch (date.getDayOfWeek()) {
+      case MONDAY -> {
+          if (
+              !myCalendar.isOff(date) && !localCalendar.isHoliday(date) &&
+              !localCalendar.isHoliday(date.minusDays(1))
+          ) {
+              work();
+          }
+      }
+      case TUESDAY, WEDNESDAY, THURSDAY, FRIDAY -> {
+          if (!myCalendar.isOff(date) && !localCalendar.isHoliday(date)) {
+              work();
+          }
+      }
+  }
+  ```
+
+  悪い例：
+
+  ```java
+  var date = LocalDate.now();
+  switch (date.getDayOfWeek()) {
+      case MONDAY:
+          if (
+              !myCalendar.isOff(date) && !localCalendar.isHoliday(date) &&
+              !localCalendar.isHoliday(date.minusDays(1))
+          ) {
+              work();
+          }
+          break;
+      case TUESDAY, WEDNESDAY, THURSDAY, FRIDAY:
+          if (!myCalendar.isOff(date) && !localCalendar.isHoliday(date)) {
+              work();
+          }
+          break;
+  }
+  ```
+
+- アロー構文を使用しない（コロンを使用する）場合、複数の値をマッチさせるときの case 句はカンマを使用して列挙する  
+   良い例：
+
+  ```java
+  var day = DayOfWeek.SUNDAY;
+  boolean off = false;
+  switch (day) {
+      case SUNDAY, SATURDAY:
+        off = true;
+        break;
+  };
+  ```
+
+  悪い例：
+
+  ```java
+  var day = DayOfWeek.SUNDAY;
+  boolean off = false;
+  switch (day) {
+      case SUNDAY:
+      case SATURDAY:
+        off = true;
+        break;
+  };
+  ```
 
 ## コレクション
 
@@ -1455,20 +1722,20 @@ meta:
   List<Character> alphabetLower = list.stream()
       .filter(Character::isAlphabetic)
       .map(Character::toLowerCase)
-      .collect(Collectors.toList());
+      .toList();
   ```
 
   悪い例：
 
   ```java
   List<Character> alphabetLower = list.stream().filter(Character::isAlphabetic)
-      .map(Character::toLowerCase).collect(Collectors.toList());
+      .map(Character::toLowerCase).toList();
 
   List<Character> alphabetLower = list
       .stream()
       .filter(Character::isAlphabetic)
       .map(Character::toLowerCase)
-      .collect(Collectors.toList());
+      .toList();
   ```
 
 - インデントは統合開発環境の提供するフォーマッタに合わせる
@@ -1481,7 +1748,7 @@ meta:
 
   ```java
   // クラスFooのフィールドStrの値で昇順にソートし、フィールドStrの要素を取得して処理する。
-  hogeList.stream()
+  fooList.stream()
       .sorted(Comparator.comparing(Foo::getStr))
       .map(Foo::getStr)
       .forEach(this::proc);
@@ -1490,13 +1757,13 @@ meta:
   悪い例：
 
   ```java
-  hogeList.stream()
+  fooList.stream()
       .sorted(Comparator.comparing(Foo::getStr)) //クラスFooのフィールドStrの値で昇順にソート
       .map (Foo::getStr) //フィールドStrの要素を取得
       .forEach(this::proc); //処理
 
 
-  hogeList.stream()
+  fooList.stream()
       //クラスFooのフィールドStrの値で昇順にソート
       .sorted(Comparator.comparing(Foo::getStr))
       //フィールドStrの要素を取得
@@ -1514,11 +1781,11 @@ meta:
   ```java
   List<String> list1 = Stream.of("A", "B", "C")
           .map(String::toLowerCase)
-          .collect(Collectors.toList());
+          .toList();
 
   List<String> list2 = Stream.of("A", "B", "C")
           .map(s -> s + s)
-          .collect(Collectors.toList());
+          .toList();
   ```
 
   悪い例：
@@ -1526,10 +1793,10 @@ meta:
   ```java
   Stream<String> stream = Stream.of("A", "B", "C");
   Stream<String> stream1 = stream.map(String::toLowerCase);
-  List<String> list1 = stream1.collect(Collectors.toList());
+  List<String> list1 = stream1.toList();
 
   Stream<String> stream2 = stream.map(s -> s + s);//コーディングミス streamは使用済のためエラーになる
-  List<String> list2 = stream2.collect(Collectors.toList());
+  List<String> list2 = stream2.toList();
   ```
 
 ## Optional
@@ -1646,6 +1913,357 @@ meta:
     var a = e.getData(); // `e`の型と、メソッド定義がわからなければ型が判断できません
     ```
 
+## レコード
+
+- 明確な方針で、利用する・利用しないを統一すること  
+  方針無く、`record`とクラスと JavaBeans 形式のクラスや Lombok の @Data の使用を混在させるとソースコードの見通しと保守性が悪くなります。  
+  各プロジェクトで、`record`を利用しないか、`record`の使用しても良い箇所について方針を決めた上で使用するようにしてください。
+  また、`record`は JavaBeans とは互換性がないため使用している各種ライブラリの対応状況にも注意する必要があります。
+
+  方針例： クラス内で処理する一時的なデータを表現するためだけに`record`を使用しても良い。
+
+  ```java
+  // parentId と id をキーとして、重複を排除した uniqueItems を作成します。
+  record Key(int parentId, int id) {
+  }
+  var map = new HashMap<Key, Item>();
+  for (Item item : items) {
+    var key = new Key(item.getParenId(), item.getId());
+    map.putIfAbsent(key, item);
+  }
+  var uniqueItems = map.values();
+  ```
+
+- 次の記述スタイルを標準とする  
+  ただし、フォーマッタを導入している場合はフォーマッタに合わせます。
+
+  良い例：
+
+  ```java
+  /**
+   * 矩形を表すクラス
+   *
+   * @param x      矩形の左上隅の x 座標
+   * @param y      矩形の左上隅の y 座標
+   * @param width  矩形の幅
+   * @param height 矩形の高さ
+   */
+  public record Rect(
+      /* 矩形の左上隅の x 座標 */
+      double x,
+      /* 矩形の左上隅の y 座標 */
+      double y,
+      /* 矩形の幅 */
+      double width,
+      /* 矩形の高さ */
+      double height) {
+  }
+  ```
+
+  次にポイントを説明します。
+
+  - `{`の後、`}`の前に改行する
+  - レコードコンポーネント（パラメータ）のカンマの後に改行することを推奨する  
+    レコードコンポーネントが少なく、レコードコンポーネント名からでも意味が理解でき、改行がなくても可読性が低下しない場合は、改行を必要としません。  
+    改行を推奨する理由は以下です。
+
+    - アノテーションを付与したときでも比較的読みやすい（アノテーション引数との混在による可読性の低下の回避）
+    - レコードコンポーネントが多い場合も比較的読みやすい
+
+  - レコードコンポーネントが多い場合、レコードコンポーネントへ直接コメントをつけることを検討する  
+    レコードコンポーネントの JavaDoc としては`@param`形式でレコード名の上部に記述しますが、このソースコードをテキストとしてみた場合、レコードコンポーネントの定義と`@param`の説明とで距離が空いてしまう場合があり、型と説明を読むのに時間がかかってしまう可能性があります。  
+    また、使用する IDE によっては、アクセサから宣言へのジャンプを使用すると、レコードコンポーネント（パラメータ）の定義へジャンプするものがあります。レコードコンポーネントにコメントがあればすぐに説明を読むことができますが、JavaDoc しか記述しない場合は、ファイル上部へ移動して対応するレコードコンポーネントの説明を探さなければなりません。
+
+    ```java
+    public record Rect(
+        /* 矩形の左上隅の x 座標 */
+        double x,
+        /* 矩形の左上隅の y 座標 */
+        double y,
+        /* 矩形の幅 */
+        double width,
+        /* 矩形の高さ */
+        double height) {
+    }
+    ```
+
+- レコードのアクセサを上書きしない
+
+  悪い例：
+
+  ```java
+  public record Rect(
+      double x,
+      double y,
+      double width,
+      double height) {
+
+      public double x() {
+          return x;
+      }
+  }
+  ```
+
+## テキストブロック
+
+次のリンクも参考にしてください。  
+[Programmer's Guide To Text Blocks > Style Guidelines For Text Blocks](https://docs.oracle.com/en/java/javase/17/text-blocks/index.html#style-guidelines-for-text-blocks)
+
+- 複数行の文字列を定義する際、文字列連結よりもテキストブロックを使用する
+
+  良い例：
+
+  ```java
+  String message = """
+          複数行の文字列はテキストブロックを使用しましょう。
+          文字列連結と違い、プラス記号や改行コードのエスケープシーケンスのような無駄を排除でき、
+          より読みやすいソースコードで書くことができます。
+          """;
+  ```
+
+  悪い例：
+
+  ```java
+  String message =
+          "複数行の文字列はテキストブロックを使用しましょう。\n" +
+          "文字列連結と違い、プラス記号や改行コードのエスケープシーケンスのような無駄を排除でき、\n" +
+          "より読みやすいソースコードで書くことができます。\n";
+  ```
+
+- 単一行の文字列を定義する際、テキストブロックは使用せず文字列リテラルを使用する  
+  ただし、二重引用符(`"`)のエスケープを避ける目的ではテキストブロックを使用しても良い。
+
+  良い例：
+
+  ```java
+  String singleLine = "単一行の文字列です。";
+
+  String message = """
+          テキストブロックでは単一の二重引用符「"」にエスケープを使用する必要がありません。""";
+  ```
+
+  悪い例：
+
+  ```java
+  String singleLine = """
+          単一行の文字列です。""";
+  ```
+
+- テキストブロック内では基本的に改行コードのエスケープシーケンス(`\n`)を使用しないが、読みやすさ向上の目的で改行コードのエスケープシーケンス(`\n`)を使用しても良い
+
+  良い例：
+
+  ```java
+  String multiLine = """
+          複数行の、
+          文字列です。
+          """;
+
+  String csv = """
+          名前,説明,MIMEタイプ
+          CSV,"Comma-Separated Valuesの略\nCharacter-Separated Valuesの意味で使用されることもある","text/csv"
+          TSV,"Tab-Separated Valuesの略","text/tab-separated-values"
+          """;
+  ```
+
+  悪い例：
+
+  ```java
+  String multiLine = """
+          複数行の、\n文字列です。
+          """;
+  ```
+
+- テキストブロックで定義した文字列を処理する場合は、テキストブロックをローカル変数やフィールドへ代入してから使用することを推奨する
+
+  良い例：
+
+  ```java
+  String selectX = """
+          SELECT
+              ID,
+              NAME
+          FROM
+              TABLE_X
+          """;
+  String selectY = """
+          SELECT
+              ID,
+              NAME
+          FROM
+              TABLE_Y
+          """;
+  processValues(fetch(selectX, Entity1.class), fetch(selectY, Entity2.class));
+  ```
+
+  悪い例：
+
+  ```java
+  processValues(fetch("""
+          SELECT
+              ID,
+              NAME
+          FROM
+              TABLE_X
+          """, Entity1.class), fetch("""
+          SELECT
+              ID,
+              NAME
+          FROM
+              TABLE_Y
+          """, Entity2.class));
+  ```
+
+  複雑な処理に直接テキストブロックを使用すると可読性を下げる可能性があります。
+
+- 3 つ以上続く二重引用符(`"`)をエスケープする際は、最初の二重引用符にエスケープシーケンスを使用する
+
+  良い例：
+
+  ```java
+  String javaCode = """
+          String message = \"""
+                  テキストブロックです。
+                  \""";
+          System.out.println(message);
+          """;
+  ```
+
+  悪い例：
+
+  ```java
+  String javaCode = """
+          String message = \"\"\"
+                  テキストブロックです。
+                  \"\"\";
+          System.out.println(message);
+          """;
+
+  String javaCode = """
+          String message = ""\"
+                  テキストブロックです。
+                  ""\";
+          System.out.println(message);
+          """;
+  ```
+
+- テキストブロックの開始引用符(`"""`)は前の行の右端に記述する
+
+  良い例：
+
+  ```java
+  String message = """
+          テキストブロックです。
+          """;
+  ```
+
+  悪い例：
+
+  ```java
+  String message =
+          """
+          テキストブロックです。
+          """;
+  ```
+
+- テキストブロックのインデントは開始引用符(`"""`)に合わせる必要はない
+
+  良い例：
+
+  ```java
+  String message = """
+          テキストブロックです。
+          """;
+  ```
+
+  悪い例：
+
+  ```java
+  String message = """
+                   テキストブロックです。
+                   """;
+  ```
+
+  一見すると、読みやすく見えるかもしれませんが、変数名の変更によって簡単に崩れてしまい、修正するために多くの行の変更を強制することになるため、メンテナンス性が低下します。
+
+- テキストブロックで定義する文字列のインデントは基本的に周辺の Java コードに合わせてインデントする  
+  ただし、横に長い文字列などの可読性向上の目的で左端に揃えるのは良い。
+
+  良い例：
+
+  ```java
+  public class Foo {
+      public void process() {
+          String message = """
+                  テキストブロックです。
+                  """;
+      }
+  }
+  ```
+
+  悪い例：
+
+  ```java
+  public class Foo {
+      public void process() {
+          String message = """
+      テキストブロックです。
+      """;
+      }
+  }
+  ```
+
+  良い例：
+
+  ```java
+  public class Foo {
+      public void process() {
+          if (foo) {
+              String message = """
+  それはもう長い長いテキストブロックのためインデントするとエディタ上でテキストを見るためには横スクロールが必要になるかもしれません。
+  """;
+          }
+      }
+  }
+  ```
+
+  悪い例：
+
+  ```java
+  public class Foo {
+      public void process() {
+          if (foo) {
+              String message = """
+                      それはもう長い長いテキストブロックのためインデントするとエディタ上でテキストを見るためには横スクロールが必要になるかもしれません。
+                      """;
+          }
+      }
+  }
+  ```
+
+- テキストブロックのインデントにスペース文字とタブ文字を混在させない
+
+- 文字列の最後に改行コードを入れずに、意図的にインデントした文字列を定義するとき終了引用符(`"""`)の前の行の右端に`\`を使用する
+
+  良い例：
+
+  ```java
+  String text = """
+              ABC
+              DEF
+              GHI\
+          """;
+  ```
+
+  悪い例：
+
+  ```java
+  String text = """
+          ABC
+          DEF
+          GHI""".indent(4);
+  ```
+
 ## ストリーム（InputStream OutputStream）
 
 - ストリームを扱う API を利用するときは、try-with-resources 文で後処理をする
@@ -1653,7 +2271,7 @@ meta:
   良い例：
 
   ```java
-  try (InputStream inputStream = Files.newInputStream(Paths.get("HOGE.txt")) {
+  try (InputStream inputStream = Files.newInputStream(Paths.get("foo.txt")) {
       //inputStreamに対する処理を記載
   }
   ```
@@ -1667,7 +2285,7 @@ meta:
   良い例：
 
   ```java
-  try (InputStream inputStream = Files.newInputStream(Paths.get("HOGE.txt")) {
+  try (InputStream inputStream = Files.newInputStream(Paths.get("foo.txt")) {
       //inputStreamに対する処理を記載
   }
   ```
@@ -1682,7 +2300,7 @@ meta:
   良い例：
 
   ```java
-  try (InputStream inputStream = Files.newInputStream(Paths.get("HOGE.txt")) {
+  try (InputStream inputStream = Files.newInputStream(Paths.get("foo.txt")) {
       //・・・
   } catch (IOException e) {
       log.error("Error", e);
@@ -1693,7 +2311,7 @@ meta:
   悪い例：
 
   ```java
-  try (InputStream inputStream = Files.newInputStream(Paths.get("HOGE.txt")) {
+  try (InputStream inputStream = Files.newInputStream(Paths.get("foo.txt")) {
       //・・・
   } catch (Exception e) {//範囲が広すぎる例外クラスの利用はNG
       log.error("Error", e);
@@ -1800,7 +2418,7 @@ List の処理を行う際、拡張 for 文で処理する場合は Iterator イ
   List<String> list = //数値文字列のList
   List<String> resultList = list.stream()
       .filter(s -> s.endsWith("0"))
-      .collect(Collectors.toList());
+      .toList();
   return resultList;
   ```
 
@@ -2054,68 +2672,6 @@ private static final String CONST_AB = new StringBuilder(CONST_A).append(CONST_B
 ランダムアクセスをサポートしている`List`がシーケンシャルアクセス（iterator を利用した処理など）で遅いということはないので、  
 ループの処理は拡張 for 文等、Iterator によるループで記述するのが無難です。  
 `List#get`での処理をすべて禁止することはできませんが、高いパフォーマンスが求められる場合は`List`の種類にも注目してみてください。
-
-## String から Integer・Long への変換
-
-数値文字列の`String`を`Integer`に変換するには、`Integer#valueOf(String)`を利用して下記のように記述します。
-
-```java
-String s = "1";
-Integer value = Integer.valueOf(s);
-```
-
-しかし、下記のようにも記述できます。
-
-```java
-String s = "1";
-Integer value = new Integer(s);
-```
-
-これらの違いは、  
-`new Integer(s)`とした場合、必ず Integer インスタンスが生成されますが、  
-`Integer.valueOf(s)`とした場合は -128 から 127 の間の数値であればキャッシュから取り出すためインスタンスを生成しません。
-
-このため、前者の`Integer#valueOf(String)`を利用した記述のほうが効率的です。  
-`Long#valueOf(String)`も同様です。
-
-性能差が少ないため、ほとんど問題にはなりませんが、FindBugs 等、静的解析で検出される問題のため、理解が必要です。
-
-また、String からの変換だけでなく、int や long からの変換も`#valueOf`が効率的ですが、オートボクシングを利用した場合、コンパイルで自動的にこれらの処理に変換されるため、記述することはありません。
-
-## String から int・long への変換
-
-数値文字列の`String`を`int`に変換するには、`Integer#parseInt(String)`を利用して下記のように記述します。
-
-```java
-String s = "1";
-int value = Integer.parseInt(s);
-```
-
-しかし、オートボクシングが利用できるため、意図せず下記のように記述ミスをする場合があります。
-
-```java
-String s = "1";
-int value = Integer.valueOf(s);//取得したIntegerインスタンスをオートボクシングでintにcastしている
-```
-
-```java
-String s = "1";
-int value = new Integer(s);//生成したIntegerインスタンスをオートボクシングでintにcastしている
-```
-
-「オートボクシング」の説明に記載した通り、性能に差が出るだけでなく、  
-記述から明らかにミスであることが解るため、FindBugs 等、静的解析で検出されるコードです。
-
-`long`への変換の場合は`Long#parseLong(String)`を利用します
-
-以下に計測結果を記載します。
-
-- 計測結果
-
-  |   処理回数 | Integer.valueOf(String) (ms) | Integer#parseInt(String) (ms) |
-  | ---------: | ---------------------------: | ----------------------------: |
-  | 1,000 万回 |                          396 |                           318 |
-  |     1 億回 |                        4,060 |                         3,077 |
 
 ## BigDecimal の ZERO との比較
 

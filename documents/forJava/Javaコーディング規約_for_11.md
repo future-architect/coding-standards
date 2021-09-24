@@ -1,10 +1,10 @@
 ---
 sidebarDepth: 4
-title: Javaコーディング規約 for Java8
+title: Javaコーディング規約 for Java11
 author: Future Enterprise Coding Standards
 meta:
   - name: keywords
-    content: Javaコーディング規約,Java8,コーディング規約,Java
+    content: Javaコーディング規約,Java11,コーディング規約,Java,Java9
 ---
 
 <page-title/>
@@ -585,7 +585,7 @@ meta:
       if (s == null || s.isEmpty()) {
           return Collections.emptyList();
       }
-      return Arrays.asList(s);
+      return List.of(s);
   }
   ```
 
@@ -603,7 +603,7 @@ meta:
       if (s == null || s.isEmpty()) {
           return null;
       }
-      return Arrays.asList(s);
+      return List.of(s);
   }
   ```
 
@@ -709,12 +709,12 @@ meta:
 
 - 定数は、プリミティブ型もしくは、不変（Immutable）オブジェクトで参照する
 
-  - 不変`List`の生成には`Collections`クラスの`unmodifiableList()`メソッドを利用する
+  - 不変`List`の生成には`List.of()`を利用する
 
     良い例：
 
     ```java
-    public static final List<Integer> VALUES = Collections.unmodifiableList(Arrays.asList(1, 2, 3, 4, 5));
+    public static final List<Integer> VALUES = List.of(1, 2, 3, 4, 5);
     ```
 
     悪い例：
@@ -723,20 +723,14 @@ meta:
     public static final List<Integer> VALUES = Arrays.asList(1, 2, 3, 4, 5);
     ```
 
-  - 不変`Set`の生成には`Collections`クラスの`unmodifiableSet()`メソッドを利用する
+  - 不変`Set`の生成には`Set.of()`を利用する
 
-  - 不変`Map`の生成には`Collections`クラスの`unmodifiableMap()`メソッドを利用する
+  - 不変`Map`の生成には`Map.of()`を利用する
 
     良い例：
 
     ```java
-    public static final Map<Integer, String> VALUES_MAP = Collections.unmodifiableMap(new HashMap<>() {
-        {
-            put(1, "A");
-            put(2, "B");
-            put(3, "C");
-        }
-    });
+    public static final Map<Integer, String> VALUES_MAP = Map.of(1, "A", 2, "B", 3, "C");
     ```
 
     悪い例：
@@ -756,7 +750,7 @@ meta:
     良い例：
 
     ```java
-    public static final List<Integer> VALUES = Collections.unmodifiableList(Arrays.asList(1, 2, 3, 4, 5));
+    public static final List<Integer> VALUES = List.of(1, 2, 3, 4, 5);
     ```
 
     悪い例：
@@ -1202,6 +1196,24 @@ meta:
 
   [※パフォーマンスについても記載しているので参考にしてください](#文字列連結)
 
+- １ステートメントのみで行われる文字列の連結には`+`演算子を利用する
+
+  良い例：
+
+  ```java
+  String s = s1 + s2;
+
+  return s1 + s2 + s3 + s4 + s5;
+  ```
+
+  悪い例：
+
+  ```java
+  String s = new StringBuilder(s1).append(s2).toString();
+
+  return new StringBuilder(s1).append(s2).append(s3).append(s4).append(s5).toString();
+  ```
+
 - 更新されない文字列には`String` クラスを利用する
 - 文字列リテラルと定数を比較するときは、文字列リテラルの`equals()`メソッドを利用する  
    良い例：
@@ -1321,7 +1333,7 @@ meta:
   良い例：
 
   ```java
-  for (String s : Arrays.asList("A", "B")) {
+  for (String s : List.of("A", "B")) {
       //処理
   }
   ```
@@ -1329,7 +1341,7 @@ meta:
   悪い例：
 
   ```java
-  Arrays.asList("A", "B").forEach(s -> {
+  List.of("A", "B").forEach(s -> {
       //処理
   });
   ```
@@ -1340,16 +1352,25 @@ meta:
   良い例：
 
   ```java
-  Arrays.asList("A", "B").forEach(this::process);
+  List.of("A", "B").forEach(this::process);
   ```
 
   悪い例：
 
   ```java
-  for (String s : Arrays.asList("A", "B")) {
+  for (String s : List.of("A", "B")) {
       this.process(s);
   }
   ```
+
+- `Arrays.asList()`は利用せず、`List.of()`を利用する  
+   Java9 で追加されたメソッド。  
+   配列を`List`に置き換える場合や、単純な固定の`List`を生成する際には`List.of()`を利用する。
+
+  - `Arrays.asList()`と`List.of()`の違い  
+     `List.of()`で生成した`List`は、完全に不変（Immutable）な`List`で、  
+     `Arrays.asList()`で生成した`List`は、サイズのみ不変で、`set`等による値の操作が可能な`List`です。  
+     また、`set`を行った場合、`Arrays.asList()`に与えられた配列インスタンスにも影響します。
 
 ## ラムダ式・メソッド参照・コンストラクタ参照
 
@@ -1491,7 +1512,7 @@ meta:
 
   ```java
   // クラスFooのフィールドStrの値で昇順にソートし、フィールドStrの要素を取得して処理する。
-  fooList.stream()
+  hogeList.stream()
       .sorted(Comparator.comparing(Foo::getStr))
       .map(Foo::getStr)
       .forEach(this::proc);
@@ -1500,13 +1521,13 @@ meta:
   悪い例：
 
   ```java
-  fooList.stream()
+  hogeList.stream()
       .sorted(Comparator.comparing(Foo::getStr)) //クラスFooのフィールドStrの値で昇順にソート
       .map (Foo::getStr) //フィールドStrの要素を取得
       .forEach(this::proc); //処理
 
 
-  fooList.stream()
+  hogeList.stream()
       //クラスFooのフィールドStrの値で昇順にソート
       .sorted(Comparator.comparing(Foo::getStr))
       //フィールドStrの要素を取得
@@ -1582,6 +1603,79 @@ meta:
   //・・・処理
   return employee;
   ```
+
+## var (Local-Variable Type Inference)
+
+次のリンクも参考にしてください。  
+[Style Guidelines for Local Variable Type Inference in Java](https://openjdk.java.net/projects/amber/LVTIstyle.html)
+
+- 明確な方針で、利用する・利用しないを統一すること  
+   方針無く、`var`を混在させるとソースコードの見通しと保守性が悪くなります。  
+   各プロジェクトで、例えば以下ののような方針で統一してください。
+
+  1. `var`を利用しない
+  2. 原則`var`を利用する
+  3. 右辺で、明確に型がわかる場合は`var`を利用する
+
+  以下で`2`、`3`について例を示します。
+
+  - 原則`var`を利用する
+
+    利用できる箇所は全て`var`を利用します。
+
+    良い例：
+
+    ```java
+    var a = "";
+    var b = 123;
+    var c = new ArrayList<String>();
+    ```
+
+    悪い例：
+
+    ```java
+    var a = "";
+    int b = 123;
+    List<String> c = new ArrayList<>();
+    ```
+
+    ```java
+    void methodA() {
+        var a = "";
+    }
+    void methodB() {
+        String a = "";
+    }
+    ```
+
+  - 右辺で、明確に型がわかる場合は`var`を利用する
+
+    右辺をみて型がわかる場合は、全て`var`を利用します。
+    それ以外は`var`を利用してはいけません。
+
+    良い例：
+
+    ```java
+    var s = ""; // リテラルによって型が明確に判断できます
+    var list1 = new ArrayList<String>(); // newによって型が明確に判断できます
+    var list2 = (List<String>) map.get("p"); // キャストによって型が明確に判断できます
+    var list3 = List.of("A", "B", "C"); // ファクトリーによって型が明確に判断できます
+    ```
+
+    プロジェクトで観点を決めるべき例：
+
+    ```java
+    var b1 = s.isEmpty(); // `is`で始まるメソッドは通例としてbooleanを返します
+    var b2 = Objects.equals(s1, s2); // `equals`メソッドは通例としてbooleanを返します
+    var i1 = Objects.hash(s); // `hash`、`hashCode`メソッドは通例としてintを返します
+    var i2 = Objects.compare(s1, s2); // `compare`、`compareTo`メソッドは通例としてintを返します
+    ```
+
+    悪い例：
+
+    ```java
+    var a = e.getData(); // `e`の型と、メソッド定義がわからなければ型が判断できません
+    ```
 
 ## ストリーム（InputStream OutputStream）
 
