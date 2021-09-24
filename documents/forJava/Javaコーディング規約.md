@@ -1274,7 +1274,7 @@ meta:
   ```
 
 - 文字列の中に、ある文字が含まれているか調べるには、`contains()`メソッドを利用する
-- システム依存記号（ `¥n` 、 `¥r` など）は使用しない。  
+- システム依存記号（ `\n` 、 `\r` など）は使用しない。  
    悪い例：
 
   ```java
@@ -2002,6 +2002,266 @@ meta:
           return x;
       }
   }
+  ```
+
+## テキストブロック
+
+次のリンクも参考にしてください。  
+[Programmer's Guide To Text Blocks > Style Guidelines For Text Blocks](https://docs.oracle.com/en/java/javase/17/text-blocks/index.html#style-guidelines-for-text-blocks)
+
+- 複数行の文字列を定義する際、文字列連結よりもテキストブロックを使用する
+
+  良い例：
+
+  ```java
+  String message = """
+          複数行の文字列はテキストブロックを使用しましょう。
+          文字列連結と違い、プラス記号や改行コードのエスケープシーケンスのような無駄を排除でき、
+          より読みやすいソースコードで書くことができます。
+          """;
+  ```
+
+  悪い例：
+
+  ```java
+  String message =
+          "複数行の文字列はテキストブロックを使用しましょう。\n" +
+          "文字列連結と違い、プラス記号や改行コードのエスケープシーケンスのような無駄を排除でき、\n" +
+          "より読みやすいソースコードで書くことができます。\n";
+  ```
+
+- 単一行の文字列を定義する際、テキストブロックは使用せず文字列リテラルを使用する  
+  ただし、二重引用符(`"`)のエスケープを避ける目的ではテキストブロックを使用しても良い。
+
+  良い例：
+
+  ```java
+  String singleLine = "単一行の文字列です。";
+
+  String message = """
+          テキストブロックでは単一の二重引用符「"」にエスケープを使用する必要がありません。""";
+  ```
+
+  悪い例：
+
+  ```java
+  String singleLine = """
+          単一行の文字列です。""";
+  ```
+
+- テキストブロック内では基本的に改行コードのエスケープシーケンス(`\n`)を使用しないが、読みやすさ向上の目的で改行コードのエスケープシーケンス(`\n`)を使用しても良い
+
+  良い例：
+
+  ```java
+  String multiLine = """
+          複数行の、
+          文字列です。
+          """;
+
+  String csv = """
+          名前,説明,MIMEタイプ
+          CSV,"Comma-Separated Valuesの略\nCharacter-Separated Valuesの意味で使用されることもある","text/csv"
+          TSV,"Tab-Separated Valuesの略","text/tab-separated-values"
+          """;
+  ```
+
+  悪い例：
+
+  ```java
+  String multiLine = """
+          複数行の、\n文字列です。
+          """;
+  ```
+
+- テキストブロックで定義した文字列を処理する場合は、テキストブロックをローカル変数やフィールドへ代入してから使用することを推奨する
+
+  良い例：
+
+  ```java
+  String selectX = """
+          SELECT
+              ID,
+              NAME
+          FROM
+              TABLE_X
+          """;
+  String selectY = """
+          SELECT
+              ID,
+              NAME
+          FROM
+              TABLE_Y
+          """;
+  processValues(fetch(selectX, Entity1.class), fetch(selectY, Entity2.class));
+  ```
+
+  悪い例：
+
+  ```java
+  processValues(fetch("""
+          SELECT
+              ID,
+              NAME
+          FROM
+              TABLE_X
+          """, Entity1.class), fetch("""
+          SELECT
+              ID,
+              NAME
+          FROM
+              TABLE_Y
+          """, Entity2.class));
+  ```
+
+  複雑な処理に直接テキストブロックを使用すると可読性を下げる可能性があります。
+
+- 3 つ以上続く二重引用符(`"`)をエスケープする際は、最初の二重引用符にエスケープシーケンスを使用する
+
+  良い例：
+
+  ```java
+  String javaCode = """
+          String message = \"""
+                  テキストブロックです。
+                  \""";
+          System.out.println(message);
+          """;
+  ```
+
+  悪い例：
+
+  ```java
+  String javaCode = """
+          String message = \"\"\"
+                  テキストブロックです。
+                  \"\"\";
+          System.out.println(message);
+          """;
+
+  String javaCode = """
+          String message = ""\"
+                  テキストブロックです。
+                  ""\";
+          System.out.println(message);
+          """;
+  ```
+
+- テキストブロックの開始引用符(`"""`)は前の行の右端に記述する
+
+  良い例：
+
+  ```java
+  String message = """
+          テキストブロックです。
+          """;
+  ```
+
+  悪い例：
+
+  ```java
+  String message =
+          """
+          テキストブロックです。
+          """;
+  ```
+
+- テキストブロックのインデントは開始引用符(`"""`)に合わせる必要はない
+
+  良い例：
+
+  ```java
+  String message = """
+          テキストブロックです。
+          """;
+  ```
+
+  悪い例：
+
+  ```java
+  String message = """
+                   テキストブロックです。
+                   """;
+  ```
+
+  一見すると、読みやすく見えるかもしれませんが、変数名の変更によって簡単に崩れてしまい、修正するために多くの行の変更を強制することになるため、メンテナンス性が低下します。
+
+- テキストブロックで定義する文字列のインデントは基本的に周辺の Java コードに合わせてインデントする  
+  ただし、横に長い文字列などの可読性向上の目的で左端に揃えるのは良い。
+
+  良い例：
+
+  ```java
+  public class Foo {
+      public void process() {
+          String message = """
+                  テキストブロックです。
+                  """;
+      }
+  }
+  ```
+
+  悪い例：
+
+  ```java
+  public class Foo {
+      public void process() {
+          String message = """
+      テキストブロックです。
+      """;
+      }
+  }
+  ```
+
+  良い例：
+
+  ```java
+  public class Foo {
+      public void process() {
+          if (foo) {
+              String message = """
+  それはもう長い長いテキストブロックのためインデントするとエディタ上でテキストを見るためには横スクロールが必要になるかもしれません。
+  """;
+          }
+      }
+  }
+  ```
+
+  悪い例：
+
+  ```java
+  public class Foo {
+      public void process() {
+          if (foo) {
+              String message = """
+                      それはもう長い長いテキストブロックのためインデントするとエディタ上でテキストを見るためには横スクロールが必要になるかもしれません。
+                      """;
+          }
+      }
+  }
+  ```
+
+- テキストブロックのインデントにスペース文字とタブ文字を混在させない
+
+- 文字列の最後に改行コードを入れずに、意図的にインデントした文字列を定義するとき終了引用符(`"""`)の前の行の右端に`\`を使用する
+
+  良い例：
+
+  ```java
+  String text = """
+              ABC
+              DEF
+              GHI\
+          """;
+  ```
+
+  悪い例：
+
+  ```java
+  String text = """
+          ABC
+          DEF
+          GHI""".indent(4);
   ```
 
 ## ストリーム（InputStream OutputStream）
