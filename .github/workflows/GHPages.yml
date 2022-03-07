@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/setup-node@v2
+      - uses: actions/setup-node@v3
       - uses: docker://pandoc/latex:2.9
         with:
           args: "pandoc ./documents/forJava/Javaコーディング規約.md -s --self-contained --number-sections --toc -t html5 -c ./documents/common/pandoc_styles/css/style.css -o ./.vuepress/public/resources/Javaコーディング規約.html"
