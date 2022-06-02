@@ -23,7 +23,7 @@ jobs:
         with:
           args: "pandoc ./documents/forSQL/SQLコーディング規約（Oracle）.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./.vuepress/public/resources/SQLコーディング規約（Oracle）.docx"
       - name: Install Packages
-        run: npm i
+        run: npm i --legacy-peer-deps
       - name: Build all
         run: npm run build
       - name: Deploy
