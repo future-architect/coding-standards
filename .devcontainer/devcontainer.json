@@ -1,0 +1,56 @@
+{
+  // For format details, see https://aka.ms/vscode-remote/devcontainer.json or this file's README at:
+  // https://github.com/microsoft/vscode-dev-containers/tree/v0.112.0/containers/typescript-node-12
+  "name": "Vue.js & Node.js",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "args": { 
+      "VARIANT": "14"
+    }
+  },
+  // Set *default* container specific settings.json values on container create.
+  "settings": {
+    "eslint.validate": ["javascript", "javascriptreact", "vue"],
+    "eslint.workingDirectories": ["./", "./.vuepress"],
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    }
+  },
+
+  // Add the IDs of extensions you want installed when the container is created.
+  "extensions": [
+    "formulahendry.auto-rename-tag",
+    "christian-kohler.path-intellisense",
+    "CoenraadS.bracket-pair-colorizer",
+    "streetsidesoftware.code-spell-checker",
+    "visualstudioexptteam.vscodeintellicode",
+    "alefragnani.bookmarks",
+    "sohamkamani.code-eol",
+    "ms-azuretools.vscode-docker",
+    "editorconfig.editorconfig",
+    "esbenp.prettier-vscode",
+    "dbaeumer.vscode-eslint",
+    "mhutchie.git-graph",
+    "eamodio.gitlens",
+    "oderwat.indent-rainbow",
+    "shd101wyy.markdown-preview-enhanced",
+    "ms-vscode-remote.vscode-remote-extensionpack",
+    "mosapride.zenkaku",
+    "octref.vetur",
+    "jcbuisson.vue",
+    "dariofuzinato.vue-peek",
+    "redhat.vscode-yaml"
+  ],
+
+  // Use 'forwardPorts' to make a list of ports inside the container available locally.
+  "forwardPorts": [8080],
+
+  // Use 'postCreateCommand' to run commands after the container is created.
+  "postCreateCommand": "npm install"
+
+  // Use 'postStartCommand' to run commands after the container is started.
+  // "postStartCommand": "npm ci"
+
+  // Uncomment to connect as a non-root user. See https://aka.ms/vscode-remote/containers/non-root.
+  // "remoteUser": "node"
+}
