@@ -12,7 +12,9 @@
     "pandoc:java-html": "pandoc ./documents/forJava/Javaコーディング規約.md -s --self-contained --number-sections --toc -t html5 -c ./documents/common/pandoc_styles/css/style.css -o ./documents/forJava/Javaコーディング規約.html",
     "pandoc:java-word": "pandoc ./documents/forJava/Javaコーディング規約.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./documents/forJava/Javaコーディング規約.docx",
     "pandoc:sqlo-html": "pandoc ./documents/forSQL/SQLコーディング規約（Oracle）.md -s --self-contained --number-sections --toc -t html5 -c ./documents/common/pandoc_styles/css/style.css -o ./documents/forSQL/SQLコーディング規約（Oracle）.html",
-    "pandoc:sqlo-word": "pandoc ./documents/forSQL/SQLコーディング規約（Oracle）.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./documents/forSQL/SQLコーディング規約（Oracle）.docx"
+    "pandoc:sqlo-word": "pandoc ./documents/forSQL/SQLコーディング規約（Oracle）.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./documents/forSQL/SQLコーディング規約（Oracle）.docx",
+    "pandoc:awsresource-html": "pandoc ./documents/forAWSResource/AWSインフラリソース命名規約.md -s --self-contained --number-sections --toc -t html5 -c ./documents/common/pandoc_styles/css/style.css -o ./documents/forAWSResource/AWSインフラリソース命名規約.html",
+    "pandoc:awsresource-word": "pandoc ./documents/forAWSResource/AWSインフラリソース命名規約.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./documents/forAWSResource/AWSインフラリソース命名規約.docx"
   },
   "repository": {
     "type": "git",
