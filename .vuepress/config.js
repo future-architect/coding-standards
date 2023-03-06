@@ -19,6 +19,10 @@ const links = {
     "/documents/forSQL/",
     "/documents/forSQL/SQLコーディング規約（Oracle）.html",
   ],
+  "/documents/forAWSResource/": [
+    "/documents/forAWSResource/",
+    "/documents/forAWSResource/AWSインフラリソース命名規約.html",
+  ],
 };
 console.log(links);
 
@@ -81,6 +85,19 @@ module.exports = {
           {
             text: "For Oracle",
             link: "/documents/forSQL/SQLコーディング規約（Oracle）.html",
+          },
+        ],
+      },
+      {
+        text: "AWSResource",
+        items: [
+          {
+            text: "Home",
+            link: "/documents/forAWSResource/",
+          },
+          {
+            text: "For AWSインフラリソース",
+            link: "/documents/forAWSResource/SAWSインフラリソース命名規約.html",
           },
         ],
       },

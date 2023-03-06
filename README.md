@@ -21,6 +21,10 @@ footer: ©2015 - 2021 Future Enterprise Coding Standards - Future Corporation
 
 <page-info href="https://future-architect.github.io/coding-standards/documents/forSQL/SQLコーディング規約（Oracle）.html"></page-info>
 
+# [For AWS インフラリソース](./documents/forAWSResource/)
+
+<page-info href="https://future-architect.github.io/coding-standards/documents/forAWSResource/AWSインフラリソース命名規約.html"></page-info>
+
 ---
 
 > 他の開発言語のコーディング規約も順次作成中です
