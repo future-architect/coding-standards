@@ -97,7 +97,7 @@ module.exports = {
           },
           {
             text: "For AWSインフラリソース",
-            link: "/documents/forAWSResource/SAWSインフラリソース命名規約.html",
+            link: "/documents/forAWSResource/AWSインフラリソース命名規約.html",
           },
         ],
       },
