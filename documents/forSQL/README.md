@@ -5,7 +5,7 @@ home: true
 heroText: SQLコーディング規約
 tagline: Future Enterprise Coding Standards for SQL
 pageClass: lang-home
-footer: ©2015 - 2021 Future Enterprise Coding Standards - Future Corporation
+footer: ©2015 - 2023 Future Enterprise Coding Standards - Future Corporation
 ---
 
 可読性や保守性、拡張性、SQL 性能を考慮したコーディング規約をまとめています

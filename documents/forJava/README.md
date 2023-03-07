@@ -7,7 +7,7 @@ tagline: Future Enterprise Coding Standards for Java
 actionText: Javaコーディング規約 (for Java17)
 actionLink: ./Javaコーディング規約.html
 pageClass: lang-home
-footer: ©2015 - 2021 Future Enterprise Coding Standards - Future Corporation
+footer: ©2015 - 2023 Future Enterprise Coding Standards - Future Corporation
 layout: HomeWithImg
 heroImage: /images/JBee.png
 ---
