@@ -34,8 +34,8 @@ meta:
 | ------------ | -------------- | ------------------------ | ------------------------------------------------------------------------------------------------- |
 | Common       | `{env}`        | 環境                     | 環境の区別                                                                                        |
 |              | `{product}`    | 製品名                   | 構築する製品名またはシステム名。稼働するマイクロサービス名もこれに当たる                          |
-|              | `{role}`       | 役割                     | 役割を示す。場合によっては具体的な製品名 postgres, jenkins などを指定する                         |
-|              | `{usage}`      | 用途                     | 利用目的やリソースの動作 (action) を示す。user_master, fileupload など識別したい値を指定する      |
+|              | `{role}`       | 役割                     | 役割を示す。場合によっては具体的な製品名 postgres, jenkins などを指定する               |
+|              | `{usage}`      | 用途                     | 利用目的やリソースの動作 (action) を示す。user_master, fileupload など      |
 |              | `{target}`     | 対象                     | 操作の対象。usage が複数の対象があり区別したいときに利用する。                                    |
 | Network      | `{region}`     | リージョン               | [リージョンコード](https://docs.aws.amazon.com/ja_jp/general/latest/gr/rande.html) の略称を用いる |
 |              | `{az}`         | アベイラビリティーゾーン | マルチ AZ 構成などで、明示的に AZ を意識する場合に用いる                                          |
@@ -93,7 +93,7 @@ prod についてはよく用いる dev, stg と見間違えを防ぐため 4 �
 - dev1, dev2, dev3
 - stg1, stg2
 
-### 用途 (`{usage}`)
+### 役割 (`{role}`)
 
 アプリケーションを構成する要素には役割がある。それを AWS リソース名に含めることで、開発者の理解を助け、操作ミスを低減する。
 
@@ -111,6 +111,13 @@ prod についてはよく用いる dev, stg と見間違えを防ぐため 4 �
 | CI/CD           | ci         | CI/CD サーバ                                                                   |
 
 名前を一般化せず、プロダクト名をそのまま利用しても問題ない。例えば、Web アプリサーバに `tomcat`、CI/CD サーバに `jenkins` といった名称を使っても良い。
+
+### 用途 (`{usage}`)
+
+利用目的やリソースの動作 (action) を示す。user_master, fileuploadといった形式や、認証(auth)やBFF（Backend For Frontend）など。
+
+役割 (`{role}`) と合わせてリソースが一意に特定できる名称を設定する。
+
 
 ### リージョン (`{region}`)
 
@@ -154,7 +161,7 @@ VPC のサブネットは、パブリックサブネットの場合インター�
 
 ### 命名規約
 
-次のように各要素を使ってケバブケース (`kebab-case`) で命名する。キャメルケース (`CamelCase`) やスネークケース (`snake_case`) は利用しない。
+次のように各要素を使ってケバブケース (`kebab-case`) で命名する。パスカルケース (`PascalCase`) やスネークケース (`snake_case`) は利用しない。
 
 ```properties
 # 命名規約の基本形
@@ -165,7 +172,7 @@ VPC のサブネットは、パブリックサブネットの場合インター�
 
 - ほぼ全ての AWS サービスではリソース名にハイフンを許容する。一方で、アンダースコアを許容しない WebACL のようなサービスがある
 - 環境名、サービス名などの単位で区切りを明確にする
-- なお、サービス名自体にキャメルケースを用いることは許容する
+- なお、サービス名自体にパスカルケースを用いることは許容する
 
 ### 利用可能な文字
 
@@ -244,165 +251,6 @@ VPC に関わるリソースの命名について記載する。
 | Endpoint         | `{env}-{product}-{aws_service}`         | stg-fuga-s3          | 様々なサービスが利用するため AWS サービス名を含めている |
 | Security Group   | `{env}-{product}-{aws_service}-{usage}` | stg-fuga-ec2-bastion | 様々なサービスが利用するため AWS サービス名を含めている |
 
-### IAM
-
-IAM に関わるリソースの命名について記載する。IAM グループ、IAM ユーザー、IAM ロール、IAM ポリシーの 4 点について述べる。
-
-#### IAM ユーザー
-
-IAM ユーザーについては、誰 (人またはシステム) が利用するのかを識別することを目的とする。同じユーザーを複数の人やシステムで使いまわすと、誰が操作したのかといった証跡を追えなくなってしまうため、個別に発行することを推奨する。
-また、役割や権限といった情報は名前に含めない。そのような名前はユーザーに紐づけるロールが増えた際などに名前と役割や権限の実態が乖離してしまうためである。
-
-人が利用する IAM ユーザー：
-
-```properties
-# 命名規約
-{company}_{username}
-# 例
-future_taro_mirai
-```
-
-※AWS アカウントに関与する人が単一の会社に属する人だけである場合は `{company}_` を省略しても良い。
-
-システムが利用する IAM ユーザー：
-
-```properties
-# 命名規約
-{product}_{usage}
-# 例
-fuga_api
-fuga_auth0
-```
-
-AWS サービスに権限付与する場合は IAM ロールで付与することを想定している。システムが利用する IAM ユーザーは、別のクラウドや SaaS 等への権限付与に使うことを想定している。
-
-[全体ポリシーの命名規約](#命名規約) とは異なり、環境名 `{env}` を Prefix につけない理由は次である。
-
-- ある AWS アカウントに対して、Switch Role などで別の環境にアクセスする際に混乱が生じる
-- ブラウザのパスワード管理などのために ID 名を分けたいという考えもあるかもしれないが、別のパスワード管理アプリなどの利用を推奨する
-
-また、IAM ユーザー名についてはアンダースコア区切りを推奨する。
-
-- 多くのサービスでユーザー名には慣習的にアンダースコアを用いることが多いため
-
-#### IAM グループ
-
-IAM グループに IAM ユーザーを追加することで複数ユーザーの権限を一括管理できる。IAM ユーザーは複数の IAM グループに追加可能だが、所属可能なグループ数は最大で 10 という制約があるため注意が必要である。
-
-この制約を踏まえ、各役職ごとに基本となるグループを作成し、基本グループで対応できない例外的な権限の付与を個別のグループで対応することを想定した命名としている。
-
-また、グループ数をむやみに増やさないためにグループ名に環境名 `{env}` はつけない。仮に `future-developer` というグループが dev 環境のみにアクセスできるといったような制御をする場合でも、グループ名には dev をつけず、dev 環境にアクセス可能なポリシーをグループにアタッチする方針としている。
-
-基本となるグループ:
-
-```properties
-# 命名規約
-{company}-{role}
-# 例
-future-developer
-future-maintainer
-```
-
-ここでの `{role}` はユーザーが担う役割を表す。
-
-個別のグループ:
-
-```properties
-# 命名規約
-{target}-{usage}
-# 例
-bastion-access
-```
-
-個別のグループは Session Manager で EC2 にアクセスするグループといった使い方を想定している。
-
-例外的に特定のユーザーにのみ権限を付与する、会社を超えて共通のグループを付与するといったユースケースも考えられる。
-
-#### IAM ロール
-
-IAM ロールは、AWS サービスに権限を付与する目的で利用する。IAM ロールに複数の IAM ポリシーをアタッチできるため、IAM ロールの命名では細かい権限を表現することは避け、IAM ロールを誰が使うのかを明確にすることを主目的とする。
-
-```properties
-# 命名規約
-{env}-{product}-{aws_service}-{usage}
-# 例
-stg-fuga-ec2-bastion
-stg-fuga-lambda-api
-```
-
-※場合によっては `{usage}` 部に詳細情報を追加しても良い
-
-#### IAM ポリシー
-
-IAM ポリシーの命名に入る前に、ポリシーの設計方針について記載する。
-ここでは、ポリシー設計方針の代表例として、以下の 2 パターンについて説明する。
-
-- 細かく設定し再利用するパターン
-- 特定のリソースに付与するポリシーを書き出すパターン
-
-それぞれの設計方針にはメリット・デメリットがあり開発規模などで使い分けが想定されるため、それぞれの場合の命名方法について記載する。
-
-細かく設定する場合:
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "s3:*",
-      "Effect": "Allow",
-      "Resource": "*"
-    }
-  ]
-}
-```
-
-```properties
-# 命名規約
-{env}-{product}-{permission}-{aws_service}-{usage}
-# 例
-stg-fuga-allow-s3-full
-stg-fuga-allow-ses-send
-```
-
-特定のリソースに付与するポリシーを書き出す場合:
-
-```json
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Action": "s3:*",
-      "Effect": "Allow",
-      "Resource": "*"
-    },
-    {
-      "Action": ["ses:SendEmail", "ses:SendRawEmail"],
-      "Effect": "Allow",
-      "Resource": "*"
-    },
-    {
-      "Action": "sqs:*",
-      "Effect": "Allow",
-      "Resource": "*"
-    }
-  ]
-}
-```
-
-```properties
-# 命名規約
-{env}-{product}-{aws_service}-{usage}
-# 例
-stg-fuga-ec2-bastion
-stg-fuga-iam-group-future-develop
-```
-
-IAM グループ用のポリシーを作成する例では、company を含めた `future-develop` といった名前を `{usage}` としている。
-
-この場合は命名粒度が IAM ロールと等しくなるため、命名規約も同じ方針にしている。
-
-予め用意されているポリシーの名前は `CamelCase` 形式であるが (例: AmazonS3FullAccess)、ユーザー作成のロールが明確になるため `snake_case` で命名する。
 
 ### API Gateway
 
@@ -418,7 +266,7 @@ API Gateway は [全体ポリシーの命名規約](#命名規約) に則る。�
 # 命名規約の基本形
 {env}-{product}-{role}-{usage}-{access}
 # 例
-stg-fuga-web-api-private
+stg-fuga-web-potal-private
 stg-fuga-web-fileupload-public
 ```
 
@@ -458,7 +306,7 @@ LB には ALB/NLB/CLB などの種類があるが、いずれも以下の命名�
 # 命名規約
 {env}-{product}-{role}-{usage}-{access}
 # 例
-stg-fuga-web-api
+stg-fuga-web-api-public
 ```
 
 ターゲットグループ名は、基本的には LB と同じである。
@@ -469,7 +317,7 @@ stg-fuga-web-api
 # Target group name (Blue/Green) の命名規約
 {env}-{product}-{role}-{usage}-{access}-blue
 # 例
-stg-fuga-web-blue
+stg-fuga-web-public-blue
 ```
 
 ### ECS
@@ -744,6 +592,168 @@ stg-fuga-polling-schedule-lambda
 
 ※スケジュールタイプのルールの場合は `{source}` に `schedule` と記載する。
 
+
+### IAM
+
+IAM に関わるリソースの命名について記載する。IAM グループ、IAM ユーザー、IAM ロール、IAM ポリシーの 4 点について述べる。
+
+#### IAM ユーザー
+
+IAM ユーザーについては、誰 (人またはシステム) が利用するのかを識別することを目的とする。同じユーザーを複数の人やシステムで使いまわすと、誰が操作したのかといった証跡を追えなくなってしまうため、個別に発行することを推奨する。
+また、役割や権限といった情報は名前に含めない。そのような名前はユーザーに紐づけるロールが増えた際などに名前と役割や権限の実態が乖離してしまうためである。
+
+IAM ユーザー名についてはアンダースコア区切りを推奨する。
+
+- 多くのサービスでユーザー名には慣習的にアンダースコアを用いることが多いため
+
+人が利用する IAM ユーザー：
+
+```properties
+# 命名規約
+{company}_{username}
+# 例
+future_taro_mirai
+```
+
+※AWS アカウントに関与する人が単一の会社に属する人だけである場合は `{company}_` を省略しても良い。
+
+システムが利用する IAM ユーザー：
+
+```properties
+# 命名規約
+{product}_{usage}
+# 例
+fuga_api
+fuga_auth0
+```
+
+AWS サービスに権限付与する場合は IAM ロールで付与することを想定している。システムが利用する IAM ユーザーは、別のクラウドや SaaS 等への権限付与に使うことを想定している。
+
+[全体ポリシーの命名規約](#命名規約) とは異なり、環境名 `{env}` を Prefix につけない理由は次である。
+
+- ある AWS アカウントに対して、Switch Role などで別の環境にアクセスする際に混乱が生じる
+- ブラウザのパスワード管理などのために ID 名を分けたいという考えもあるかもしれないが、別のパスワード管理アプリなどの利用を推奨する
+
+#### IAM グループ
+
+IAM グループに IAM ユーザーを追加することで複数ユーザーの権限を一括管理できる。IAM ユーザーは複数の IAM グループに追加可能だが、所属可能なグループ数は最大で 10 という制約があるため注意が必要である。
+
+この制約を踏まえ、各役職ごとに基本となるグループを作成し、基本グループで対応できない例外的な権限の付与を個別のグループで対応することを想定した命名としている。
+
+また、グループ数をむやみに増やさないためにグループ名に環境名 `{env}` はつけない。仮に `future-developer` というグループが dev 環境のみにアクセスできるといったような制御をする場合でも、グループ名には dev をつけず、dev 環境にアクセス可能なポリシーをグループにアタッチする方針としている。
+
+基本となるグループ:
+
+```properties
+# 命名規約
+{company}-{role}
+# 例
+future-developer
+future-maintainer
+```
+
+ここでの `{role}` はユーザーが担う役割を表す。
+
+個別のグループ:
+
+```properties
+# 命名規約
+{target}-{usage}
+# 例
+bastion-access
+```
+
+個別のグループは Session Manager で EC2 にアクセスするグループといった使い方を想定している。
+
+例外的に特定のユーザーにのみ権限を付与する、会社を超えて共通のグループを付与するといったユースケースも考えられる。
+
+#### IAM ロール
+
+IAM ロールは、AWS サービスに権限を付与する目的で利用する。IAM ロールに複数の IAM ポリシーをアタッチできるため、IAM ロールの命名では細かい権限を表現することは避け、IAM ロールを誰が使うのかを明確にすることを主目的とする。
+
+```properties
+# 命名規約
+{env}-{product}-{aws_service}-{usage}
+# 例
+stg-fuga-ec2-bastion
+stg-fuga-lambda-api
+```
+
+※場合によっては `{usage}` 部に詳細情報を追加しても良い
+
+#### IAM ポリシー
+
+IAM ポリシーの命名に入る前に、ポリシーの設計方針について記載する。
+ここでは、ポリシー設計方針の代表例として、以下の 2 パターンについて説明する。
+
+- 細かく設定し再利用するパターン
+- 特定のリソースに付与するポリシーを書き出すパターン
+
+それぞれの設計方針にはメリット・デメリットがあり開発規模などで使い分けが想定されるため、それぞれの場合の命名方法について記載する。
+
+細かく設定する場合:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "s3:*",
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+```properties
+# 命名規約
+{env}-{product}-{permission}-{aws_service}-{usage}
+# 例
+stg-fuga-allow-s3-full
+stg-fuga-allow-ses-send
+```
+
+特定のリソースに付与するポリシーを書き出す場合:
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "s3:*",
+      "Effect": "Allow",
+      "Resource": "*"
+    },
+    {
+      "Action": ["ses:SendEmail", "ses:SendRawEmail"],
+      "Effect": "Allow",
+      "Resource": "*"
+    },
+    {
+      "Action": "sqs:*",
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+```
+
+```properties
+# 命名規約
+{env}-{product}-{aws_service}-{usage}
+# 例
+stg-fuga-ec2-bastion
+stg-fuga-iam-group-future-develop
+```
+
+IAM グループ用のポリシーを作成する例では、company を含めた `future-develop` といった名前を `{usage}` としている。
+
+この場合は命名粒度が IAM ロールと等しくなるため、命名規約も同じ方針にしている。
+
+予め用意されているポリシーの名前は `PascalCase` 形式であるが (例: AmazonS3FullAccess)、ユーザーが作成したことを明確にするため `snake_case` で命名する。
+
+
 ## タグの命名
 
 <details><summary>AWS上の命名制約</summary>
@@ -760,7 +770,9 @@ stg-fuga-polling-schedule-lambda
 
 </details>
 
-[AWS リソースのタグ付け](https://docs.aws.amazon.com/ja_jp/general/latest/gr/aws_tagging.html#tag-best-practices) によれば、タグ付けのベストプラクティスは以下である。
+[AWS リソースのタグ付け](https://docs.aws.amazon.com/ja_jp/general/latest/gr/aws_tagging.html#tag-best-practices) [^1]によれば、タグ付けのベストプラクティスは以下である。
+
+[^1]: より詳しいタグ付けのベストプラクティスも存在する。 https://docs.aws.amazon.com/whitepapers/latest/tagging-best-practices/tagging-best-practices.html
 
 - 個人情報 (PII) などの機密情報や秘匿性の高い情報をタグに設定しない
 - すべてのリソースタイプに一貫して適用する
@@ -772,7 +784,7 @@ stg-fuga-polling-schedule-lambda
 
 ### タグキー
 
-- 使用する文字は英数字に限定する。基本的には **キャメルケース (CamelCase)** 形式を推奨する
+- 使用する文字は英数字に限定する。基本的には **パスカルケース (PascalCase)** 形式を推奨する
   - リソース作成時に自動生成される `Name` タグと平仄を合わせるため
 - 以下の観点でタグを使い分ける
   - リソース整理
