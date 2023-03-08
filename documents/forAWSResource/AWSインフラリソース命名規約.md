@@ -35,7 +35,7 @@ meta:
 | Common       | `{env}`        | 環境                     | 環境の区別                                                                                        |
 |              | `{product}`    | 製品名                   | 構築する製品名またはシステム名。稼働するマイクロサービス名もこれに当たる                          |
 |              | `{role}`       | 役割                     | 役割を示す。場合によっては具体的な製品名 postgres, jenkins などを指定する               |
-|              | `{usage}`      | 用途                     | 利用目的やリソースの動作 (action) を示す。user_master, fileupload など      |
+|              | `{usage}`      | 用途                     | 利用目的やリソースの動作 (action) を示す。user_master, fileupload など識別したい値を指定する      |
 |              | `{target}`     | 対象                     | 操作の対象。usage が複数の対象があり区別したいときに利用する。                                    |
 | Network      | `{region}`     | リージョン               | [リージョンコード](https://docs.aws.amazon.com/ja_jp/general/latest/gr/rande.html) の略称を用いる |
 |              | `{az}`         | アベイラビリティーゾーン | マルチ AZ 構成などで、明示的に AZ を意識する場合に用いる                                          |
