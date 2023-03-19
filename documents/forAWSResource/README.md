@@ -19,6 +19,7 @@ AWS インフラ命名規則の規約をまとめます。
 # Resources
 
 次のリンクから単一ファイルで作成されたコーディング規約を取得できます。
+
 (これらのファイルは[Pandoc]を利用して作成しています。)
 
 - [Markdown](https://github.com/future-architect/coding-standards/blob/master/documents/forAWSResource/AWSインフラリソース命名規約.md)
