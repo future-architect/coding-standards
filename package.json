@@ -15,8 +15,6 @@
     "pandoc:sqlo-word": "pandoc ./documents/forSQL/SQLコーディング規約（Oracle）.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./documents/forSQL/SQLコーディング規約（Oracle）.docx",
     "pandoc:awsresource-html": "pandoc ./documents/forAWSResource/AWSインフラリソース命名規約.md -s --self-contained --number-sections --toc -t html5 -c ./documents/common/pandoc_styles/css/style.css -o ./documents/forAWSResource/AWSインフラリソース命名規約.html",
     "pandoc:awsresource-word": "pandoc ./documents/forAWSResource/AWSインフラリソース命名規約.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./documents/forAWSResource/AWSインフラリソース命名規約.docx",
-    "pandoc:openapispecification-html": "pandoc ./documents/forOpenAPISpecification/OpenAPI_Specification_3.0.3.md -s --self-contained --number-sections --toc -t html5 -c ./documents/common/pandoc_styles/css/style.css -o ./documents/forOpenAPISpecification/OpenAPI_Specification_3.0.3.html",
-    "pandoc:openapispecification-word": "pandoc ./documents/forOpenAPISpecification/OpenAPI_Specification_3.0.3.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./documents/forOpenAPISpecification/OpenAPI_Specification_3.0.3.docx"
   },
   "repository": {
     "type": "git",
