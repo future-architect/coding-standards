@@ -25,10 +25,7 @@ footer: ©2015 - 2023 Future Enterprise Coding Standards - Future Corporation
 
 <page-info href="https://future-architect.github.io/coding-standards/documents/forAWSResource/AWSインフラリソース命名規約.html"></page-info>
 
-# [For OpenAPI Specification](./documents/forOpenAPISpecification/)
-
-<page-info href="https://future-architect.github.io/coding-standards/documents/forOpenAPISpecification/OpenAPI_Specification規約.html"></page-info>
-
+# For OpenAPI Specification（準備中）
 
 ---
 
