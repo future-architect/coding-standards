@@ -30,6 +30,12 @@ jobs:
       - uses: docker://pandoc/latex:2.9
         with:
           args: "pandoc ./documents/forAWSResource/AWSインフラリソース命名規約.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./.vuepress/public/resources/AWSインフラリソース命名規約.docx"
+      - uses: docker://pandoc/latex:2.9
+        with:
+          args: "pandoc ./documents/forOpenAPISpecification/OpenAPI_Specification_3.0.3.md -s --self-contained --number-sections --toc -t html5 -c ./documents/common/pandoc_styles/css/style.css -o ./.vuepress/public/resources/OpenAPI_Specification_3.0.3.html"
+      - uses: docker://pandoc/latex:2.9
+        with:
+          args: "pandoc ./documents/forOpenAPISpecification/OpenAPI_Specification_3.0.3.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./.vuepress/public/resources/OpenAPI_Specification_3.0.3.docx"
       - name: Install Packages
         run: npm i --legacy-peer-deps
       - name: Build all
