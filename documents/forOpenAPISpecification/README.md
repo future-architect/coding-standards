@@ -11,6 +11,7 @@ footer: ©2015 - 2023 Future Enterprise Coding Standards - Future Corporation
 OpenAPI Specification（OAS）の規約を、設計・開発・テスト・可読性・保守性・ツールによるコード生成や静的解析の観点からまとめています。
 
 # 対応するバージョンについて
+OpenAPI Specification（OAS）の規約を設計、開発、テスト、可読性、保守性、ツールによるコード生成や静的解析の観点からまとめています。
 
 OASは次のように複数のバージョンが存在します。
 
