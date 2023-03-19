@@ -8,7 +8,7 @@ pageClass: lang-home
 footer: ©2015 - 2023 Future Enterprise Coding Standards - Future Corporation
 ---
 
-# For AWS Resourceaws
+# For AWS Resource
 
 AWS インフラ命名規則の規約をまとめます。
 
@@ -18,7 +18,8 @@ AWS インフラ命名規則の規約をまとめます。
 
 # Resources
 
-次のリンクから単一ファイルで作成されたコーディング規約を取得できます。  
+次のリンクから単一ファイルで作成されたコーディング規約を取得できます。
+
 (これらのファイルは[Pandoc]を利用して作成しています。)
 
 - [Markdown](https://github.com/future-architect/coding-standards/blob/master/documents/forAWSResource/AWSインフラリソース命名規約.md)
