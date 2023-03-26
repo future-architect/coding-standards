@@ -15,7 +15,7 @@ meta:
 
 # はじめに
 
-[OpenAPI Specification 2.0（Swagger）](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/2.0.md)定義についてのコーディング規約をまとめます。より新しいバージョンとして[OpenAPI Specification 3.0の規約](OpenAPI_Specification_3.0.3.md)がありますので、ご注意ください。
+[OpenAPI Specification 2.0（Swagger, OAS2）](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/2.0.md)定義についてのコーディング規約をまとめます。より新しいバージョンとして[OpenAPI Specification 3.0の規約](OpenAPI_Specification_3.0.3.md)がありますので、ご注意ください。
 
 ## 前提条件
 
@@ -27,11 +27,62 @@ meta:
 * スキーマファースト
     * 本規約はOpenAPI Specificationの定義ファイルを駆動に、クライアント・サーバサイドのコード生成を行い、高速なWeb API開発につなげることを前提とする
         * Pythonにおける、FastAPI・Django REST Frameworkのように、アプリケーションコードからOpenAPI documentを自動生成する開発手法も存在するが、本規約はこれは想定しない
+* OpenAPI Specificationの定義ファイルを元にできる限りのバリデーションを行う
+    * スキーマファーストな開発を行う場合、OAS定義からコードを生成し、通常は記載した型・項目長・最大～最小・enum・必須定義・正規表現フォーマットでバリデーションを行える
+    * OAS定義になるべくバリデーションを行わないようにし、スクラッチ部分でバリデーションを実装する方針もありえなくはないが、本規約ではOASレイヤーで行える範囲のバリデーションを行い、そこでカバーできない部分のバリデーションはアプリケーション固有ロジックとして実装する方針とする。例えば、複数項目間のチェックやDBを確認しないと行えないチェックである
 * JavaScript/TypeScript、Java、Goのエコシステムを本規約のターゲットとする
     * OpenAPI Specificationは広く受け入れられており、コレに対応する様々なツールやフレームワークといったエコシステムがあり、中には定義された設定がうまく認識されない場合がある。本規約では対応していないツールが多い場合、特定の記法を非推奨とすることがあり、同時にその理由も説明する
     * 全ての言語・フレームワーク・ツールの対応状況は調査しきれていないため、利用するプロダクトの対応状況は利用者側で確認をお願いする
 * 本規約は、RESTish なWeb APIを構築することを前提としている
     * 原理的なRESTを必ずしも守る必要はないが、例えばHTTPメソッドは、参照はGET、登録はPOST、更新はPUTやPATCH、削除はDELETEで使い分けていたり、Web APIの要求が成功すれば200（OK）、204（No Content）を返し、リソースが無ければ404（Not Found）、操作に失敗すれば500系のエラーを返すといったことを指す
+
+
+# Web API 自体の設計について
+
+本規約を利用するに当たり、想定するWeb APIの設計をまとめる。このルールに必ずしも準じる必要は無いが、このような設計を暗黙的に考慮し本規約を作成している。
+
+## HTTPメソッド
+
+実現したい操作により、以下のような使い分けを想定する。HEAD（リソースの存在チェック）、GET（参照）、POST（新規作成）、PUT（更新）、PATCH（一部更新）、DELETE（削除）。
+
+## HTTPステータス
+
+原則として[RFC 7231](https://tools.ietf.org/html/rfc7231#section-6)で定義されているレスポンスステータスコードを利用します。
+
+ユースケース別に利用すべきHTTPステータスコードを記載します。
+
+### 共通
+
+* バリデーションエラー：`400 Bad Request`
+* 業務エラー：`400 Bad Request`
+* 認証エラー：`401 Unauthorized`
+* 認可エラー：`403 Forbidden`
+* システムエラー：`500 Internal Server Error`
+
+### GET
+
+* 正常系：`200 OK`
+    * 検索系APIで結果0件の場合も、 `200 OK` を返すとする
+* パスキー検索系APIで対象リソースが存在しないエラー：`404 Not Found`
+
+### POST
+
+* 正常系（同期）：`201 Created`
+* 正常系（非同期）：`202 Accepted`
+* 一意制約違反エラー：`409 Conflict`
+* 親リソースが存在しないエラー：`404 Not Found`
+
+### PUT
+
+* 正常系（同期）：`200 OK`
+* 正常系（非同期）：`202 Accepted`
+* 対象リソースが存在しないエラー：`404 Not Found`
+
+### DELETE
+
+* 正常系：`204 No Content`
+    * もし、削除した項目の情報を応答する場合は `200 OK` とする
+* 対象リソースが存在しないエラー：`404 Not Found`
 
 
 # 全体規約
@@ -166,9 +217,34 @@ schemes:
 
 もし、WebSocketスキームを提供するサービスの定義である場合は、 `ws` および `wss` を（追加で）指定する。定義上は `http`, `https` 側との共存ができないため、ファイル定義を分けるようにする。
 
-## security
 
-## securityDefinitions
+## security, securityDefinitions
+
+Swaggerでは、次の認証タイプを記載できる（[詳細](https://swagger.io/docs/specification/2-0/authentication/)）。
+
+1. ベーシック認証
+1. APIキー（リクエストヘッダ, クエリパラメータ）
+1. OAuth2
+
+もし、認証が必須であれば記載する。全てのWeb APIで未認証を受け入れる場合は記載しない。認証の要否がAPIごとに異なる場合は、各API側で `security: []` と記載しして上書き定義する必要がある。
+
+```yaml
+# OK
+securityDefinitions:
+  OAuth2:
+    type: oauth2
+    flow: accessCode
+    authorizationUrl: 'https://example.com/authorize'
+    tokenUrl: 'https://example.com/.well-known/jwks.json'
+
+# OK（OAuth2認証ありの場合）
+security:
+  - OAuth2: []
+
+# NG（全APIで認証が存在しない場合は記載する必要がない）
+security: []
+```
+
 
 ## produces
 
@@ -208,16 +284,49 @@ paths:
 
 ## tags
 
+タグを用いて、API操作をグループ化することができます。ドキュメントやツールにとって非常に重要であるため、 **必須** で指定する。
+
+* Swagger UI（HTMLドキュメント）の順序を制御できる
+    * 未指定の場合は、登場順で生成されてしまう
+* リソースは **単数形** で指定する
+    * コード生成で利用され、Goではパッケージ名やTypeScriptのClass単位となるため、シンプルな命名にする
+* 1単語での記載を推奨するが、難しければキャメルケースで指定する
+* タグごとに `description` も必須で記載する
+
+```yaml
+# NG
+tags:
+  - name: product
+    description: 製品
+  - name: store
+    description: 店舗
+
+# NG
+tags:
+  - name: products
+  - name: stores
+```
+
 
 ## paths
 
+TODO
+
 ## externalDocs
+
+TODO
 
 ## definitions
 
+TODO
+
 ## parameters
 
+TODO
+
 ## responses
+
+TODO
 
 
 ---
