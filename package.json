@@ -19,7 +19,7 @@
     "pandoc:swagger-word": "pandoc ./documents/forOpenAPISpecification/OpenAPI_Specification_2.0.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -F mermaid-filter -s -o ./documents/forOpenAPISpecification/OpenAPI_Specification_2.0規約.docx"
   },
   "repository": {
-    "type": "git",
+    "type": "git  ",
     "url": "git+https://github.com/future-architect/coding-standards.git"
   },
   "keywords": [
@@ -41,10 +41,11 @@
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^9.0.0",
     "markdown-it-task-lists": "^2.1.1",
+    "mermaid-filter": "^1.4.6",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.4.0",
     "vue-github-button": "^1.0.7",
     "vuepress": "^1.2.0",
-    "mermaid-filter": "^1.4.6"
+    "vuepress-plugin-mermaidjs": "^2.0.0-beta.2"
   }
 }
