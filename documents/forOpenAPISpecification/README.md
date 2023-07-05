@@ -47,8 +47,8 @@ https://openapi.tools/
 次のリンクから単一ファイルで作成されたコーディング規約を取得できます。
 (これらのファイルは[Pandoc]を利用して作成しています。)
 
-- [Markdown](https://github.com/future-architect/coding-standards/blob/master/documents/forAWSResource/AWSインフラリソース命名規約.md)
-- [HTML](https://github.com/future-architect/coding-standards/blob/gh-pages/resources/AWSインフラリソース命名規約.html)
-- [Word](https://github.com/future-architect/coding-standards/raw/gh-pages/resources/AWSインフラリソース命名規約.docx)
+- [Markdown](https://github.com/future-architect/coding-standards/blob/master/documents/forOpenAPISpecification/OpenAPI_Specification_2.0.md)
+- [HTML](https://github.com/future-architect/coding-standards/blob/gh-pages/resources/OpenAPI_Specification_2.0.html)
+- [Word](https://github.com/future-architect/coding-standards/raw/gh-pages/resources/OpenAPI_Specification_2.0.docx)
 
 [pandoc]: https://pandoc.org/

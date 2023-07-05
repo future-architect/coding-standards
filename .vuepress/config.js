@@ -23,6 +23,10 @@ const links = {
     "/documents/forAWSResource/",
     "/documents/forAWSResource/AWSインフラリソース命名規約.html",
   ],
+  "/documents/forOpenAPISpecification/": [
+    "/documents/forOpenAPISpecification/",
+    "/documents/forOpenAPISpecification/OpenAPI_Specification_2.0.html",
+  ],
 };
 console.log(links);
 
@@ -46,6 +50,9 @@ module.exports = {
       lang: "ja",
     },
   },
+  plugins: [
+    'vuepress-plugin-mermaidjs'
+  ],
   themeConfig: {
     logo: "/images/logo.svg",
     repo: "https://github.com/future-architect/coding-standards",

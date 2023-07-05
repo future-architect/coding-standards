@@ -847,22 +847,22 @@ Web APIにおけるファイルアップロードのよく利用される実装�
 
 本規約でファイルアップロードについて上記の3. Sined URLを推奨する。API呼び出しとしては次のようなフローとする。
 
-~~~mermaid
+```mermaid
 sequenceDiagram
-    participant A as クライアント
-    participant B as Web APIサーバ
-    participant C as オブジェクトストレージ
+participant A as クライアント
+participant B as Web APIサーバ
+participant C as オブジェクトストレージ
 
-    A->>B: ①アップロード先URL取得
-      B->>C: Sined URL発行
-      C-->>B: Sined URL
-      B-->>A: アップロードURL、受付ID（加えて、アップロードで指定したいHTTP Methodや必要なリクエストヘッダーがあれば応答の項目に追加する）
+A->>B: ①アップロード先URL取得
+  B->>C: Sined URL発行
+  C-->>B: Sined URL
+  B-->>A: アップロードURL、受付ID（加えて、アップロードで指定したいHTTP Methodや必要なリクエストヘッダーがあれば応答の項目に追加する）
 
-    A->>C: ②ファイルアップロード
+A->>C: ②ファイルアップロード
 
-    A->>B: ③ファイルアップロード完了(受付ID、キー、属性)
-      B-->>A: 受付完了
-~~~
+A->>B: ③ファイルアップロード完了(受付ID、キー、属性)
+  B-->>A: 受付完了
+```
 
 フローの①、②はアプリケーション固有の紐づけルールにおいてWeb APIを設計すれば良いため、本規約でYAMLの設定例は記載しない。フロー②についてはSigned URLを用いたアップロードであり、アプリケーションのWeb API定義を書く必要はない。もし、監査ログなどのガバナンス上、直接オブジェクトストレージへの書き込みを許容されないケースは、BでSigned URLに相当する書き込み先を提供し、Bを経由してファイルをアップロードする。
 
