@@ -4,8 +4,9 @@
   "description": "Future Enterprise Coding Standards",
   "main": "index.js",
   "scripts": {
+    "install": "npm install --global mermaid-filter",
     "lint": "eslint . .vuepress --ext .js,.vue",
-    "watch": "vuepress dev . --debug",
+    "watch": "vuepress dev . --debug --no-cache",
     "build": "vuepress build .",
     "format": "prettier . --write",
     "pandoc": "npm-run-all pandoc:*",
@@ -15,8 +16,8 @@
     "pandoc:sqlo-word": "pandoc ./documents/forSQL/SQLコーディング規約（Oracle）.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./documents/forSQL/SQLコーディング規約（Oracle）.docx",
     "pandoc:awsresource-html": "pandoc ./documents/forAWSResource/AWSインフラリソース命名規約.md -s --self-contained --number-sections --toc -t html5 -c ./documents/common/pandoc_styles/css/style.css -o ./documents/forAWSResource/AWSインフラリソース命名規約.html",
     "pandoc:awsresource-word": "pandoc ./documents/forAWSResource/AWSインフラリソース命名規約.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./documents/forAWSResource/AWSインフラリソース命名規約.docx",
-    "pandoc:swagger-html": "pandoc ./documents/forOpenAPISpecification/OpenAPI_Specification_2.0.md -s --self-contained --number-sections --toc -t html5 -F mermaid-filter -c ./documents/common/pandoc_styles/css/style.css -o ./documents/forOpenAPISpecification/OpenAPI_Specification_2.0規約.html",
-    "pandoc:swagger-word": "pandoc ./documents/forOpenAPISpecification/OpenAPI_Specification_2.0.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -F mermaid-filter -s -o ./documents/forOpenAPISpecification/OpenAPI_Specification_2.0規約.docx"
+    "pandoc:swagger-html": "pandoc ./documents/forOpenAPISpecification/OpenAPI_Specification_2.0.md -s --self-contained --number-sections --toc -t html5 -F mermaid-filter.cmd -c ./documents/common/pandoc_styles/css/style.css -o ./documents/forOpenAPISpecification/OpenAPI_Specification_2.0規約.html",
+    "pandoc:swagger-word": "pandoc ./documents/forOpenAPISpecification/OpenAPI_Specification_2.0.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -F mermaid-filter.cmd -s -o ./documents/forOpenAPISpecification/OpenAPI_Specification_2.0規約.docx"
   },
   "repository": {
     "type": "git  ",
@@ -41,11 +42,10 @@
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^9.0.0",
     "markdown-it-task-lists": "^2.1.1",
-    "mermaid-filter": "^1.4.6",
     "npm-run-all": "^4.1.5",
     "prettier": "^2.4.0",
     "vue-github-button": "^1.0.7",
     "vuepress": "^1.2.0",
-    "vuepress-plugin-mermaidjs": "^2.0.0-beta.2"
+    "vuepress-plugin-mermaidjs": "^1.9.1"
   }
 }

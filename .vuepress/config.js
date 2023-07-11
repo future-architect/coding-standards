@@ -43,6 +43,9 @@ module.exports = {
       md.use(require("./markdown-it-plugin-header-shift"));
       md.use(require("markdown-it-task-lists"));
     },
+    plugins: [
+      'vuepress-plugin-mermaidjs',
+    ],
   },
   head: [],
   locales: {
@@ -51,7 +54,7 @@ module.exports = {
     },
   },
   plugins: [
-    'vuepress-plugin-mermaidjs'
+    'vuepress-plugin-mermaidjs',
   ],
   themeConfig: {
     logo: "/images/logo.svg",
