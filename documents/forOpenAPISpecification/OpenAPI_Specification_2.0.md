@@ -58,7 +58,7 @@ meta:
 * 文字コードはUTF-8とする
 * タブは半角スペース2つとする
 * クォートの扱い（シングルクォート `'` や、 ダブルクォート `"` は指定しない）
-    * 可読性を上げるために、できる限りクォートはは利用しない。利用する場合はダブルクォートを利用する
+    * 可読性を上げるために、できる限りクォートは利用しない。利用する場合はダブルクォートを利用する
 
     ```yaml
     # OK
@@ -303,7 +303,7 @@ paths:
 
 ## produces
 
-Web APIが応答する際の MIME タイプを指定します。未指定の場合に、コード生成などツール側で予期しない動作をすることがあるため、固定で指定する。新規構築のWeb APIであれば `application/xml` は不要と通常は考えらえるので、`application/json` だけ記載する。
+Web APIが応答する際の MIME タイプを指定します。未指定の場合に、コード生成などツール側で予期しない動作をすることがあるため、固定で指定する。新規構築のWeb APIであれば `application/xml` は不要と通常は考えられるので、`application/json` だけ記載する。
 
 ```yaml
 # OK
@@ -313,12 +313,11 @@ produces:
 
 [RFC 7807 Problem Details for HTTP APIs](https://www.rfc-editor.org/rfc/rfc7807) では Content-Type に `application/problem+json` を設定するとあるが、コード生成側で対応していない場合があるため、 `application/json` を指定する
 
-
 ## consumes
 
 Web APIが要求を受け入れる際の MIME タイプを指定する。未指定の場合に、コード生成などツール側で予期しない動作をすることがあるため、固定で指定する。新規構築のWeb APIであれば `application/xml` は不要と通常は考えらえるので、`application/json` だけ記載する。
 
-仕様上、 `consumers` はPOST, PUT, PATCHを利用した操作のみに影響し、GETなどリクエストボディが無い操作では無視される。
+仕様上、 `consumes` はPOST, PUT, PATCHを利用した操作のみに影響し、GETなどリクエストボディが無い操作では無視される。
 
 ```yaml
 # OK
@@ -350,10 +349,10 @@ paths:
 
 * Swagger UI（HTMLドキュメント）の順序を制御できる
     * 未指定の場合は、登場順で生成されてしまう
-* 命名は、 snake_case で記載する
+* 命名は、小文字かつ半角スペース区切り で記載する
+    * HTMLドキュメントで参照する場合の可読性を上げるため
 * リソースは **単数形** で指定する
     * コード生成で利用され、Goではパッケージ名やTypeScriptのClass単位となるため、シンプルな命名にする
-* 1単語での記載を推奨するが、難しければパスカルケースで指定する
 * タグごとに `description` も必須で記載する
 
 ```yaml
@@ -363,13 +362,14 @@ tags:
     description: 製品
   - name: store
     description: 店舗
-  - name: user_account
+  - name: user account
     description: ユーザーアカウント
 
 # NG
 tags:
   - name: products
   - name: stores
+  - name: user_account
   - name: UserAccount
 ```
 
@@ -839,13 +839,13 @@ Web APIにおけるファイルアップロードのよく利用される実装�
 2. multipart/form-data ファイルを送信する
     * メリット: ファイルをBase64に変換するといった作業が不要
     * デメリット: ブラウザ以外のクライアントにとって手間がかかる
-3. アップロード用に用いる、オブジェクトストレージのSined URLを発行し、クライアントから直接ファイルをアップロードしてもらう
+3. アップロード用に用いる、オブジェクトストレージのSigned URLを発行し、クライアントから直接ファイルをアップロードしてもらう
     * 次の流れを想定（Signed URLを取得 -> ファイルアップロード ->  ファイルに紐づかせるキーや属性情報などを登録）
     * Amazon API Gatewayを利用する場合は、2023年6月時点で[ペイロード上限が10MB](https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html)であるため、許容するファイルサイズによってはこの手法一択となる
     * メリット: オブジェクトストレージの可用性・信頼性を享受できる
     * デメリット: アップロードするために複数のAPIエンドポイント呼び出しが必要なため、煩雑である
 
-本規約でファイルアップロードについて上記の3. Sined URLを推奨する。API呼び出しとしては次のようなフローとする。
+本規約でファイルアップロードについて上記の3. Signed URLを推奨する。API呼び出しとしては次のようなフローとする。
 
 ```mermaid
 sequenceDiagram
@@ -854,8 +854,8 @@ participant B as Web APIサーバ
 participant C as オブジェクトストレージ
 
 A->>B: ①アップロード先URL取得
-  B->>C: Sined URL発行
-  C-->>B: Sined URL
+  B->>C: Signed URL発行
+  C-->>B: Signed URL
   B-->>A: アップロードURL、受付ID（加えて、アップロードで指定したいHTTP Methodや必要なリクエストヘッダーがあれば応答の項目に追加する）
 
 A->>C: ②ファイルアップロード
@@ -870,7 +870,7 @@ A->>B: ③ファイルアップロード完了(受付ID、キー、属性)
 
 ## ファイルダウンロード
 
-ファイルアップロードと同様、オブジェクトストレージのSigned URL経由を経由してのダウンロードさせる手法を推奨する。Web APIとしてはオブジェクトストレージにダウンロード用のファイルを書き込み、クライアントが取得するためのSined URLをレスポンスのJSON項目に渡す方式である。
+ファイルアップロードと同様、オブジェクトストレージのSigned URL経由を経由してのダウンロードさせる手法を推奨する。Web APIとしてはオブジェクトストレージにダウンロード用のファイルを書き込み、クライアントが取得するためのSigned URLをレスポンスのJSON項目に渡す方式である。
 
 もし、サムネイルやアイコン画像など、ファイル容量がごく小さい場合はBase64にエンコードしてJSONに埋め込んで渡しても良い。線引をどこに設置するかは本規約で定義しない。
 
