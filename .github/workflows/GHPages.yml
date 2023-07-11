@@ -37,7 +37,9 @@ jobs:
         with:
           args: "pandoc ./documents/forOpenAPISpecification/OpenAPI_Specification_2.0.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./.vuepress/public/resources/OpenAPI_Specification_2.0.docx"
       - name: Install Packages
-        run: npm i --legacy-peer-deps
+        run: |
+          npm i --legacy-peer-deps
+          npm i --global mermaid-filter
       - name: Build all
         run: npm run build
       - name: Deploy
