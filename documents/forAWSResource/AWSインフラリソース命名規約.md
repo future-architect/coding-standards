@@ -9,8 +9,8 @@ meta:
 
 <page-title/>
 
-本コーディング規約は、世の中のシステム開発プロジェクトのために無償で提供致します。  
-ただし、掲載内容および利用に際して発生した問題、それに伴う損害については、フューチャー株式会社は一切の責務を負わないものとします。  
+本コーディング規約は、世の中のシステム開発プロジェクトのために無償で提供致します。
+ただし、掲載内容および利用に際して発生した問題、それに伴う損害については、フューチャー株式会社は一切の責務を負わないものとします。
 また、掲載している情報は予告なく変更することがございますので、あらかじめご了承下さい。
 
 # はじめに
@@ -20,7 +20,6 @@ meta:
 - 開発チームが 3 ～ 30 名程度で構築する規模での利用を想定している
 - 本規約をそのままプロジェクトに導入することを推奨する
   - そのままの導入ができない場合は、一部を抜粋、拡張して用いられることを想定している
-    - これを行えるように、各規約ではその推奨理由もできる限り説明する
 - AWS の構成はマネージドサービスを活用するベストプラクティスに従うものとする
   - 例えば、1 台の EC2 上で DB とアプリのように複数のサービスを稼働させるといった構成は考慮しない
 - 一部のリージョンでのみ利用可能な機能は想定していない
@@ -52,7 +51,7 @@ meta:
 2. 環境単位で AWS リージョンを分ける
 3. 命名で分ける
 
-いずれの方法でも、 **各リソース名に環境名を付与することを推奨** する。冗長な命名となる場合もあるが、以下の理由に拠る方針である。
+いずれの方法でも、 **各リソース名に環境名を付与することを推奨** する。冗長な命名となる場合もあるが、以下が理由である。
 
 - 同一 AWS アカウントかつ同一リージョン内には、同じ名前のリソースを作成できない
 - AWS リソース名のみで環境を特定できるようにする事で、誤った環境のリソースを操作してしまうミスを低減する
@@ -77,7 +76,9 @@ prod についてはよく用いる dev, stg と見間違えを防ぐため 4 �
 
 [デプロイメント環境](https://ja.wikipedia.org/wiki/%E5%B1%95%E9%96%8B%E7%92%B0%E5%A2%83) の考え方では、User Acceptance Test 環境を単にテスト環境 (Test) 呼ぶが、テストという単語は汎用的であるため複数の環境にあてはまる。したがって容易に認識齟齬が生じるため本規約では非推奨とする。
 
-名前には必ず識別子を用いる。環境名をそのまま利用しない (例: `production-example-s3bucket` とは命名しない)。理由は次である。
+名前には必ず識別子を用いる。環境名をそのまま利用しない (例: `production-example-s3bucket` とは命名しない)。
+
+理由:
 
 - AWS リソースによっては名前の文字数の制限が厳しい (例: ELB は最大 32 文字である)
 - AWS コンソールや設計ドキュメントなどで一覧化した場合に見切れる可能性を減らして可読性を高める
@@ -117,7 +118,6 @@ prod についてはよく用いる dev, stg と見間違えを防ぐため 4 �
 利用目的やリソースの動作 (action) を示す。user_master, fileuploadといった形式や、認証(auth)やBFF（Backend For Frontend）など。
 
 役割 (`{role}`) と合わせてリソースが一意に特定できる名称を設定する。
-
 
 ### リージョン (`{region}`)
 
@@ -161,18 +161,17 @@ VPC のサブネットは、パブリックサブネットの場合インター�
 
 ### 命名規約
 
-次のように各要素を使ってケバブケース (`kebab-case`) で命名する。パスカルケース (`PascalCase`) やスネークケース (`snake_case`) は利用しない。
+次のように各要素を使ってケバブケース (`kebab-case`) で命名する。パスカルケース (`PascalCase`) やスネークケース (`snake_case`) は利用しない。なお、サービス名自体にパスカルケースを用いることは許容する
 
 ```properties
 # 命名規約の基本形
 {env}-{product}-{role}-{usage}
 ```
 
-理由は次である。
+理由:
 
 - ほぼ全ての AWS サービスではリソース名にハイフンを許容する。一方で、アンダースコアを許容しない WebACL のようなサービスがある
-- 環境名、サービス名などの単位で区切りを明確にする
-- なお、サービス名自体にパスカルケースを用いることは許容する
+- 環境名、サービス名などの単位で区切りを明確にできる
 
 ### 利用可能な文字
 
@@ -200,12 +199,12 @@ stg-fuga-web-fileupload-s3
 stg-fuga-web-fileupload-bucket
 ```
 
-理由は次である。
+理由:
 
 - AWS コンソールで見たときにどの AWS サービスのリソースを見ているか自明である
-- [Terraform の命名規則](https://www.terraform-best-practices.com/naming#resource-and-data-source-argument) にリソース名を繰り返さないという記載がある
+- [Terraform の命名規則](https://www.terraform-best-practices.com/naming#resource-and-data-source-argument) にリソース名を繰り返さないという記載があり、整合性を持たせるため
 
-> **Resource and data source arguments**  
+> **Resource and data source arguments**
 > Do not repeat resource type in resource name (not partially, nor completely):
 
 ただし、VPC エンドポイントやセキュリティグループのように、どの AWS サービスの何で利用されているかを示す場合には利用することがある。
@@ -214,7 +213,7 @@ stg-fuga-web-fileupload-bucket
 
 プロジェクト制を取っている場合、その開発チームの持ち物であることを示すためプロジェクト名をリソース名に含めたくなるが非推奨である。
 
-理由は次である。
+理由:
 
 - 必ずしも開発しているプロダクトと、プロジェクトの粒度・ライフサイクルは一致しない
 - プロジェクトが解散すると管理主管が曖昧になる
@@ -225,7 +224,9 @@ stg-fuga-web-fileupload-bucket
 
 AWS だけではなく、Azure や GCP などを組み合わせたマルチクラウド運用を行っている、あるいは行う予定がある場合を考慮し、リソース名に `aws` といったプレフィックス/サフィックスを付与する考えもある。
 
-本規約では、`aws` キーワードをリソース名に含めることは非推奨とする。理由は次である。
+本規約では、`aws` キーワードをリソース名に含めることは非推奨とする。
+
+理由:
 
 - 同一 product を異なるクラウドサービスで運用することは稀
 - 一部のサービス (例えば DWH のみ Google BigQuery を利用するようなケース) だけの使用であれば、`{usage}` で区別すれば十分である
@@ -265,6 +266,7 @@ API Gateway は [全体ポリシーの命名規約](#命名規約) に則る。�
 ```properties
 # 命名規約の基本形
 {env}-{product}-{role}-{usage}-{access}
+
 # 例
 stg-fuga-web-potal-private
 stg-fuga-web-fileupload-public
@@ -280,14 +282,12 @@ stg-fuga-web-fileupload-public
 ```properties
 # 命名規約の基本形
 {env}-{product}-{role}
+
 # 例
 stg-fuga-web
 ```
 
-AZ は基本的に含めない。
-
-オートスケーリング、オートヒーリング構成をする場合にどこの AZ に配置するかを意識しないためである。
-そのような構成をしないという方針は、アンチパターンのため構成を見直すべきと考える。
+オートスケーリング、オートヒーリング構成をする場合にどこの AZ に配置するかを意識させないため、リソース名に AZ は基本的に含めない。そのような構成をしないという方針は、アンチパターンのため構成を見直すべきと考える。
 
 ### LB
 
@@ -305,17 +305,19 @@ LB には ALB/NLB/CLB などの種類があるが、いずれも以下の命名�
 ```properties
 # 命名規約
 {env}-{product}-{role}-{usage}-{access}
+
 # 例
 stg-fuga-web-api-public
 ```
 
 ターゲットグループ名は、基本的には LB と同じである。
-ただし、Blue/Green デプロイを行う場合は、以下のようにする。
-ターゲットグループ名をユニークにし、どちら (Blue/Green) に所属しているかをわかるようにするためである。
+
+ただし、Blue/Green デプロイを行う場合は、ターゲットグループ名をユニークにし、どちら (Blue/Green) に所属しているかをわかるようにする。
 
 ```properties
 # Target group name (Blue/Green) の命名規約
 {env}-{product}-{role}-{usage}-{access}-blue
+
 # 例
 stg-fuga-web-public-blue
 ```
@@ -339,17 +341,20 @@ ECS の命名規約は以下のとおりである
 ```properties
 # クラスターの命名規約
 {env}-{product}
+
 # 例
 stg-fuga
 
 # サービスの命名規約
 {env}-{product}-{role}-{usage}
+
 # 例
 stg-fuga-api-auth
 stg-fuga-web-frontend
 
 # タスク定義の命名規約
 {env}-{product}-{role}-{usage}
+
 # 例
 stg-fuga-batch-import-address
 ```
@@ -372,6 +377,7 @@ Lambda は運用を経てリソース数が増えやすいサービスの一つ�
 ```properties
 # 命名規約
 {env}-{product}-{role}-{usage}
+
 # 例
 stg-fuga-import-userprofile
 stg-fuga-job-checkconsistency
@@ -387,7 +393,7 @@ stg-fuga-report-successrate
 {env}-{product}-{role}-{usage}-gather
 ```
 
-#### Lambda Layer Version
+#### Lambda Layer
 
 <details><summary>AWS上の命名制約</summary>
 
@@ -396,9 +402,12 @@ stg-fuga-report-successrate
 
 </details>
 
+Lambda Layersは実行環境が重要であるため、 `{runtime}` で言語バージョンを指定する。
+
 ```properties
 # 命名規約
 {env}-{product}-{runtime}-{usage}
+
 # 例
 stg-fuga-python310-auth
 stg-fuga-nodejs18-frontend
@@ -420,11 +429,13 @@ stg-fuga-nodejs18-frontend
 ```properties
 # クラスターの命名規約
 {env}-{product}-{role}
+
 # 例
 stg-fuga-auth
 
 # インスタンスの命名規約
 {env}-{product}-{role}-{serial}
+
 # 例
 stg-fuga-auth-01
 
@@ -437,6 +448,8 @@ stg-fuga-auth-01
 ```
 
 AZ は含めない。
+
+理由:
 
 - RDS はマルチ AZ 構成をとることが推奨のため
 - Aurora は自動でマルチ AZ 構成をとっているため
@@ -470,12 +483,13 @@ DynamoDB のテーブル名には、環境、プロダクト名、用途を用�
 ```properties
 # DynamoDB の命名規約
 {env}-{product}-{usage}
+
 # 例
 stg-fuga-user
 stg-fuga-user-accesslog
 ```
 
-なお、インデックス名は `idx-1`, `idx-2` のような連番での管理を推奨する。RDB とは異なりアカウント単位での一意性は不要なため、テーブル名は含めなくても良いため、 `idx_{テーブル名}_{連番}` としなくても良い。DynamoDB は 最大で 20 のグローバルセカンダリインデックス を持つことができるため、多用することが判明している場合は `idx-01`, `idx-02` と 0 埋めする。
+なお、インデックス名は `idx-1`, `idx-2` のような連番での管理を推奨する。RDB とは異なりアカウント単位での一意性は不要なため、テーブル名は含めなくても良いため、 `idx_{テーブル名}_{連番}` としなくても良い。DynamoDB は 最大で 20 のグローバルセカンダリインデックス を持つことができるが、インデックスの数は最小限に抑えることが鉄則であるため、0埋めしない。ただし、要件上どうしても多用が避けられないことが判明している場合は `idx-01`, `idx-02` と 0 埋めする。
 
 ### S3 Bucket
 
@@ -496,16 +510,19 @@ S3 は非常に多くの用途で用いることがあるため、利用形態�
 ```properties
 # 通常の命名規約
 {env}-{product}-{use}
+
 # 例
 stg-fuga-fileupload
 
 # ログを保管するバケットの命名規約
 {env}-{product}-{service}-logs
+
 # 例
 stg-fuga-alb-logs
 
 # データ授受で利用する場合の命名規約
 {env}-{product}-{use}-{dest}-if
+
 # 例
 stg-fuga-userinfo-fis-if
 ```
@@ -530,6 +547,7 @@ IoT のセンシングを始めとしたイベントデータの場合は、次�
 ```properties
 # 命名規約
 {env}-{product}-{role}-{usage}-{schema}
+
 # 例
 stg-fuga-import-iotsensor-devicetype
 stg-fuga-import-iotsensor-toggle
@@ -540,6 +558,7 @@ stg-fuga-import-iotsensor-toggle
 ```properties
 # 命名規約
 {env}-{product}-call-{呼び出したいジョブ名}
+
 # 例
 stg-fuga-call-job-arrival-check
 ```
@@ -562,11 +581,13 @@ stg-fuga-call-job-arrival-check
 ```properties
 # 標準キューの命名規約
 {env}-{company}-{product}-{usage}
+
 # 例
 stg-future-fuga-processresult
 
 # FIFOキューの命名規約
 {env}-{company}-{product}-{usage}.fifo
+
 # 例
 stg-future-fuga-processresult.fifo
 ```
@@ -584,6 +605,7 @@ stg-future-fuga-processresult.fifo
 ```properties
 # 命名規約
 {env}-{product}-{usage}-{source}-{target}
+
 # 例
 stg-fuga-deploy-s3-codepipeline
 stg-fuga-archive-auth0-s3
@@ -591,7 +613,6 @@ stg-fuga-polling-schedule-lambda
 ```
 
 ※スケジュールタイプのルールの場合は `{source}` に `schedule` と記載する。
-
 
 ### IAM
 
@@ -602,7 +623,9 @@ IAM に関わるリソースの命名について記載する。IAM グループ
 IAM ユーザーについては、誰 (人またはシステム) が利用するのかを識別することを目的とする。同じユーザーを複数の人やシステムで使いまわすと、誰が操作したのかといった証跡を追えなくなってしまうため、個別に発行することを推奨する。
 また、役割や権限といった情報は名前に含めない。そのような名前はユーザーに紐づけるロールが増えた際などに名前と役割や権限の実態が乖離してしまうためである。
 
-IAM ユーザー名についてはアンダースコア区切りを推奨する。
+IAM ユーザー名については全体ポリシーから外れ、アンダースコア区切りを推奨する。
+
+理由:
 
 - 多くのサービスでユーザー名には慣習的にアンダースコアを用いることが多いため
 
@@ -611,6 +634,7 @@ IAM ユーザー名についてはアンダースコア区切りを推奨する�
 ```properties
 # 命名規約
 {company}_{username}
+
 # 例
 future_taro_mirai
 ```
@@ -622,6 +646,7 @@ future_taro_mirai
 ```properties
 # 命名規約
 {product}_{usage}
+
 # 例
 fuga_api
 fuga_auth0
@@ -632,7 +657,7 @@ AWS サービスに権限付与する場合は IAM ロールで付与するこ�
 [全体ポリシーの命名規約](#命名規約) とは異なり、環境名 `{env}` を Prefix につけない理由は次である。
 
 - ある AWS アカウントに対して、Switch Role などで別の環境にアクセスする際に混乱が生じる
-- ブラウザのパスワード管理などのために ID 名を分けたいという考えもあるかもしれないが、別のパスワード管理アプリなどの利用を推奨する
+- ブラウザのパスワード管理などのために ID 名を分けたいという考えもあるかもしれないが、パスワード管理アプリなどの利用を推奨する
 
 #### IAM グループ
 
@@ -647,6 +672,7 @@ IAM グループに IAM ユーザーを追加することで複数ユーザー�
 ```properties
 # 命名規約
 {company}-{role}
+
 # 例
 future-developer
 future-maintainer
@@ -659,6 +685,7 @@ future-maintainer
 ```properties
 # 命名規約
 {target}-{usage}
+
 # 例
 bastion-access
 ```
@@ -674,6 +701,7 @@ IAM ロールは、AWS サービスに権限を付与する目的で利用する
 ```properties
 # 命名規約
 {env}-{product}-{aws_service}-{usage}
+
 # 例
 stg-fuga-ec2-bastion
 stg-fuga-lambda-api
@@ -709,6 +737,7 @@ IAM ポリシーの命名に入る前に、ポリシーの設計方針につい�
 ```properties
 # 命名規約
 {env}-{product}-{permission}-{aws_service}-{usage}
+
 # 例
 stg-fuga-allow-s3-full
 stg-fuga-allow-ses-send
@@ -742,6 +771,7 @@ stg-fuga-allow-ses-send
 ```properties
 # 命名規約
 {env}-{product}-{aws_service}-{usage}
+
 # 例
 stg-fuga-ec2-bastion
 stg-fuga-iam-group-future-develop
@@ -752,7 +782,6 @@ IAM グループ用のポリシーを作成する例では、company を含め�
 この場合は命名粒度が IAM ロールと等しくなるため、命名規約も同じ方針にしている。
 
 予め用意されているポリシーの名前は `PascalCase` 形式であるが (例: AmazonS3FullAccess)、ユーザーが作成したことを明確にするため `snake_case` で命名する。
-
 
 ## タグの命名
 
@@ -770,9 +799,7 @@ IAM グループ用のポリシーを作成する例では、company を含め�
 
 </details>
 
-[AWS リソースのタグ付け](https://docs.aws.amazon.com/ja_jp/general/latest/gr/aws_tagging.html#tag-best-practices) [^1]によれば、タグ付けのベストプラクティスは以下である。
-
-[^1]: より詳しいタグ付けのベストプラクティスも存在する。 https://docs.aws.amazon.com/whitepapers/latest/tagging-best-practices/tagging-best-practices.html
+[AWS リソースのタグ付け](https://docs.aws.amazon.com/ja_jp/general/latest/gr/aws_tagging.html#tag-best-practices) によれば、タグ付けのベストプラクティスは以下である。
 
 - 個人情報 (PII) などの機密情報や秘匿性の高い情報をタグに設定しない
 - すべてのリソースタイプに一貫して適用する
@@ -781,6 +808,8 @@ IAM グループ用のポリシーを作成する例では、company を含め�
 - タグは、多めに使用する
 - 将来の変更の影響を考慮する
 - AWS Organizations のタグポリシーを利用することで、組織が採用するタグ付け標準を自動的に適用する
+
+より詳しいタグ付けのベストプラクティスも存在するが、本紙の範囲を超えるため紹介のみに留める。 [https://docs.aws.amazon.com/whitepapers/latest/tagging-best-practices/tagging-best-practices.html](https://docs.aws.amazon.com/whitepapers/latest/tagging-best-practices/tagging-best-practices.html)
 
 ### タグキー
 
