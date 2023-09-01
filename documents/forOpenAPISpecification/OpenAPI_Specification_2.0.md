@@ -12,50 +12,52 @@ meta:
 本コーディング規約は、世の中のシステム開発プロジェクトのために無償で提供致します。
 ただし、掲載内容および利用に際して発生した問題、それに伴う損害については、フューチャー株式会社は一切の責務を負わないものとします。
 また、掲載している情報は予告なく変更することがございますので、あらかじめご了承下さい。
+
 # はじめに
 
-[OpenAPI Specification 2.0（Swagger, OAS2）](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/2.0.md)定義についてのコーディング規約をまとめます。より新しいバージョンとしてOAS 3.0.3規約（作成中）がありますので、ご注意ください。
+[OpenAPI Specification 2.0（Swagger, OAS2）](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/2.0.md)定義についてのコーディング規約をまとめます。より新しいバージョンとして OAS 3.0.3 規約（作成中）がありますので、ご注意ください。
 
 ## 前提条件
 
 本規約は以下の前提で作成されたものである。
 
-* 業務システム向けのWeb API提供
-  * サードパーティ向けに広く開発するWeb APIではなく、限られたクライアントやシステムと連携すること
-  * いわゆる、LSUDs（Large Set of Unknown Developers）ではなく、SSKDs（Small Set of Known Developers）を対象とする
-* RESTish
-  * 原理的なRESTを必ずしも守る必要はないが、例えばHTTPメソッドは、参照はGET、登録はPOST、更新はPUTやPATCH、削除はDELETEで使い分けていたり、Web APIの要求が成功すれば200（OK）、204（No Content）を返し、リソースが無ければ404（Not Found）、操作に失敗すれば500系のエラーを返すといったことを指す
-  * 本規約を利用するに当たり必須条件ではないが、定義例などはそれに基づいて記載しているので注意する
-* スキーマファースト
-  * OpenAPI Specificationの定義ファイルを駆動に、クライアント・サーバサイドのコード生成やモック時の利用に用い、高速なWeb API開発につなげることを前提とする
-    * Pythonにおける、FastAPI・Django REST Frameworkのように、アプリケーションコードからOpenAPI documentを自動生成する開発手法も存在するが、本規約はこれは想定しない
-  * 定義ファイルの完成度はできるかぎり高め、コード生成やドキュメントの価値を高める
-    * OAS定義からコードを生成し、通常は記載した型・項目長・最大～最小・enum・必須定義・正規表現フォーマットでバリデーションを行い、カバーできない部分のバリデーションをアプリケーション固有ロジックとして実装する方針とする。例えば、複数項目間のチェックやDBを確認しないと行えないチェックである
-    * ドキュメントとしての価値を高めるため、そのAPI呼び出しで発生しうる全てのHTTPステータスコードを記載する
-      * APIの振る舞いを読み手に伝えるものとして、どのような異常系があるかは有用な場合が多いからである
-* JavaScript/TypeScript、Java、Goのエコシステムがターゲット
-  * OpenAPI Specificationは広く受け入れられており、コレに対応する様々なツールやフレームワークといったエコシステムがあり、中には定義された設定がうまく認識されない場合がある。本規約では対応していないツールが多い場合、特定の記法を非推奨とすることがあり、同時にその理由も説明する
-  * 全ての言語・フレームワーク・ツールの対応状況は調査しきれていないため、利用するプロダクトの対応状況は利用者側で確認をお願いする
+- 業務システム向けの Web API 提供
+  - サードパーティ向けに広く開発する Web API ではなく、限られたクライアントやシステムと連携すること
+  - いわゆる、LSUDs（Large Set of Unknown Developers）ではなく、SSKDs（Small Set of Known Developers）を対象とする
+- RESTish
+  - 原理的な REST を必ずしも守る必要はないが、例えば HTTP メソッドは、参照は GET、登録は POST、更新は PUT や PATCH、削除は DELETE で使い分けていたり、Web API の要求が成功すれば 200（OK）、204（No Content）を返し、リソースが無ければ 404（Not Found）、操作に失敗すれば 500 系のエラーを返すといったことを指す
+  - 本規約を利用するに当たり必須条件ではないが、定義例などはそれに基づいて記載しているので注意する
+- スキーマファースト
+  - OpenAPI Specification の定義ファイルを駆動に、クライアント・サーバサイドのコード生成やモック時の利用に用い、高速な Web API 開発につなげることを前提とする
+    - Python における、FastAPI・Django REST Framework のように、アプリケーションコードから OpenAPI document を自動生成する開発手法も存在するが、本規約はこれは想定しない
+  - 定義ファイルの完成度はできるかぎり高め、コード生成やドキュメントの価値を高める
+    - OAS 定義からコードを生成し、通常は記載した型・項目長・最大～最小・enum・必須定義・正規表現フォーマットでバリデーションを行い、カバーできない部分のバリデーションをアプリケーション固有ロジックとして実装する方針とする。例えば、複数項目間のチェックや DB を確認しないと行えないチェックである
+    - ドキュメントとしての価値を高めるため、その API 呼び出しで発生しうる全ての HTTP ステータスコードを記載する
+      - API の振る舞いを読み手に伝えるものとして、どのような異常系があるかは有用な場合が多いからである
+- JavaScript/TypeScript、Java、Go のエコシステムがターゲット
+  - OpenAPI Specification は広く受け入れられており、コレに対応する様々なツールやフレームワークといったエコシステムがあり、中には定義された設定がうまく認識されない場合がある。本規約では対応していないツールが多い場合、特定の記法を非推奨とすることがあり、同時にその理由も説明する
+  - 全ての言語・フレームワーク・ツールの対応状況は調査しきれていないため、利用するプロダクトの対応状況は利用者側で確認をお願いする
 
 # Web API 自体の設計について
 
-[API設計標準](API_Design.md) に準じる。
+[API 設計標準](API_Design.md) に準じる。
 
 # 全体規約
 
-ファイル全体に関わることとや、YAML記法についての方針をまとめる。
+ファイル全体に関わることとや、YAML 記法についての方針をまとめる。
 
-* YAML、JSONのいずれかのフォーマットで記載できるが、 **YAMLで記載** すること
-  * YAMLは視覚的に見やすいとされ、レビューや差分管理が比較的行いやすいと考えられるため
-* ファイルの拡張子は `yaml` とする。通常ファイル名は `swagger.yaml` を推奨する
-  * もし、複数の Swagger定義を管理するため区別したい場合は `${service}_swagger.yaml` とする
-  * `${service}` にはサービス名を指定する
-* [YAML v1.2](https://yaml.org/spec/1.2.2/#61-indentation-spaces)を用いる
-* ファイルの最終行には空行を入れる
-* 文字コードはUTF-8とする
-* タブは半角スペース2つとする
-* クォートの扱い（シングルクォート `'` や、 ダブルクォート `"` は指定しない）
-  * 可読性を上げるために、できる限りクォートは利用しない。利用する場合はダブルクォートを利用する
+- YAML、JSON のいずれかのフォーマットで記載できるが、 **YAML で記載** すること
+  - YAML は視覚的に見やすいとされ、レビューや差分管理が比較的行いやすいと考えられるため
+- ファイルの拡張子は `yaml` とする。通常ファイル名は `swagger.yaml` を推奨する
+  - もし、複数の Swagger 定義を管理するため区別したい場合は `${service}_swagger.yaml` とする
+  - `${service}` にはサービス名を指定する
+- [YAML v1.2](https://yaml.org/spec/1.2.2/#61-indentation-spaces)を用いる
+- ファイルの最終行には空行を入れる
+- 文字コードは UTF-8 とする
+- タブは半角スペース 2 つとする
+- クォートの扱い（シングルクォート `'` や、 ダブルクォート `"` は指定しない）
+
+  - 可読性を上げるために、できる限りクォートは利用しない。利用する場合はダブルクォートを利用する
 
   ```yaml
   # OK
@@ -66,13 +68,13 @@ meta:
   description: "何かしらの説明"
   ```
 
-  * 以下の場合は必須で利用する
-    * 文字列として認識させる必要のある数字（"0123"）
-    * 60進数と認識させたくない場合（"12:34"）
-    * Boolとして認識させたくない（"true", "false", "yes", "no", "y", "n", "on", "off"）
-    * `#` で始まる文字列（`#` はコメントを示す記号のためである。例: `#/definitions/Users`）
+  - 以下の場合は必須で利用する
+    - 文字列として認識させる必要のある数字（"0123"）
+    - 60 進数と認識させたくない場合（"12:34"）
+    - Bool として認識させたくない（"true", "false", "yes", "no", "y", "n", "on", "off"）
+    - `#` で始まる文字列（`#` はコメントを示す記号のためである。例: `#/definitions/Users`）
 
-* 複数項目を指定する場合は、 **Flow style(配列スキーム)** を用いることを推奨する
+- 複数項目を指定する場合は、 **Flow style(配列スキーム)** を用いることを推奨する
 
   ```yaml
   # OK（推奨: 配列リテラル構文）
@@ -86,21 +88,22 @@ meta:
     - register_at
   ```
 
-  * YAMLは項目定義がネストすることで縦長な定義になりやすい。情報密度を上げるために配列リテラルを推奨する
-* 改行を含む場合は、パイプ（ブロックスカラー） `|` を用いる
+  - YAML は項目定義がネストすることで縦長な定義になりやすい。情報密度を上げるために配列リテラルを推奨する
+
+- 改行を含む場合は、パイプ（ブロックスカラー） `|` を用いる
 
 ```yaml
-      description: |
-        説明文1
-        説明文2
-           - 箇条書き1
-           - 箇条書き2
-           - 箇条書き3
+description: |
+  説明文1
+  説明文2
+     - 箇条書き1
+     - 箇条書き2
+     - 箇条書き3
 ```
 
 # 要素規約
 
-Swagger の基本構造は以下の、swagger・info・host・basePath・schemes・paths・definitionsから構成される。
+Swagger の基本構造は以下の、swagger・info・host・basePath・schemes・paths・definitions から構成される。
 
 要素の並び順は、原則 [OpenAPI Specification 2.0（Swagger, OAS2）](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/2.0.md) に記載された順番に記載する。
 
@@ -190,40 +193,40 @@ definitions:
 
 ## swagger
 
-* `2.0` 固定とする
+- `2.0` 固定とする
 
 ## info
 
-infoオブジェクトにはWeb APIに関するメタデータを記載する。
+info オブジェクトには Web API に関するメタデータを記載する。
 `title`, `description`, `version` を必須項目とする。
 
-| フィールド名   | 必須  | 記載内容                       |
-| -------------- | :---: | ------------------------------ |
-| title          |   ○   | Web APIの総称                  |
-| description    |   ○   | Web APIの簡単な説明            |
-| version        |   ○   | OpenAPI ドキュメントのバージョン |
-| termsOfService |       | 利用規約のURL        |
-| contact        |       | 連絡先情報           |
-| license        |       | ライセンス情報       |
+| フィールド名   | 必須 | 記載内容                         |
+| -------------- | :--: | -------------------------------- |
+| title          |  ○   | Web API の総称                   |
+| description    |  ○   | Web API の簡単な説明             |
+| version        |  ○   | OpenAPI ドキュメントのバージョン |
+| termsOfService |      | 利用規約の URL                   |
+| contact        |      | 連絡先情報                       |
+| license        |      | ライセンス情報                   |
 
 ### title
 
-WebAPIの総称を記載する。システム名やサービス名 + API のような命名とすることを推奨する。
+WebAPI の総称を記載する。システム名やサービス名 + API のような命名とすることを推奨する。
 例. `X System API`
 
 ### desctiption
 
-Web APIが提供する機能の概要・想定する利用者やユースケース・制約などを記載する。
+Web API が提供する機能の概要・想定する利用者やユースケース・制約などを記載する。
 
 ### version
 
-このAPI仕様のドキュメントのバージョンを記載する。アプリケーションのバージョン（git tagやリリースで管理するようなバージョン）とは別である。
+この API 仕様のドキュメントのバージョンを記載する。アプリケーションのバージョン（git tag やリリースで管理するようなバージョン）とは別である。
 
 本規約の推奨は `major.minor` 形式である。 `0.1 `固定で開発を進め、サービスのリリース時に `1.0` とし、その後の項目やオプション、パスの追加ごとに `1.1` などインクリメントしていく。もし他チームへのドキュメントの頻繁な共有が必要だれば、`1.0` のかわりに `2023.03.26` といった形式も許容する。
 
 ## host
 
-OpenAPI 3系と異なり、 **Swaggerでは複数のホストを指定できない**。そのためhostには開発環境（local, develop, staging, productionというステージ区別であれば、develop）で用いるIP、ポート番号を指定する。他チームに提供するサンドボックス環境を用意する場合は、そのエンドポイントを指定しても良い。localhostなどのローカル開発への向き先変更は、ツール側で対応している事が多く上書き可能なため記載しない。API定義書は予期せぬタイミングで他チームに展開する必要がしばしばあり、お試しで触っても良い環境があることを示すことで情報量を増やし、円滑なコミュニケーションを促進することを狙いとする。
+OpenAPI 3 系と異なり、 **Swagger では複数のホストを指定できない**。そのため host には開発環境（local, develop, staging, production というステージ区別であれば、develop）で用いる IP、ポート番号を指定する。他チームに提供するサンドボックス環境を用意する場合は、そのエンドポイントを指定しても良い。localhost などのローカル開発への向き先変更は、ツール側で対応している事が多く上書き可能なため記載しない。API 定義書は予期せぬタイミングで他チームに展開する必要がしばしばあり、お試しで触っても良い環境があることを示すことで情報量を増やし、円滑なコミュニケーションを促進することを狙いとする。
 
 ```yaml
 # OK
@@ -239,7 +242,7 @@ host: prod.api.example.com:80
 
 ## basePath
 
-作成するSwagger定義のURLパスの全てで、共通するプレフィックスを持つ場合に指定する。Swaggerの仕様上、先頭には `/` が必須であるため、以下のように定義する。
+作成する Swagger 定義の URL パスの全てで、共通するプレフィックスを持つ場合に指定する。Swagger の仕様上、先頭には `/` が必須であるため、以下のように定義する。
 
 ```yaml
 # OK
@@ -252,7 +255,7 @@ basePath: v2
 
 ## schemes
 
-最終的に利用するスキーマのみを記載する。通常、HTTP通信でのWeb API提供は行わないと考えられるため、 `https` 固定で設定する。ローカル開発では `http` を指定することも多いが、ツールで生成されたコードのオプションで通常書き換えが可能なため、`http` の併記は許可しない。ただし、サーバサイドのマイクロサービス同士の通信で、VPC（プライベートセグメント）内であり、SSL通信を本当に利用しない場合は `http` と記載する。
+最終的に利用するスキーマのみを記載する。通常、HTTP 通信での Web API 提供は行わないと考えられるため、 `https` 固定で設定する。ローカル開発では `http` を指定することも多いが、ツールで生成されたコードのオプションで通常書き換えが可能なため、`http` の併記は許可しない。ただし、サーバサイドのマイクロサービス同士の通信で、VPC（プライベートセグメント）内であり、SSL 通信を本当に利用しない場合は `http` と記載する。
 
 ```yaml
 # OK
@@ -265,17 +268,17 @@ schemes:
   - https
 ```
 
-もし、WebSocketスキームを提供するサービスの定義である場合は、`wss` を（追加で）指定する。定義上は `https` 側との共存ができないため、ファイル定義を分けるようにする。
+もし、WebSocket スキームを提供するサービスの定義である場合は、`wss` を（追加で）指定する。定義上は `https` 側との共存ができないため、ファイル定義を分けるようにする。
 
 ## security, securityDefinitions
 
-Swaggerでは、次の認証タイプを記載できる（[詳細](https://swagger.io/docs/specification/2-0/authentication/)）。
+Swagger では、次の認証タイプを記載できる（[詳細](https://swagger.io/docs/specification/2-0/authentication/)）。
 
 1. ベーシック認証
-1. APIキー（リクエストヘッダ, クエリパラメータ）
+1. API キー（リクエストヘッダ, クエリパラメータ）
 1. OAuth2
 
-もし、認証が必須であれば記載する。全てのWeb APIで未認証を受け入れる場合は記載しない。認証の要否がAPIごとに異なる場合は、各API側で `security: []` と記載しして上書き定義する必要がある。
+もし、認証が必須であれば記載する。全ての Web API で未認証を受け入れる場合は記載しない。認証の要否が API ごとに異なる場合は、各 API 側で `security: []` と記載しして上書き定義する必要がある。
 
 ```yaml
 # OK
@@ -297,7 +300,7 @@ paths:
 
 ## produces
 
-Web APIが応答する際の MIME タイプを指定します。未指定の場合に、コード生成などツール側で予期しない動作をすることがあるため、固定で指定する。新規構築のWeb APIであれば `application/xml` は不要と通常は考えられるので、`application/json` を記載する。また、[RFC 7807 Problem Details for HTTP APIs](https://www.rfc-editor.org/rfc/rfc7807) では Content-Type に `application/problem+json` を設定するとあるが、一部のコード生成ツールにおいて、 `application/problem` と `application/problem+json` の使い分けが難しいため、併記を必須としない。OpenAPI Specificationの3系ではステータスコードごとに Content-Type を指定できるため、3系への移行も検討する。
+Web API が応答する際の MIME タイプを指定します。未指定の場合に、コード生成などツール側で予期しない動作をすることがあるため、固定で指定する。新規構築の Web API であれば `application/xml` は不要と通常は考えられるので、`application/json` を記載する。また、[RFC 7807 Problem Details for HTTP APIs](https://www.rfc-editor.org/rfc/rfc7807) では Content-Type に `application/problem+json` を設定するとあるが、一部のコード生成ツールにおいて、 `application/problem` と `application/problem+json` の使い分けが難しいため、併記を必須としない。OpenAPI Specification の 3 系ではステータスコードごとに Content-Type を指定できるため、3 系への移行も検討する。
 
 ```yaml
 # OK（applicaton/problem+json 無しでも良い）
@@ -310,7 +313,7 @@ produces:
   - application/problem+json
 ```
 
-あるAPIのみ、バイナリ（画像データなど）を返すなどのケースがあれば、 `paths` 配下で上書き指定する。
+ある API のみ、バイナリ（画像データなど）を返すなどのケースがあれば、 `paths` 配下で上書き指定する。
 
 ```yaml
 paths:
@@ -330,9 +333,9 @@ paths:
 
 ## consumes
 
-Web APIが要求を受け入れる際の MIME タイプを指定する。未指定の場合に、コード生成などツール側で予期しない動作をすることがあるため、固定で指定する。新規構築のWeb APIであれば `application/xml` は不要と通常は考えらえるので、`application/json` だけ記載する。
+Web API が要求を受け入れる際の MIME タイプを指定する。未指定の場合に、コード生成などツール側で予期しない動作をすることがあるため、固定で指定する。新規構築の Web API であれば `application/xml` は不要と通常は考えらえるので、`application/json` だけ記載する。
 
-仕様上、 `consumes` はPOST, PUT, PATCHを利用した操作のみに影響し、GETなどリクエストボディが無い操作では無視される。
+仕様上、 `consumes` は POST, PUT, PATCH を利用した操作のみに影響し、GET などリクエストボディが無い操作では無視される。
 
 ```yaml
 # OK
@@ -342,14 +345,14 @@ consumes:
 
 ## tags
 
-タグを用いて、API操作をグループ化することができる。ドキュメントやツールにとって非常に重要であるため、 **必須** で指定する。
+タグを用いて、API 操作をグループ化することができる。ドキュメントやツールにとって非常に重要であるため、 **必須** で指定する。
 
-* Swagger UI（HTMLドキュメント）の順序を制御できる
-  * 未指定の場合は、登場順で生成されてしまう
-* 命名は、 **単数形** で、小文字かつ半角スペース区切り で記載する
-  * コード生成で利用され、Goではパッケージ名やTypeScriptのClass単位となるため、シンプルな命名にする
-  * HTMLドキュメントで参照する場合の可読性を上げるため、単語を半角スペース区切りとする
-* タグごとに `description` も必須で記載する
+- Swagger UI（HTML ドキュメント）の順序を制御できる
+  - 未指定の場合は、登場順で生成されてしまう
+- 命名は、 **単数形** で、小文字かつ半角スペース区切り で記載する
+  - コード生成で利用され、Go ではパッケージ名や TypeScript の Class 単位となるため、シンプルな命名にする
+  - HTML ドキュメントで参照する場合の可読性を上げるため、単語を半角スペース区切りとする
+- タグごとに `description` も必須で記載する
 
 ```yaml
 # NG
@@ -371,7 +374,7 @@ tags:
 
 ## paths
 
-`paths` 配下に個々のAPIエンドポイントを記載する。
+`paths` 配下に個々の API エンドポイントを記載する。
 
 `paths` は根幹となる定義部分であり、以下のように重要な定義が続く。それぞれ重要な要素ごとに規約を示す。
 
@@ -388,9 +391,9 @@ Paths              # API定義全体
 
 記載順は以下のルールである。
 
-* トップレベルの `tags` でグルーピングした順番に記載する
-* URLは短いものから並べる
-* HTTPメソッドは、 head, get, post, put, patch, deleteの順にする
+- トップレベルの `tags` でグルーピングした順番に記載する
+- URL は短いものから並べる
+- HTTP メソッドは、 head, get, post, put, patch, delete の順にする
 
 ```yaml
 # 並び順の例（HTTPメソッドの子要素はtags以外を省略）
@@ -422,37 +425,35 @@ paths:
 
 ### Paths > Path > Operation
 
-URLに紐づくHTTPメソッドで、1つの操作を定義します。
+URL に紐づく HTTP メソッドで、1 つの操作を定義します。
 
-* `summary`
-  * APIの操作概要をsummaryに記載する
-  * 機能IDがあるのでれば、ここに記載する
-  * 例: `API-001 ユーザアカウント取得`
-* `description`
-  * APIの振る舞いの詳細や注意点（ある条件で区分の値が変わったり、権限についての注意、要素が空になるなど）を記載する
-* `operationId`
-  * コード生成で利用される項目なので、必須で指定する
-  * 原則、`camelCase` の `${HTTPメソッド}${機能物理名}` で記載する（例: getUser, postUser, deleteUser）
-    * ただし、HTTPメソッドに紐づかない操作であれば、HTTPメソッドの代わりに個別の動詞（例: searchUser, moveItemList, addPermission）を当てはめる
-    * コード生成対象によっては、get_user（Python）、GetUser（Go）といった命名規約にしたくなるが、通常はコード生成側で配慮してくれる
-* `consumes`, `produces`
-  * トップレベルに `application/json` を記載しているため、同様であれば記載しない
+- `summary`
+  - API の操作概要を summary に記載する
+  - 機能 ID があるのでれば、ここに記載する
+  - 例: `API-001 ユーザアカウント取得`
+- `description`
+  - API の振る舞いの詳細や注意点（ある条件で区分の値が変わったり、権限についての注意、要素が空になるなど）を記載する
+- `operationId`
+  - コード生成で利用される項目なので、必須で指定する
+  - 原則、`camelCase` の `${HTTPメソッド}${機能物理名}` で記載する（例: getUser, postUser, deleteUser）
+    - ただし、HTTP メソッドに紐づかない操作であれば、HTTP メソッドの代わりに個別の動詞（例: searchUser, moveItemList, addPermission）を当てはめる
+    - コード生成対象によっては、get_user（Python）、GetUser（Go）といった命名規約にしたくなるが、通常はコード生成側で配慮してくれる
+- `consumes`, `produces`
+  - トップレベルに `application/json` を記載しているため、同様であれば記載しない
 
 ```yaml
-  /users:
-    get:
-      tags:
-        - user
-      summary: API-001 ユーザーアカウント取得
-      description: |
-        ユーザーのアカウント情報を取得します。
-        ログイン情報が不正の場合はアカウントが存在しても404を返すことがあります。
-        アカウント種別については【別紙】X_定数一覧 を参照ください。
-      operationId: getUser
-      parameters:
-        ...
-      responses:
-        ...
+/users:
+  get:
+    tags:
+      - user
+    summary: API-001 ユーザーアカウント取得
+    description: |
+      ユーザーのアカウント情報を取得します。
+      ログイン情報が不正の場合はアカウントが存在しても404を返すことがあります。
+      アカウント種別については【別紙】X_定数一覧 を参照ください。
+    operationId: getUser
+    parameters: ...
+    responses: ...
 ```
 
 ### Paths > Path > Parameter
@@ -461,21 +462,22 @@ URLに紐づくHTTPメソッドで、1つの操作を定義します。
 
 - `name`
   - `snake_case` で物理名を記載します
-  - HTTPメソッドがPOST/PUT/HTTPの場合は `body` に固定する
+  - HTTP メソッドが POST/PUT/HTTP の場合は `body` に固定する
 - `in`
   - 仕様上、必須で `query`, `header`, `path`, `formData`, `body` のどれかを指定する
-  - HTTPメソッドがHEAD/GET/DELETEの場合
+  - HTTP メソッドが HEAD/GET/DELETE の場合
     - `path`, `query` のみの利用を推奨する
-  - HTTPメソッドがPOST/PUT/HTTPの場合
+  - HTTP メソッドが POST/PUT/HTTP の場合
     - `body` のみの利用を推奨する
 - `required`
-  - 必須の場合のみ記載する。デフォルトfalseであるため、任意項目の場合は記載しない
-  - POST, PUTで用いるリクエストボディに対しては、 `required: true` を必ず指定する
+  - 必須の場合のみ記載する。デフォルト false であるため、任意項目の場合は記載しない
+  - POST, PUT で用いるリクエストボディに対しては、 `required: true` を必ず指定する
     - リクエストボディ自体が未指定だった場合、各項目の `required: true` を指定していてもサーバサイドのチェックが有効に働かないことがあるため
 - `pattern`, `minLength`, `maxLength` などの条件について
-    - [https://github.com/OAI/OpenAPI-Specification/blob/main/versions/2.0.md#fixed-fields-7](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/2.0.md#fixed-fields-7) を参考に、指定できる条件はなるべく細かく指定する
+  - [https://github.com/OAI/OpenAPI-Specification/blob/main/versions/2.0.md#fixed-fields-7](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/2.0.md#fixed-fields-7) を参考に、指定できる条件はなるべく細かく指定する
 - `schema`
-  - リクエストボディは、`$ref` を用いて、`#/definitions` 配下に記載する。**$refを用いない記載は許可しない。**
+
+  - リクエストボディは、`$ref` を用いて、`#/definitions` 配下に記載する。**$ref を用いない記載は許可しない。**
 
   ```yaml
     # OK
@@ -502,6 +504,7 @@ URLに紐づくHTTPメソッドで、1つの操作を定義します。
 
   - モデル名は、 `{HTTPメソッド名}{物理名}` の PascalCase で記載する
     - 例: PutUserAccount、PostUserAccount, PatchUserAccount
+
 - `desription`
   - 項目の論理名や補足説明を記載する
 
@@ -551,7 +554,7 @@ URLに紐づくHTTPメソッドで、1つの操作を定義します。
   - 通常発生しない、サーバサイドの内部的な予期せぬエラー `500 Internal Server Error` は必須で記載する
   - リクエストパラメータが存在する場合は `400 Bad Request` が、認証がある場合は `401 Unauthorized` や `403 Forbiddend` が考えられる
   - `default` は必須で指定する
-    - 例えば、URL自体が存在しない場合の `404 NotFound` や、提供していないHTTPメソッドを呼び出した場合に `405 Method Not Allowed` を、自動生成したサーバサイドの実装が返すことがある。この場合、 `default` を指定していないとフロントエンド側でパースエラーとなることがあるため。各APIエンドポイントのサーバサイド側の実装が応答しないコードは、 `default` でまとめて指定させる
+    - 例えば、URL 自体が存在しない場合の `404 NotFound` や、提供していない HTTP メソッドを呼び出した場合に `405 Method Not Allowed` を、自動生成したサーバサイドの実装が返すことがある。この場合、 `default` を指定していないとフロントエンド側でパースエラーとなることがあるため。各 API エンドポイントのサーバサイド側の実装が応答しないコードは、 `default` でまとめて指定させる
 
 ```yaml
   /users/{user_id}/account:
@@ -612,20 +615,21 @@ URLに紐づくHTTPメソッドで、1つの操作を定義します。
 - モデル名は、PascalCase で記載する
 - 種別が配列の場合、ネストして定義するのではなく、 `$ref` を活用する
 - もし、リソース名が単複同形で `type: array` と区別できない場合、 `List` を末尾に付けて区別する
+
   - そうではない場合は `s` を付けて表現する
 
   ```yml
-      # OK
-      - in: query
-        name: product_types
-        type: array
-        description: プロダクト種別
+  # OK
+  - in: query
+    name: product_types
+    type: array
+    description: プロダクト種別
 
-      # NG
-      - in: query
-        name: product_type_list # xxx_listはNG
-        type: array
-        description: プロダクト種別
+  # NG
+  - in: query
+    name: product_type_list # xxx_listはNG
+    type: array
+    description: プロダクト種別
   ```
 
 - リクエストボディ
@@ -634,19 +638,19 @@ URLに紐づくHTTPメソッドで、1つの操作を定義します。
 - レスポンスボディ
   - `type`, `description`, `example`が必須。
   - `format`, `minLength`, `maxLength` などの型桁はできる限り細かく指定する
-    - 多くのクライアントはRDBをデータストアに持ち、それらの型定義の参考にするためである
+    - 多くのクライアントは RDB をデータストアに持ち、それらの型定義の参考にするためである
   - `enum` は **指定してはならない**
-    - 一部のクライアント側のコード生成で、存在しない区分値を指定するとエラーになる（レスポンスを受信できない）。これはサーバサイドで区分値を増やす必要があるケースで、サーバ・クライアントの同期をとる必要があり困難なケースが多い。例えばクライアントがモバイルである場合、サーバサイドで区分値を追加した場合には、全端末でアプリアップデートが必要となリ、事実上API互換性がなくなるため、v1を保持しつつ、区分値を追加したv2のPathを追加する必要が出てくる
+    - 一部のクライアント側のコード生成で、存在しない区分値を指定するとエラーになる（レスポンスを受信できない）。これはサーバサイドで区分値を増やす必要があるケースで、サーバ・クライアントの同期をとる必要があり困難なケースが多い。例えばクライアントがモバイルである場合、サーバサイドで区分値を追加した場合には、全端末でアプリアップデートが必要となリ、事実上 API 互換性がなくなるため、v1 を保持しつつ、区分値を追加した v2 の Path を追加する必要が出てくる
   - `pattern` の指定は不要
-    - `pattern` もenumと同様に、サーバサイドが当初よりリクエストのバリデーションを緩めた場合に、古い `pattern` でクライアントがレスポンスを検証すると動作しなくなるため。クライアントサイドがRDBなど書き込み時のスキーマが厳密であったとしても、正規表現レベルの厳格さで書き込みチェックをすることは無いと考えられる
-  - `example` の値は、 例えばPrismでサーバのモックとして動かす場合に返される値になるため、できる限り具体的な値にする
-  - 空文字、false, 0値を返しうる項目に、`x-omitempty :false` を付与する
-    - ツールの実装によっては、0値やfalseを返した場合にJSONフィールドから除外される（omitされる）ことがある
-- 日付は `2023-04-02` といったISO 8601 dateフォーマットを推奨する。この場合は `fromat: date` を指定する
-- 日時は `2023-04-02T15:04:05+09:00` といったISO 8601 datetimeフォーマットを推奨する。この場合は、 `format: date-time` を指定する
+    - `pattern` も enum と同様に、サーバサイドが当初よりリクエストのバリデーションを緩めた場合に、古い `pattern` でクライアントがレスポンスを検証すると動作しなくなるため。クライアントサイドが RDB など書き込み時のスキーマが厳密であったとしても、正規表現レベルの厳格さで書き込みチェックをすることは無いと考えられる
+  - `example` の値は、 例えば Prism でサーバのモックとして動かす場合に返される値になるため、できる限り具体的な値にする
+  - 空文字、false, 0 値を返しうる項目に、`x-omitempty :false` を付与する
+    - ツールの実装によっては、0 値や false を返した場合に JSON フィールドから除外される（omit される）ことがある
+- 日付は `2023-04-02` といった ISO 8601 date フォーマットを推奨する。この場合は `fromat: date` を指定する
+- 日時は `2023-04-02T15:04:05+09:00` といった ISO 8601 datetime フォーマットを推奨する。この場合は、 `format: date-time` を指定する
 - エラーについて
-  - API全体で一貫したエラーを返すことを推奨とし、そのために `"#/definitions/Error"` といった共通のエラーモデルを利用を推奨する
-  -  [RFC 7807 Problem Details for HTTP APIs](https://www.rfc-editor.org/rfc/rfc7807) があるため、レイアウトを参考にする
+  - API 全体で一貫したエラーを返すことを推奨とし、そのために `"#/definitions/Error"` といった共通のエラーモデルを利用を推奨する
+  - [RFC 7807 Problem Details for HTTP APIs](https://www.rfc-editor.org/rfc/rfc7807) があるため、レイアウトを参考にする
 
 ```yaml
 definitions:
@@ -748,113 +752,117 @@ definitions:
 
 ## バリデーションについて
 
-リクエストパラメータの各項目に対して、必須・型・桁・区分値・日付・正規表現のチェックが行える。レスポンスで用いるモデルについても同様に設定でき、`enum`, `pattern` 以外はAPIの利用者（クライアント）側のDB設計などに必要な型桁情報を渡すのに有用であるため、できる限り詳しく指定する。
+リクエストパラメータの各項目に対して、必須・型・桁・区分値・日付・正規表現のチェックが行える。レスポンスで用いるモデルについても同様に設定でき、`enum`, `pattern` 以外は API の利用者（クライアント）側の DB 設計などに必要な型桁情報を渡すのに有用であるため、できる限り詳しく指定する。
 
-* 必須（`required`）
-  * 必須パラメータのみ `required: true` を定義する
-* デフォルト値（`default`）
-  * パラメータにデフォルト値がある場合は定義する
+- 必須（`required`）
+  - 必須パラメータのみ `required: true` を定義する
+- デフォルト値（`default`）
 
-  ```yaml
-    # ex. enum
-    name: limit
-    type: number
-    format: integer
-    minimum: 1
-    maximum: 100
-    default: 20
-    description: 検索結果の項目数上限（1~100が指定可能）
-  ```
-
-  * API公開後に、default 値を変更してはならない（APIの互換性が崩れるため）。もし変更する場合は、APIのバージョンを上げること
-* 型（`type`）
-  * `string(文字列)`, `number（数値）`, `integer（整数値）`, `boolean（真偽値）` `array（配列）`, `file（ファイル）` のうちどれか指定する
-* フォーマット（`format`） は以下の型の詳細情報を示すもので、可能な限り設定する
-  * `integer` （整数）
-    * `int32`, `int64`
-  * `number` （数値）
-    * `float`, `double`
-  * `string` （バイナリ）
-    * `byte`: Base64でエンコードされた文字列
-    * `binary`: バイト配列
-  * `string` （日付）
-    * `date`: [RFC3339](https://www.rfc-editor.org/rfc/rfc3339) full-date
-      * 項目名は `_on` を接尾辞につけることを推奨とする
-    * `date-time`: [RFC3339](https://www.rfc-editor.org/rfc/rfc3339) date-time
-      * 項目名は `_at` を接尾辞につけることを推奨とする
-  * `string` （その他）
-    * `password`: Swagger UIで入力が隠される
-    * その他、 `email`, `uuid` などOpen API仕様に存在しない任意のフォーマットを独自のドキュメント生成などのために記載しても良い
-* 桁
-  * 文字列
-    * 最大桁数：`maxLength`
-    * 最小桁数：`minLength`
-  * 数値または整数値
-    * 最小値（境界値を含む）：`minimum`
-    * 最大値（境界値を含む）：`maximum`
-    * 境界値を含まない場合のみ`exclusiveMinimum: true`または`exclusiveMaximum: true`を定義する。minimum, maximumで代用できる場合は利用しない
-  * 配列:
-    * 最大要素数：`maxItems`
-    * 最小要素数：`minItems`
-    * `required: true`の場合は原則として`minItems: 1`を定義する
-    * `uniqueItems` は必須で指定する（通常は一意であるべき）
-  * API公開後に、レスポンスの `maxLength` を以前より大きい値に変更してはならい
-    * レスポンスの `maxLength` などAPI利用者側システムのDBのERD定義のインプットになる事が多いため。もし行う場合はAPIのバージョンを上げることや、連携先に桁数変更の旨を調整するなどの考慮を行う
-* 区分値（`enum`）
-  * `description`に区分値の論理名を記載する
+  - パラメータにデフォルト値がある場合は定義する
 
   ```yaml
-    name: gender
-    type: string
-    enum: ["0", "1", "2", "9"]
-    description: |
-      性別
-        0: 不明
-        1: 男
-        2: 女
-        9: 適用不能
+  # ex. enum
+  name: limit
+  type: number
+  format: integer
+  minimum: 1
+  maximum: 100
+  default: 20
+  description: 検索結果の項目数上限（1~100が指定可能）
   ```
 
-  * **固定値** の場合も enum を1つだけ指定して表現する。この場合もレスポンスで利用する場合は指定しない
+  - API 公開後に、default 値を変更してはならない（API の互換性が崩れるため）。もし変更する場合は、API のバージョンを上げること
+
+- 型（`type`）
+  - `string(文字列)`, `number（数値）`, `integer（整数値）`, `boolean（真偽値）` `array（配列）`, `file（ファイル）` のうちどれか指定する
+- フォーマット（`format`） は以下の型の詳細情報を示すもので、可能な限り設定する
+  - `integer` （整数）
+    - `int32`, `int64`
+  - `number` （数値）
+    - `float`, `double`
+  - `string` （バイナリ）
+    - `byte`: Base64 でエンコードされた文字列
+    - `binary`: バイト配列
+  - `string` （日付）
+    - `date`: [RFC3339](https://www.rfc-editor.org/rfc/rfc3339) full-date
+      - 項目名は `_on` を接尾辞につけることを推奨とする
+    - `date-time`: [RFC3339](https://www.rfc-editor.org/rfc/rfc3339) date-time
+      - 項目名は `_at` を接尾辞につけることを推奨とする
+  - `string` （その他）
+    - `password`: Swagger UI で入力が隠される
+    - その他、 `email`, `uuid` など Open API 仕様に存在しない任意のフォーマットを独自のドキュメント生成などのために記載しても良い
+- 桁
+  - 文字列
+    - 最大桁数：`maxLength`
+    - 最小桁数：`minLength`
+  - 数値または整数値
+    - 最小値（境界値を含む）：`minimum`
+    - 最大値（境界値を含む）：`maximum`
+    - 境界値を含まない場合のみ`exclusiveMinimum: true`または`exclusiveMaximum: true`を定義する。minimum, maximum で代用できる場合は利用しない
+  - 配列:
+    - 最大要素数：`maxItems`
+    - 最小要素数：`minItems`
+    - `required: true`の場合は原則として`minItems: 1`を定義する
+    - `uniqueItems` は必須で指定する（通常は一意であるべき）
+  - API 公開後に、レスポンスの `maxLength` を以前より大きい値に変更してはならい
+    - レスポンスの `maxLength` など API 利用者側システムの DB の ERD 定義のインプットになる事が多いため。もし行う場合は API のバージョンを上げることや、連携先に桁数変更の旨を調整するなどの考慮を行う
+- 区分値（`enum`）
+
+  - `description`に区分値の論理名を記載する
+
+  ```yaml
+  name: gender
+  type: string
+  enum: ["0", "1", "2", "9"]
+  description: |
+    性別
+      0: 不明
+      1: 男
+      2: 女
+      9: 適用不能
+  ```
+
+  - **固定値** の場合も enum を 1 つだけ指定して表現する。この場合もレスポンスで利用する場合は指定しない
 
     ```yaml
-      name: file_layout
-      type: string
-      enum: ["json"]
-      description: ファイルレイアウト
+    name: file_layout
+    type: string
+    enum: ["json"]
+    description: ファイルレイアウト
     ```
 
-* その他
-  * 正規表現で表現できる文字列は`pattern`を利用して定義する。桁や区分値で代替できる場合は、`pattern` を用いない
-  * 例:
+- その他
 
-      ```yaml
-      remind_time:
-          type: string
-          description: リマインド時刻。（hh:mm）形式
-          example: 23:59
-          pattern: "^(2[0-3]|[01][0-9]):([0-5][0-9])$"
-      ```
+  - 正規表現で表現できる文字列は`pattern`を利用して定義する。桁や区分値で代替できる場合は、`pattern` を用いない
+  - 例:
+
+    ```yaml
+    remind_time:
+      type: string
+      description: リマインド時刻。（hh:mm）形式
+      example: 23:59
+      pattern: "^(2[0-3]|[01][0-9]):([0-5][0-9])$"
+    ```
 
 ## ファイルアップロード
 
-Web APIにおけるファイルアップロードのよく利用される実装手段は、大きく分けて以下の3手法に分類できます
+Web API におけるファイルアップロードのよく利用される実装手段は、大きく分けて以下の 3 手法に分類できます
 
-1. ファイルのコンテンツをBase64などにエンコードして、JSONの項目として設定し、リクエストボディで送る
-    * メリット: 通常のJSONを扱うのとほぼ変わらないため楽。サムネイルなど限定されたユースケースの場合に向く
-    * デメリット: 巨大なファイルを扱う場合などサーバリソース負荷が懸念。Base64に変換する分CPU負荷は余計にかかる。ペイロードが膨れるためモバイルなどのクライアントでは帯域利用での懸念がある
+1. ファイルのコンテンツを Base64 などにエンコードして、JSON の項目として設定し、リクエストボディで送る
+   - メリット: 通常の JSON を扱うのとほぼ変わらないため楽。サムネイルなど限定されたユースケースの場合に向く
+   - デメリット: 巨大なファイルを扱う場合などサーバリソース負荷が懸念。Base64 に変換する分 CPU 負荷は余計にかかる。ペイロードが膨れるためモバイルなどのクライアントでは帯域利用での懸念がある
 2. multipart/form-data ファイルを送信する
-    * メリット: ファイルをBase64に変換するといった作業が不要
-    * デメリット: ブラウザ以外のクライアントにとって手間がかかる
-3. アップロード用に用いる、オブジェクトストレージのSigned URLを発行し、クライアントから直接ファイルをアップロードしてもらう
-    * 次の流れを想定（Signed URLを取得 -> ファイルアップロード ->  ファイルに紐づかせるキーや属性情報などを登録）
-    * Amazon API Gatewayを利用する場合は、2023年6月時点で[ペイロード上限が10MB](https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html)、[AWS Lambdaでもペイロード制限がある](https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/gettingstarted-limits.html#api-requests)ため、許容するファイルサイズによってはこの手法一択となる
-    * メリット: オブジェクトストレージの可用性・信頼性を享受できる
-    * デメリット: アップロードするために複数のAPIエンドポイント呼び出しが必要なため、煩雑である
-    * 2023年6月にAWSブログでこの方式について解説した記事が出たので、詳細は参照ください。
-      * [https://aws.amazon.com/jp/blogs/news/large-size-files-transferring-by-serverless-s3presignedurl-and-clientside-javascript/](https://aws.amazon.com/jp/blogs/news/large-size-files-transferring-by-serverless-s3presignedurl-and-clientside-javascript/)
+   - メリット: ファイルを Base64 に変換するといった作業が不要
+   - デメリット: ブラウザ以外のクライアントにとって手間がかかる
+3. アップロード用に用いる、オブジェクトストレージの Signed URL を発行し、クライアントから直接ファイルをアップロードしてもらう
+   - 次の流れを想定（Signed URL を取得 -> ファイルアップロード -> ファイルに紐づかせるキーや属性情報などを登録）
+   - Amazon API Gateway を利用する場合は、2023 年 6 月時点で[ペイロード上限が 10MB](https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html)、[AWS Lambda でもペイロード制限がある](https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/gettingstarted-limits.html#api-requests)ため、許容するファイルサイズによってはこの手法一択となる
+   - メリット: オブジェクトストレージの可用性・信頼性を享受できる
+   - デメリット: アップロードするために複数の API エンドポイント呼び出しが必要なため、煩雑である
+   - 2023 年 6 月に AWS ブログでこの方式について解説した記事が出たので、詳細は参照ください。
+     - [https://aws.amazon.com/jp/blogs/news/large-size-files-transferring-by-serverless-s3presignedurl-and-clientside-javascript/](https://aws.amazon.com/jp/blogs/news/large-size-files-transferring-by-serverless-s3presignedurl-and-clientside-javascript/)
 
-本規約でファイルアップロードについて上記の3. Signed URLを推奨する。API呼び出しとしては次のようなフローとする。
+本規約でファイルアップロードについて上記の 3. Signed URL を推奨する。API 呼び出しとしては次のようなフローとする。
 
 ```mermaid
 sequenceDiagram
@@ -873,62 +881,62 @@ A->>B: ③ファイルアップロード完了(受付ID、キー、属性)
   B-->>A: 受付完了
 ```
 
-フローの①、②はアプリケーション固有の紐づけルールにおいてWeb APIを設計すれば良いため、本規約でYAMLの設定例は記載しない。フロー②についてはSigned URLを用いたアップロードであり、アプリケーションのWeb API定義を書く必要はない。もし、監査ログなどのガバナンス上、直接オブジェクトストレージへの書き込みを許容されないケースは、BでSigned URLに相当する書き込み先を提供し、Bを経由してファイルをアップロードする。
+フローの ①、② はアプリケーション固有の紐づけルールにおいて Web API を設計すれば良いため、本規約で YAML の設定例は記載しない。フロー ② については Signed URL を用いたアップロードであり、アプリケーションの Web API 定義を書く必要はない。もし、監査ログなどのガバナンス上、直接オブジェクトストレージへの書き込みを許容されないケースは、B で Signed URL に相当する書き込み先を提供し、B を経由してファイルをアップロードする。
 
-上記どちらのケースもOpenAPI定義としてはシンプルであるため、記述例は割愛する。
+上記どちらのケースも OpenAPI 定義としてはシンプルであるため、記述例は割愛する。
 
 ## ファイルダウンロード
 
-ファイルアップロードと同様、オブジェクトストレージのSigned URL経由を経由してのダウンロードさせる手法を推奨する。Web APIとしてはオブジェクトストレージにダウンロード用のファイルを書き込み、クライアントが取得するためのSigned URLをレスポンスのJSON項目に渡す方式である。
+ファイルアップロードと同様、オブジェクトストレージの Signed URL 経由を経由してのダウンロードさせる手法を推奨する。Web API としてはオブジェクトストレージにダウンロード用のファイルを書き込み、クライアントが取得するための Signed URL をレスポンスの JSON 項目に渡す方式である。
 
-もし、サムネイルやアイコン画像など、ファイル容量がごく小さい場合はBase64にエンコードしてJSONに埋め込んで渡しても良い。線引をどこに設置するかは本規約で定義しない。
+もし、サムネイルやアイコン画像など、ファイル容量がごく小さい場合は Base64 にエンコードして JSON に埋め込んで渡しても良い。線引をどこに設置するかは本規約で定義しない。
 
-どちらのケースもOpenAPI定義としてはシンプルであるため、記述例は割愛する。
+どちらのケースも OpenAPI 定義としてはシンプルであるため、記述例は割愛する。
 
 ## CORS
 
-CORS（Cross-Origin Resource Sharing）のために、optionsメソッドの追記は **原則不要** とする。
+CORS（Cross-Origin Resource Sharing）のために、options メソッドの追記は **原則不要** とする。
 
 理由は以下である。
 
-* サーバ側
-  * optionsメソッド対応は、API使用ではなく実装レベルの機能横断的な処理（JavaにおけるServlet FilterやSpringのInterceptor、GoにおけるMiddlewareなど）で行うことが大半であり、コード生成が不要
-* クライアント側
-  * optionsメソッドを用いるのはクライアントがブラウザであり、クライアントのアプリケーションコードが明示的にアクセスしないため、コード生成が不要
-* 使用面として
-  * ` Access-Control-Allow-Origin` がどのような値を返すか、呼び出し元によって動的な値を返したい場合があり、記載が困難なケースがある
+- サーバ側
+  - options メソッド対応は、API 使用ではなく実装レベルの機能横断的な処理（Java における Servlet Filter や Spring の Interceptor、Go における Middleware など）で行うことが大半であり、コード生成が不要
+- クライアント側
+  - options メソッドを用いるのはクライアントがブラウザであり、クライアントのアプリケーションコードが明示的にアクセスしないため、コード生成が不要
+- 使用面として
+  - ` Access-Control-Allow-Origin` がどのような値を返すか、呼び出し元によって動的な値を返したい場合があり、記載が困難なケースがある
 
-ただし、Amazon API Gatewayのようなサービスを利用する場合は、optionsメソッドの記載が必須である場合は除く[^1]。
+ただし、Amazon API Gateway のようなサービスを利用する場合は、options メソッドの記載が必須である場合は除く[^1]。
 
 [^1]: https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/enable-cors-for-resource-using-swagger-importer-tool.html
 
-## APIのバージョン管理
+## API のバージョン管理
 
-Swagger定義で以下の変更を行う場合は、利用するコード生成の動作によってはクライアントにとって互換性を失う破壊的変更であることがあるため、変更は調整の上で行うか、バージョンを上げることを考える。
+Swagger 定義で以下の変更を行う場合は、利用するコード生成の動作によってはクライアントにとって互換性を失う破壊的変更であることがあるため、変更は調整の上で行うか、バージョンを上げることを考える。
 
-* リクエスト項目
-  * フィールドの型を変更する
-  * 桁数を小さくする
-  * enumの種類を減らす
-  * 正規表現のチェックを厳しくする
-  * 必須フィールドを後から追加する
-  * デフォルト値を後から変更する
-* レスポンス項目
-  * フィールドの型を変更する
-  * 桁数を大きくする
-  * デフォルト値を後から変更する
+- リクエスト項目
+  - フィールドの型を変更する
+  - 桁数を小さくする
+  - enum の種類を減らす
+  - 正規表現のチェックを厳しくする
+  - 必須フィールドを後から追加する
+  - デフォルト値を後から変更する
+- レスポンス項目
+  - フィールドの型を変更する
+  - 桁数を大きくする
+  - デフォルト値を後から変更する
 
 ## ファイル単位
 
-TODO v3の作成タイミングと合わせて追記する
+TODO v3 の作成タイミングと合わせて追記する
 
 # 推奨ツール
 
-[本当に使ってよかったOpenAPI (Swagger) ツール ](https://future-architect.github.io/articles/20191008/) にあるように、様々なツールで開発ができる。VS Codeを用いる場合は以下のプラグインを推奨する。
+[本当に使ってよかった OpenAPI (Swagger) ツール ](https://future-architect.github.io/articles/20191008/) にあるように、様々なツールで開発ができる。VS Code を用いる場合は以下のプラグインを推奨する。
 
 - [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
 - [Swagger Viewer](https://marketplace.visualstudio.com/items?itemName=Arjun.swagger-viewer)
-    - Ctrl + Shift + P (Win: Shift + Alt +P ) → Preview Swagger で現在編集中のSwaggerプレビューが可能
+  - Ctrl + Shift + P (Win: Shift + Alt +P ) → Preview Swagger で現在編集中の Swagger プレビューが可能
 - [spectral-cli](https://docs.stoplight.io/docs/spectral/674b27b261c3c-overview)
 
 `editorconfig` を用いる場合は、以下の定義を推奨する。

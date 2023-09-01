@@ -8,7 +8,7 @@ pageClass: lang-home
 footer: ©2015 - 2023 Future Enterprise Coding Standards - Future Corporation
 ---
 
-可読性や保守性、拡張性を考慮した [AWSインフラ命名規則](./AWSインフラリソース命名規約.md)です。
+可読性や保守性、拡張性を考慮した [AWS インフラ命名規則](./AWSインフラリソース命名規約.md)です。
 
 ## Resources
 

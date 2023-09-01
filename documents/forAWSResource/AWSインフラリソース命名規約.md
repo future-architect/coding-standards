@@ -33,7 +33,7 @@ meta:
 | ------------ | -------------- | ------------------------ | ------------------------------------------------------------------------------------------------- |
 | Common       | `{env}`        | 環境                     | 環境の区別                                                                                        |
 |              | `{product}`    | 製品名                   | 構築する製品名またはシステム名。稼働するマイクロサービス名もこれに当たる                          |
-|              | `{role}`       | 役割                     | 役割を示す。場合によっては具体的な製品名 postgres, jenkins などを指定する               |
+|              | `{role}`       | 役割                     | 役割を示す。場合によっては具体的な製品名 postgres, jenkins などを指定する                         |
 |              | `{usage}`      | 用途                     | 利用目的やリソースの動作 (action) を示す。user_master, fileupload など識別したい値を指定する      |
 |              | `{target}`     | 対象                     | 操作の対象。usage が複数の対象があり区別したいときに利用する。                                    |
 | Network      | `{region}`     | リージョン               | [リージョンコード](https://docs.aws.amazon.com/ja_jp/general/latest/gr/rande.html) の略称を用いる |
@@ -115,7 +115,7 @@ prod についてはよく用いる dev, stg と見間違えを防ぐため 4 �
 
 ### 用途 (`{usage}`)
 
-利用目的やリソースの動作 (action) を示す。user_master, fileuploadといった形式や、認証(auth)やBFF（Backend For Frontend）など。
+利用目的やリソースの動作 (action) を示す。user_master, fileupload といった形式や、認証(auth)や BFF（Backend For Frontend）など。
 
 役割 (`{role}`) と合わせてリソースが一意に特定できる名称を設定する。
 
@@ -251,7 +251,6 @@ VPC に関わるリソースの命名について記載する。
 | NAT Gateway      | `{env}-{product}`                       | stg-fuga             |                                                         |
 | Endpoint         | `{env}-{product}-{aws_service}`         | stg-fuga-s3          | 様々なサービスが利用するため AWS サービス名を含めている |
 | Security Group   | `{env}-{product}-{aws_service}-{usage}` | stg-fuga-ec2-bastion | 様々なサービスが利用するため AWS サービス名を含めている |
-
 
 ### API Gateway
 
@@ -402,7 +401,7 @@ stg-fuga-report-successrate
 
 </details>
 
-Lambda Layersは実行環境が重要であるため、 `{runtime}` で言語バージョンを指定する。
+Lambda Layers は実行環境が重要であるため、 `{runtime}` で言語バージョンを指定する。
 
 ```properties
 # 命名規約
@@ -489,7 +488,7 @@ stg-fuga-user
 stg-fuga-user-accesslog
 ```
 
-なお、インデックス名は `idx-1`, `idx-2` のような連番での管理を推奨する。RDB とは異なりアカウント単位での一意性は不要なため、テーブル名は含めなくても良いため、 `idx_{テーブル名}_{連番}` としなくても良い。DynamoDB は 最大で 20 のグローバルセカンダリインデックス を持つことができるが、インデックスの数は最小限に抑えることが鉄則であるため、0埋めしない。ただし、要件上どうしても多用が避けられないことが判明している場合は `idx-01`, `idx-02` と 0 埋めする。
+なお、インデックス名は `idx-1`, `idx-2` のような連番での管理を推奨する。RDB とは異なりアカウント単位での一意性は不要なため、テーブル名は含めなくても良いため、 `idx_{テーブル名}_{連番}` としなくても良い。DynamoDB は 最大で 20 のグローバルセカンダリインデックス を持つことができるが、インデックスの数は最小限に抑えることが鉄則であるため、0 埋めしない。ただし、要件上どうしても多用が避けられないことが判明している場合は `idx-01`, `idx-02` と 0 埋めする。
 
 ### S3 Bucket
 

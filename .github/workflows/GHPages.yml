@@ -26,6 +26,12 @@ jobs:
           args: "pandoc ./documents/forSQL/SQLコーディング規約（Oracle）.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./.vuepress/public/resources/SQLコーディング規約（Oracle）.docx"
       - uses: docker://pandoc/latex:2.9
         with:
+          args: "pandoc ./documents/forSQL/SQLコーディング規約（PostgreSQL）.md -s --self-contained --number-sections --toc -t html5 -c ./documents/common/pandoc_styles/css/style.css -o ./.vuepress/public/resources/SQLコーディング規約（PostgreSQL）.html"
+      - uses: docker://pandoc/latex:2.9
+        with:
+          args: "pandoc ./documents/forSQL/SQLコーディング規約（PostgreSQL）.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./.vuepress/public/resources/SQLコーディング規約（PostgreSQL）.docx"
+      - uses: docker://pandoc/latex:2.9
+        with:
           args: "pandoc ./documents/forAWSResource/AWSインフラリソース命名規約.md -s --self-contained --number-sections --toc -t html5 -c ./documents/common/pandoc_styles/css/style.css -o ./.vuepress/public/resources/AWSインフラリソース命名規約.html"
       - uses: docker://pandoc/latex:2.9
         with:

@@ -19,12 +19,17 @@ footer: ©2015 - 2023 Future Enterprise Coding Standards - Future Corporation
 
 # Resources
 
-次のリンクから単一ファイルで作成されたコーディング規約を取得できます。  
+次のリンクから単一ファイルで作成されたコーディング規約を取得できます。
 (これらのファイルは[Pandoc]を利用して作成しています。)
 
-- [Markdown - for Oracle](https://github.com/future-architect/coding-standards/blob/master/documents/forSQL/SQLコーディング規約（Oracle）.md)
-- [Markdown - for PostgreSQL](https://github.com/future-architect/coding-standards/blob/master/documents/forSQL/SQLコーディング規約（PostgreSQL）.md)
-- [HTML](https://github.com/future-architect/coding-standards/blob/gh-pages/resources/SQLコーディング規約（Oracle）.html)
-- [Word](https://github.com/future-architect/coding-standards/raw/gh-pages/resources/SQLコーディング規約（Oracle）.docx)
+- Markdown
+  - [for Oracle](https://github.com/future-architect/coding-standards/blob/master/documents/forSQL/SQLコーディング規約（Oracle）.md)
+  - [for PostgreSQL](https://github.com/future-architect/coding-standards/blob/master/documents/forSQL/SQLコーディング規約（PostgreSQL）.md)
+- HTML
+  - [for Oracle](https://github.com/future-architect/coding-standards/blob/gh-pages/resources/SQLコーディング規約（Oracle）.html)
+  - [for PostgreSQL](https://github.com/future-architect/coding-standards/blob/gh-pages/resources/SQLコーディング規約（PostgreSQL）.html)
+- Word
+  - [for Oracle](https://github.com/future-architect/coding-standards/raw/gh-pages/resources/SQLコーディング規約（Oracle）.docx)
+  - [for PostgreSQL](https://github.com/future-architect/coding-standards/raw/gh-pages/resources/SQLコーディング規約（PostgreSQL）.docx)
 
 [pandoc]: https://pandoc.org/

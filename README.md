@@ -13,12 +13,12 @@ footer: ©2015 - 2023 Future Enterprise Coding Standards - Future Corporation
 [![GitHub last commit](https://img.shields.io/github/last-commit/future-architect/coding-standards.svg)](https://github.com/future-architect/coding-standards)
 [![GitHub stars](https://img.shields.io/github/stars/future-architect/coding-standards.svg?style=social&label=Stars&logo=github)](https://github.com/future-architect/coding-standards/stargazers)
 
-| No | コンテンツ                                                        | メモ                                                                                                                                                  |
-|----|-------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------------------------------------------------|
-| 1  | [Javaコーディング規約](./documents/forJava/)                      | <page-info   href="https://future-architect.github.io/coding-standards/documents/forJava/Javaコーディング規約.html"></page-info>                      |
-| 2  | [SQLコーディング規約）](./documents/forSQL/)              | <page-info   href="https://future-architect.github.io/coding-standards/documents/forSQL/SQLコーディング規約（Oracle）.html"></page-info>              |
-| 3  | [AWSインフラリソース命名規約](./documents/forAWSResource/)        | <page-info   href="https://future-architect.github.io/coding-standards/documents/forAWSResource/AWSインフラリソース命名規約.html"></page-info>        |
-| 4  | [OpenAPI Specification規約](./documents/forOpenAPISpecification/) | <page-info   href="https://future-architect.github.io/coding-standards/documents/forOpenAPISpecification/OpenAPI_Specification規約.html"></page-info> |
+| No  | コンテンツ                                                         | メモ                                                                                                                                                  |
+| --- | ------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 1   | [Java コーディング規約](./documents/forJava/)                      | <page-info   href="https://future-architect.github.io/coding-standards/documents/forJava/Javaコーディング規約.html"></page-info>                      |
+| 2   | [SQL コーディング規約）](./documents/forSQL/)                      | <page-info   href="https://future-architect.github.io/coding-standards/documents/forSQL"></page-info>                                                 |
+| 3   | [AWS インフラリソース命名規約](./documents/forAWSResource/)        | <page-info   href="https://future-architect.github.io/coding-standards/documents/forAWSResource/AWSインフラリソース命名規約.html"></page-info>        |
+| 4   | [OpenAPI Specification 規約](./documents/forOpenAPISpecification/) | <page-info   href="https://future-architect.github.io/coding-standards/documents/forOpenAPISpecification/OpenAPI_Specification規約.html"></page-info> |
 
 ---
 
