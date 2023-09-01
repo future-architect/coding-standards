@@ -18,6 +18,7 @@ const links = {
   "/documents/forSQL/": [
     "/documents/forSQL/",
     "/documents/forSQL/SQLコーディング規約（Oracle）.html",
+    "/documents/forSQL/SQLコーディング規約（PostgreSQL）.html",
   ],
   "/documents/forAWSResource/": [
     "/documents/forAWSResource/",
@@ -95,6 +96,10 @@ module.exports = {
           {
             text: "For Oracle",
             link: "/documents/forSQL/SQLコーディング規約（Oracle）.html",
+          },
+          {
+            text: "For PostgreSQL",
+            link: "/documents/forSQL/SQLコーディング規約（PostgreSQL）.html",
           },
         ],
       },
