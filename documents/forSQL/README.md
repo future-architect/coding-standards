@@ -15,13 +15,15 @@ footer: ©2015 - 2023 Future Enterprise Coding Standards - Future Corporation
 次の SQL コーディング規約が利用できます。
 
 - Oracle 向けのコーディング規約は[こちら](./SQLコーディング規約（Oracle）.md)です。
+- PostgreSQL 向けのコーディング規約は[こちら](./SQLコーディング規約（PostgreSQL）.md)です。
 
 # Resources
 
 次のリンクから単一ファイルで作成されたコーディング規約を取得できます。  
 (これらのファイルは[Pandoc]を利用して作成しています。)
 
-- [Markdown](https://github.com/future-architect/coding-standards/blob/master/documents/forSQL/SQLコーディング規約（Oracle）.md)
+- [Markdown - for Oracle](https://github.com/future-architect/coding-standards/blob/master/documents/forSQL/SQLコーディング規約（Oracle）.md)
+- [Markdown - for PostgreSQL](https://github.com/future-architect/coding-standards/blob/master/documents/forSQL/SQLコーディング規約（PostgreSQL）.md)
 - [HTML](https://github.com/future-architect/coding-standards/blob/gh-pages/resources/SQLコーディング規約（Oracle）.html)
 - [Word](https://github.com/future-architect/coding-standards/raw/gh-pages/resources/SQLコーディング規約（Oracle）.docx)
 
