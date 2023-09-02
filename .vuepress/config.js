@@ -100,15 +100,33 @@ module.exports = {
         ],
       },
       {
-        text: "AWSResource",
+        text: "Others",
         items: [
           {
-            text: "Home",
-            link: "/documents/forAWSResource/",
+            text: "AWS インフラリソース",
+            items: [
+              {
+                text: "Home",
+                link: "/documents/forAWSResource/",
+              },
+              {
+                text: "AWSインフラ命名規約",
+                link: "/documents/forAWSResource/AWSインフラリソース命名規約.html",
+              },
+            ],
           },
           {
-            text: "For AWSインフラリソース",
-            link: "/documents/forAWSResource/AWSインフラリソース命名規約.html",
+            text: "OpenAPI Specification規約",
+            items: [
+              {
+                text: "Home",
+                link: "/documents/forOpenAPISpecification/",
+              },
+              {
+                text: "For OAS 2.0（Swagger 2.0）",
+                link: "/documents/forOpenAPISpecification/OpenAPI_Specification_2.0.html",
+              },
+            ],
           },
         ],
       },
