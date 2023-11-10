@@ -17,72 +17,17 @@ meta:
 
 [OpenAPI Specification 2.0（Swagger, OAS2）](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/2.0.md)定義についてのコーディング規約をまとめます。より新しいバージョンとして OAS 3.0.3 規約（作成中）がありますので、ご注意ください。
 
-## 前提条件
+## 適用箇所
 
-[Web API設計の前提条件](prerequisite.md)を参照ください。
+本規約は以下の[前提条件](prerequisite.md)で作られたものである。
 
-# Web API 自体の設計について
+## Web API 自体の設計について
 
 [API 設計標準](API_Design.md) に準じる。
 
-# 全体規約
+## ファイルフォーマット
 
-ファイル全体に関わることとや、YAML 記法についての方針をまとめる。
-
-- YAML、JSON のいずれかのフォーマットで記載できるが、 **YAML で記載** すること
-  - YAML は視覚的に見やすいとされ、レビューや差分管理が比較的行いやすいと考えられるため
-- ファイルの拡張子は `yaml` とする。通常ファイル名は `swagger.yaml` を推奨する
-  - もし、複数の Swagger 定義を管理するため区別したい場合は `${service}_swagger.yaml` とする
-  - `${service}` にはサービス名を指定する
-- [YAML v1.2](https://yaml.org/spec/1.2.2/#61-indentation-spaces)を用いる
-- ファイルの最終行には空行を入れる
-- 文字コードは UTF-8 とする
-- タブは半角スペース 2 つとする
-- クォートの扱い（シングルクォート `'` や、 ダブルクォート `"` は指定しない）
-
-  - 可読性を上げるために、できる限りクォートは利用しない。利用する場合はダブルクォートを利用する
-
-  ```yaml
-  # OK
-  description: 何かしらの説明
-
-  # NG（クォートでのラップは不要）
-  description: '何かしらの説明'
-  description: "何かしらの説明"
-  ```
-
-  - 以下の場合は必須で利用する
-    - 文字列として認識させる必要のある数字（"0123"）
-    - 60 進数と認識させたくない場合（"12:34"）
-    - Bool として認識させたくない（"true", "false", "yes", "no", "y", "n", "on", "off"）
-    - `#` で始まる文字列（`#` はコメントを示す記号のためである。例: `#/definitions/Users`）
-
-- 複数項目を指定する場合は、 **Flow style(配列スキーム)** を用いることを推奨する
-
-  ```yaml
-  # OK（推奨: 配列リテラル構文）
-  required: [user_id, user_name, account_type, register_at]
-
-  # NG（非推奨: リスト構文）
-  required:
-    - user_id
-    - user_name
-    - account_type
-    - register_at
-  ```
-
-  - YAML は項目定義がネストすることで縦長な定義になりやすい。情報密度を上げるために配列リテラルを推奨する
-
-- 改行を含む場合は、パイプ（ブロックスカラー） `|` を用いる
-
-```yaml
-description: |
-  説明文1
-  説明文2
-     - 箇条書き1
-     - 箇条書き2
-     - 箇条書き3
-```
+[ファイルフォーマット規約](yaml_standards.md)に準じる。
 
 # 要素規約
 
