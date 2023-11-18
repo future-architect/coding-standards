@@ -481,7 +481,7 @@ tags:
 
 ## 値が存在しないという状態の表現
 
-#### undefined と null
+### undefined と null
 
 - リクエスト/レスポンスにおいて、ある項目の値が存在しないという状態を表現する場合、① その項目自体を含めず `undefined` とする方法と、② 値に `null` を使用する方法がある。
 
@@ -539,7 +539,7 @@ tags:
 
 - 原則としては、①`undefined` による定義を使用する方が、API 仕様の表現が煩雑にならず、また通信サイズの点からも有利である。
 
-#### 差分更新 API の場合
+### 差分更新 API の場合
 
 - 差分更新（PATCH）API においては、項目が更新対象外であることと、項目が更新してクリアする対象であることを明確に区別する必要がある。このような場合には、以下のいずれかの方法を採用する。
 
@@ -555,7 +555,7 @@ tags:
   - この場合、OpenAPI からの自動生成モデルにはカスタマイズが必要となる。
   - カスタムモデルの例 (参照元: [技術ブログ](https://future-architect.github.io/articles/20211028b/#プログラムの観点))
 
-#### 各言語による表現の違い
+### 各言語による表現の違い
 
   <details>
   <summary>Golang</summary>
@@ -597,144 +597,143 @@ tags:
     // Deserialize
     decoder.Decode(&v)
     fmt.Printf("After decoded: %#v\n", v)
+  ```
 
-````
+  - シリアライズ後のjsonを見ると、値がセットされない場合には、項目にゼロ値（ポインタ型は`nil`, string型は空文字、int型は`0`）が入っている。
+  - 項目がゼロ値の場合に`omitempty` が付与されていると、 項目ごと除外されている（`undefined` となっている）。
 
-- シリアライズ後のjsonを見ると、値がセットされない場合には、項目にゼロ値（ポインタ型は`nil`, string型は空文字、int型は`0`）が入っている。
-- 項目がゼロ値の場合に`omitempty` が付与されていると、 項目ごと除外されている（`undefined` となっている）。
+  ```json
+    {
+      "not_nullable_string_1": "value",
+      "not_nullable_string_2": "",
+      "nullable_string_1": null,
+      "nullable_string_3": null,
+      "not_nullable_int_1": 1,
+      "not_nullable_int_2": 0,
+      "nullable_int_1": null,
+      "nullable_int_3": null
+    }
+  ```
 
-```json
-  {
-    "not_nullable_string_1": "value",
-    "not_nullable_string_2": "",
-    "nullable_string_1": null,
-    "nullable_string_3": null,
-    "not_nullable_int_1": 1,
-    "not_nullable_int_2": 0,
-    "nullable_int_1": null,
-    "nullable_int_3": null
-  }
-````
+  - デシリアライズ後の構造体を見ると、json の項目が`undefined`であっても `null` であっても、`nil` として保持されている。
 
-- デシリアライズ後の構造体を見ると、json の項目が`undefined`であっても `null` であっても、`nil` として保持されている。
-
-```go
-  After decoded:
-  Data{
-      NotNullableString1:"value",
-      NotNullableString2:"",
-      NullableString1:(*string)(nil),
-      NullableString2:(*string)(nil),
-      NullableString3:(*string)(nil),
-      NullableString4:(*string)(nil),
-      NotNullableInt1:1,
-      NotNullableInt2:0,
-      NullableInt1:(*int64)(nil),
-      NullableInt2:(*int64)(nil),
-      NullableInt3:(*int64)(nil),
-      NullableInt4:(*int64)(nil)
-  }
-```
+  ```go
+    After decoded:
+    Data{
+        NotNullableString1:"value",
+        NotNullableString2:"",
+        NullableString1:(*string)(nil),
+        NullableString2:(*string)(nil),
+        NullableString3:(*string)(nil),
+        NullableString4:(*string)(nil),
+        NotNullableInt1:1,
+        NotNullableInt2:0,
+        NullableInt1:(*int64)(nil),
+        NullableInt2:(*int64)(nil),
+        NullableInt3:(*int64)(nil),
+        NullableInt4:(*int64)(nil)
+    }
+  ```
 
   </details>
 
   <details>
   <summary>Java</summary>
 
-- Java の場合、`int` や `double` などのプリミティブ型は `null` になれないため、`nullable` にするためには、それぞれのラッパークラスである参照型（`Integer`, `Double` など）を使用する必要がある。
-- json にシリアライズ後に`null` の項目を保持するか否かは、例えば、[Jackson ライブラリ](https://github.com/FasterXML)を用いて以下のように区別される。
+  - Java の場合、`int` や `double` などのプリミティブ型は `null` になれないため、`nullable` にするためには、それぞれのラッパークラスである参照型（`Integer`, `Double` など）を使用する必要がある。
+  - json にシリアライズ後に`null` の項目を保持するか否かは、例えば、[Jackson ライブラリ](https://github.com/FasterXML)を用いて以下のように区別される。
 
-```java
-  public class Data {
-      public Data(){};
-      public Data(String str1, String str2, int notNullableInt){
-          this.nullableString1 = str1;
-          this.nullableString2 = str2;
-          this.notNullableInt = notNullableInt;
-      };
-      @JsonInclude(JsonInclude.Include.ALWAYS)
-      private String nullableString1;
+  ```java
+    public class Data {
+        public Data(){};
+        public Data(String str1, String str2, int notNullableInt){
+            this.nullableString1 = str1;
+            this.nullableString2 = str2;
+            this.notNullableInt = notNullableInt;
+        };
+        @JsonInclude(JsonInclude.Include.ALWAYS)
+        private String nullableString1;
 
-      @JsonInclude(JsonInclude.Include.NON_NULL)
-      private String nullableString2;
+        @JsonInclude(JsonInclude.Include.NON_NULL)
+        private String nullableString2;
 
-      private int notNullableInt;
+        private int notNullableInt;
 
-      // Setters
-      public void setNullableString1(String nullableString1) {
-          this.nullableString1 = nullableString1;
-      }
-      public void setNullableString2(String nullableString2) {
-          this.nullableString2 = nullableString2;
-      }
-      public void setNotNullableInt(int notNullableInt) {
-          this.notNullableInt = notNullableInt;
-      }
-      // Getters
-      public String getNullableString1() {
-          return nullableString1;
-      }
-      public String getNullableString2() {
-          return nullableString2;
-      }
-      public int getNotNullableInt() {
-          return notNullableInt;
-      }
-  }
-```
+        // Setters
+        public void setNullableString1(String nullableString1) {
+            this.nullableString1 = nullableString1;
+        }
+        public void setNullableString2(String nullableString2) {
+            this.nullableString2 = nullableString2;
+        }
+        public void setNotNullableInt(int notNullableInt) {
+            this.notNullableInt = notNullableInt;
+        }
+        // Getters
+        public String getNullableString1() {
+            return nullableString1;
+        }
+        public String getNullableString2() {
+            return nullableString2;
+        }
+        public int getNotNullableInt() {
+            return notNullableInt;
+        }
+    }
+  ```
 
-```java
-  // Set nothing to the fields.
-  Data dataWithNothing = new Data();
-  // Set intial values to the fields.
-  Data dataWithInitialValues = new Data(null,null,0);
-  // Set values to the fields.
-  Data dataWithValues = new Data("","",1);
+  ```java
+    // Set nothing to the fields.
+    Data dataWithNothing = new Data();
+    // Set intial values to the fields.
+    Data dataWithInitialValues = new Data(null,null,0);
+    // Set values to the fields.
+    Data dataWithValues = new Data("","",1);
 
-  List<Data> dataList = Arrays.asList(dataWithNothing, dataWithInitialValues, dataWithValues);
-  ObjectMapper mapper = new ObjectMapper();
-  for(Data d : dataList){
-      // Serialize
-      String json = mapper.writeValueAsString(d);
-      System.out.println(json);
+    List<Data> dataList = Arrays.asList(dataWithNothing, dataWithInitialValues, dataWithValues);
+    ObjectMapper mapper = new ObjectMapper();
+    for(Data d : dataList){
+        // Serialize
+        String json = mapper.writeValueAsString(d);
+        System.out.println(json);
 
-      // Deserialize
-      Data deserialized = mapper.readValue(json, Data.class);
-      System.out.println(ToStringBuilder.reflectionToString(deserialized, ToStringStyle.SHORT_PREFIX_STYLE));
-  }
-```
+        // Deserialize
+        Data deserialized = mapper.readValue(json, Data.class);
+        System.out.println(ToStringBuilder.reflectionToString(deserialized, ToStringStyle.SHORT_PREFIX_STYLE));
+    }
+  ```
 
-- シリアライズ後の json を見ると、参照型`String`の初期値は`null`、プリミティブ型`int`の初期値は`0`となっている。
-- `@JsonInclude(JsonInclude.Include.ALWAYS)` アノテーションを付与した項目は、値が`null`の場合でも項目が保持される。
-- `@JsonInclude(JsonInclude.Include.NON_NULL)` アノテーションを付与した項目は、値が`null`の場合には項目ごと除外されている（`undefined`となっている）。
+  - シリアライズ後の json を見ると、参照型`String`の初期値は`null`、プリミティブ型`int`の初期値は`0`となっている。
+  - `@JsonInclude(JsonInclude.Include.ALWAYS)` アノテーションを付与した項目は、値が`null`の場合でも項目が保持される。
+  - `@JsonInclude(JsonInclude.Include.NON_NULL)` アノテーションを付与した項目は、値が`null`の場合には項目ごと除外されている（`undefined`となっている）。
 
-```json
-  {
-    "nullableString1": null,
-    "notNullableInt": 0
-  }
+  ```json
+    {
+      "nullableString1": null,
+      "notNullableInt": 0
+    }
 
-  {
-    "nullableString1": null,
-    "notNullableInt": 0
-  }
+    {
+      "nullableString1": null,
+      "notNullableInt": 0
+    }
 
-  {
-    "nullableString1": "",
-    "nullableString2": "",
-    "notNullableInt": 1
-  }
-```
+    {
+      "nullableString1": "",
+      "nullableString2": "",
+      "notNullableInt": 1
+    }
+  ```
 
-- デシリアライズ後のオブジェクトを見ると、json の項目が`undefined`であっても `null` であっても、`null` として保持されている。
+  - デシリアライズ後のオブジェクトを見ると、json の項目が`undefined`であっても `null` であっても、`null` として保持されている。
 
-```java
-  Data[nullableString1=<null>,nullableString2=<null>,notNullableInt=0]
+  ```java
+    Data[nullableString1=<null>,nullableString2=<null>,notNullableInt=0]
 
-  Data[nullableString1=<null>,nullableString2=<null>,notNullableInt=0]
+    Data[nullableString1=<null>,nullableString2=<null>,notNullableInt=0]
 
-  Data[nullableString1=,nullableString2=,notNullableInt=1]
-```
+    Data[nullableString1=,nullableString2=,notNullableInt=1]
+  ```
 
   </details>
 
@@ -774,49 +773,515 @@ tags:
     console.log(deserialized)
   ```
 
-- シリアライズ後のjsonを見ると、`undefined`定義した項目は除外されている。
+  - シリアライズ後のjsonを見ると、`undefined`定義した項目は除外されている。
 
-```json
-{
-  "nullable_string1": "value1",
-  "nullable_string2": "",
-  "nullable_string3": null,
-  "nullable_num1": 1,
-  "nullable_num2": 0,
-  "nullable_num3": null
-}
-```
+  ```json
+  {
+    "nullable_string1": "value1",
+    "nullable_string2": "",
+    "nullable_string3": null,
+    "nullable_num1": 1,
+    "nullable_num2": 0,
+    "nullable_num3": null
+  }
+  ```
 
-- デシリアライズ後のオブジェクトを見ると、json の項目が`null` の場合にのみ`null` として保持されており、項目のない場合と区別されている。
+  - デシリアライズ後のオブジェクトを見ると、json の項目が`null` の場合にのみ`null` として保持されており、項目のない場合と区別されている。
 
-```typescript
-nullable_string1: "value1";
-nullable_string2: "";
-nullable_string3: null;
-nullable_num1: 1;
-nullable_num2: 0;
-nullable_num3: null;
-```
-
+  ```typescript
+  nullable_string1: "value1";
+  nullable_string2: "";
+  nullable_string3: null;
+  nullable_num1: 1;
+  nullable_num2: 0;
+  nullable_num3: null;
+  ```
   </details>
+
+### 参照リンク
+
+- `undefined` と `null` の使い方について詳細な解説は、[技術ブログ記事](https://future-architect.github.io/articles/20211028b/)を参照されたい。
+- OpenAPI 定義を DB 定義に対応させることにより、異なる API 間で整合のとれた処理設計をすることがのぞましい。DB 定義と OpenAPI 定義の対応例は、[DB 定義と OpenAPI 定義のマッピング](./reference/DB_OpenAPI_Mapping_Example.md)を参照されたい。
 
 ## ファイル単位
 
 OpenAPI ドキュメントは単一のファイルで構成することも複数の分割されたファイルで構成することもできるが、**複数のファイルに分割する**ことを推奨する。  
 理由は下記の通りである。
 
-- XXX
-- XXX
+- **APIごとに担当者を分けて設計する場合などに、複数人による編集によって意図しないコンフリクトが発生することを防ぐ。**
+- **ファイルの肥大化による、可読性の低下を防ぐ。**
 
-（相談事項）
+### 分割方法の選定
 
-- 分割のパターンがあるのであれば、いくつかケースに応じてパターン分けして記載する。
-- ファイルの命名についてもここで触れる
+開発方針やOpenAPIの使用用途に合わせて、都合の良いファイルの分割方法を採用する。例えば、以下のような方法がある。
 
-#### 参照リンク
+1. APIごとに設計担当者を分けて、それぞれにOpenAPIを編集する場合は、APIの単位で分割する。
+2. テストツールとして [stoplightio/prism](https://github.com/stoplightio/prism)を使用する場合、テストケースごとにデータファイルを作成して、`examples` にファイルパスを指定する。
 
-- `undefined` と `null` の使い方について詳細な解説は、[技術ブログ記事](https://future-architect.github.io/articles/20211028b/)を参照されたい。
-- OpenAPI 定義を DB 定義に対応させることにより、異なる API 間で整合のとれた処理設計をすることがのぞましい。DB 定義と OpenAPI 定義の対応例は、[DB 定義と OpenAPI 定義のマッピング](./reference/DB_OpenAPI_Mapping_Example.md)を参照されたい。
+### サンプル説明
+
+分割方法1, 2の両方に当てはまる場合のサンプルを用いて説明する。`openapi.yaml` とディレクトリ構成は下の通り。サンプルの全量は [サンプルzip Download](./reference/divided_files_sample.zip)からダウンロード可能。
+
+- 機能単位（path, method単位）にディレクトリを作成して、それぞれの定義ファイルを格納する。ディレクトリ名は `{path}_{method}` とすると管理し易い。
+- `components` の `schemas` には、
+  - 各APIごとのリクエスト/リスポンスモデルを切り出して記載する（例えば、`ResPetsPetIdGet`）。
+  - API間で同じモデルを使用する場合は共通化して記載する（例えば、`Pet`）。
+  - 各APIのリクエスト/リスポンスモデルの中で、モデルがネストする場合は、各モデルの単位で書き出す（例えば、`PetDetail`, `Pedigree`）。
+
+  <details open>
+    <summary>ファイル分割例： openapi.yaml</summary>
+
+    ```yaml
+      openapi: "3.0.3"
+      info:
+        version: 1.0.0
+        title: Swagger Petstore
+        license:
+          name: MIT
+      servers:
+        - url: http://petstore.swagger.io/v1
+      paths:
+        /pets:
+          get:
+            $ref: "./pets_get/pets_get.yaml"
+          post:
+            $ref: "./pets_post/pets_post.yaml"
+        /pets/{petId}:
+          get:
+            $ref: "./pets-pet-id_get/pets-pet-id_get.yaml"
+
+      components:
+        schemas:
+          ResPetsGet:
+            $ref: "./pets_get/response.yaml"
+          ReqPetsPost:
+            $ref: "./pets_post/request.yaml"
+          ResPetsPetIdGet:
+            $ref: "./pets-pet-id_get/response.yaml#/ResPetsPetIdGet"
+          PetDetail:
+            $ref: "./pets-pet-id_get/response.yaml#/PetDetail"
+          Pedigree:
+            $ref: "./pets-pet-id_get/response.yaml#/Pedigree"
+          Pet:
+            $ref: "./common/pet.yaml"
+          Error:
+            $ref: "./common/error.yaml"
+    ```
+
+  </details>
+
+  <details open>
+    <summary>ファイル分割例： ディレクトリ構成</summary>
+
+    ```sh
+      │  openapi.gen.yaml
+      │  openapi.yaml
+      │
+      ├─common
+      │      error.yaml
+      │      pet.yaml
+      │
+      ├─pets-pet-id_get
+      │  │  pets-pet-id_get.yaml
+      │  │  response.yaml
+      │  │
+      │  └─examples
+      │          res_example1.yaml
+      │
+      ├─pets_get
+      │  │  pets_get.yaml
+      │  │  response.yaml
+      │  │
+      │  └─examples
+      │          res_example1.yaml
+      │          res_example2.yaml
+      │
+      └─pets_post
+          │  pets_post.yaml
+          │  request.yaml
+          │
+          └─examples
+                  req_example1.yaml
+    ```
+
+  </details>
+
+- `openapi.yaml` の `paths` に記載したAPIファイルは以下のように作成する。`schema` にて `openapi.yaml` に指定したキー（`../openapi.yaml#/components/schemas/ResPetsPetIdGet`）を参照する。
+- `examples` には、各APIのテストケースIDをキーとして指定（`ResExample1`）し、`value` に該当するテストケースのデータファイルパスを指定（`./examples/res_example1.yaml`）する。ファイル名は、指定したキーをスネークケースに変換したものを使用するとよい。
+
+  <details open>
+    <summary>API別ファイルの記載例： pets-pet-id_get.yaml</summary>
+
+    ```yaml
+      summary: Details for a pet
+      operationId: get-pets-pet-id
+      tags:
+        - pets
+      parameters:
+        - name: petId
+          in: path
+          required: true
+          description: The id of the pet to retrieve
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "../openapi.yaml#/components/schemas/ResPetsPetIdGet"
+              examples:
+                ResExample1:
+                  value:
+                    $ref: "./examples/res_example1.yaml"
+        "404":
+          description: not found error
+          content:
+            application/json:
+              schema:
+                $ref: "../openapi.yaml#/components/schemas/Error"
+        "500":
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "../openapi.yaml#/components/schemas/Error"
+    ```
+
+  </details>
+
+- `schema` ファイルの例は以下の通り。
+  - 複数API間に共通のモデルは `openapi.yaml` に指定したキーを指定する（`../openapi.yaml#/components/schemas/Pet`）。
+  - ネストしているモデルは `openapi.yaml` に指定したキーを経由して参照できるようにする（`../openapi.yaml#/components/schemas/PetDetail`, `../openapi.yaml#/components/schemas/Pedigree`）。
+
+  <details open>
+    <summary>schemaファイル記載例： pets-pet-id_get/response.yaml</summary>
+
+    ```yaml
+      ResPetsPetIdGet:
+        required:
+        - pet
+        - pet_detail
+        type: object
+        properties:
+          pet:
+            $ref: "../openapi.yaml#/components/schemas/Pet"
+          pet_detail:
+            $ref: "../openapi.yaml#/components/schemas/PetDetail"
+
+      PetDetail:
+        type: object
+        properties:
+          breeder:
+            type: string
+          date_of_birth:
+            type: string
+            format: date
+          pedigree:
+            $ref: "../openapi.yaml#/components/schemas/Pedigree"
+
+      Pedigree:
+        required:
+        - registration_no
+        - date_of_registration
+        - pedigree_image
+        type: object
+        properties:
+          registration_no:
+            type: integer
+            format: int64
+          date_of_registration:
+            type: string
+            format: date
+          pedigree_image:
+            type: string
+    ```
+
+  </details>
+
+- OpenAPIの使用用途により、分割ファイルを1つのファイルにまとめる必要がある場合には、例えば[swagger-cli](https://apitools.dev/swagger-cli/)を使用して以下コマンドを実行する。
+  
+  ```bash
+  swagger-cli bundle openapi.yaml --outfile openapi.gen.yaml --type yaml
+  ```
+
+  <details>
+    <summary>ファイルBundle後： openapi.gen.yaml</summary>
+
+    ```yaml
+      openapi: 3.0.3
+      info:
+        version: 1.0.0
+        title: Swagger Petstore
+        license:
+          name: MIT
+      servers:
+        - url: 'http://petstore.swagger.io/v1'
+      paths:
+        /pets:
+          get:
+            summary: List all pets
+            operationId: get-pets
+            tags:
+              - pets
+            parameters:
+              - name: limit
+                in: query
+                description: How many items to return at one time (max 100)
+                required: false
+                schema:
+                  type: integer
+                  maximum: 100
+                  format: int32
+            responses:
+              '200':
+                description: A paged array of pets
+                headers:
+                  x-next:
+                    description: A link to the next page of responses
+                    schema:
+                      type: string
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/ResPetsGet'
+                    examples:
+                      ResExample1:
+                        value:
+                          - id: 10001
+                            name: ToyPoodle
+                            category: dog
+                            sub_category: ToyPoodle
+                            age: 1
+                            sex: male
+                            note: friendly
+                            tag: dog10001
+                          - id: 10002
+                            name: Chihuahua
+                            category: dog
+                            sub_category: Chihuahua
+                            age: 1
+                            sex: female
+                            note: friendly
+                            tag: dog10002
+                          - id: 10003
+                            name: Shiba
+                            category: dog
+                            sub_category: Shiba
+                            age: 1
+                            sex: male
+                            note: friendly
+                            tag: dog10003
+                          - id: 10004
+                            name: MiniatureDachshund
+                            category: dog
+                            sub_category: MiniatureDachshund
+                            age: 1
+                            sex: female
+                            note: friendly
+                            tag: dog10004
+                      ResExample2:
+                        value: []
+              '404':
+                description: not found error
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
+              '500':
+                description: unexpected error
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
+          post:
+            summary: Register a pet
+            operationId: post-pets
+            tags:
+              - pets
+            requestBody:
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/components/schemas/ReqPetsPost'
+                  examples:
+                    ReqExample1:
+                      value:
+                        pet:
+                          id: 10005
+                          name: FrenchBulldog
+                          category: dog
+                          sub_category: FrenchBulldog
+                          age: 1
+                          sex: male
+                          note: friendly
+                          tag: dog10005
+              required: false
+            responses:
+              '201':
+                description: Null response
+              '404':
+                description: not found error
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
+              '500':
+                description: unexpected error
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
+        '/pets/{petId}':
+          get:
+            summary: Details for a pet
+            operationId: get-pets-pet-id
+            tags:
+              - pets
+            parameters:
+              - name: petId
+                in: path
+                required: true
+                description: The id of the pet to retrieve
+                schema:
+                  type: string
+            responses:
+              '200':
+                description: Expected response to a valid request
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/ResPetsPetIdGet'
+                    examples:
+                      ResExample1:
+                        value:
+                          pet:
+                            id: 10001
+                            name: ToyPoodle
+                            category: dog
+                            sub_category: ToyPoodle
+                            age: 1
+                            sex: male
+                            note: friendly
+                            tag: dog10001
+                          pet_detail:
+                            breeder: BreederName
+                            date_of_birth: '2023-10-31'
+                            pedigree:
+                              registration_no: 11111111
+                              date_of_registration: '2023-10-31'
+                              pedigree_image: 9j2wBDAA...8QAPxAAAQQABAMGBAYDAAEDAg
+              '404':
+                description: not found error
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
+              '500':
+                description: unexpected error
+                content:
+                  application/json:
+                    schema:
+                      $ref: '#/components/schemas/Error'
+      components:
+        schemas:
+          ResPetsGet:
+            type: array
+            maxItems: 100
+            items:
+              $ref: '#/components/schemas/Pet'
+          ReqPetsPost:
+            required:
+              - pet
+            type: object
+            properties:
+              pet:
+                $ref: '#/components/schemas/Pet'
+          ResPetsPetIdGet:
+            required:
+              - pet
+              - pet_detail
+            type: object
+            properties:
+              pet:
+                $ref: '#/components/schemas/Pet'
+              pet_detail:
+                $ref: '#/components/schemas/PetDetail'
+          PetDetail:
+            type: object
+            properties:
+              breeder:
+                type: string
+              date_of_birth:
+                type: string
+                format: date
+              pedigree:
+                $ref: '#/components/schemas/Pedigree'
+          Pedigree:
+            required:
+              - registration_no
+              - date_of_registration
+              - pedigree_image
+            type: object
+            properties:
+              registration_no:
+                type: integer
+                format: int64
+              date_of_registration:
+                type: string
+                format: date
+              pedigree_image:
+                type: string
+          Pet:
+            type: object
+            required:
+              - id
+              - name
+              - category
+              - age
+              - sex
+            properties:
+              id:
+                type: integer
+                format: int64
+              name:
+                type: string
+                maxLength: 50
+              category:
+                type: string
+                maxLength: 10
+              sub_category:
+                type: string
+                maxLength: 50
+              age:
+                type: integer
+                format: int32
+              sex:
+                type: string
+                maxLength: 6
+              note:
+                type: string
+                maxLength: 200
+              tag:
+                type: string
+                maxLength: 20
+          Error:
+            type: object
+            required:
+              - code
+              - message
+            properties:
+              code:
+                type: integer
+                format: int32
+              message:
+                type: string
+
+    ```
+
+  </details>
+
 
 # 各種ツール、サービスとの統合
 
