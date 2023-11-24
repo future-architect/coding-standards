@@ -324,6 +324,17 @@ components:
     ...
 ```
 
+### security
+
+APIレベルの認証方式の設定だが、ルートレベルのsecurityで定義済みであるため、通常設定しない。
+
+ヘルスチェックのような認証を通す必要がないAPIのみ、上書きで定義する。
+
+```yml
+# 認証しない場合のみ個別で定義する
+security: []
+```
+
 ## components
 
 ​
@@ -419,23 +430,34 @@ paths:
         - $ref: '#/components/parameters/limit'
 ```
 
+### securitySchemes
+
+標準で用いるAPI認証の定義を行う。
+
+```yml
+# Bearer トークによる認証
+securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Bearer トークン認証'
+```
+
 
 ## security
 
-- API の認証方式の設定
-- 規約
-  - [ ] API 共通で設定済みのため設定しない
-  - [ ] 認証を通す必要のない API を定義する場合にのみ定義
-        ​
+ルートレベルのsecurityを定義すると、全APIに共通で適用される。
+
+業務システムのWeb APIで認証が全く存在しないことは考えにくいため、本規約ではルートレベルで認証を設定し、漏れをなくす。
 
 ```yml
 # 認証設定方法 (デフォルトで設定済みの為不要)
 security:
   - Bearer: []
-​
-# 認証しない場合
-security: []
 ```
+
+ヘルスチェックなどAPI種別によって認証が不要な場合がある。それらに対しては個別に、認証情報を上書き定義する。
 
 ## tags
 
