@@ -93,7 +93,7 @@ openapi: 3.0
 WebAPI の総称を記載する。システム名やサービス名 + API のような命名とすることを推奨する。  
 例. `X System API`
 
-### desctiption
+### description
 
 Web API が提供する機能の概要・想定する利用者やユースケース・制約などを記載する。
 
@@ -138,102 +138,179 @@ servers:
 
 ## paths
 
-API エンドポイント定義
+API の利用可能なエンドポイントと操作方法を記載する。
 
-- 規約
-  - [ ] paths 以下エンドポイントは機能 ID の昇順に定義
-  - [ ] HTTP メソッドは `GET`,`POST`,`PUT`,`PATCH`,`DELETE` の順に定義
+* API ごとに機能IDを定義している場合、`paths` 配下の各パスは機能 ID の昇順に定義する。
+* URLパスが複数の単語からなる場合、ケバブケースで表現する。
+* HTTP メソッドは `GET`, `POST`, `PUT`, `PATCH`, `DELETE` の順に定義する。  
 
-```yml
-paths:
-  /product: # エンドポイント
-    get: # HTTPメソッド
-      ...
-```
+  良い例：
 
-| フィールド名 | 必須 | 記載内容 |
-| ------------ | :--: | -------- |
-| tags         |  ○   |          |
-| operationId  |  ○   |          |
-| summary      |  ○   |          |
-| description  |  ○   |          |
-| response     |  ○   |          |
-| parameters   |      |          |
-| requestBody  |      |          |
-| security     |      |          |
+  ```yaml
+  paths:
+    /products:
+      get:
+        ...
+      post:
+        ...
+  ```
+
+  悪い例：
+
+  ```yaml
+  paths:
+    /products:
+      post:
+        ...
+      get:
+        ...
+  ```
+
+* HTTPメソッドの配下に定義されるオペレーションオブジェクトは、下記の項目を必須項目とする。
+
+| フィールド名 | 必須 | 記載内容                                 |
+| ------------ | :--: | ---------------------------------------- |
+| tags         |  ○   | API の論理的なグループ                   |
+| operationId  |  ○   | API の利用可能なエンドポイントと操作方法 |
+| summary      |  ○   | API の操作概要                           |
+| description  |      | API の振る舞いの詳細や注意点を記載する。 |
+| parameters   |      | API のリクエストパラメータ               |
+| requestBody  |      | API のリクエストボディ                   |
+| response     |  ○   | API のレスポンス                         |
+| security     |      |                                          |
+
+
+### tags
+
+API の論理的なグループを指定する。
+
+* タグオブジェクトとして事前定義したタグの中から選択すること。
+
+  良い例：
+
+  ```yaml
+  paths:
+    /users/me:
+      get:
+        tags:
+          - users
+        ...
+  tags:
+    - name: users
+  ```
+
+  悪い例：
+
+  ```yaml
+  paths:
+    /users/me:
+      get:
+        tags:
+          # タグオブジェクトとして定義されていないタグが指定されている
+          - users
+        ...
+  tags: []
+  ```
+
+* 1 API につき 1つのタグを指定すること。
+
+  良い例：
+
+  ```yaml
+  paths:
+    /users/me:
+      get:
+        tags:
+          - users
+        ...
+  ```
+
+  悪い例：
+
+  ```yaml
+  paths:
+    /users/me:
+      get:
+        # 複数のタグが指定されている
+        tags:
+          - users
+          - admin
+        ...
+  ```
 
 ### operationId
 
-v2 だと以下のように記載している。
+API を識別するための一意な文字列を記載する。
 
-コード生成で利用される項目なので、必須で指定する
+* HTTP メソッドとURLパスをアッパーキャメルケースで表現する。  
+  ただしOpenAPI ドキュメントのエディタとして広く使用されるStoplightが提供する[Linter](https://docs.stoplight.io/docs/spectral/674b27b261c3c-overview)の定義としてケバブケースが標準になっているため、Stoplightを使用する場合はケバブケースで表現しても良い。
 
-- 原則、`camelCase` の `${HTTPメソッド}${機能物理名}` で記載する（例: getUser, postUser, deleteUser）
+  良い例：
 
-* ※ Spotlight Studio による自動生成に準拠すると、ケバブケース
+  ```yaml
+  paths:
+    /users/me:
+      get:
+        operationId: get-users-me
+        ...
+    /products/{product_id}:
+      put:
+        operationId: put-products-product-id
+  ```
 
-  - [ ] `${HTTPメソッド}-${URLパス1}-${URLパス2}..` 形式で定義
-  - [ ] ケバブケースで定義
+### summery
+
+API の操作概要を記載する。
+
+* 機能 ID や機能名があるのであれば記載する。
+
+  良い例
+
+  ```yaml
+  paths:
+    /users/me:
+      get:
+        summary: API-001 ユーザアカウント取得 
+  ```
 
 ### description
 
-`必須`
-​
-
-- API の機能概要を記載
-  ​
-
-```yaml
-description: IDを指定して商品情報を取得する。
-```
+APIの振る舞いの詳細や注意点を記載する。  
+別途参照させるべき設計書があるのであれば、設計書へのリンクを記載しても良い。
 
 ### parameters
 
-`任意`
-​
+API のリクエストパラメータ（パスパラメータ、クエリパラメータ、ヘッダ）を記載する。
 
-- リクエストパラメータの定義
-- 規約
-  - [ ] HTTP メソッドが GET,DELETE 時に利用
-  - [ ] パスパラメータ、クエリパラメータ、ヘッダパラメータを指定
-  - [ ] パラメータ名はスネークケースで定義
-        ​
+* HTTP メソッドが `GET`, `DELETE` の場合にのみ指定する。
+* パスパラメータはスネークケースで表現する。
+* クエリパラメータはスネークケースで表現する。
+* ヘッダはハイフンを区切り文字とするパスカルケースで表現する。
 
-```yaml
-parameters:
-  - in: query                 # パラメータ配置 (path, query, header 指定可)
-    name: product_id          # パラメータ名(物理名)
-    description: プロダクトID   # 論理名
-    schema:                   # パラメータスキーマ定義
-      type: string
-      ...
-```
 
 ### requestBody
 
-​
-`任意`
-​
+API のリクエストボディを記載する。
 
-- API のリクエストボディを定義
-- 規約
-  - [ ] HTTP メソッドが POST,PUT,PATCH 時に利用
-  - [ ] リクエストボディが必須の場合は `requestBody` 直下の `required: true` を指定
-  - [ ] スキーマ定義は components として schemas 以下に定義し、 `$ref` で参照
-  - [ ] スキーマ名は `Req` をプレフィックスに付与し、`operation_id` をアッパーキャメルケースへ変換の上で定義 \* 例) `operation_id=post-product` => `ReqPostProduct`
-        ​
-
+* HTTP メソッドが `POST`, `PUT`, `PATCH` の場合にのみ指定する。
+* リクエストボディが必須の場合は `requestBody` 直下の `required` に `true` を指定する。
+* OpenAPI ドキュメントからソースコードを自動生成する際に生成されるのクラスや構造体の命名をコントロールしたい場合などにおいては、スキーマ定義は `component` オブジェクトとして任意の名称で定義し `$ref` で参照する。  
+スキーマ定義の名称は、全体で統一された命名ルールを定めること。（例. `operation_id` をアッパーキャメルケースへ変換の上、プレフィックスに `Req` を付与）
+* `schema` オブジェクトの `type` は `object` を指定する。
+        
 ```yaml
-operation_id: post-product
-requestBody:
-  required: true
-  content:
-    application/json: # media typeを指定
-      schema:
-        $ref: '#/components/schemas/ReqPostProduct'   # リクエストボディのスキーマ構造指定
-​
-...
-​
+paths:
+  /products:
+    post:
+      operation_id: post-products
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ReqPostProducts'
+      ...
+
 components:
   schemas:
     ReqPostProduct:
@@ -242,85 +319,64 @@ components:
         ...
 ```
 
-​
+​### responses
 
-### responses
+API のレスポンスを記載する。
 
-`必須`
-​
-
-- ステータスコード別の API レスポンススキーマを定義
-- 規約
-  - [ ] スキーマ定義は `components.schemas` 以下に定義し、 `$ref` で参照
-  - [ ] スキーマ定義の第一階層の type は `object` 必須
-    - 設計書の `3.戻り値` 定義の第一階層に `object` の追加必須 ([補足: 設計書の戻り値との整合性](#補足-設計書の戻り値との整合性)参照)
-  - [ ] スキーマ名は `Res` をプレフィックスに付与し、`operation_id` をアッパーキャメルケースへ変換の上で定義
-    - 例) `operation_id=post-product` => `ResPostProduct`
-  - [ ] 異常系(`4xx`,`5xx`)の定義は共通のため、以下記載の方式で定義
-  - [ ] ステータスコード`200`,`201` でレスポンススキーマが定義されている場合は、 example 名が `default` の定義必須
-  - [ ] example のケースを追加したい場合は `./examples` ディレクトリ配下にファイルを配置して、`$ref` で参照
+* OpenAPI ドキュメントからソースコードを自動生成する際に生成されるのクラスや構造体の命名をコントロールしたい場合などにおいては、スキーマ定義は `components` オブジェクトとして任意の名称で定義し `$ref` で参照する。  
+スキーマ定義の名称は、全体で統一された命名ルールを定めること。（例. `operation_id` をアッパーキャメルケースへ変換の上、プレフィックスに `Res` を付与）
+* `schema` オブジェクトの `type` は `object` を指定する。
+* 異常系（`4xx`, `5xx`）の HTTP ステータスコードに対応するレスポンス定義は設計者が個別に定義するのではなく、事前に共通的なレスポンスオブジェクトを定義し `$ref` で参照することが望ましい。
         ​
 
-```yml
-operation_id: post-product
-responses:
-  '200':
-    description: プロダクト一覧
-    content:
-      application/json:
-        schema: # スキーマ定義
-          $ref: '#/components/schemas/ResPostProduct'
-        examples:  # サンプルレスポンス
-          default: # サンプル名
-            value:
-              ...  # サンプル定義
-          example-1:
-            $ref: './examples/post-product.example.1.yaml'
-  # 以下はデフォルトで指定
-  '400':
-    $ref: '#/components/responses/BadRequest'
-  '401':
-    $ref: '#/components/responses/Unauthorized'
-  '403':
-    $ref: '#/components/responses/Forbidden'
-  '404':
-    $ref: '#/components/responses/NotFound'
-  # POST の場合のみ利用
-  '409':
-    $ref: '#/components/responses/Conflict'
-  '422':
-    $ref: '#/components/responses/UnprocessableEntity'
-  '500':
-    $ref: '#/components/responses/InternalServer'
-  '503':
-    $ref: '#/components/responses/ServiceUnavaliable'
-​
-...
-​
+```yaml
+paths:
+  /products:
+    post:
+      operation_id: post-products
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ResPostProducts'
+              examples:
+                default:
+                  value:
+                    ...
+                example-1:
+                  $ref: './examples/post-product.example.1.yaml'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '500':
+          $ref: '#/components/responses/InternalServer'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+      ...
+
 components:
   schemas:
-    ResPostProduct:
-      type: object
-      properties:
-        products:
-          type: array
-          items:
-            $ref: '#/components/schemas/Product'
-    Product:
-      type: object
-      properties:
-        ...
-    BasicError:
+    ResPostProducts:
       type: object
       properties:
         ...
   responses:
     BadRequest:
-      description: リクエストデータ不正
+      description: Bad Request
       content:
         application/json:
           schema:
-            "$ref": "#/components/schemas/BasicError"
+            ...
     ...
 ```
 
