@@ -319,7 +319,7 @@ components:
         ...
 ```
 
-​### responses
+### responses
 
 API のレスポンスを記載する。
 
@@ -372,12 +372,7 @@ components:
         ...
   responses:
     BadRequest:
-      description: Bad Request
-      content:
-        application/json:
-          schema:
-            ...
-    ...
+      ...
 ```
 
 ### security
@@ -458,6 +453,70 @@ components:
     Product:
       type: object
       ...
+```
+
+#### responses(components)
+
+レスポンスで複数のエンドポイントで横断的に用いるモデルを定義する。例えば、ステータスコード400~500系のエラーモデルがある。
+​
+```yml
+components:
+  schemas:
+    ProblemDetailError:
+      type: object
+      properties:
+        ...
+  responses:
+    BadRequest:
+      description: 400 Bad Request
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/ProblemDetailError"
+    Unauthorized:
+      description: 401 Unauthorized
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/ProblemDetailError"
+    ...
+```
+​
+もし、正常系のレスポンスの例としてはファイルアップロード・ダウンロードなどが該当する。個別のアプリケーション要件でブレが少ないと複数のエンドポイントで用いられる場合に定義する。
+
+```yml
+components:
+  schemas:
+    SignedURL:
+      type: object
+      properties:
+        signed_url:
+          type: string
+          format: uri
+        expired_at:
+          type: string
+          format: date-time
+  responses:
+    BlobUpload:
+      description: BLOB(Binary Large Object) upload using presigned url
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/SignedURL"
+    BlobDownload:
+      description: BLOB(Binary Large Object) download using presigned url
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/SignedURL"
+    ImageBinary:
+      description: An image
+      content:
+        image/*:
+          schema:
+            type: string
+            format: binary
+
 ```
 
 
