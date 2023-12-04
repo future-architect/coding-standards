@@ -292,31 +292,18 @@ API のリクエストパラメータ（パスパラメータ、クエリパラ�
 
 API のリクエストボディを記載する。
 
-* HTTP メソッドが `POST`, `PUT`, `PATCH` の場合にのみ指定する。
-* リクエストボディが必須の場合は `requestBody` 直下の `required` に `true` を指定する。
-* OpenAPI ドキュメントからソースコードを自動生成する際に生成されるのクラスや構造体の命名をコントロールしたい場合などにおいては、スキーマ定義は `component` オブジェクトとして任意の名称で定義し `$ref` で参照する。  
-スキーマ定義の名称は、全体で統一された命名ルールを定めること。（例. `operation_id` をアッパーキャメルケースへ変換の上、プレフィックスに `Req` を付与）
-* `schema` オブジェクトの `type` は `object` を指定する。
-        
+* リクエストボディを記載する。仕様の[describing-request-body](https://swagger.io/docs/specification/describing-request-body/)の章にある通り、リクエストボディはPOST、PUT、PATCHで使用され、GET、DELETE、HEADには利用できない
+* requestBodyの定義は、components/requestBodiesで宣言し、 `$refs` で参照する
+* requestBodyの命名は、 `Req` というプレフィクスと、 `Body` というサフィックスで終える必要がある
+
 ```yaml
 paths:
   /products:
     post:
       operation_id: post-products
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ReqPostProducts'
+        $ref: '#/components/requestBodies/ReqPostProductsBody'
       ...
-
-components:
-  schemas:
-    ReqPostProduct:
-      type: object
-      properties:
-        ...
 ```
 
 ### responses
@@ -336,16 +323,7 @@ paths:
       operation_id: post-products
       responses:
         '200':
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ResPostProducts'
-              examples:
-                default:
-                  value:
-                    ...
-                example-1:
-                  $ref: './examples/post-product.example.1.yaml'
+          $ref: '#/components/responses/RespPostProducts'
         '400':
           $ref: '#/components/responses/BadRequest'
         '401':
@@ -365,12 +343,11 @@ paths:
       ...
 
 components:
-  schemas:
-    ResPostProducts:
+  responses:
+    RespPostProducts:
       type: object
       properties:
         ...
-  responses:
     BadRequest:
       ...
 ```
@@ -395,9 +372,14 @@ API 定義で利用する共通のデータモデルを定義
 ```yml
 components:
   schemas: ...
-  securitySchemes: ...
-  responses: ...
   parameters: ...
+  securitySchemes: ...
+  requestBodies:
+  responses: ...
+  headers: ...
+  examples: ...
+  links: ...
+  callbacks: ...
 ```
 
 
@@ -455,9 +437,32 @@ components:
       ...
 ```
 
+#### requestBodies(components)
+
+* `requestBody` 直下の `required` は必須で `true` を指定する
+* OpenAPI ドキュメントからソースコードを自動生成する際に生成されるのクラスや構造体の命名をコントロールしたい場合などにおいては、スキーマ定義は `component` オブジェクトとして任意の名称で定義し `$ref` で参照する。  
+スキーマ定義の名称は、全体で統一された命名ルールを定めること。（例. `operation_id` をアッパーキャメルケースへ変換の上、プレフィックスに `Req` を付与）
+* `schema` オブジェクトの `type` は `object` を指定する。
+
+```yaml
+components:
+  schemas:
+    ReqPostProducts:
+      type: object
+      properties:
+        ...
+  requestBodies:
+    ReqPostProductsBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ReqPostProducts'   
+```
+
 #### responses(components)
 
-レスポンスで複数のエンドポイントで横断的に用いるモデルを定義する。例えば、ステータスコード400~500系のエラーモデルがある。
+レスポンスの先頭には複数のエンドポイントで横断的に用いるモデルを定義する。例えば、ステータスコード400~500系のエラーモデルがある。
 ​
 ```yml
 components:
@@ -482,7 +487,7 @@ components:
     ...
 ```
 ​
-もし、正常系のレスポンスの例としてはファイルアップロード・ダウンロードなどが該当する。個別のアプリケーション要件でブレが少ないと複数のエンドポイントで用いられる場合に定義する。
+正常系のレスポンスの例としてはファイルアップロード・ダウンロードなどが該当する。個別のアプリケーション要件でブレが少ないと複数のエンドポイントで用いられる場合に定義する。オブジェクトのスキーマは、schemasに切り出して定義し、コード生成ツールのために型情報を付与させる。
 
 ```yml
 components:
@@ -516,9 +521,34 @@ components:
           schema:
             type: string
             format: binary
-
 ```
 
+それらの後に、paths登場順にエンドポイント固有のレスポンスを定義する。レスポンスオブジェクトのスキーマは、schemasに切り出して定義する。
+
+```yml
+components:
+  schemas:
+    RespPostProductsSchema:
+      type: object
+      properties:
+        product_id:
+          type: string
+          ...
+  responses:
+    ...
+    RespPostProducts:
+      description: 商品登録の応答
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/RespPostProductsSchema"
+          examples:
+            default:
+              value:
+                ...
+            example-1:
+              $ref: './examples/post-product.example.1.yaml'
+```
 
 #### parameters(components)
 
