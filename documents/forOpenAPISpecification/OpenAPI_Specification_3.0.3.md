@@ -550,29 +550,63 @@ components:
               $ref: './examples/post-product.example.1.yaml'
 ```
 
-#### parameters(components)
+#### parameters
 
-API 共通で利用するクエリパラメータを定義
+API 共通で利用するパラメータ（パスパラメータ、クエリパラメータ、ヘッダ, Cookie）を記載する。
 
-* 規約
-    * [ ] API 全体で利用可能な共通のクエリパラメータを定義 (例: 検索数のlimit,offset)
+##### パスパラメータ
+
+* API 全体で利用されるパスパラメータが必要なケースが想定されないため、原則定義しない。
+特定リソースの操作（例えば更新と削除）を行う際のリソースIDはパスパラメータとして再利用できるが、コンフリクトを避けるため原則共通化は行わない。
+
+##### クエリパラメータ
+
+* API 全体で利用可能な共通のクエリパラメータを定義する （例: 検索数のlimit, offset）
+* 命名は クエリパラメータ名に `Query` というプレフィクスを付与する形式を推奨する。
+
 
 ```yml
-parameters:
-    limit:
-      name: limit
-      in: query
-      required: false
-      schema:
-        type: integer
-      description: 検索数上限
-
-# 利用方法
 paths:
   get:
     /products:
       parameters:
-        - $ref: '#/components/parameters/limit'
+        - $ref: '#/components/parameters/QueryLimit'
+
+parameters:
+  QueryLimit:
+    name: limit
+    in: query
+    required: false
+    schema:
+      type: integer
+    description: 検索数上限
+```
+
+##### ヘッダパラメータ
+
+* 原則 `headers` を利用し、パラメータとしては定義しない。
+
+##### Cookie パラメータ
+
+* API 全体で利用可能な共通のCookieパラメータを定義する。（例: CSRF用のトークン）
+* 命名は Cookie パラメータ名に `Cookie` というプレフィクスを付与する形式を推奨する。
+* Cookie 認証を定義する場合は、`APIKey` を利用すること。
+
+```yml
+paths:
+  get:
+    /products:
+      parameters:
+        - $ref: '#/components/parameters/CookieCSRFToken'
+
+parameters:
+  CSRFToken:
+    name: csrftoken
+    in: cookie
+    required: true
+    schema:
+      type: string
+    description: CSRFトークン
 ```
 
 ### securitySchemes
