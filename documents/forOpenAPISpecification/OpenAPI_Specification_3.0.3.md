@@ -735,7 +735,7 @@ description: 検索結果の項目数上限（1~100が指定可能）
 
 ### 型・フォーマット
 
-型（`type`）は `string(文字列)`, `number（数値）`, `integer（整数値）`, `boolean（真偽値）` `array（配列）`, `file（ファイル）` のうちどれか指定する.
+型（`type`）は `string(文字列)`, `number（数値）`, `integer（整数値）`, `boolean（真偽値）` `array（配列）` のうちどれか指定する.
 
 フォーマット（`format`） は以下の型の詳細情報を示すもので、可能な限り設定する。
 
@@ -754,6 +754,13 @@ description: 検索結果の項目数上限（1~100が指定可能）
 - `string` （その他）
   - `password`: Swagger UI で入力が隠される
   - その他、 `email`, `uuid` など Open API 仕様に存在しない任意のフォーマットを独自のドキュメント生成などのために記載しても良い
+
+OpenAPI 3.0では 2.0 に存在した `file` type は存在しない。もし同等の指定をしたい場合は、以下の用に指定する。
+
+```yaml
+type: string
+format: binary  # binary file contents
+```
 
 ### 桁
 
