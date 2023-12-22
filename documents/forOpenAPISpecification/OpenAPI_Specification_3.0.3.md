@@ -600,7 +600,7 @@ paths:
         - $ref: '#/components/parameters/CookieCSRFToken'
 
 parameters:
-  CSRFToken:
+  CookieCSRFToken:
     name: csrftoken
     in: cookie
     required: true
