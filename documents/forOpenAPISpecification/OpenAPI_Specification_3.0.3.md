@@ -790,6 +790,25 @@ description: |
     9: 適用不能
 ```
 
+OpenAPI 3.0 では区分値の再利用ができるため、横断的に用いる区分値はcomponents側で定義する。
+
+```yaml
+paths:
+  /products:
+    get:
+      parameters:
+      - in: query
+        name: gender
+        required: true
+        schema:
+          $ref: '#/components/schemas/Gender'
+components:
+  schemas:
+    Gender:
+      type: string
+      enum: ["0", "1", "2", "9"]
+```
+
 ### 固定値
 
 **固定値** の場合も enum を 1 つだけ指定して表現する。この場合もレスポンスで利用する場合は指定しない
