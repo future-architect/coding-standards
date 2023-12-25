@@ -584,7 +584,25 @@ parameters:
 
 ##### ヘッダパラメータ
 
-* 原則 `headers` を利用し、パラメータとしては定義しない。
+* API 全体で利用可能な共通のリクエストヘッダを定義する。
+* 命名は ヘッダ名に `Header` というプレフィクスを付与する形式を推奨する。
+
+```yml
+paths:
+  post:
+    /products:
+      parameters:
+        - $ref: '#/components/parameters/HeaderContentType'
+...
+components:
+  parameters:
+    HeaderContentType:
+      name: Content-Type
+      in: header
+      schema:
+        type: string
+      required: true
+```
 
 ##### Cookie パラメータ
 
@@ -598,15 +616,41 @@ paths:
     /products:
       parameters:
         - $ref: '#/components/parameters/CookieCSRFToken'
+...
+components:
+  parameters:
+    CookieCSRFToken:
+      name: csrftoken
+      in: cookie
+      required: true
+      schema:
+        type: string
+      description: CSRFトークン
+```
 
-parameters:
-  CookieCSRFToken:
-    name: csrftoken
-    in: cookie
-    required: true
-    schema:
-      type: string
-    description: CSRFトークン
+### headers
+
+API 共通で利用するレスポンスヘッダを記載する。
+
+* 命名は ヘッダ名からハイフンを除去した形式を推奨する。
+
+```yml
+paths:
+  get:
+    /products:
+      responses:
+        '200':
+          headers:
+            ContentType:
+              $ref: '#/components/headers/ContentType'
+...
+
+components:
+  headers:
+    ContentType:
+      description: the original media type of the resource
+      schema:
+        type: string
 ```
 
 ### securitySchemes
