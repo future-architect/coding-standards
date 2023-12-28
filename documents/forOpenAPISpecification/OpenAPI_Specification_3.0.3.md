@@ -745,9 +745,31 @@ tags:
 
 # 設計上のポイント
 
-（相談事項）
+## CORS
 
-- 要素規約が「どのように書くか」に焦点を当てているのに対し、そもそも「何を書くか」といった部分については、切り出して要素規約から refer させる形の方がスッキリするかも。要素規約に入れられるならそれでよし。描きながらバランス見て。
+CORS（Cross-Origin Resource Sharing）のために、options メソッドの追記は **原則不要** とする。
+
+理由は以下である。
+
+- サーバ側
+  - options メソッド対応は、API 使用ではなく実装レベルの機能横断的な処理（Java における Servlet Filter や Spring の Interceptor、Go における Middleware など）で行うことが大半であり、コード生成が不要
+- クライアント側
+  - options メソッドを用いるのはクライアントがブラウザであり、クライアントのアプリケーションコードが明示的にアクセスしないため、コード生成が不要
+- 使用面として
+  - ` Access-Control-Allow-Origin` がどのような値を返すか、呼び出し元によって動的な値を返したい場合があり、記載が困難なケースがある
+
+ただし、Amazon API Gateway のようなサービスを利用する場合は、options メソッドの記載が必須である場合は除く[^1]。
+
+[^1]: https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/enable-cors-for-resource-using-swagger-importer-tool.html
+
+## OpenTelemetry Traceparent HTTP Header
+
+OpenOpenTelemetryで用いるられる[traceparent](https://www.w3.org/TR/trace-context/) のリクエストヘッダーはOpenAPIで **原則不要** とする。
+
+理由は以下である。
+
+- OpenTelemetryが定めるヘッダー類は、API横断的に設定されるべきものであり、ミドルウェアやフレームワーク側などでの一律の制御を推奨するため
+- 記載することにより、OpenOpenTelemetryに対応していることを明記し開発者に周知できるメリットより、各アプリ開発者が生成されたコードで悩んだり、誤解されることを回避したいため
 
 ## バリデーションについて
 
@@ -1688,14 +1710,6 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
 
   </details>
 
-
-# 各種ツール、サービスとの統合
-
-特定のツール、サービスに依存する拡張系
-
-## oapi-codegen
-
-## Amazon API Gateway
 
 ---
 
