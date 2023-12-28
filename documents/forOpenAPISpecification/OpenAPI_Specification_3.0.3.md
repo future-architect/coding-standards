@@ -741,7 +741,21 @@ tags:
 
 ## externalDocs
 
+Schema定義, Paths配下の各API定義, OASのトップ階層などで、参照情報としてのURLを指定し表示が可能。ただし、`description` にてリンクURLを記載する方が、複数リンクを指定可能であるなど自由度が高く使いやすい。そのため、参照先URLリンクの記載には、`externalDocs` ではなく `description` の利用を推奨する。
 
+```yaml
+# 推奨
+info:
+  description: |-
+    Some useful links:
+    - [The Pet Store repository](https://github.com/swagger-api/swagger-petstore)
+    - [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
+
+# 特別な場合を除き非推奨
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+```
 
 # 設計上のポイント
 
