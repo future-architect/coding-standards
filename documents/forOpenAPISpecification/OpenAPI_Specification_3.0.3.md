@@ -385,56 +385,81 @@ components:
 
 ### schemas
 
-* API 定義で共通で利用するスキーマを定義
+* API定義共通で利用するスキーマを定義する
+* schemasに定義する項目はリソースやエラー等のドメインオブジェクトのみとし、リクエストパラメータやレスポンスパラメータは`parameter`や`requestBody`、`responses`に記載する。
+  * paths.requestBodyから直接参照されるリクエストパラメータオブジェクトは`requestBodies`に定義する。
+  * pathsから直接参照されるレスポンスパラメータは`responses`に定義する。また400や500などのエラーレスポンスも`responses`に定義する。
+  * HTTPヘッダやCookie、もしくは検索上限やページングのようなHTTPレイヤのパラメータに相当するものは`parameter`に定義する。
+  * 上記いずれにも該当しないuserやidなどのリソース、エラーを示すオブジェクトは`schemas`に定義する。
 * 規約
-  * [ ] リソース名はアッパーキャメルケースで定義
-  * [ ] リソース名は単数形で定義
-  * [ ] `type` に複数の型定義の指定不可
-  * [ ] `type: null`は原則として利用しない
-  * [ ] `allOf`、`anyOf`、`oneOf` を利用したスキーマ定義は許容しない
-  * [ ] schemas 以下は [リクエストボディ](#リクエストボディ)、[レスポンス](#レスポンス)、[リソース](#リソース) の順に定義
+  * リソース名はアッパーキャメルケースで定義
+  * リソース名は単数形で定義
+  * `type` に複数の型定義の指定不可
+  * `type: null`は原則として利用しない // そうなの？？
+  * `allOf`、`anyOf`、`oneOf` を利用したスキーマ定義は許容しない
 
 ```yaml
-Pagination:
-  type: object
-  properties:
-    total_counts:
-      type: integer
-    offset:
-      type: integer
-    limit:
-      type: integer
-  required:
-    - total_counts
-    - offset
-    - limit
-```
-
-スキーマ定義のモデルは以下3種類
-
-* [リクエストボディ](#リクエストボディ)
-* [レスポンス](#レスポンス)
-* [リソース](#リソース)
-
-```yaml
-# ソート順は以下の通り
 components:
   schemas:
-    ReqGetProduct:
-      type: object
-      ...
-    ReqPostProduct:
-      type: object
-      ...
-    ResGetProduct:
-      type: object
-      ...
-    ResPostProduct:
-      type: object
-      ...
+    # リソースを示すオブジェクト
     Product:
       type: object
-      ...
+      properties:
+        ...
+    User:
+      type: object
+      properties:
+    # エラーを示すオブジェクト
+    ProblemDetailError:
+      type: object
+      properties:
+        ...
+    # リクエストパラメータやレスポンスパラメータはrequestBodies、もしくはresponsesに記載する。
+    # ReqPostProductsBodyParam:
+    #   type: object
+    #   properties:
+    #     ...
+  parameter:
+    # HTTPヘッダやCookie、もしくは検索上限やページングのようなHTTPレイヤのパラメータ定義
+    QueryLimit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: 検索数上限
+  requestBodies:
+    # 各API定義（paths.requestBody）から参照されるレスポンス定義
+    ReqPostProductsBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              product:
+                $ref: '#/components/schemas/Product'
+              ...
+  responses:
+    # 各API定義（paths）から参照されるレスポンス定義
+    RespPostProducts:
+      description: 商品登録の応答
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              product:
+                $ref: '#/components/schemas/Product'
+              ...
+    # 共通で使用するエラーレスポンス定義
+    BadRequest:
+      description: 400 Bad Request
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/ProblemDetailError"
+
 ```
 
 #### requestBodies(components)
