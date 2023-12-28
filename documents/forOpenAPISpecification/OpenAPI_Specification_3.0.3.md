@@ -1310,9 +1310,7 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
   </details>
 
 - `openapi.yaml` の `paths` に記載したAPIファイルは以下のように作成する。
-- `schema` にて `openapi.yaml` に指定したキー（`../openapi.yaml#/components/schemas/ResPetsPetIdGet`）を参照する。
-- 複数API間に共通のモデルについても `openapi.yaml` に指定したキー（`../openapi.yaml#/components/schemas/Pet`）を参照する。
-- ネストしているモデルについても `openapi.yaml` に指定したキーを経由して参照する（`../openapi.yaml#/components/schemas/PetDetail`, `../openapi.yaml#/components/schemas/Pedigree`）。
+- 複数API間に共通のモデルについては `openapi.yaml` に指定したキー（`../openapi.yaml#/components/schemas/Pet`）を参照する。
 - `examples` には、各APIのテストケースIDをキーとして指定（`ResExample1`）し、`value` に該当するテストケースのデータファイルパスを指定（`./examples/res_example1.yaml`）する。ファイル名は、指定したキーをスネークケースに変換したものを使用するとよい。
 
   <details open>
@@ -1337,7 +1335,7 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
             content:
               application/json:
                 schema:
-                  $ref: "../openapi.yaml#/components/schemas/ResPetsPetIdGet"
+                  $ref: "#/components/schemas/ResPetsPetIdGet"
                 examples:
                   ResExample1:
                     value:
@@ -1366,7 +1364,7 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
               pet:
                 $ref: "../openapi.yaml#/components/schemas/Pet"
               pet_detail:
-                $ref: "../openapi.yaml#/components/schemas/PetDetail"
+                $ref: "#/components/schemas/PetDetail"
           PetDetail:
             type: object
             properties:
@@ -1376,7 +1374,7 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
                 type: string
                 format: date
               pedigree:
-                $ref: "../openapi.yaml#/components/schemas/Pedigree"
+                $ref: "#/components/schemas/Pedigree"
           Pedigree:
             required:
             - registration_no
