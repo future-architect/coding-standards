@@ -1246,28 +1246,31 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
           name: MIT
       servers:
         - url: http://petstore.swagger.io/v1
+      tags:
+        - name: pets
+          description: Everything about your Pets
       paths:
         /pets:
           get:
-            $ref: "./pets_get/pets_get.yaml"
+            $ref: "./pets_get/pets_get.yaml#/operation"
           post:
-            $ref: "./pets_post/pets_post.yaml"
+            $ref: "./pets_post/pets_post.yaml#/operation"
         /pets/{petId}:
           get:
-            $ref: "./pets-pet-id_get/pets-pet-id_get.yaml"
+            $ref: "./pets-pet-id_get/pets-pet-id_get.yaml#/operation"
 
       components:
         schemas:
           ResPetsGet:
-            $ref: "./pets_get/response.yaml"
+            $ref: "./pets_get/pets_get.yaml#/components/schemas/ResPetsGet"
           ReqPetsPost:
-            $ref: "./pets_post/request.yaml"
+            $ref: "./pets_post/pets_post.yaml#/components/schemas/ReqPetsPost"
           ResPetsPetIdGet:
-            $ref: "./pets-pet-id_get/response.yaml#/ResPetsPetIdGet"
+            $ref: "./pets-pet-id_get/pets-pet-id_get.yaml#/components/schemas/ResPetsPetIdGet"
           PetDetail:
-            $ref: "./pets-pet-id_get/response.yaml#/PetDetail"
+            $ref: "./pets-pet-id_get/pets-pet-id_get.yaml#/components/schemas/PetDetail"
           Pedigree:
-            $ref: "./pets-pet-id_get/response.yaml#/Pedigree"
+            $ref: "./pets-pet-id_get/pets-pet-id_get.yaml#/components/schemas/Pedigree"
           Pet:
             $ref: "./common/pet.yaml"
           Error:
@@ -1280,131 +1283,119 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
     <summary>ファイル分割例： ディレクトリ構成</summary>
 
     ```sh
-      │  openapi.gen.yaml
-      │  openapi.yaml
+      ├─openapi.gen.yaml
+      ├─openapi.yaml
       │
       ├─common
-      │      error.yaml
-      │      pet.yaml
+      │  ├─error.yaml
+      │  └─pet.yaml
       │
       ├─pets-pet-id_get
-      │  │  pets-pet-id_get.yaml
-      │  │  response.yaml
-      │  │
+      │  ├─pets-pet-id_get.yaml
       │  └─examples
-      │          res_example1.yaml
+      │         └─res_example1.yaml
       │
       ├─pets_get
-      │  │  pets_get.yaml
-      │  │  response.yaml
-      │  │
+      │  ├─pets_get.yaml
       │  └─examples
-      │          res_example1.yaml
-      │          res_example2.yaml
+      │         ├─res_example1.yaml
+      │         └─res_example2.yaml
       │
       └─pets_post
-          │  pets_post.yaml
-          │  request.yaml
-          │
+          ├─pets_post.yaml
           └─examples
-                  req_example1.yaml
+                └─req_example1.yaml
     ```
 
   </details>
 
-- `openapi.yaml` の `paths` に記載したAPIファイルは以下のように作成する。`schema` にて `openapi.yaml` に指定したキー（`../openapi.yaml#/components/schemas/ResPetsPetIdGet`）を参照する。
+- `openapi.yaml` の `paths` に記載したAPIファイルは以下のように作成する。
+- `schema` にて `openapi.yaml` に指定したキー（`../openapi.yaml#/components/schemas/ResPetsPetIdGet`）を参照する。
+- 複数API間に共通のモデルについても `openapi.yaml` に指定したキー（`../openapi.yaml#/components/schemas/Pet`）を参照する。
+- ネストしているモデルについても `openapi.yaml` に指定したキーを経由して参照する（`../openapi.yaml#/components/schemas/PetDetail`, `../openapi.yaml#/components/schemas/Pedigree`）。
 - `examples` には、各APIのテストケースIDをキーとして指定（`ResExample1`）し、`value` に該当するテストケースのデータファイルパスを指定（`./examples/res_example1.yaml`）する。ファイル名は、指定したキーをスネークケースに変換したものを使用するとよい。
 
   <details open>
     <summary>API別ファイルの記載例： pets-pet-id_get.yaml</summary>
 
     ```yaml
-      summary: Details for a pet
-      operationId: get-pets-pet-id
-      tags:
-        - pets
-      parameters:
-        - name: petId
-          in: path
-          required: true
-          description: The id of the pet to retrieve
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Expected response to a valid request
-          content:
-            application/json:
-              schema:
-                $ref: "../openapi.yaml#/components/schemas/ResPetsPetIdGet"
-              examples:
-                ResExample1:
-                  value:
-                    $ref: "./examples/res_example1.yaml"
-        "404":
-          description: not found error
-          content:
-            application/json:
-              schema:
-                $ref: "../openapi.yaml#/components/schemas/Error"
-        "500":
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "../openapi.yaml#/components/schemas/Error"
+      operation:
+        summary: Details for a pet
+        operationId: get-pets-pet-id
+        tags:
+          - pets
+        parameters:
+          - name: petId
+            in: path
+            required: true
+            description: The id of the pet to retrieve
+            schema:
+              type: string
+        responses:
+          "200":
+            description: Expected response to a valid request
+            content:
+              application/json:
+                schema:
+                  $ref: "../openapi.yaml#/components/schemas/ResPetsPetIdGet"
+                examples:
+                  ResExample1:
+                    value:
+                      $ref: "./examples/res_example1.yaml"
+          "404":
+            description: not found error
+            content:
+              application/json:
+                schema:
+                  $ref: "../openapi.yaml#/components/schemas/Error"
+          "500":
+            description: unexpected error
+            content:
+              application/json:
+                schema:
+                  $ref: "../openapi.yaml#/components/schemas/Error"
+
+      components:
+        schemas:
+          ResPetsPetIdGet:
+            required:
+            - pet
+            - pet_detail
+            type: object
+            properties:
+              pet:
+                $ref: "../openapi.yaml#/components/schemas/Pet"
+              pet_detail:
+                $ref: "../openapi.yaml#/components/schemas/PetDetail"
+          PetDetail:
+            type: object
+            properties:
+              breeder:
+                type: string
+              date_of_birth:
+                type: string
+                format: date
+              pedigree:
+                $ref: "../openapi.yaml#/components/schemas/Pedigree"
+          Pedigree:
+            required:
+            - registration_no
+            - date_of_registration
+            - pedigree_image
+            type: object
+            properties:
+              registration_no:
+                type: integer
+                format: int64
+              date_of_registration:
+                type: string
+                format: date
+              pedigree_image:
+                type: string
     ```
 
   </details>
 
-- `schema` ファイルの例は以下の通り。
-  - 複数API間に共通のモデルは `openapi.yaml` に指定したキーを指定する（`../openapi.yaml#/components/schemas/Pet`）。
-  - ネストしているモデルは `openapi.yaml` に指定したキーを経由して参照できるようにする（`../openapi.yaml#/components/schemas/PetDetail`, `../openapi.yaml#/components/schemas/Pedigree`）。
-
-  <details open>
-    <summary>schemaファイル記載例： pets-pet-id_get/response.yaml</summary>
-
-    ```yaml
-      ResPetsPetIdGet:
-        required:
-        - pet
-        - pet_detail
-        type: object
-        properties:
-          pet:
-            $ref: "../openapi.yaml#/components/schemas/Pet"
-          pet_detail:
-            $ref: "../openapi.yaml#/components/schemas/PetDetail"
-
-      PetDetail:
-        type: object
-        properties:
-          breeder:
-            type: string
-          date_of_birth:
-            type: string
-            format: date
-          pedigree:
-            $ref: "../openapi.yaml#/components/schemas/Pedigree"
-
-      Pedigree:
-        required:
-        - registration_no
-        - date_of_registration
-        - pedigree_image
-        type: object
-        properties:
-          registration_no:
-            type: integer
-            format: int64
-          date_of_registration:
-            type: string
-            format: date
-          pedigree_image:
-            type: string
-    ```
-
-  </details>
 
 - OpenAPIの使用用途により、分割ファイルを1つのファイルにまとめる必要がある場合には、例えば[swagger-cli](https://apitools.dev/swagger-cli/)を使用して以下コマンドを実行する。
   
@@ -1424,6 +1415,9 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
           name: MIT
       servers:
         - url: 'http://petstore.swagger.io/v1'
+      tags:
+        - name: pets
+          description: Everything about your Pets
       paths:
         /pets:
           get:
