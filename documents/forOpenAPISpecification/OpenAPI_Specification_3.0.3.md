@@ -17,19 +17,15 @@ meta:
 
 [OpenAPI Specification 3.0.3](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md)に則った API ドキュメントを記述する際のコーディング規約をまとめます。古いバージョンとして[OpenAPI Specification 2.0 の規約](OpenAPI_Specification_2.0.md)がありますので、v2 をご利用の方はこちらをご参照ください。
 
-## 適用箇所
+本規約の[前提条件](prerequisite.md)に従い作成されています。ToC向けのLSUDs（Large Set of Unknown Developers）なWeb APIにはマッチしない可能性があります。
 
-本規約は以下の[前提条件](prerequisite.md)で作られたものである。
-
-## Web API 自体の設計について
-
-[API 設計標準](API_Design.md) に準じる。
+Web API自体の設計については範囲外としますが、[API 設計標準](API_Design.md)に利用するステータスコードなどは記載しています。
 
 ## ファイルフォーマット
 
 [ファイルフォーマット規約](file_standards.md)に準じる。
 
-# OpenAPI ドキュメントの構成要素
+## OpenAPI ドキュメントの構成要素
 
 OpenAPI ドキュメントを構成する要素はオブジェクトと呼ばれ、ルートオブジェクトは下記の要素で構成される。  
 各種規約を読み進めるにあたってあらかじめ大まかに理解しておくことを推奨する。  
@@ -45,13 +41,6 @@ OpenAPI ドキュメントを構成する要素はオブジェクトと呼ばれ
 | security     |      | API 全体で利用可能なセキュリティ（認証）機構                |
 | tags         |      | 各種 API をグルーピングするためのタグ                       |
 | externalDocs |      | 追加の外部ドキュメント                                      |
-
-## コンポーネント化
-
-（相談事項）
-
-- どの単位でコンポーネント化をするか、については個別の規約に入る前に全体として触れておいた方がいいと思う。
-- 結構難しいネタ
 
 # 要素規約
 
@@ -758,6 +747,55 @@ externalDocs:
 ```
 
 # 設計上のポイント
+
+## ファイルアップロード
+
+Web API におけるファイルアップロードのよく利用される実装手段は、大きく分けて以下の 3 手法に分類できます
+
+1. ファイルのコンテンツを Base64 などにエンコードして、JSON の項目として設定し、リクエストボディで送る
+   - メリット: 通常の JSON を扱うのとほぼ変わらないため楽。サムネイルなど限定されたユースケースの場合に向く
+   - デメリット: 巨大なファイルを扱う場合などサーバリソース負荷が懸念。Base64 に変換する分 CPU 負荷は余計にかかる。ペイロードが膨れるためモバイルなどのクライアントでは帯域利用での懸念がある
+2. multipart/form-data ファイルを送信する
+   - メリット: ファイルを Base64 に変換するといった作業が不要
+   - デメリット: ブラウザ以外のクライアントにとって手間がかかる
+3. アップロード用に用いる、オブジェクトストレージの Signed URL を発行し、クライアントから直接ファイルをアップロードしてもらう
+   - 次の流れを想定（Signed URL を取得 -> ファイルアップロード -> ファイルに紐づかせるキーや属性情報などを登録）
+   - Amazon API Gateway を利用する場合は、2023 年 6 月時点で[ペイロード上限が 10MB](https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html)、[AWS Lambda でもペイロード制限がある](https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/gettingstarted-limits.html#api-requests)ため、許容するファイルサイズによってはこの手法一択となる
+   - メリット: オブジェクトストレージの可用性・信頼性を享受できる
+   - デメリット: アップロードするために複数の API エンドポイント呼び出しが必要なため、煩雑である
+   - 2023 年 6 月に AWS ブログでこの方式について解説した記事が出たので、詳細は参照ください。
+     - [https://aws.amazon.com/jp/blogs/news/large-size-files-transferring-by-serverless-s3presignedurl-and-clientside-javascript/](https://aws.amazon.com/jp/blogs/news/large-size-files-transferring-by-serverless-s3presignedurl-and-clientside-javascript/)
+
+本規約でファイルアップロードについて上記の 3. Signed URL を推奨する。API 呼び出しとしては次のようなフローとする。
+
+```mermaid
+sequenceDiagram
+participant A as クライアント
+participant B as Web APIサーバ
+participant C as オブジェクトストレージ
+
+A->>B: ①アップロード先URL取得
+  B->>C: Signed URL発行
+  C-->>B: Signed URL
+  B-->>A: アップロードURL、受付ID（加えて、アップロードで指定したいHTTP Methodや必要なリクエストヘッダーがあれば応答の項目に追加する）
+
+A->>C: ②ファイルアップロード
+
+A->>B: ③ファイルアップロード完了(受付ID、キー、属性)
+  B-->>A: 受付完了
+```
+
+フローの ①、② はアプリケーション固有の紐づけルールにおいて Web API を設計すれば良いため、本規約で YAML の設定例は記載しない。フロー ② については Signed URL を用いたアップロードであり、アプリケーションの Web API 定義を書く必要はない。もし、監査ログなどのガバナンス上、直接オブジェクトストレージへの書き込みを許容されないケースは、B で Signed URL に相当する書き込み先を提供し、B を経由してファイルをアップロードする。
+
+上記どちらのケースも OpenAPI 定義としてはシンプルであるため、記述例は割愛する。
+
+## ファイルダウンロード
+
+ファイルアップロードと同様、オブジェクトストレージの Signed URL 経由を経由してのダウンロードさせる手法を推奨する。Web API としてはオブジェクトストレージにダウンロード用のファイルを書き込み、クライアントが取得するための Signed URL をレスポンスの JSON 項目に渡す方式である。
+
+もし、サムネイルやアイコン画像など、ファイル容量がごく小さい場合は Base64 にエンコードして JSON に埋め込んで渡しても良い。線引をどこに設置するかは本規約で定義しない。
+
+どちらのケースも OpenAPI 定義としてはシンプルであるため、記述例は割愛する。
 
 ## CORS
 
