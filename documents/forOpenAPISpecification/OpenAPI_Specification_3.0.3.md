@@ -386,16 +386,22 @@ components:
 ### schemas
 
 * API定義共通で利用するスキーマを定義する
-* schemasに定義する項目はリソースやエラー等のドメインオブジェクトのみとし、リクエストパラメータやレスポンスパラメータは`parameter`や`requestBody`、`responses`に記載する。
-  * paths.requestBodyから直接参照されるリクエストパラメータオブジェクトは`requestBodies`に定義する。
-  * pathsから直接参照されるレスポンスパラメータは`responses`に定義する。また400や500などのエラーレスポンスも`responses`に定義する。
+* schemasに定義する項目はリソースやエラー等のドメインオブジェクトのみとし、リクエストパラメータやレスポンスパラメータは`parameter`や`requestBodies`、`responses`に記載する。
+  * `paths.requestBodies`から直接参照されるリクエストパラメータオブジェクトは`requestBodies`に定義する。
+  * `paths`から直接参照されるレスポンスパラメータは`responses`に定義する。また400や500などのエラーレスポンスも`responses`に定義する。
   * HTTPヘッダやCookie、もしくは検索上限やページングのようなHTTPレイヤのパラメータに相当するものは`parameter`に定義する。
+  * レスポンスヘッダーは`headers`にて定義する。
   * 上記いずれにも該当しないuserやidなどのリソース、エラーを示すオブジェクトは`schemas`に定義する。
+  * 各APIのリクエストレスポンスオブジェクトは可能な限り、`parameter`,`requestBodies`,`responses`に定義する方針とし、API固有のオブジェクト（所謂`ReqXXX`、`ResXXX`等）は`schemas`には定義しない。
+  * ただし、オブジェクトがネストしてしまう場合はAPI固有のオブジェクトであっても`schemas`に定義する。  
+  ※定義するオブジェクトの`properties`配下に更に`type: object`が定義されしまう（ネストしてしまう）と生成ツールによってはうまく型が生成されないため。
+
 * 規約
   * リソース名はアッパーキャメルケースで定義
   * リソース名は単数形で定義
   * `type` に複数の型定義の指定不可
-  * `type: null`は原則として利用しない // そうなの？？
+  * `type: null`は原則として利用せず、undefinedを利用する。  
+  [差分更新APIの場合](#差分更新-API-の場合)にあるとおり、空更新を行う場合は空文字を利用する。
   * `allOf`、`anyOf`、`oneOf` を利用したスキーマ定義は許容しない
 
 ```yaml
@@ -472,7 +478,7 @@ components:
 ```yaml
 components:
   schemas:
-    ReqPostProducts:
+    Product:
       type: object
       properties:
         ...
@@ -482,7 +488,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ReqPostProducts'   
+            $ref: '#/components/schemas/Product'   
 ```
 
 #### responses(components)
@@ -553,7 +559,7 @@ components:
 ```yml
 components:
   schemas:
-    RespPostProductsSchema:
+    Product:
       type: object
       properties:
         product_id:
@@ -566,7 +572,7 @@ components:
       content:
         application/json:
           schema:
-            "$ref": "#/components/schemas/RespPostProductsSchema"
+            "$ref": "#/components/schemas/Product"
           examples:
             default:
               value:
