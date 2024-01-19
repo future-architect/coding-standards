@@ -15,20 +15,20 @@ meta:
 
 # はじめに
 
-[OpenAPI Specification 3.0.3](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md)に則った API ドキュメントを記述する際のコーディング規約をまとめます。古いバージョンとして[OpenAPI Specification 2.0 の規約](OpenAPI_Specification_2.0.md)がありますので、v2 をご利用の方はこちらをご参照ください。
+本ドキュメントは [OpenAPI Specification 3.0.3](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md)に則った API ドキュメントを記述する際のコーディング規約をまとめている。
+旧バージョンである[OpenAPI Specification 2.0 の規約](OpenAPI_Specification_2.0.md)も存在するため、v2を使用している場合はそちらを参照されたい。
 
-本規約の[前提条件](prerequisite.md)に従い作成されています。ToC向けのLSUDs（Large Set of Unknown Developers）なWeb APIにはマッチしない可能性があります。
-
-Web API自体の設計については範囲外としますが、[API 設計標準](API_Design.md)に利用するステータスコードなどは記載しています。
+本規約は[前提条件](prerequisite.md)に基づいて作成されており、ToC向けの LSUDs（Large Set of Unknown Developers）向けの Web API には適合しない場合もあるのでご留意いただきたい。
+Web APIの設計自体はこの規約の範囲外であるが、[API 設計標準](API_Design.md) にステータスコード等の標準を記載しているため、必要に応じて参考にされたい。
 
 ## ファイルフォーマット
 
-[ファイルフォーマット規約](file_standards.md)に準じる。
+[ファイルフォーマット規約](file_standards.md)に従う。
 
 ## OpenAPI ドキュメントの構成要素
 
-OpenAPI ドキュメントを構成する要素はオブジェクトと呼ばれ、ルートオブジェクトは下記の要素で構成される。  
-各種規約を読み進めるにあたってあらかじめ大まかに理解しておくことを推奨する。  
+OpenAPI ドキュメントを構成する要素はオブジェクトと呼ばれ、ルートオブジェクトは以下の要素で構成される。  
+各種規約を理解する上で、これらの要素を大まかに把握しておくことが重要である。  
 各オブジェクトの詳細については[公式ドキュメント](https://spec.openapis.org/oas/v3.0.3#openapi-object)を参照されたい。
 
 | フィールド名 | 必須 | 説明                                                        |
@@ -49,7 +49,7 @@ OpenAPI ドキュメントを構成する要素はオブジェクトと呼ばれ
 ## openapi
 
 OpenAPI ドキュメントが使用する OpenAPI 仕様のセマンティックバージョン番号を記載する。  
-本規約は`3.0.3`を対象としているため、`3.0.3`とする。
+本規約はバージョン`3.0.3`を対象としているため、`3.0.3`とする。
 
 良い例：
 
@@ -77,33 +77,53 @@ openapi: 3.0
 | contact        |      | 連絡先情報                       |
 | license        |      | ライセンス情報                   |
 
-### title
+### info > title
 
-WebAPI の総称を記載する。システム名やサービス名 + API のような命名とすることを推奨する。  
-例. `X System API`
+WebAPI の総称を記載する。
 
-### description
+* システム名やサービス名 + API のような命名を推奨する。  
+
+  良い例：
+
+  ```yaml
+  info:
+    title: X System API
+  ```
+
+### info > description
 
 Web API が提供する機能の概要・想定する利用者やユースケース・制約などを記載する。
 
-### version
+### info > version
 
 この API 仕様のドキュメントのバージョンを記載する。アプリケーションのバージョン（git tag やリリースで管理するようなバージョン）とは別である。
 
-本規約の推奨は `major.minor` 形式である。 `0.1 `固定で開発を進め、サービスのリリース時に `1.0` とし、その後の項目やオプション、パスの追加ごとに `1.1` などインクリメントしていく。もし他チームへのドキュメントの頻繁な共有が必要だれば、`1.0` のかわりに `2023.03.26` といった形式も許容する。
+* `major.minor` 形式を推奨する。  
+`0.1 `固定で開発を進め、サービスのリリース時に `1.0` とし、その後の項目やオプション、パスの追加ごとにマイナーバージョンをインクリメントしていく。
+
+  良い例：
+  
+  ```yaml
+  info:
+    version: 1.0
+  ```
+
+* もし他チームへの API ドキュメントの頻繁な共有が必要であれば、`major.minor` の代わりに `YYYY.MM.DD` の日付形式も許容する。
+
+  良い例：
+
+  ```yaml
+  info:
+    version: 2023.03.26
+  ```
 
 ## servers
 
 Web API を提供するサーバの情報を記載する。  
-`url`, `description` を必須項目とする。
 
-| フィールド名 | 必須 | 記載内容   |
-| ------------ | :--: | ---------- |
-| url          |  ○   | 対象の URL |
-| description  |  ○   | 説明       |
-| variables    |      | なし       |
-
-ステージ（local, develop, staging など）が複数ある場合は各ステージ分の情報を記載する。 ただし LSUDs 向けの Web API 開発においては本番環境の URL を不用意に公開したくないケースが多く、記載は避けるべきである。
+* `url`, `description` を必須項目とする。
+* ステージ（local, develop, staging など）が複数ある場合は各ステージ分の情報を記載する。 
+* SSKDs 向けの Web API 開発においては本番環境の URL を不用意に公開したくないケースが多く、記載は避けるべきである。
 
 良い例：
 
@@ -130,7 +150,7 @@ servers:
 API の利用可能なエンドポイントと操作方法を記載する。
 
 * API ごとに機能IDを定義している場合、`paths` 配下の各パスは機能 ID の昇順に定義する。
-* URLパスが複数の単語からなる場合、ケバブケースで表現する。
+* URL パスが複数の単語からなる場合、ケバブケースで表現する。
 * HTTP メソッドは `GET`, `POST`, `PUT`, `PATCH`, `DELETE` の順に定義する。  
 
   良い例：
@@ -157,19 +177,19 @@ API の利用可能なエンドポイントと操作方法を記載する。
 
 * HTTPメソッドの配下に定義されるオペレーションオブジェクトは、下記の項目を必須項目とする。
 
-| フィールド名 | 必須 | 記載内容                                 |
-| ------------ | :--: | ---------------------------------------- |
-| tags         |  ○   | API の論理的なグループ                   |
-| operationId  |  ○   | API の利用可能なエンドポイントと操作方法 |
-| summary      |  ○   | API の操作概要                           |
-| description  |      | API の振る舞いの詳細や注意点を記載する。 |
-| parameters   |      | API のリクエストパラメータ               |
-| requestBody  |      | API のリクエストボディ                   |
-| response     |  ○   | API のレスポンス                         |
-| security     |      |                                          |
+  | フィールド名 | 必須 | 記載内容                                 |
+  | ------------ | :--: | ---------------------------------------- |
+  | tags         |  ○   | API の論理的なグループ                   |
+  | operationId  |  ○   | API の利用可能なエンドポイントと操作方法 |
+  | summary      |  ○   | API の操作概要                           |
+  | description  |      | API の振る舞いの詳細や注意点を記載する。 |
+  | parameters   |      | API のリクエストパラメータ               |
+  | requestBody  |      | API のリクエストボディ                   |
+  | response     |  ○   | API のレスポンス                         |
+  | security     |      | API のセキュリティ機構        |
 
 
-### tags
+### paths > tags
 
 API の論理的なグループを指定する。
 
@@ -227,7 +247,7 @@ API の論理的なグループを指定する。
         ...
   ```
 
-### operationId
+### paths > operationId
 
 API を識別するための一意な文字列を記載する。
 
@@ -245,15 +265,26 @@ API を識別するための一意な文字列を記載する。
     /products/{product_id}:
       put:
         operationId: put-products-product-id
+        ...
   ```
 
-### summery
+  良い例：
+
+  ```yaml
+  paths:
+    /users/me:
+      get:
+        operationId: get_users_me
+        ...
+  ```
+
+### paths > summary
 
 API の操作概要を記載する。
 
 * 機能 ID や機能名があるのであれば記載する。
 
-  良い例
+  良い例：
 
   ```yaml
   paths:
@@ -262,12 +293,12 @@ API の操作概要を記載する。
         summary: API-001 ユーザアカウント取得 
   ```
 
-### description
+### paths > description
 
 APIの振る舞いの詳細や注意点を記載する。  
 別途参照させるべき設計書があるのであれば、設計書へのリンクを記載しても良い。
 
-### parameters
+### paths > parameters
 
 API のリクエストパラメータ（パスパラメータ、クエリパラメータ、ヘッダ）を記載する。
 
@@ -276,14 +307,14 @@ API のリクエストパラメータ（パスパラメータ、クエリパラ�
 * クエリパラメータはスネークケースで表現する。
 * ヘッダはハイフンを区切り文字とするパスカルケースで表現する。
 
-
-### requestBody
+### paths > requestBody
 
 API のリクエストボディを記載する。
 
-* リクエストボディを記載する。仕様の[describing-request-body](https://swagger.io/docs/specification/describing-request-body/)の章にある通り、リクエストボディはPOST、PUT、PATCHで使用され、GET、DELETE、HEADには利用できない
-* requestBodyの定義は、components/requestBodiesで宣言し、 `$refs` で参照する
-* requestBodyの命名は、 `Req` というプレフィクスと、 `Body` というサフィックスで終える必要がある
+* リクエストボディを記載する。  
+  標準仕様の [describing-request-body](https://swagger.io/docs/specification/describing-request-body/) の章にも記載がある通り、リクエストボディは `POST`、`PUT`、`PATCH` で使用され、`GET`、`DELETE`、`HEAD` には使用できない。
+* requestBodyの定義は、`components/requestBodies` で宣言し、`$refs` で参照する。
+* requestBodyの命名は、`Req` というプレフィクスと、`Body` というサフィックスで終える必要がある。
 
 ```yaml
 paths:
@@ -295,12 +326,12 @@ paths:
       ...
 ```
 
-### responses
+### paths > responses
 
 API のレスポンスを記載する。
 
 * OpenAPI ドキュメントからソースコードを自動生成する際に生成されるのクラスや構造体の命名をコントロールしたい場合などにおいては、スキーマ定義は `components` オブジェクトとして任意の名称で定義し `$ref` で参照する。  
-スキーマ定義の名称は、全体で統一された命名ルールを定めること。（例. `operation_id` をアッパーキャメルケースへ変換の上、プレフィックスに `Res` を付与）
+* スキーマ定義の名称は、全体で統一された命名ルールを定めること。（例. `operation_id` をアッパーキャメルケースへ変換の上、プレフィックスに `Res` を付与）
 * `schema` オブジェクトの `type` は `object` を指定する。
 * 異常系（`4xx`, `5xx`）の HTTP ステータスコードに対応するレスポンス定義は設計者が個別に定義するのではなく、事前に共通的なレスポンスオブジェクトを定義し `$ref` で参照することが望ましい。
         ​
@@ -341,16 +372,19 @@ components:
       ...
 ```
 
-### security
+### paths > security
 
-APIレベルの認証方式の設定だが、ルートレベルのsecurityで定義済みであるため、通常設定しない。
+APIの認証方式を記載する。
 
-ヘルスチェックのような認証を通す必要がないAPIのみ、上書きで定義する。
+* 通常はルートレベルの `security` でAPI共通的な認証方式を設定し、個々のAPIで個別に設定は行わない。
+* ヘルスチェックのような認証を通す必要がないAPIのみ、上書きで定義する。
 
-```yml
-# 認証しない場合のみ個別で定義する
-security: []
-```
+  良い例；
+
+  ```yaml
+  # 認証しない場合のみ個別で定義する
+  security: []
+  ```
 
 ## components
 
@@ -358,7 +392,7 @@ security: []
 API 定義で利用する共通のデータモデルを定義
 ​
 
-```yml
+```yaml
 components:
   schemas: ...
   parameters: ...
@@ -453,7 +487,7 @@ components:
 
 レスポンスの先頭には複数のエンドポイントで横断的に用いるモデルを定義する。例えば、ステータスコード400~500系のエラーモデルがある。
 ​
-```yml
+```yaml
 components:
   schemas:
     ProblemDetailError:
@@ -478,7 +512,7 @@ components:
 ​
 正常系のレスポンスの例としてはファイルアップロード・ダウンロードなどが該当する。個別のアプリケーション要件でブレが少ないと複数のエンドポイントで用いられる場合に定義する。オブジェクトのスキーマは、schemasに切り出して定義し、コード生成ツールのために型情報を付与させる。
 
-```yml
+```yaml
 components:
   schemas:
     SignedURL:
@@ -514,7 +548,7 @@ components:
 
 それらの後に、paths登場順にエンドポイント固有のレスポンスを定義する。レスポンスオブジェクトのスキーマは、schemasに切り出して定義する。
 
-```yml
+```yaml
 components:
   schemas:
     RespPostProductsSchema:
@@ -554,7 +588,7 @@ API 共通で利用するパラメータ（パスパラメータ、クエリパ�
 * 命名は クエリパラメータ名に `Query` というプレフィクスを付与する形式を推奨する。
 
 
-```yml
+```yaml
 paths:
   get:
     /products:
@@ -576,7 +610,7 @@ parameters:
 * API 全体で利用可能な共通のリクエストヘッダを定義する。
 * 命名は ヘッダ名に `Header` というプレフィクスを付与する形式を推奨する。
 
-```yml
+```yaml
 paths:
   post:
     /products:
@@ -599,7 +633,7 @@ components:
 * 命名は Cookie パラメータ名に `Cookie` というプレフィクスを付与する形式を推奨する。
 * Cookie 認証を定義する場合は、`APIKey` を利用すること。
 
-```yml
+```yaml
 paths:
   get:
     /products:
@@ -623,7 +657,7 @@ API 共通で利用するレスポンスヘッダを記載する。
 
 * 命名は ヘッダ名からハイフンを除去した形式を推奨する。
 
-```yml
+```yaml
 paths:
   get:
     /products:
@@ -646,7 +680,7 @@ components:
 
 標準で用いるAPI認証の定義を行う。
 
-```yml
+```yaml
 # Bearer トークによる認証
 securitySchemes:
     BearerAuth:
@@ -690,7 +724,7 @@ securitySchemes:
 
 業務システムのWeb APIで認証が全く存在しないことは考えにくいため、本規約ではルートレベルで認証を設定し、漏れをなくす。
 
-```yml
+```yaml
 # 認証設定方法 (デフォルトで設定済みの為不要)
 security:
   - Bearer: []
