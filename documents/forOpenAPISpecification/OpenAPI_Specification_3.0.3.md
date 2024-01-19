@@ -17,19 +17,15 @@ meta:
 
 [OpenAPI Specification 3.0.3](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md)に則った API ドキュメントを記述する際のコーディング規約をまとめます。古いバージョンとして[OpenAPI Specification 2.0 の規約](OpenAPI_Specification_2.0.md)がありますので、v2 をご利用の方はこちらをご参照ください。
 
-## 適用箇所
+本規約の[前提条件](prerequisite.md)に従い作成されています。ToC向けのLSUDs（Large Set of Unknown Developers）なWeb APIにはマッチしない可能性があります。
 
-本規約は以下の[前提条件](prerequisite.md)で作られたものである。
-
-## Web API 自体の設計について
-
-[API 設計標準](API_Design.md) に準じる。
+Web API自体の設計については範囲外としますが、[API 設計標準](API_Design.md)に利用するステータスコードなどは記載しています。
 
 ## ファイルフォーマット
 
 [ファイルフォーマット規約](file_standards.md)に準じる。
 
-# OpenAPI ドキュメントの構成要素
+## OpenAPI ドキュメントの構成要素
 
 OpenAPI ドキュメントを構成する要素はオブジェクトと呼ばれ、ルートオブジェクトは下記の要素で構成される。  
 各種規約を読み進めるにあたってあらかじめ大まかに理解しておくことを推奨する。  
@@ -45,13 +41,6 @@ OpenAPI ドキュメントを構成する要素はオブジェクトと呼ばれ
 | security     |      | API 全体で利用可能なセキュリティ（認証）機構                |
 | tags         |      | 各種 API をグルーピングするためのタグ                       |
 | externalDocs |      | 追加の外部ドキュメント                                      |
-
-## コンポーネント化
-
-（相談事項）
-
-- どの単位でコンポーネント化をするか、については個別の規約に入る前に全体として触れておいた方がいいと思う。
-- 結構難しいネタ
 
 # 要素規約
 
@@ -772,13 +761,98 @@ tags:
 
 ## externalDocs
 
+Schema定義, Paths配下の各API定義, OASのトップ階層などで、参照情報としてのURLを指定し表示が可能。ただし、`description` にてリンクURLを記載する方が、複数リンクを指定可能であるなど自由度が高く使いやすい。そのため、参照先URLリンクの記載には、`externalDocs` ではなく `description` の利用を推奨する。
 
+```yaml
+# 推奨
+info:
+  description: |-
+    Some useful links:
+    - [The Pet Store repository](https://github.com/swagger-api/swagger-petstore)
+    - [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
+
+# 特別な場合を除き非推奨
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+```
 
 # 設計上のポイント
 
-（相談事項）
+## ファイルアップロード
 
-- 要素規約が「どのように書くか」に焦点を当てているのに対し、そもそも「何を書くか」といった部分については、切り出して要素規約から refer させる形の方がスッキリするかも。要素規約に入れられるならそれでよし。描きながらバランス見て。
+Web API におけるファイルアップロードのよく利用される実装手段は、大きく分けて以下の 3 手法に分類できます
+
+1. ファイルのコンテンツを Base64 などにエンコードして、JSON の項目として設定し、リクエストボディで送る
+   - メリット: 通常の JSON を扱うのとほぼ変わらないため楽。サムネイルなど限定されたユースケースの場合に向く
+   - デメリット: 巨大なファイルを扱う場合などサーバリソース負荷が懸念。Base64 に変換する分 CPU 負荷は余計にかかる。ペイロードが膨れるためモバイルなどのクライアントでは帯域利用での懸念がある
+2. multipart/form-data ファイルを送信する
+   - メリット: ファイルを Base64 に変換するといった作業が不要
+   - デメリット: ブラウザ以外のクライアントにとって手間がかかる
+3. アップロード用に用いる、オブジェクトストレージの Signed URL を発行し、クライアントから直接ファイルをアップロードしてもらう
+   - 次の流れを想定（Signed URL を取得 -> ファイルアップロード -> ファイルに紐づかせるキーや属性情報などを登録）
+   - Amazon API Gateway を利用する場合は、2023 年 6 月時点で[ペイロード上限が 10MB](https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html)、[AWS Lambda でもペイロード制限がある](https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/gettingstarted-limits.html#api-requests)ため、許容するファイルサイズによってはこの手法一択となる
+   - メリット: オブジェクトストレージの可用性・信頼性を享受できる
+   - デメリット: アップロードするために複数の API エンドポイント呼び出しが必要なため、煩雑である
+   - 2023 年 6 月に AWS ブログでこの方式について解説した記事が出たので、詳細は参照ください。
+     - [https://aws.amazon.com/jp/blogs/news/large-size-files-transferring-by-serverless-s3presignedurl-and-clientside-javascript/](https://aws.amazon.com/jp/blogs/news/large-size-files-transferring-by-serverless-s3presignedurl-and-clientside-javascript/)
+
+本規約でファイルアップロードについて上記の 3. Signed URL を推奨する。API 呼び出しとしては次のようなフローとする。
+
+```mermaid
+sequenceDiagram
+participant A as クライアント
+participant B as Web APIサーバ
+participant C as オブジェクトストレージ
+
+A->>B: ①アップロード先URL取得
+  B->>C: Signed URL発行
+  C-->>B: Signed URL
+  B-->>A: アップロードURL、受付ID（加えて、アップロードで指定したいHTTP Methodや必要なリクエストヘッダーがあれば応答の項目に追加する）
+
+A->>C: ②ファイルアップロード
+
+A->>B: ③ファイルアップロード完了(受付ID、キー、属性)
+  B-->>A: 受付完了
+```
+
+フローの ①、② はアプリケーション固有の紐づけルールにおいて Web API を設計すれば良いため、本規約で YAML の設定例は記載しない。フロー ② については Signed URL を用いたアップロードであり、アプリケーションの Web API 定義を書く必要はない。もし、監査ログなどのガバナンス上、直接オブジェクトストレージへの書き込みを許容されないケースは、B で Signed URL に相当する書き込み先を提供し、B を経由してファイルをアップロードする。
+
+上記どちらのケースも OpenAPI 定義としてはシンプルであるため、記述例は割愛する。
+
+## ファイルダウンロード
+
+ファイルアップロードと同様、オブジェクトストレージの Signed URL 経由を経由してのダウンロードさせる手法を推奨する。Web API としてはオブジェクトストレージにダウンロード用のファイルを書き込み、クライアントが取得するための Signed URL をレスポンスの JSON 項目に渡す方式である。
+
+もし、サムネイルやアイコン画像など、ファイル容量がごく小さい場合は Base64 にエンコードして JSON に埋め込んで渡しても良い。線引をどこに設置するかは本規約で定義しない。
+
+どちらのケースも OpenAPI 定義としてはシンプルであるため、記述例は割愛する。
+
+## CORS
+
+CORS（Cross-Origin Resource Sharing）のために、options メソッドの追記は **原則不要** とする。
+
+理由は以下である。
+
+- サーバ側
+  - options メソッド対応は、API 使用ではなく実装レベルの機能横断的な処理（Java における Servlet Filter や Spring の Interceptor、Go における Middleware など）で行うことが大半であり、コード生成が不要
+- クライアント側
+  - options メソッドを用いるのはクライアントがブラウザであり、クライアントのアプリケーションコードが明示的にアクセスしないため、コード生成が不要
+- 使用面として
+  - ` Access-Control-Allow-Origin` がどのような値を返すか、呼び出し元によって動的な値を返したい場合があり、記載が困難なケースがある
+
+ただし、Amazon API Gateway のようなサービスを利用する場合は、options メソッドの記載が必須である場合は除く[^1]。
+
+[^1]: https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/enable-cors-for-resource-using-swagger-importer-tool.html
+
+## OpenTelemetry Traceparent HTTP Header
+
+OpenOpenTelemetryで用いるられる[traceparent](https://www.w3.org/TR/trace-context/) のリクエストヘッダーはOpenAPIで **原則不要** とする。
+
+理由は以下である。
+
+- OpenTelemetryが定めるヘッダー類は、API横断的に設定されるべきものであり、ミドルウェアやフレームワーク側などでの一律の制御を推奨するため
+- 記載することにより、OpenOpenTelemetryに対応していることを明記し開発者に周知できるメリットより、各アプリ開発者が生成されたコードで悩んだり、誤解されることを回避したいため
 
 ## バリデーションについて
 
@@ -1277,28 +1351,31 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
           name: MIT
       servers:
         - url: http://petstore.swagger.io/v1
+      tags:
+        - name: pets
+          description: Everything about your Pets
       paths:
         /pets:
           get:
-            $ref: "./pets_get/pets_get.yaml"
+            $ref: "./pets_get/pets_get.yaml#/operation"
           post:
-            $ref: "./pets_post/pets_post.yaml"
+            $ref: "./pets_post/pets_post.yaml#/operation"
         /pets/{petId}:
           get:
-            $ref: "./pets-pet-id_get/pets-pet-id_get.yaml"
+            $ref: "./pets-pet-id_get/pets-pet-id_get.yaml#/operation"
 
       components:
         schemas:
           ResPetsGet:
-            $ref: "./pets_get/response.yaml"
+            $ref: "./pets_get/pets_get.yaml#/components/schemas/ResPetsGet"
           ReqPetsPost:
-            $ref: "./pets_post/request.yaml"
+            $ref: "./pets_post/pets_post.yaml#/components/schemas/ReqPetsPost"
           ResPetsPetIdGet:
-            $ref: "./pets-pet-id_get/response.yaml#/ResPetsPetIdGet"
+            $ref: "./pets-pet-id_get/pets-pet-id_get.yaml#/components/schemas/ResPetsPetIdGet"
           PetDetail:
-            $ref: "./pets-pet-id_get/response.yaml#/PetDetail"
+            $ref: "./pets-pet-id_get/pets-pet-id_get.yaml#/components/schemas/PetDetail"
           Pedigree:
-            $ref: "./pets-pet-id_get/response.yaml#/Pedigree"
+            $ref: "./pets-pet-id_get/pets-pet-id_get.yaml#/components/schemas/Pedigree"
           Pet:
             $ref: "./common/pet.yaml"
           Error:
@@ -1311,131 +1388,117 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
     <summary>ファイル分割例： ディレクトリ構成</summary>
 
     ```sh
-      │  openapi.gen.yaml
-      │  openapi.yaml
+      ├─openapi.gen.yaml
+      ├─openapi.yaml
       │
       ├─common
-      │      error.yaml
-      │      pet.yaml
+      │  ├─error.yaml
+      │  └─pet.yaml
       │
       ├─pets-pet-id_get
-      │  │  pets-pet-id_get.yaml
-      │  │  response.yaml
-      │  │
+      │  ├─pets-pet-id_get.yaml
       │  └─examples
-      │          res_example1.yaml
+      │         └─res_example1.yaml
       │
       ├─pets_get
-      │  │  pets_get.yaml
-      │  │  response.yaml
-      │  │
+      │  ├─pets_get.yaml
       │  └─examples
-      │          res_example1.yaml
-      │          res_example2.yaml
+      │         ├─res_example1.yaml
+      │         └─res_example2.yaml
       │
       └─pets_post
-          │  pets_post.yaml
-          │  request.yaml
-          │
+          ├─pets_post.yaml
           └─examples
-                  req_example1.yaml
+                └─req_example1.yaml
     ```
 
   </details>
 
-- `openapi.yaml` の `paths` に記載したAPIファイルは以下のように作成する。`schema` にて `openapi.yaml` に指定したキー（`../openapi.yaml#/components/schemas/ResPetsPetIdGet`）を参照する。
+- `openapi.yaml` の `paths` に記載したAPIファイルは以下のように作成する。
+- 複数API間に共通のモデルについては `openapi.yaml` に指定したキー（`../openapi.yaml#/components/schemas/Pet`）を参照する。
 - `examples` には、各APIのテストケースIDをキーとして指定（`ResExample1`）し、`value` に該当するテストケースのデータファイルパスを指定（`./examples/res_example1.yaml`）する。ファイル名は、指定したキーをスネークケースに変換したものを使用するとよい。
 
   <details open>
     <summary>API別ファイルの記載例： pets-pet-id_get.yaml</summary>
 
     ```yaml
-      summary: Details for a pet
-      operationId: get-pets-pet-id
-      tags:
-        - pets
-      parameters:
-        - name: petId
-          in: path
-          required: true
-          description: The id of the pet to retrieve
-          schema:
-            type: string
-      responses:
-        "200":
-          description: Expected response to a valid request
-          content:
-            application/json:
-              schema:
-                $ref: "../openapi.yaml#/components/schemas/ResPetsPetIdGet"
-              examples:
-                ResExample1:
-                  value:
-                    $ref: "./examples/res_example1.yaml"
-        "404":
-          description: not found error
-          content:
-            application/json:
-              schema:
-                $ref: "../openapi.yaml#/components/schemas/Error"
-        "500":
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: "../openapi.yaml#/components/schemas/Error"
+      operation:
+        summary: Details for a pet
+        operationId: get-pets-pet-id
+        tags:
+          - pets
+        parameters:
+          - name: petId
+            in: path
+            required: true
+            description: The id of the pet to retrieve
+            schema:
+              type: string
+        responses:
+          "200":
+            description: Expected response to a valid request
+            content:
+              application/json:
+                schema:
+                  $ref: "#/components/schemas/ResPetsPetIdGet"
+                examples:
+                  ResExample1:
+                    value:
+                      $ref: "./examples/res_example1.yaml"
+          "404":
+            description: not found error
+            content:
+              application/json:
+                schema:
+                  $ref: "../openapi.yaml#/components/schemas/Error"
+          "500":
+            description: unexpected error
+            content:
+              application/json:
+                schema:
+                  $ref: "../openapi.yaml#/components/schemas/Error"
+
+      components:
+        schemas:
+          ResPetsPetIdGet:
+            required:
+            - pet
+            - pet_detail
+            type: object
+            properties:
+              pet:
+                $ref: "../openapi.yaml#/components/schemas/Pet"
+              pet_detail:
+                $ref: "#/components/schemas/PetDetail"
+          PetDetail:
+            type: object
+            properties:
+              breeder:
+                type: string
+              date_of_birth:
+                type: string
+                format: date
+              pedigree:
+                $ref: "#/components/schemas/Pedigree"
+          Pedigree:
+            required:
+            - registration_no
+            - date_of_registration
+            - pedigree_image
+            type: object
+            properties:
+              registration_no:
+                type: integer
+                format: int64
+              date_of_registration:
+                type: string
+                format: date
+              pedigree_image:
+                type: string
     ```
 
   </details>
 
-- `schema` ファイルの例は以下の通り。
-  - 複数API間に共通のモデルは `openapi.yaml` に指定したキーを指定する（`../openapi.yaml#/components/schemas/Pet`）。
-  - ネストしているモデルは `openapi.yaml` に指定したキーを経由して参照できるようにする（`../openapi.yaml#/components/schemas/PetDetail`, `../openapi.yaml#/components/schemas/Pedigree`）。
-
-  <details open>
-    <summary>schemaファイル記載例： pets-pet-id_get/response.yaml</summary>
-
-    ```yaml
-      ResPetsPetIdGet:
-        required:
-        - pet
-        - pet_detail
-        type: object
-        properties:
-          pet:
-            $ref: "../openapi.yaml#/components/schemas/Pet"
-          pet_detail:
-            $ref: "../openapi.yaml#/components/schemas/PetDetail"
-
-      PetDetail:
-        type: object
-        properties:
-          breeder:
-            type: string
-          date_of_birth:
-            type: string
-            format: date
-          pedigree:
-            $ref: "../openapi.yaml#/components/schemas/Pedigree"
-
-      Pedigree:
-        required:
-        - registration_no
-        - date_of_registration
-        - pedigree_image
-        type: object
-        properties:
-          registration_no:
-            type: integer
-            format: int64
-          date_of_registration:
-            type: string
-            format: date
-          pedigree_image:
-            type: string
-    ```
-
-  </details>
 
 - OpenAPIの使用用途により、分割ファイルを1つのファイルにまとめる必要がある場合には、例えば[swagger-cli](https://apitools.dev/swagger-cli/)を使用して以下コマンドを実行する。
   
@@ -1455,6 +1518,9 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
           name: MIT
       servers:
         - url: 'http://petstore.swagger.io/v1'
+      tags:
+        - name: pets
+          description: Everything about your Pets
       paths:
         /pets:
           get:
@@ -1719,14 +1785,6 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
 
   </details>
 
-
-# 各種ツール、サービスとの統合
-
-特定のツール、サービスに依存する拡張系
-
-## oapi-codegen
-
-## Amazon API Gateway
 
 ---
 

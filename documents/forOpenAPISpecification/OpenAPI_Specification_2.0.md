@@ -17,19 +17,15 @@ meta:
 
 [OpenAPI Specification 2.0（Swagger, OAS2）](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/2.0.md)定義についてのコーディング規約をまとめます。より新しいバージョンとして OAS 3.0.3 規約（作成中）がありますので、ご注意ください。
 
-## 適用箇所
+本規約の[前提条件](prerequisite.md)に従い作成されています。ToC向けのLSUDs（Large Set of Unknown Developers）なWeb APIにはマッチしない可能性があります。
 
-本規約は以下の[前提条件](prerequisite.md)で作られたものである。
-
-## Web API 自体の設計について
-
-[API 設計標準](API_Design.md) に準じる。
+Web API自体の設計については範囲外としますが、[API 設計標準](API_Design.md)に利用するステータスコードなどは記載しています。
 
 ## ファイルフォーマット
 
 [ファイルフォーマット規約](file_standards.md)に準じる。
 
-# 要素規約
+## 要素規約
 
 Swagger の基本構造は以下の、swagger・info・host・basePath・schemes・paths・definitions から構成される。
 
@@ -853,6 +849,15 @@ CORS（Cross-Origin Resource Sharing）のために、options メソッドの追
 ただし、Amazon API Gateway のようなサービスを利用する場合は、options メソッドの記載が必須である場合は除く[^1]。
 
 [^1]: https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/enable-cors-for-resource-using-swagger-importer-tool.html
+
+## OpenTelemetry Traceparent HTTP Header
+
+OpenOpenTelemetryで用いるられる[traceparent](https://www.w3.org/TR/trace-context/) のリクエストヘッダーはOpenAPIで **原則不要** とする。
+
+理由は以下である。
+
+- OpenTelemetryが定めるヘッダー類は、API横断的に設定されるべきものであり、ミドルウェアやフレームワーク側などでの一律の制御を推奨するため
+- 記載することにより、OpenOpenTelemetryに対応していることを明記し開発者に周知できるメリットより、各アプリ開発者が生成されたコードで悩んだり、誤解されることを回避したいため
 
 ## API のバージョン管理
 
