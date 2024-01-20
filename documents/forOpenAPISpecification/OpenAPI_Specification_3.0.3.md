@@ -1363,6 +1363,16 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
         /pets/{petId}:
           get:
             $ref: "./pets-pet-id_get/pets-pet-id_get.yaml#/operation"
+      components:
+        schemas:
+          PetDetail:
+            $ref: "./pets-pet-id_get/pets-pet-id_get.yaml#/components/schemas/PetDetail"
+          Pedigree:
+            $ref: "./pets-pet-id_get/pets-pet-id_get.yaml#/components/schemas/Pedigree"
+          Pet:
+            $ref: "./common/pet.yaml"
+          Error:
+            $ref: "./common/error.yaml"
 
     ```
 
@@ -1434,13 +1444,13 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
             content:
               application/json:
                 schema:
-                  $ref: "../common/error.yaml"
+                  $ref: "../openapi.yaml#/components/schemas/Error"
           "500":
             description: unexpected error
             content:
               application/json:
                 schema:
-                  $ref: "../common/error.yaml"
+                  $ref: "../openapi.yaml#/components/schemas/Error"
       components:
         schemas:
           PetDetail:
