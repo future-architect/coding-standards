@@ -1366,12 +1366,6 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
 
       components:
         schemas:
-          ResPetsGet:
-            $ref: "./pets_get/pets_get.yaml#/components/schemas/ResPetsGet"
-          ReqPetsPost:
-            $ref: "./pets_post/pets_post.yaml#/components/schemas/ReqPetsPost"
-          ResPetsPetIdGet:
-            $ref: "./pets-pet-id_get/pets-pet-id_get.yaml#/components/schemas/ResPetsPetIdGet"
           PetDetail:
             $ref: "./pets-pet-id_get/pets-pet-id_get.yaml#/components/schemas/PetDetail"
           Pedigree:
