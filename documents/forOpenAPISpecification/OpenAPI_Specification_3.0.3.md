@@ -408,56 +408,87 @@ components:
 
 ### schemas
 
-- API 定義で共通で利用するスキーマを定義
+- API定義共通で利用するスキーマを定義する。
+- schemasに定義する項目はリソースやエラー等のドメインオブジェクトのみとし、リクエストパラメータやレスポンスパラメータは`parameter`や`requestBodies`、`responses`に記載する。
+  - `paths.requestBodies`から直接参照されるリクエストパラメータオブジェクトは`requestBodies`に定義する。
+  - `paths`から直接参照されるレスポンスパラメータは`responses`に定義する。また400や500などのエラーレスポンスも`responses`に定義する。
+  - HTTPヘッダやCookie、もしくは検索上限やページングのようなHTTPレイヤのパラメータに相当するものは`parameter`に定義する。
+  - レスポンスヘッダーは`headers`にて定義する。
+  - 上記いずれにも該当しないuserやidなどのリソース、エラーを示すオブジェクトは`schemas`に定義する。
+  - 各APIのリクエストレスポンスオブジェクトは可能な限り、`parameter`,`requestBodies`,`responses`に定義する方針とし、API固有のオブジェクト（所謂`ReqXXX`、`ResXXX`等）は`schemas`には定義しない。
+  - ただし、オブジェクトがネストしてしまう場合はAPI固有のオブジェクトであっても`schemas`に定義する。  
+  ※定義するオブジェクトの`properties`配下に更に`type: object`が定義されしまう（ネストしてしまう）と生成ツールによってはうまく型が生成されないため。
+
 - 規約
-  * [ ] リソース名はアッパーキャメルケースで定義
-  * [ ] リソース名は単数形で定義
-  * [ ] `type` に複数の型定義の指定不可
-  * [ ] `type: null`は原則として利用しない
-  * [ ] `allOf`、`anyOf`、`oneOf` を利用したスキーマ定義は許容しない
-  * [ ] schemas 以下は [リクエストボディ](#リクエストボディ)、[レスポンス](#レスポンス)、[リソース](#リソース) の順に定義
+  - リソース名はアッパーキャメルケースで定義する。
+  - リソース名は単数形で定義する。
+  - `type` に複数の型定義の指定不可。
+  - `type: null`は原則として利用せず、undefinedを利用する。  
+  [差分更新APIの場合](#差分更新-API-の場合)にあるとおり、空更新を行う場合は空文字を利用する。
+  - `allOf`、`anyOf`、`oneOf` を利用したスキーマ定義は許容しない。
 
 ```yaml
-Pagination:
-  type: object
-  properties:
-    total_counts:
-      type: integer
-    offset:
-      type: integer
-    limit:
-      type: integer
-  required:
-    - total_counts
-    - offset
-    - limit
-```
-
-スキーマ定義のモデルは以下3種類
-
-- [リクエストボディ](#リクエストボディ)
-- [レスポンス](#レスポンス)
-- [リソース](#リソース)
-
-```yaml
-# ソート順は以下の通り
 components:
   schemas:
-    ReqGetProduct:
-      type: object
-      ...
-    ReqPostProduct:
-      type: object
-      ...
-    ResGetProduct:
-      type: object
-      ...
-    ResPostProduct:
-      type: object
-      ...
+    # リソースを示すオブジェクト
     Product:
       type: object
-      ...
+      properties:
+        ...
+    User:
+      type: object
+      properties:
+    # エラーを示すオブジェクト
+    ProblemDetailError:
+      type: object
+      properties:
+        ...
+    # リクエストパラメータやレスポンスパラメータはrequestBodies、もしくはresponsesに記載する。
+    # ReqPostProductsBodyParam:
+    #   type: object
+    #   properties:
+    #     ...
+  parameter:
+    # HTTPヘッダやCookie、もしくは検索上限やページングのようなHTTPレイヤのパラメータ定義
+    QueryLimit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: 検索数上限
+  requestBodies:
+    # 各API定義（paths.requestBody）から参照されるレスポンス定義
+    ReqPostProductsBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              product:
+                $ref: '#/components/schemas/Product'
+              ...
+  responses:
+    # 各API定義（paths）から参照されるレスポンス定義
+    RespPostProducts:
+      description: 商品登録の応答
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              product:
+                $ref: '#/components/schemas/Product'
+              ...
+    # 共通で使用するエラーレスポンス定義
+    BadRequest:
+      description: 400 Bad Request
+      content:
+        application/json:
+          schema:
+            "$ref": "#/components/schemas/ProblemDetailError"
+
 ```
 
 #### requestBodies(components)
@@ -470,7 +501,7 @@ components:
 ```yaml
 components:
   schemas:
-    ReqPostProducts:
+    Product:
       type: object
       properties:
         ...
@@ -480,7 +511,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ReqPostProducts'   
+            $ref: '#/components/schemas/Product'   
 ```
 
 #### responses(components)
@@ -551,7 +582,7 @@ components:
 ```yaml
 components:
   schemas:
-    RespPostProductsSchema:
+    Product:
       type: object
       properties:
         product_id:
@@ -564,7 +595,7 @@ components:
       content:
         application/json:
           schema:
-            "$ref": "#/components/schemas/RespPostProductsSchema"
+            "$ref": "#/components/schemas/Product"
           examples:
             default:
               value:
@@ -1346,9 +1377,9 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
 
 - 機能単位（path, method単位）にディレクトリを作成して、それぞれの定義ファイルを格納する。ディレクトリ名は `{path}_{method}` とすると管理し易い。
 - `components` の `schemas` には、
-  - 各APIごとのリクエスト/リスポンスモデルを切り出して記載する（例えば、`ResPetsPetIdGet`）。
   - API間で同じモデルを使用する場合は共通化して記載する（例えば、`Pet`）。
   - 各APIのリクエスト/リスポンスモデルの中で、モデルがネストする場合は、各モデルの単位で書き出す（例えば、`PetDetail`, `Pedigree`）。
+  - ※schemasのモデルの中身は別ファイルに定義が可能だが、大本のopenapi.yamlにも命名のみ定義が必要。openapi.yamlの定義が無いとswaggerUIで確認した際にschemas定義が見えなくなってしまう。
 
   <details open>
     <summary>ファイル分割例： openapi.yaml</summary>
@@ -1374,15 +1405,8 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
         /pets/{petId}:
           get:
             $ref: "./pets-pet-id_get/pets-pet-id_get.yaml#/operation"
-
       components:
         schemas:
-          ResPetsGet:
-            $ref: "./pets_get/pets_get.yaml#/components/schemas/ResPetsGet"
-          ReqPetsPost:
-            $ref: "./pets_post/pets_post.yaml#/components/schemas/ReqPetsPost"
-          ResPetsPetIdGet:
-            $ref: "./pets-pet-id_get/pets-pet-id_get.yaml#/components/schemas/ResPetsPetIdGet"
           PetDetail:
             $ref: "./pets-pet-id_get/pets-pet-id_get.yaml#/components/schemas/PetDetail"
           Pedigree:
@@ -1434,8 +1458,8 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
 
     ```yaml
       operation:
-        summary: Details for a pet
         operationId: get-pets-pet-id
+        summary: Details for a pet
         tags:
           - pets
         parameters:
@@ -1451,7 +1475,7 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
             content:
               application/json:
                 schema:
-                  $ref: "#/components/schemas/ResPetsPetIdGet"
+                  $ref: "#/components/responses/ResPetsPetIdGet"
                 examples:
                   ResExample1:
                     value:
@@ -1468,19 +1492,8 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
               application/json:
                 schema:
                   $ref: "../openapi.yaml#/components/schemas/Error"
-
       components:
         schemas:
-          ResPetsPetIdGet:
-            required:
-            - pet
-            - pet_detail
-            type: object
-            properties:
-              pet:
-                $ref: "../openapi.yaml#/components/schemas/Pet"
-              pet_detail:
-                $ref: "#/components/schemas/PetDetail"
           PetDetail:
             type: object
             properties:
@@ -1506,6 +1519,17 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
                 format: date
               pedigree_image:
                 type: string
+        responses:
+          ResPetsPetIdGet:
+            required:
+            - pet
+            - pet_detail
+            type: object
+            properties:
+              pet:
+                $ref: "../common/pet.yaml"
+              pet_detail:
+                $ref: "#/components/schemas/PetDetail"
     ```
 
   </details>
@@ -1521,276 +1545,260 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
     <summary>ファイルBundle後： openapi.gen.yaml</summary>
 
     ```yaml
-      openapi: 3.0.3
-      info:
-        version: 1.0.0
-        title: Swagger Petstore
-        license:
-          name: MIT
-      servers:
-        - url: 'http://petstore.swagger.io/v1'
-      tags:
-        - name: pets
-          description: Everything about your Pets
-      paths:
-        /pets:
-          get:
-            summary: List all pets
-            operationId: get-pets
-            tags:
-              - pets
-            parameters:
-              - name: limit
-                in: query
-                description: How many items to return at one time (max 100)
-                required: false
-                schema:
-                  type: integer
-                  maximum: 100
-                  format: int32
-            responses:
-              '200':
-                description: A paged array of pets
-                headers:
-                  x-next:
-                    description: A link to the next page of responses
-                    schema:
-                      type: string
-                content:
-                  application/json:
-                    schema:
-                      $ref: '#/components/schemas/ResPetsGet'
-                    examples:
-                      ResExample1:
-                        value:
-                          - id: 10001
-                            name: ToyPoodle
-                            category: dog
-                            sub_category: ToyPoodle
-                            age: 1
-                            sex: male
-                            note: friendly
-                            tag: dog10001
-                          - id: 10002
-                            name: Chihuahua
-                            category: dog
-                            sub_category: Chihuahua
-                            age: 1
-                            sex: female
-                            note: friendly
-                            tag: dog10002
-                          - id: 10003
-                            name: Shiba
-                            category: dog
-                            sub_category: Shiba
-                            age: 1
-                            sex: male
-                            note: friendly
-                            tag: dog10003
-                          - id: 10004
-                            name: MiniatureDachshund
-                            category: dog
-                            sub_category: MiniatureDachshund
-                            age: 1
-                            sex: female
-                            note: friendly
-                            tag: dog10004
-                      ResExample2:
-                        value: []
-              '404':
-                description: not found error
-                content:
-                  application/json:
-                    schema:
-                      $ref: '#/components/schemas/Error'
-              '500':
-                description: unexpected error
-                content:
-                  application/json:
-                    schema:
-                      $ref: '#/components/schemas/Error'
-          post:
-            summary: Register a pet
-            operationId: post-pets
-            tags:
-              - pets
-            requestBody:
+    openapi: 3.0.3
+    info:
+      version: 1.0.0
+      title: Swagger Petstore
+      license:
+        name: MIT
+    servers:
+      - url: 'http://petstore.swagger.io/v1'
+    tags:
+      - name: pets
+        description: Everything about your Pets
+    paths:
+      /pets:
+        get:
+          summary: List all pets
+          operationId: get-pets
+          tags:
+            - pets
+          parameters:
+            - name: limit
+              in: query
+              description: How many items to return at one time (max 100)
+              required: false
+              schema:
+                type: integer
+                maximum: 100
+                format: int32
+          responses:
+            '200':
+              description: A paged array of pets
+              headers:
+                x-next:
+                  description: A link to the next page of responses
+                  schema:
+                    type: string
               content:
                 application/json:
                   schema:
-                    $ref: '#/components/schemas/ReqPetsPost'
+                    type: array
+                    maxItems: 100
+                    items:
+                      type: object
+                      required:
+                        - id
+                        - name
+                        - category
+                        - age
+                        - sex
+                      properties:
+                        id:
+                          type: integer
+                          format: int64
+                        name:
+                          type: string
+                          maxLength: 50
+                        category:
+                          type: string
+                          maxLength: 10
+                        sub_category:
+                          type: string
+                          maxLength: 50
+                        age:
+                          type: integer
+                          format: int32
+                        sex:
+                          type: string
+                          maxLength: 6
+                        note:
+                          type: string
+                          maxLength: 200
+                        tag:
+                          type: string
+                          maxLength: 20
                   examples:
-                    ReqExample1:
+                    ResExample1:
                       value:
-                        pet:
-                          id: 10005
-                          name: FrenchBulldog
+                        - id: 10001
+                          name: ToyPoodle
                           category: dog
-                          sub_category: FrenchBulldog
+                          sub_category: ToyPoodle
                           age: 1
                           sex: male
                           note: friendly
-                          tag: dog10005
-              required: false
-            responses:
-              '201':
-                description: Null response
-              '404':
-                description: not found error
-                content:
-                  application/json:
-                    schema:
-                      $ref: '#/components/schemas/Error'
-              '500':
-                description: unexpected error
-                content:
-                  application/json:
-                    schema:
-                      $ref: '#/components/schemas/Error'
-        '/pets/{petId}':
-          get:
-            summary: Details for a pet
-            operationId: get-pets-pet-id
-            tags:
-              - pets
-            parameters:
-              - name: petId
-                in: path
-                required: true
-                description: The id of the pet to retrieve
+                          tag: dog10001
+                        - id: 10002
+                          name: Chihuahua
+                          category: dog
+                          sub_category: Chihuahua
+                          age: 1
+                          sex: female
+                          note: friendly
+                          tag: dog10002
+                        - id: 10003
+                          name: Shiba
+                          category: dog
+                          sub_category: Shiba
+                          age: 1
+                          sex: male
+                          note: friendly
+                          tag: dog10003
+                        - id: 10004
+                          name: MiniatureDachshund
+                          category: dog
+                          sub_category: MiniatureDachshund
+                          age: 1
+                          sex: female
+                          note: friendly
+                          tag: dog10004
+                    ResExample2:
+                      value: []
+            '404':
+              description: not found error
+              content:
+                application/json:
+                  schema:
+                    type: object
+                    required:
+                      - code
+                      - message
+                    properties:
+                      code:
+                        type: integer
+                        format: int32
+                      message:
+                        type: string
+            '500':
+              description: unexpected error
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/paths/~1pets/get/responses/404/content/application~1json/schema'
+        post:
+          summary: Register a pet
+          operationId: post-pets
+          tags:
+            - pets
+          requestBody:
+            content:
+              application/json:
                 schema:
-                  type: string
-            responses:
-              '200':
-                description: Expected response to a valid request
-                content:
-                  application/json:
-                    schema:
-                      $ref: '#/components/schemas/ResPetsPetIdGet'
-                    examples:
-                      ResExample1:
-                        value:
-                          pet:
-                            id: 10001
-                            name: ToyPoodle
-                            category: dog
-                            sub_category: ToyPoodle
-                            age: 1
-                            sex: male
-                            note: friendly
-                            tag: dog10001
-                          pet_detail:
-                            breeder: BreederName
-                            date_of_birth: '2023-10-31'
-                            pedigree:
-                              registration_no: 11111111
-                              date_of_registration: '2023-10-31'
-                              pedigree_image: 9j2wBDAA...8QAPxAAAQQABAMGBAYDAAEDAg
-              '404':
-                description: not found error
-                content:
-                  application/json:
-                    schema:
-                      $ref: '#/components/schemas/Error'
-              '500':
-                description: unexpected error
-                content:
-                  application/json:
-                    schema:
-                      $ref: '#/components/schemas/Error'
-      components:
-        schemas:
-          ResPetsGet:
-            type: array
-            maxItems: 100
-            items:
-              $ref: '#/components/schemas/Pet'
-          ReqPetsPost:
-            required:
-              - pet
-            type: object
-            properties:
-              pet:
-                $ref: '#/components/schemas/Pet'
-          ResPetsPetIdGet:
-            required:
-              - pet
-              - pet_detail
-            type: object
-            properties:
-              pet:
-                $ref: '#/components/schemas/Pet'
-              pet_detail:
-                $ref: '#/components/schemas/PetDetail'
-          PetDetail:
-            type: object
-            properties:
-              breeder:
+                  required:
+                    - pet
+                  type: object
+                  properties:
+                    pet:
+                      $ref: '#/paths/~1pets/get/responses/200/content/application~1json/schema/items'
+                examples:
+                  ReqExample1:
+                    value:
+                      pet:
+                        id: 10005
+                        name: FrenchBulldog
+                        category: dog
+                        sub_category: FrenchBulldog
+                        age: 1
+                        sex: male
+                        note: friendly
+                        tag: dog10005
+            required: false
+          responses:
+            '201':
+              description: Null response
+            '404':
+              description: not found error
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/paths/~1pets/get/responses/404/content/application~1json/schema'
+            '500':
+              description: unexpected error
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/paths/~1pets/get/responses/404/content/application~1json/schema'
+      '/pets/{petId}':
+        get:
+          summary: Details for a pet
+          operationId: get-pets-pet-id
+          tags:
+            - pets
+          parameters:
+            - name: petId
+              in: path
+              required: true
+              description: The id of the pet to retrieve
+              schema:
                 type: string
-              date_of_birth:
-                type: string
-                format: date
-              pedigree:
-                $ref: '#/components/schemas/Pedigree'
-          Pedigree:
-            required:
-              - registration_no
-              - date_of_registration
-              - pedigree_image
-            type: object
-            properties:
-              registration_no:
-                type: integer
-                format: int64
-              date_of_registration:
-                type: string
-                format: date
-              pedigree_image:
-                type: string
-          Pet:
-            type: object
-            required:
-              - id
-              - name
-              - category
-              - age
-              - sex
-            properties:
-              id:
-                type: integer
-                format: int64
-              name:
-                type: string
-                maxLength: 50
-              category:
-                type: string
-                maxLength: 10
-              sub_category:
-                type: string
-                maxLength: 50
-              age:
-                type: integer
-                format: int32
-              sex:
-                type: string
-                maxLength: 6
-              note:
-                type: string
-                maxLength: 200
-              tag:
-                type: string
-                maxLength: 20
-          Error:
-            type: object
-            required:
-              - code
-              - message
-            properties:
-              code:
-                type: integer
-                format: int32
-              message:
-                type: string
+          responses:
+            '200':
+              description: Expected response to a valid request
+              content:
+                application/json:
+                  schema:
+                    required:
+                      - pet
+                      - pet_detail
+                    type: object
+                    properties:
+                      pet:
+                        $ref: '#/paths/~1pets/get/responses/200/content/application~1json/schema/items'
+                      pet_detail:
+                        type: object
+                        properties:
+                          breeder:
+                            type: string
+                          date_of_birth:
+                            type: string
+                            format: date
+                          pedigree:
+                            required:
+                              - registration_no
+                              - date_of_registration
+                              - pedigree_image
+                            type: object
+                            properties:
+                              registration_no:
+                                type: integer
+                                format: int64
+                              date_of_registration:
+                                type: string
+                                format: date
+                              pedigree_image:
+                                type: string
+                  examples:
+                    ResExample1:
+                      value:
+                        pet:
+                          id: 10001
+                          name: ToyPoodle
+                          category: dog
+                          sub_category: ToyPoodle
+                          age: 1
+                          sex: male
+                          note: friendly
+                          tag: dog10001
+                        pet_detail:
+                          breeder: BreederName
+                          date_of_birth: '2023-10-31'
+                          pedigree:
+                            registration_no: 11111111
+                            date_of_registration: '2023-10-31'
+                            pedigree_image: 9j2wBDAA...8QAPxAAAQQABAMGBAYDAAEDAg
+            '404':
+              description: not found error
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/paths/~1pets/get/responses/404/content/application~1json/schema'
+            '500':
+              description: unexpected error
+              content:
+                application/json:
+                  schema:
+                    $ref: '#/paths/~1pets/get/responses/404/content/application~1json/schema'
 
     ```
 
