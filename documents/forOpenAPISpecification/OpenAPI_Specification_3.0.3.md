@@ -1335,9 +1335,9 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
 
 - 機能単位（path, method単位）にディレクトリを作成して、それぞれの定義ファイルを格納する。ディレクトリ名は `{path}_{method}` とすると管理し易い。
 - `components` の `schemas` には、
-  - 各APIごとのリクエスト/リスポンスモデルを切り出して記載する（例えば、`ResPetsPetIdGet`）。
   - API間で同じモデルを使用する場合は共通化して記載する（例えば、`Pet`）。
   - 各APIのリクエスト/リスポンスモデルの中で、モデルがネストする場合は、各モデルの単位で書き出す（例えば、`PetDetail`, `Pedigree`）。
+  - ※schemasのモデルの中身は別ファイルに定義が可能だが、大本のopenapi.yamlにも命名のみ定義が必要。openapi.yamlの定義が無いとswaggerUIで確認した際にschemas定義が見えなくなってしまう。
 
   <details open>
     <summary>ファイル分割例： openapi.yaml</summary>
@@ -1373,7 +1373,6 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
             $ref: "./common/pet.yaml"
           Error:
             $ref: "./common/error.yaml"
-
     ```
 
   </details>
