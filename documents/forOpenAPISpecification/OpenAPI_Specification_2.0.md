@@ -17,19 +17,15 @@ meta:
 
 [OpenAPI Specification 2.0（Swagger, OAS2）](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/2.0.md)定義についてのコーディング規約をまとめます。より新しいバージョンとして OAS 3.0.3 規約（作成中）がありますので、ご注意ください。
 
-## 適用箇所
+本規約の[前提条件](prerequisite.md)に従い作成されています。ToC向けのLSUDs（Large Set of Unknown Developers）なWeb APIにはマッチしない可能性があります。
 
-本規約は以下の[前提条件](prerequisite.md)で作られたものである。
-
-## Web API 自体の設計について
-
-[API 設計標準](API_Design.md) に準じる。
+Web API自体の設計については範囲外としますが、[API 設計標準](API_Design.md)に利用するステータスコードなどは記載しています。
 
 ## ファイルフォーマット
 
-[ファイルフォーマット規約](yaml_standards.md)に準じる。
+[ファイルフォーマット規約](file_standards.md)に準じる。
 
-# 要素規約
+## 要素規約
 
 Swagger の基本構造は以下の、swagger・info・host・basePath・schemes・paths・definitions から構成される。
 
@@ -680,97 +676,113 @@ definitions:
 
 ## バリデーションについて
 
+OpenAPI 定義を記載するにあたり、バリデーションをどこまで厳密に定義すべきかという議論はよく行いがちである。
+
 リクエストパラメータの各項目に対して、必須・型・桁・区分値・日付・正規表現のチェックが行える。レスポンスで用いるモデルについても同様に設定でき、`enum`, `pattern` 以外は API の利用者（クライアント）側の DB 設計などに必要な型桁情報を渡すのに有用であるため、できる限り詳しく指定する。
 
-- 必須（`required`）
-  - 必須パラメータのみ `required: true` を定義する
-- デフォルト値（`default`）
+### 必須
 
-  - パラメータにデフォルト値がある場合は定義する
+必須パラメータのみ `required: true` を定義する
 
-  ```yaml
-  # ex. enum
-  name: limit
-  type: number
-  format: integer
-  minimum: 1
-  maximum: 100
-  default: 20
-  description: 検索結果の項目数上限（1~100が指定可能）
-  ```
+### デフォルト値
 
-  - API 公開後に、default 値を変更してはならない（API の互換性が崩れるため）。もし変更する場合は、API のバージョンを上げること
+パラメータにデフォルト値がある場合は`default` を定義する。
 
-- 型（`type`）
-  - `string(文字列)`, `number（数値）`, `integer（整数値）`, `boolean（真偽値）` `array（配列）`, `file（ファイル）` のうちどれか指定する
-- フォーマット（`format`） は以下の型の詳細情報を示すもので、可能な限り設定する
-  - `integer` （整数）
-    - `int32`, `int64`
-  - `number` （数値）
-    - `float`, `double`
-  - `string` （バイナリ）
-    - `byte`: Base64 でエンコードされた文字列
-    - `binary`: バイト配列
-  - `string` （日付）
-    - `date`: [RFC3339](https://www.rfc-editor.org/rfc/rfc3339) full-date
-      - 項目名は `_on` を接尾辞につけることを推奨とする
-    - `date-time`: [RFC3339](https://www.rfc-editor.org/rfc/rfc3339) date-time
-      - 項目名は `_at` を接尾辞につけることを推奨とする
-  - `string` （その他）
-    - `password`: Swagger UI で入力が隠される
-    - その他、 `email`, `uuid` など Open API 仕様に存在しない任意のフォーマットを独自のドキュメント生成などのために記載しても良い
-- 桁
-  - 文字列
-    - 最大桁数：`maxLength`
-    - 最小桁数：`minLength`
-  - 数値または整数値
-    - 最小値（境界値を含む）：`minimum`
-    - 最大値（境界値を含む）：`maximum`
-    - 境界値を含まない場合のみ`exclusiveMinimum: true`または`exclusiveMaximum: true`を定義する。minimum, maximum で代用できる場合は利用しない
-  - 配列:
-    - 最大要素数：`maxItems`
-    - 最小要素数：`minItems`
-    - `required: true`の場合は原則として`minItems: 1`を定義する
-    - `uniqueItems` は必須で指定する（通常は一意であるべき）
-  - API 公開後に、レスポンスの `maxLength` を以前より大きい値に変更してはならい
-    - レスポンスの `maxLength` など API 利用者側システムの DB の ERD 定義のインプットになる事が多いため。もし行う場合は API のバージョンを上げることや、連携先に桁数変更の旨を調整するなどの考慮を行う
-- 区分値（`enum`）
+```yaml
+# ex. enum
+name: limit
+type: number
+format: integer
+minimum: 1
+maximum: 100
+default: 20
+description: 検索結果の項目数上限（1~100が指定可能）
+```
 
-  - `description`に区分値の論理名を記載する
+【注意】API 公開後に、default 値を変更してはならない（API の互換性が崩れるため）。もし変更する場合は、API のバージョンを上げること。
 
-  ```yaml
-  name: gender
+
+### 型・フォーマット
+
+型（`type`）は `string(文字列)`, `number（数値）`, `integer（整数値）`, `boolean（真偽値）` `array（配列）`, `file（ファイル）` のうちどれか指定する.
+
+フォーマット（`format`） は以下の型の詳細情報を示すもので、可能な限り設定する。
+
+- `integer` （整数）
+  - `int32`, `int64`
+- `number` （数値）
+  - `float`, `double`
+- `string` （バイナリ）
+  - `byte`: Base64 でエンコードされた文字列
+  - `binary`: バイト配列
+- `string` （日付）
+  - `date`: [RFC3339](https://www.rfc-editor.org/rfc/rfc3339) full-date(例: 2023-07-21)
+    - 項目名は `_on` を接尾辞につけることを推奨とする
+  - `date-time`: [RFC3339](https://www.rfc-editor.org/rfc/rfc3339) date-time(例: 2023-07-21T17:32:28Z)
+    - 項目名は `_at` を接尾辞につけることを推奨とする
+- `string` （その他）
+  - `password`: Swagger UI で入力が隠される
+  - その他、 `email`, `uuid` など Open API 仕様に存在しない任意のフォーマットを独自のドキュメント生成などのために記載しても良い
+
+### 桁
+
+データ型によって、利用できる桁を指定する項目が異なる。可能な限り設定する。
+
+- 文字列
+  - 最大桁数：`maxLength`
+  - 最小桁数：`minLength`
+- 数値または整数値
+  - 最小値（境界値を含む）：`minimum`
+  - 最大値（境界値を含む）：`maximum`
+  - 境界値を含まない場合のみ`exclusiveMinimum: true`または`exclusiveMaximum: true`を定義する。minimum, maximum で代用できる場合は利用しない
+- 配列:
+  - 最大要素数：`maxItems`
+  - 最小要素数：`minItems`
+  - `required: true`の場合は原則として`minItems: 1`を定義する
+  - `uniqueItems` は必須で指定する（通常は一意であるべき）
+
+【注意】API 公開後に、レスポンスの `maxLength` を以前より大きい値に変更してはならない。レスポンスの `maxLength` など API 利用者側システムの DB の ERD 定義のインプットになる事が多いため。もし行う場合は API のバージョンを上げることや、連携先に桁数変更の旨を調整するなどの考慮を行う。
+
+### 区分値
+
+区分値の場合は `enum` 属性を利用し、`description`には区分値の論理名を記載する。
+
+```yaml
+name: gender
+type: string
+enum: ["0", "1", "2", "9"]
+description: |
+  性別
+    0: 不明
+    1: 男
+    2: 女
+    9: 適用不能
+```
+
+### 固定値
+
+**固定値** の場合も enum を 1 つだけ指定して表現する。この場合もレスポンスで利用する場合は指定しない
+
+```yaml
+name: file_layout
+type: string
+enum: ["json"]
+description: ファイルレイアウト
+```
+
+### その他（正規表現）
+
+正規表現で表現できる文字列は`pattern`を利用して定義する。桁や区分値で代替できる場合は、`pattern` を用いない
+
+例:
+
+```yaml
+remind_time:
   type: string
-  enum: ["0", "1", "2", "9"]
-  description: |
-    性別
-      0: 不明
-      1: 男
-      2: 女
-      9: 適用不能
-  ```
-
-  - **固定値** の場合も enum を 1 つだけ指定して表現する。この場合もレスポンスで利用する場合は指定しない
-
-    ```yaml
-    name: file_layout
-    type: string
-    enum: ["json"]
-    description: ファイルレイアウト
-    ```
-
-- その他
-
-  - 正規表現で表現できる文字列は`pattern`を利用して定義する。桁や区分値で代替できる場合は、`pattern` を用いない
-  - 例:
-
-    ```yaml
-    remind_time:
-      type: string
-      description: リマインド時刻。（hh:mm）形式
-      example: 23:59
-      pattern: "^(2[0-3]|[01][0-9]):([0-5][0-9])$"
-    ```
+  description: リマインド時刻。（hh:mm）形式
+  example: 23:59
+  pattern: "^(2[0-3]|[01][0-9]):([0-5][0-9])$"
+```
 
 ## ファイルアップロード
 
@@ -837,6 +849,15 @@ CORS（Cross-Origin Resource Sharing）のために、options メソッドの追
 ただし、Amazon API Gateway のようなサービスを利用する場合は、options メソッドの記載が必須である場合は除く[^1]。
 
 [^1]: https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/enable-cors-for-resource-using-swagger-importer-tool.html
+
+## OpenTelemetry Traceparent HTTP Header
+
+OpenOpenTelemetryで用いるられる[traceparent](https://www.w3.org/TR/trace-context/) のリクエストヘッダーはOpenAPIで **原則不要** とする。
+
+理由は以下である。
+
+- OpenTelemetryが定めるヘッダー類は、API横断的に設定されるべきものであり、ミドルウェアやフレームワーク側などでの一律の制御を推奨するため
+- 記載することにより、OpenOpenTelemetryに対応していることを明記し開発者に周知できるメリットより、各アプリ開発者が生成されたコードで悩んだり、誤解されることを回避したいため
 
 ## API のバージョン管理
 

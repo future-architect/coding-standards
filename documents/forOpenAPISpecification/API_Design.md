@@ -8,9 +8,9 @@ OpenAPI Specification 規約を利用するに当たり、想定する Web API �
 
 ## HTTP ステータス
 
-原則として[RFC 7231](https://tools.ietf.org/html/rfc7231#section-6)で定義されているレスポンスステータスコードを利用します。
+[RFC 7231](https://tools.ietf.org/html/rfc7231#section-6)で定義されているレスポンスステータスコードを利用します。
 
-ユースケース別に利用すべき HTTP ステータスコードを記載します。
+[RFC9205](https://datatracker.ietf.org/doc/html/rfc9205)（[日本語訳](https://tex2e.github.io/rfc-translater/html/rfc9205.html#section-4.6)）の方針に原則則る。ユースケース別に利用すべき HTTP ステータスコードを記載します。
 
 ### 共通
 
