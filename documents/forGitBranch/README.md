@@ -8,10 +8,12 @@
   - 宮崎にて
 - ★パターンごと整理
   - 現状だとGithubFlow/GitlabFlow/GitFlow/GitFlowライト版/CGS
+    - 3面(dev/stg/prod)想定で。
     - CGSのものは宮崎にて
     - その他分担。
   - 記載内容
     - 概要
+    - 規模/ユースケース
     - 登場ブランチ
     - 通常運用
     - 切り戻し運用
@@ -50,6 +52,7 @@
 ### Githubフロー
 
 - 概要
+- 想定人数
 - 登場ブランチ
 - 通常運用
 - 切り戻し運用
@@ -57,6 +60,7 @@
 ### Gitlabフロー
 
 - 概要
+- 想定人数
 - 登場ブランチ
 - 通常運用
 - 切り戻し運用
@@ -66,6 +70,7 @@
 - 概要
   - デファクトスタンダード？
   - main/release/fix/develop/featureパターン（npg資料あり）
+- 想定人数
 - 登場ブランチ
 - 通常運用
 - 切り戻し運用
@@ -74,6 +79,7 @@
 
 - 概要
   - main/develop/featureパターン
+- 想定人数
 - 登場ブランチ
 - 通常運用
 - 切り戻し運用
@@ -84,6 +90,24 @@
   - main/release/fix/hotfix/develop複数パターン
   - ちょっと重厚
   - 複数の大型リリースに耐えられる
+
+```mermaid
+---
+title: CGSパターン
+---
+gitGraph
+   commit
+   commit
+   branch develop
+   checkout develop
+   commit
+   commit
+   checkout main
+   merge develop
+   commit
+   commit
+```
+
 - 登場ブランチ
 - 通常運用
 - 切り戻し運用
@@ -103,6 +127,9 @@
 - モノリポの場合はfrontend-1.0.0など。デプロイの単位で命名しておくとモノリポの場合でも使える。
 
 ### mermaid
+
+- 公式Doc
+  - https://mermaid.js.org/syntax/gitgraph.html
 
 - NTTDの図がわかりやすかった
 
