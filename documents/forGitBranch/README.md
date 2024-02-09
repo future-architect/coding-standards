@@ -1,4 +1,4 @@
-# ブランチ管理標準  
+# ブランチ管理標準
 
 ## はじめに
 
@@ -82,13 +82,6 @@ gitGraph
 
 ### コミットメッセージ
 
-- [ ] PRタイトルからのスカッシュマージについての管理検討
-https://github.com/marketplace/actions/pull-request-title-rules
-- [ ] release noteの自動生成など
-https://github.com/conventional-changelog/conventional-changelog
-- [ ] revertのコミットメッセージなど
-
-
 Gitのコミットメッセージにの書式についてルール化する運用とする。
 
 これにより、コミットの目的がわかりやすくなる、履歴からのトラッキングの容易になる利点がある。
@@ -171,7 +164,7 @@ issue_idを記載するフォーマットとしては、`#id`とする。
 これらのルールに従ったコミットメッセージの例としては、以下のようなものとなる。
 
 ```
-feat(view): カレンダーの表示を追加 🎉(#645) 
+feat(view): カレンダーの表示を追加 🎉(#645)
 ```
 
 ### GitTags
@@ -203,6 +196,6 @@ feat(view): カレンダーの表示を追加 🎉(#645)
 ## 情報収集
 
 - JetBrains Space Gitフロー
-  https://blog.jetbrains.com/space/2023/04/18/space-git-flow/  
+  https://blog.jetbrains.com/space/2023/04/18/space-git-flow/
 - NTT
   https://engineers.ntt.com/entry/2024/01/19/094639
