@@ -1,4 +1,4 @@
-# IF01_設備有効開始受信
+# IF01 設備有効開始受信
 
 設備有効開始の取り込みを行う。
 
@@ -52,9 +52,9 @@ Output:
 
 | Item Logical | Item Physical  | Type   | Length | Precision | Enum | Format     | Example    | Memo |
 | ------------ | -------------- | ------ | ------ | --------- | ---- | ---------- | ---------- | ---- |
-| 会社コード   | company_cd     | string | 5      | -         | -    | -          | 00001      | | 
+| 会社コード   | company_cd     | string | 5      | -         | -    | -          | 00001      | |
 | 設備コード   | device_cd      | string | 8      | -         | -    | -          | 00000052   | |
-| 有効開始日   | activation_date | string | 10     | -         | -    | YYYY-MM-DD | 2022-10-16 | [^1] | 
+| 有効開始日   | activation_date | string | 10     | -         | -    | YYYY-MM-DD | 2022-10-16 | [^1] |
 
 [^1]: 現在日以降である必要があるが、受信ではテスト観点で過去日も許容する
 
