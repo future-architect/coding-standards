@@ -8,13 +8,13 @@ OpenAPI ドキュメントは JSON 形式、YAML 形式いずれかのフォー�
 
 ## ファイル名
 
-ファイルの拡張子は `yaml` とする。通常ファイル名は `api.yaml` や `swagger.yaml`（v2の場合） を推奨する。
+ファイルの拡張子は `yaml` とする。通常ファイル名は `api.yaml` や `swagger.yaml`（v2 の場合） を推奨する。
 
 もし、複数の Swagger 定義を管理するため区別したい場合は `${service}_api.yaml` とする。
 
 `${service}` にはサービス名を指定する
 
-## YAMLバージョン
+## YAML バージョン
 
 [YAML v1.2](https://yaml.org/spec/1.2.2/#61-indentation-spaces)を用いる。
 
@@ -44,7 +44,7 @@ description: "何かしらの説明"
 - Bool として認識させたくない（"true", "false", "yes", "no", "y", "n", "on", "off"）
 - `#` で始まる文字列（`#` はコメントを示す記号のためである。例: `#/definitions/Users`）
 
-## YAML配列スタイル
+## YAML 配列スタイル
 
 - 複数項目を指定する場合は、 **Flow style(配列スキーム)** を用いることを推奨する
 
