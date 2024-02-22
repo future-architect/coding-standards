@@ -5,9 +5,11 @@
 - 業務システム向けの Web API 提供
   - サードパーティ向けに広く開発する Web API ではなく、限られたクライアントやシステムと連携すること
   - いわゆる、LSUDs（Large Set of Unknown Developers）ではなく、SSKDs（Small Set of Known Developers）を対象とする
-* RESTish なWeb API
-    * 原理的なRESTを必ずしも守る必要はないが、例えばHTTPメソッドは、参照はGET、登録はPOST、更新はPUTやPATCH、削除はDELETEで使い分けていたり、Web APIの要求が成功すれば200（OK）、204（No Content）を返し、リソースが無ければ404（Not Found）、操作に失敗すれば500系のエラーを返すといったことを指す
-    * 本規約を利用するに当たり必須条件ではないが、定義例などはそれに基づいて記載しているので注意する
+
+* RESTish な Web API
+  - 原理的な REST を必ずしも守る必要はないが、例えば HTTP メソッドは、参照は GET、登録は POST、更新は PUT や PATCH、削除は DELETE で使い分けていたり、Web API の要求が成功すれば 200（OK）、204（No Content）を返し、リソースが無ければ 404（Not Found）、操作に失敗すれば 500 系のエラーを返すといったことを指す
+  - 本規約を利用するに当たり必須条件ではないが、定義例などはそれに基づいて記載しているので注意する
+
 - スキーマファースト
   - OpenAPI Specification の定義ファイルを駆動に、クライアント・サーバサイドのコード生成やモック時の利用に用い、高速な Web API 開発につなげることを前提とする
     - Python における、FastAPI・Django REST Framework のように、アプリケーションコードから OpenAPI document を自動生成する開発手法も存在するが、本規約はこれは想定しない
