@@ -50,7 +50,7 @@ GitHub、GitLabでの運用を中心に記載する。
 ### GitFlowパターン
 
 - 概要
-  - GitFlowとは[A successful Git branching model](https://nvie.com/posts/a-successful-git-branching-model/)としてVincent Driessen氏が公開したブランチ戦略です。2010年の公開から多くの人に参考にされてきたましたが、2024年現在ではレガシーな戦略として扱われ、採用されることは減ってきています。Vincent Driessen氏のブログ内でも2020年に以下のような注釈が追加されています。
+  - GitFlowとは[A successful Git branching model](https://nvie.com/posts/a-successful-git-branching-model/)としてVincent Driessen氏が公開したブランチ戦略です。2010年の公開から多くの人に参考にされてきたましたが、時代の移り変わりとともにレガシーな戦略として扱われるようになり、採用されることは減ってきています。Vincent Driessen氏のブログ内でも2020年に以下のような注釈が追加されています。
     - このモデルは2010年に考案され、10年間の間にデファクトスタンダードのように扱われるようになった。
     - この10年間Gitが日常的に使われるようになり、特にWebアプリで利用されることが多くなった。
     - Webアプリでは継続的デリバリーを採用することが多く、複数バージョンを厳密に管理する必要性は少ない。
@@ -70,18 +70,21 @@ GitHub、GitLabでの運用を中心に記載する。
   - サポートブランチ
     - feature
       - 各開発者が機能を開発するブランチ
-      - developから分岐しdevelopにマージする
     - release
       - リリースの準備に利用するブランチ
-      - developがリリース可能な状態になった際にdevelopから分岐する
-      - 本ブランチ作成以降は新規featureブランチを取り込まない
-      - バグ修正やリリースに関連するタスクのみ実行することが可能
-      - mainとdevelopにマージされる
     - hotfix
       - 本番リリース後に重大なバグが発生した場合に迅速に修正するためのブランチ
-      - mainから分岐する唯一のブランチ
-      - mainとdevelopにマージされる
 - 通常運用
+  - プロジェクト開始時にmasterからdevelopを作成する
+  - 機能ごとやチケット単位でfeatureブランチをdevelopから作成する
+  - featureブランチでの作業完了後、次回リリースに含める内容であればdevelopにマージする
+  - developブランチがリリースできる状態になったらdevelopブランチからreleaseブランチを作成する
+    - 以降次々回リリースの内容をdevelopにマージ可能
+  - releaseブランチでバージョン変更やバグ修正等を実施する
+    - releaseブランチで修正した場合は都度developにマージする
+  - releaseブランチの作業完了後、masterとdevelopにマージする
+  - mainブランチでタグを作成し本番リリースする
+    - 重大なバグが発生した場合はmasterからhotfixブランチを作成し対応する
 - 切り戻し運用
 
 ### GitFlowライト版
