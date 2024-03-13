@@ -58,7 +58,7 @@ GitHub、GitLabでの運用を中心に記載する。
     - 厳密に複数バージョンを管理する必要があるソフトウェアを開発している場合はGitFlowが最適な可能性がある。その場合のみ本記事を読んでほしい。
     - 常に最適なブランチ戦略は存在しないので、トレードオフを考慮し決定してほしい。
 
-![GitFlow概要図](outline_gitflow.svg)
+![GitFlow概要図](outline_gitflow.drawio.svg)
 
 - 想定人数
 - 登場ブランチ
