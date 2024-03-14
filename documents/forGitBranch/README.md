@@ -33,11 +33,61 @@ GitHub、GitLabでの運用を中心に記載する。
 
 ### Githubフロー
 
-- 概要
-- 想定人数
-- 登場ブランチ
-- 通常運用
-- 切り戻し運用
+#### 概要
+
+`main` と `feature` の2つのブランチのみを使用する非常にシンプルな運用である。
+
+`main` は常にデプロイ可能な状態であることを前提とし、新機能の追加やバグ修正の際には `main` から `feature` ブランチを切り出し、
+テスト、レビューを経て、デプロイ可能な状態になり次第 `main` にマージする。
+
+シンプルな運用のため、ソースコードの素早い変更と迅速なリリースが可能となり、結果、アプリケーションへのフィードバックおよびその改善のスピードを向上させることができる。
+また、ひとつひとつの `feature` ブランチのライフサイクルが短くなるため、コンフリクトの発生を減らすことができる。
+
+一方で、常に `main` をデプロイ可能な状態にするためには、網羅的かつ厳格な自動テストを用意する必要がある。
+また、シンプルさとトレードオフな関係として、大人数のチームや複数の大規模リリースが並行するような複雑な環境には適用が難しい。
+
+#### 想定人数
+
+4,5名程度の小規模なチーム
+
+#### 登場ブランチ
+
+  - `main`
+  - `feature`（変更内容に応じて、`feature` や `fix` を命名する）
+
+```mermaid
+---
+title: GitHub Flow
+---
+gitGraph
+  commit
+  commit
+  branch feature/featureA
+  checkout feature/featureA
+  commit
+  commit
+  checkout main
+  merge feature/featureA id:"mergeA"
+  branch fix/featureB
+  branch feauture/featureC
+  checkout fix/featureB
+  commit
+  commit
+  checkout feauture/featureC
+  commit
+  checkout main
+  checkout fix/featureB
+  commit
+  checkout main
+  merge fix/featureB id:"mergeB"
+  checkout feauture/featureC
+  commit
+  checkout main
+  merge feauture/featureC id:"mergeC"
+```
+#### 通常運用
+
+#### 切り戻し運用
 
 ### Gitlabフロー
 
