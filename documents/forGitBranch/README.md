@@ -432,3 +432,42 @@ $ git tag -a backend/v3.0.0 -m "🚀Release version v2.0.0"
   https://blog.jetbrains.com/space/2023/04/18/space-git-flow/
 - NTT
   https://engineers.ntt.com/entry/2024/01/19/094639
+
+## ブランチ保護
+
+### 保護対象ブランチ
+
+main/develop
+
+### ブランチ保護規約
+
+- 直接ブランチへのpush禁止
+- 1名以上のプルリクエストのアプルーブ必須
+- 保護ブランチ削除禁止
+
+### GitHub
+
+[GitHubブランチ保護ルール](https://docs.github.com/ja/repositories/configuring-branches-and-merges-in-your-repository/managing-protected-branches/managing-a-branch-protection-rule)
+
+#### Branch protection ruleの設定内容
+
+Protect matching branches
+
+- [x] Require a pull request before merging
+  - [x] Require approval (required number of approvals before marging = 1)
+  - [ ] Dismiss stale pull request approvals when new commits are pushed
+  - [ ] Require review from Code Owners
+  - [ ] Require approval of the most recent reviewable push
+- [ ] Require status checks to pass before merging
+  - [ ] Require branches to be up to date before merging
+- [ ] Require conversation resolution before merging
+- [ ] Require signed commits
+- [ ] Require linear history
+- [ ] Require deployments to succeed before merging
+- [ ] Lock branch
+- [ ] Do not allow bypassing the above settings
+
+Rules applied to everyone including administrators
+
+- [ ] Allow force pushes
+- [ ] Allow deletions
