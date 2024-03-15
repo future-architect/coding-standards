@@ -42,10 +42,36 @@ GitHub、GitLabでの運用を中心に記載する。
 ### Gitlabフロー
 
 - 概要
+  - シンプルなGitHub Flowと、複雑なGit Flowの中間の複雑さのフローである。main, featureに加えて、リリース用のブランチを別途用意する。
 - 想定人数
 - 登場ブランチ
+  - production ブランチ
+    - 本番環境にリリースするためのブランチ
+  - pre-prodution ブランチ（必要?）
+    - リリース前の検証をするためのブランチ
+  - main ブランチ
+    - 機能開発の元となるブランチ
+  - feature ブランチ
+    - 各開発者が機能を開発するブランチ
 - 通常運用
+  - mainからfeatureブランチを切る
+  - feature ブランチ上で作業
+  - mainにマージリクエスト、マージ
+  - リリースが決まったら、mainをpre-productionにマージして更新
+  - pre-productionブランチをstg環境にリリースして検証
+  - 検証完了後、pre-productionをproductionにマージして更新
+  - productionブランチを本番環境にリリース
 - 切り戻し運用
+  - 本番環境で問題が発生した場合：
+    - productinからhotfixブランチを作り、その上で修正する。
+    - hotfixブランチの修正を、production, pre-production, mainブランチにマージする。
+
+tempメモ：
+
+https://about.gitlab.com/blog/2023/07/27/gitlab-flow-duo/  
+https://docs.gitlab.co.jp/ee/topics/gitlab_flow.html
+
+
 
 ### GitFlowパターン
 
