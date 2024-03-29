@@ -139,12 +139,26 @@ gitGraph
 
 ### GitFlowライト版
 
+![](lightweight_gitbranch_flow.drawio.png)
+
 - 概要
-  - main/develop/featureパターン
+  - main/develop/featureパターン。
 - 想定人数
-- 登場ブランチ
-- 通常運用
-- 切り戻し運用
+  - 5名程度
+
+| branch type         | usage                  | Protect |
+| ------------------- | -----------------------|----------|
+| master              | 本番環境リリース用途   | ✅️ |
+| develop             | 単体、結合テスト用途   | ✅️ |
+| feature/{Issue番号} | 機能開発用途　         |    |
+| hotfix/{Issue番号} | 緊急対応              |    |
+
+ステージング動作検証に時間がかかる場合:
+
+![](lightweight_gitbranch_flow_同期.drawio.png)
+
+上記が多発すると想定されるケースは、リリースまでのリードタイムが伸びるため、別のXxxパターンを推奨。
+
 
 ### CGSパターン
 
