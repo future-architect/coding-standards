@@ -467,7 +467,7 @@ $ git merge develop
 リベースとは `get fetch & git rebase` コマンド（ = `git pull --rebase` コマンド）を使用して、開発ブランチの変更を機能ブランチに取り込む方法を指す。
 最新の開発ブランチの先頭から新たにコミットを作りなおす動きになるので、マージによる方法と異なり「マージコミット」は作成されない。
 
-![リベース](merge_strategy_develop_to_feature_merge.drawio.png)
+![リベース](merge_strategy_develop_to_feature_rebase.drawio.png)
 
 ```bash
 # 現在のブランチは 機能（feature/A）ブランチ
