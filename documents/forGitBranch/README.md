@@ -27,7 +27,7 @@ GitHub、GitLabでの運用を中心に記載する。
 
 ## ブランチ戦略
 
-### ブランチの整理
+### ブランチの整理（TODO: drawio追加）
 
 #### main(master)ブランチ
 
