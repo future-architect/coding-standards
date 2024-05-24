@@ -27,7 +27,7 @@ GitHub、GitLabでの運用を中心に記載する。
 
 ## ブランチ戦略
 
-### ブランチの整理（TODO: drawio追加）
+### ブランチの整理
 
 #### main(master)ブランチ
 
@@ -506,20 +506,3 @@ https://docs.github.com/ja/pull-requests/committing-changes-to-your-project/crea
 
 * 機能ブランチの取り込み以外のケースでは、「Squash and merge」以外を選択すること。  
 例えば、`develop` ブランチを `main` ブランチや `release`ブランチにマージする場合など、取り込み元のブランチの変更が大きい場合は、コミットメッセージを1つにまとめることによる弊害が大きいため、別のマージ戦略を検討すること。
-
-## CICD
-
-- release trigger
-- release note
-- github actions sample
-
-## 後方互換性管理
-
-- ちょっとネタ特性が違うきもするので後回し
-
-## 情報収集
-
-- JetBrains Space Gitフロー
-  https://blog.jetbrains.com/space/2023/04/18/space-git-flow/
-- NTT
-  https://engineers.ntt.com/entry/2024/01/19/094639
