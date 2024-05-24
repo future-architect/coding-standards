@@ -47,10 +47,10 @@ git config --global rerere.enabled true
 git config --global fetch.prune true
 
 # エイリアス
-git config --local alias.st status
-git config --local alias.co checkout
-git config --local alias.ci commit
-git config --local alias.br branch
+git config --global alias.st status
+git config --global alias.co checkout
+git config --global alias.ci commit
+git config --global alias.br branch
 ```
 
 補足説明:
@@ -119,7 +119,7 @@ git push origin HEAD --force-with-lease --force-if-includes
 
 #### Branches
 
-Branch protection rules にdevelop, mainなど永続的なブランチに保護設定を追加する
+Branch protection rules にdevelop, mainなど永続的なブランチに保護設定を追加する。
 
 | Category      | Item | Value | Memo |
 | ------------- | ---- | ----- | ---- |
@@ -136,13 +136,24 @@ Branch protection rules にdevelop, mainなど永続的なブランチに保護�
 
 #### Tags
 
+| Category      | Item | Value | Memo |
+| ------------- | ---- | ----- | ---- |
+|  | Protect tags | v[0-9]+.[0-9]+.[0-9] | セマンティックバージョニングに則ったタグのみ、削除を防ぐ | 
+
 #### GitHub Actions
+
+| Category      | Item | Value | Memo |
+| ------------- | ---- | ----- | ---- |
+| Actions permissions | Allow asset-taskforce, and select non-asset-taskforce, actions and reusable workflows > Allow actions created by GitHub | ✅️ |  | 
+|                     | Allow asset-taskforce, and select non-asset-taskforce, actions and reusable workflows > Allow actions Marketplace verified creators | ✅️ |  | 
 
 #### Code security and analysis
 
-
-
-
+| Category      | Item | Value | Memo |
+| ------------- | ---- | ----- | ---- |
+| Dependabot | Dependabot alerts | ✅️ | 依存パッケージのアップデートを検知するため | 
+|            | Dependabot security updates | ✅️ |  | 
+|            | Dependabot version updates | ✅️ |  | 
 
 
 ## ブランチ戦略
