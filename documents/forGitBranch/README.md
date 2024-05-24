@@ -377,7 +377,7 @@ $ git tag -a backend/v3.0.0 -m "🚀Release version v2.0.0"
 #### マージ
 
 マージとは `get fetch & git merge` コマンド（ = `git pull` コマンド）を使用して、開発ブランチの変更を機能ブランチに取り込む方法を指す。
-下記の通り、マージを行った場合は「マージコミット」が作成される。
+マージを行った場合は下記の通り、「マージコミット」が作成される。
 
 ![マージ](merge_strategy_develop_to_feature_merge.drawio.png)
 
@@ -443,7 +443,69 @@ GitのRerereを有効化する（`git config rerere.enabled true`）ことでコ
 
 ### メインの開発ブランチに機能ブランチの変更を取り込む
 
-TODO
+開発が完了した機能ブランチをメインの開発ブランチに取り込むために、GitHub（GitLab）上でプルリクエスト（マージリクエスト）を作成する運用を前提とする。
+
+GitHubを利用する場合、開発ブランチに機能ブランチの変更を取り込む方法は3種類ある。
+
+- Create a merge commit
+- Rebase and merge
+- Squash and merge
+
+#### Create a merge commit
+
+動作としては `git merge --no-ff` コマンドを使用して、機能ブランチの変更を取り込む形になる。  
+この方法を選択した場合は、下記のとおり、メインの開発ブランチにマージコミットが作成される。
+
+![Merge Commit](merge_strategy_feature_to_develop_merge_commit.drawio.png)
+
+#### Rebase and merge
+
+動作としては機能ブランチを最新の開発ブランチにリベースした後に、`git merge --ff` コマンドを使用して、機能ブランチの変更を取り込む形になる。  
+この方法を選択した場合は、下記のとおり、メインの開発ブランチにマージコミットは作成されず、履歴が一直線になる。
+
+![Rebase and Merge](merge_strategy_feature_to_develop_rebase_and_merge.drawio.png)
+
+#### Squash and merge
+
+動作としては `git merge --squash` コマンドを使用して、機能ブランチの変更を取り込む形になる。  
+この方法では、機能ブランチで行った変更YとZを1つにまとめたコミットがメインの開発ブランチに作成されます。
+
+![Squash and Merge](merge_strategy_feature_to_develop_squash_and_merge.drawio.png)
+
+#### 推奨方法
+
+本規約では「Squash and merge」による方法を推奨する。
+
+これは、メインの開発ブランチの履歴をクリーンに保つことが大きな理由になるが、
+機能ブランチのPRが単一のコミットメッセージで表現できるくらいシンプルで明確な単位にするということが前提となる。
+
+なお、プロテクトブランチの設定にて、メインの開発ブランチに対し「require linear history」を選択することを推奨する。  
+本設定を行うと、開発ブランチに対して「Create a merge commit」が選択できないよう制御することができる。
+
+また、意図しない方法でのマージを避けるためにブランチごとにマージ戦略を設定しておき、想定外のマージ戦略が選択された時に警告色を表示するとサードパーティ製のChrome拡張も存在する。こちらは必要に応じて導入することが望ましい。  
+https://zenn.dev/daku10/articles/github-merge-guardian
+
+#### 注意点
+
+「Squash and merge」による変更の取り込みを行う場合の注意点は次の通りとなる。
+
+* マージ後は機能ブランチを削除すること。  
+変更元の機能ブランチのコミットをまとめたコミットが新たに作成されるめ、元の機能ブランチを再利用して（例えば追加のコミットを作成して）PRを作成してもコンフリクトが発生する。  
+マージ後はリモート/ローカルの双方で速やかに機能ブランチを削除することが望ましい。
+  * リモート側の機能ブランチはGitHubの設定にて「Automatically delete head branches」を選択することで、マージ後に自動でブランチの削除が行われる。
+  * ローカル側の機能ブランチは `branch -d` コマンドでは削除できないため、`branch -D` コマンドを用いて削除する必要がある。
+
+* 部分的なコミットの取り消しができない。  
+履歴上は1つのコミットになるので、マージ後に一部の変更だけを取り消すということができない。  
+取り消しはPRの単位となるため、PRの単位をなるべく小さなまとまりにすることが望ましい。
+
+* Authorが失われる。  
+機能ブランチにコミットを行った人がAuthorになるのではなく、「Squash and merge」を行った人がAuthorになるため、OSS開発を行う場合など、厳密にコントリビューションを管理する必要がある場合は注意されたい。  
+GitHubでは「Squash and merge」を行う場合、デフォルトでコミットメッセージに `co-authored-by` トレーラーが追加され、1つのコミットが複数の作成者に帰属するようにするようになっている。この記述は削除しないようにする。  
+https://docs.github.com/ja/pull-requests/committing-changes-to-your-project/creating-and-editing-commits/creating-a-commit-with-multiple-authors
+
+* 機能ブランチの取り込み以外のケースでは、「Squash and merge」以外を選択すること。  
+例えば、`develop` ブランチを `main` ブランチや `release`ブランチにマージする場合など、取り込み元のブランチの変更が大きい場合は、コミットメッセージを1つにまとめることによる弊害が大きいため、別のマージ戦略を検討すること。
 
 ## CICD
 
