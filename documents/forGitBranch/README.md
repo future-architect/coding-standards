@@ -23,7 +23,127 @@ GitHub、GitLabでの運用を中心に記載する。
 ## 前提
 
 - feature branchesが前提
-- trunkやfeature flagsは対象外。
+- trunkやfeature flagsは対象外
+
+## git config推奨設定
+
+`git config` の推奨設定を紹介する。
+
+```sh
+# 基礎
+git config --global user.name "Your Name"
+git config --global user.email "your_email@example.com"
+
+# プロキシ
+git config --global http.proxy http://id:password@proxy.example.co.jp:8000/
+git config --global https.proxy http://id:password@proxy.example.co.jp:8000/
+
+# プロキシが独自の証明書を持っている場合は、git config http.sslVerify false するのではなく、証明書を設定させる
+git config --global http.sslCAInfo ~/custom_ca_sha2.cer
+
+# git workflow
+git config --global pull.rebase true
+git config --global rerere.enabled true
+git config --global fetch.prune true
+
+# エイリアス
+git config --local alias.st status
+git config --local alias.co checkout
+git config --local alias.ci commit
+git config --local alias.br branch
+```
+
+補足説明:
+
+- git workflow
+  - `pull.rebase`: pull時にリベースする
+  - `rerere.enabled`: コンフリクトの解決を記録しておき、再び同様のコンフリクトが発生した場合に自動適用する
+  - `fetch.prune`: リモートリポジトリで削除されたブランチを削除する
+- エイリアス
+  - メンバーそれぞれで別のエイリアスを登録されると、チャットなどのトラブルシュート時に混乱をきすため、ベーシックなものはチームで統一して、認識齟齬を減らす目的で設定を推奨する
+
+## ワークフロー
+
+```sh
+# 変更作業
+git checkout -b <branchname>
+git add
+git commit -a
+
+# リモートブランチの変更を同期
+git pull origin develop
+
+# コンフリクト対応
+git add <file1> <file2> ...
+git commit -a
+
+# リモートブランチへプッシュ
+git push origin HEAD --force-with-lease --force-if-includes
+```
+
+## GitHub推奨設定
+
+業務利用でのチーム開発を想定しており、リポジトリは以下の条件を満たす前提とする。
+
+- プライベートリポジトリ
+- Organization配下に作成
+- Teamsプラン以上の有料契約
+
+### General
+
+| Category      | Item | Value | Memo |
+| ------------- | ---- | ----- | ---- |
+| General       | Require contributors to sign off on web-based commits | チェックなし | 著作権・ライセンス承諾の場合に用いるが、業務アプリ開発では不要 |
+|               | Default branch | develop |  |
+| Pull Requests | Allow merge commits  | ✅️ | main <- developなどのマージ時に必要 |
+|               | Allow squash merging  | ✅️ | develop <- feature はSquash mergeを推奨 |
+|               | Allow rebase merging  | -   | 利用しないため、チェックを外す |
+|               | Allow suggest updating pull request branches | ✅️  | Pull Request作成後、ベースブランチが更新された場合、ソースブランチの更新を提案してくれる |
+|               | Automatically delete head branches | ✅️  | マージ後にfeature branchを削除するため有効にする |
+| Pushes        | Limit how many branches and tags can be updated in a single push | 5  | git push origin –mirrorで誤ってリモートブランチを破壊しないようにする。推奨値の5を設定する |
+
+### Access
+
+| Category                 | Item | Value | Memo |
+| ------------------------ | ---- | ----- | ---- |
+| Collaborators and teams | Choose a role | 任意の権限 | ※後述 |  
+
+- 各ロールの権限については、公式ドキュメントを参照
+- 通常、開発者には「Write」ロールを付与する
+- 開発を行わない、例えばスキーマファイルの参照のみ必要であれば、「Read」権限を、Issuseの起票などのみ実施するマネージャーであれば「Triage」ロールを付与する
+- 「Maintain」権限は、付与しない
+- 「Admin」権限は、マネージャークラスに対して合計2~3名を付与し、属人化しないようにする
+    - 1名でも駄目。4名以上でも駄目
+
+### Code and automation
+
+#### Branches
+
+Branch protection rules にdevelop, mainなど永続的なブランチに保護設定を追加する
+
+| Category      | Item | Value | Memo |
+| ------------- | ---- | ----- | ---- |
+| Protect matching branches | Require a pull request before merging | ✅️ | プルリクエストを必須とする | 
+|                           | Require approvals | ✅️ | レビューを必須とする | 
+|                           | Required number of approvals before merging | 1 | 最低1名以上の承認を必須とする | 
+|                           | Dismiss stale pull request approvals when new commits are pushed | - | レビュー承認後のPushで再承認を必要とするかだが、レビュー運用上に支障となることも多く、チェックを外す | 
+|                           | Require status checks to pass before merging | ✅️ | CIの成功を条件とする |
+|                           | Require branches to be up to date before merging | 任意 | CIパイプラインのワークフロー名を指定 |
+|                           | Require conversation resolution before merging | ✅️ | レビューコメントがすべて解決していることを条件とする |
+|                           | Require signed commitsng | ✅️ | 署名付きコミットを必須化し、セキュアな設定にする |
+|                           | Require linear history | ✅️/- | mainブランチの場合はOFFとするが、developの場合はSquash mergeを求めるため有効にする |
+|                           | Do not allow bypassing the above settings | ✅️ | パイパスを許容しない |
+
+#### Tags
+
+#### GitHub Actions
+
+#### Code security and analysis
+
+
+
+
+
 
 ## ブランチ戦略
 
