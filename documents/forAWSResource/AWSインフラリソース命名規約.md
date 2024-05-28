@@ -267,7 +267,7 @@ API Gateway は [全体ポリシーの命名規約](#命名規約) に則る。�
 {env}-{product}-{role}-{usage}-{access}
 
 # 例
-stg-fuga-web-potal-private
+stg-fuga-web-portal-private
 stg-fuga-web-fileupload-public
 ```
 
