@@ -33,6 +33,12 @@ paths:
       responses:
         '200':
           description: ログインに成功しました。
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServer'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
   /logout:
     post:
       tags:
@@ -43,7 +49,19 @@ paths:
       responses:
         '200':
           description: ログアウトに成功しました。
-  /Signin:
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '403':
+          $ref: '#/components/responses/Forbidden'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServer'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+  /signin:
     post:
       tags:
         - account
@@ -59,7 +77,13 @@ paths:
       responses:
         '200':
           description: 会員登録に成功しました。
-  /Signout:
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServer'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+  /signout:
     post:
       tags:
         - account
@@ -68,6 +92,14 @@ paths:
       responses:
         '200':
           description: 会員退会に成功しました。
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServer'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
   /profile:
     get:
       tags:
@@ -77,6 +109,12 @@ paths:
       responses:
         '200':
           description: プロフィールの取得に成功しました。
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServer'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
   /trainers:
     get:
       tags:
@@ -87,6 +125,12 @@ paths:
       responses:
         '200':
           description: トレーナーの検索結果を取得しました。
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '500':
+          $ref: '#/components/responses/InternalServer'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
   /trainers/{trainerId}/menu:
     get:
       tags:
@@ -104,6 +148,15 @@ paths:
       responses:
         '200':
           description: トレーニングメニューを取得しました。
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServer'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
   /trainers/{trainerId}/profile:
     get:
       tags:
@@ -121,6 +174,15 @@ paths:
       responses:
         '200':
           description: トレーナープロフィールを取得しました。
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServer'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
   /trainers/{trainerId}/reviews:
     get:
       tags:
@@ -138,6 +200,14 @@ paths:
       responses:
         '200':
           description: トレーナーの口コミを取得しました。
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServer'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
   /trainers/{trainerId}/schedule:
     get:
       tags:
@@ -155,6 +225,14 @@ paths:
       responses:
         '200':
           description: トレーナーのスケジュールを取得しました。
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '500':
+          $ref: '#/components/responses/InternalServer'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
   /bookings:
     get:
       tags:
@@ -164,6 +242,12 @@ paths:
       responses:
         '200':
           description: ユーザーの予約情報を取得しました。
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServer'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
     post:
       tags:
         - booking
@@ -178,6 +262,19 @@ paths:
       responses:
         '200':
           description: 予約が仮登録されました。
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '500':
+          $ref: '#/components/responses/InternalServer'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
   /bookings/{bookingId}/confirm:
     post:
       tags:
@@ -200,6 +297,18 @@ paths:
       responses:
         '200':
           description: 予約が本登録されました。
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '500':
+          $ref: '#/components/responses/InternalServer'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
   /booking/{bookingId}/status:
     put:
       tags:
@@ -222,6 +331,20 @@ paths:
       responses:
         '200':
           description: ステータスが更新されました。
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '404':
+          $ref: '#/components/responses/NotFound'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '500':
+          $ref: '#/components/responses/InternalServer'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
   /payment:
     post:
       tags:
@@ -237,6 +360,19 @@ paths:
       responses:
         '200':
           description: 決済が完了しました。
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '409':
+          $ref: '#/components/responses/Conflict'
+        '422':
+          $ref: '#/components/responses/UnprocessableEntity'
+        '500':
+          $ref: '#/components/responses/InternalServer'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+
 components:
   schemas:
     ProblemDetailError:
@@ -366,7 +502,7 @@ components:
         application/json:
           schema:
             $ref: "#/components/schemas/ProblemDetailError"
-    ServiceUnavaliable:
+    ServiceUnavailable:
       description: 503 Service Unavailable
       content:
         application/json:
