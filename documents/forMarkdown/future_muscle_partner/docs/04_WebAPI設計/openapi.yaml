@@ -1,0 +1,380 @@
+openapi: 3.0.3
+info:
+  title: Future Muscle Partner API
+  description: パーソナルトレーナーのマッチング
+  version: 1.0.0
+tags:
+  - name: account
+    description: アカウント管理
+  - name: profile
+    description: プロフィール
+  - name: trainer
+    description: パーソナルトレーナー
+  - name: booking
+    description: 予約
+  - name: payment
+    description: 決済
+security:
+  - Bearer: []
+paths:
+  /login:
+    post:
+      tags:
+        - account
+      summary: "[API01] ログインAPI"
+      operationId: loginUser
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: ログインに成功しました。
+  /logout:
+    post:
+      tags:
+        - account
+      summary: "[API02] ログアウトAPI"
+      operationId: logoutUser
+      security: []
+      responses:
+        '200':
+          description: ログアウトに成功しました。
+  /Signin:
+    post:
+      tags:
+        - account
+      summary: "[API03] 会員登録API"
+      operationId: registerUser
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SigninRequest'
+      responses:
+        '200':
+          description: 会員登録に成功しました。
+  /Signout:
+    post:
+      tags:
+        - account
+      summary: "[API04] 会員退会API"
+      operationId: signoutUser
+      responses:
+        '200':
+          description: 会員退会に成功しました。
+  /profile:
+    get:
+      tags:
+        - profile
+      summary: "[API05] 自分のプロフィール表示API"
+      operationId: getUserProfile
+      responses:
+        '200':
+          description: プロフィールの取得に成功しました。
+  /trainers:
+    get:
+      tags:
+        - trainer
+      summary: "[API07] パーソナルトレーナー検索API"
+      operationId: searchTrainers
+      security: []
+      responses:
+        '200':
+          description: トレーナーの検索結果を取得しました。
+  /trainers/{trainerId}/menu:
+    get:
+      tags:
+        - trainer
+      summary: "[API08] トレーニングメニュー取得API"
+      operationId: getTrainingMenu
+      security: []
+      parameters:
+        - name: trainerId
+          in: path
+          description: トレーナーのID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: トレーニングメニューを取得しました。
+  /trainers/{trainerId}/profile:
+    get:
+      tags:
+        - trainer
+      summary: "[API09] トレーナープロフィール取得API"
+      operationId: getTrainerProfile
+      security: []
+      parameters:
+        - name: trainerId
+          in: path
+          description: トレーナーのID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: トレーナープロフィールを取得しました。
+  /trainers/{trainerId}/reviews:
+    get:
+      tags:
+        - trainer
+      summary: "[API10] トレーナー口コミ取得API"
+      operationId: getTrainerReviews
+      security: []
+      parameters:
+        - name: trainerId
+          in: path
+          description: トレーナーのID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: トレーナーの口コミを取得しました。
+  /trainers/{trainerId}/schedule:
+    get:
+      tags:
+        - trainer
+      summary: "[API11] トレーナースケジュール取得API"
+      operationId: getTrainerSchedule
+      security: []
+      parameters:
+        - name: trainerId
+          in: path
+          description: トレーナーのID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: トレーナーのスケジュールを取得しました。
+  /bookings:
+    get:
+      tags:
+        - booking
+      summary: "[API06] 予約済みトレーニング取得API"
+      operationId: getBookings
+      responses:
+        '200':
+          description: ユーザーの予約情報を取得しました。
+    post:
+      tags:
+        - booking
+      summary: "[API12] トレーニング予約API（仮登録）"
+      operationId: bookTraining
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingRequest'
+      responses:
+        '200':
+          description: 予約が仮登録されました。
+  /bookings/{bookingId}/confirm:
+    post:
+      tags:
+        - booking
+      summary: "[API14] トレーニング予約API（本登録）"
+      operationId: confirmBooking
+      parameters:
+        - name: bookingId
+          in: path
+          description: 予約ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BookingConfirmationRequest'
+      responses:
+        '200':
+          description: 予約が本登録されました。
+  /booking/{bookingId}/status:
+    put:
+      tags:
+        - booking
+      summary: "[API14] トレーニング受講ステータス変更API"
+      operationId: updateTrainingStatus
+      parameters:
+        - name: bookingId
+          in: path
+          description: 予約ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TrainingStatusUpdateRequest'
+      responses:
+        '200':
+          description: ステータスが更新されました。
+  /payment:
+    post:
+      tags:
+        - payment
+      summary: "[API13] 決済API"
+      operationId: makePayment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+      responses:
+        '200':
+          description: 決済が完了しました。
+components:
+  schemas:
+    ProblemDetailError:
+      description: A Problem Details object (RFC 9457)
+      type: object
+      properties:
+        title:
+          type: string
+          description: A short summary of the problem type. Written in English and readable for engineers (usually not suited for non technical stakeholders and not localized).
+          example: Service Unavailable
+        status:
+          type: integer
+          format: int32
+          description: The HTTP status code generated by the origin server for this occurrence of the problem.
+          minimum: 400
+          maximum: 600
+          exclusiveMaximum: true
+          example: 503
+        detail:
+          type: string
+          description: A human-readable explanation specific to this occurrence of the problem
+      example:
+        title: Description of the type of problem that occurred
+        status: 400 # HTTP response status, appropriate for the problem type
+        detail: Description of specific occurrence of the problem
+
+    LoginRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: メールアドレス
+        password:
+          type: string
+          format: password
+          description: パスワード
+    SigninRequest:
+      type: object
+      properties:
+        email:
+          type: string
+          format: email
+          description: メールアドレス
+        password:
+          type: string
+          format: password
+          description: パスワード
+        name:
+          type: string
+          description: 名前
+    BookingRequest:
+      type: object
+      properties:
+        trainingId:
+          type: string
+          description: トレーニングのID
+        date:
+          type: string
+          format: date
+          description: トレーニングの日付
+    PaymentRequest:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: double
+          description: 支払金額
+        method:
+          type: string
+          description: 支払方法
+    BookingConfirmationRequest:
+      type: object
+      properties:
+        bookingId:
+          type: string
+          description: 予約のID
+    TrainingStatusUpdateRequest:
+      type: object
+      properties:
+        trainingId:
+          type: string
+          description: トレーニングのID
+        status:
+          type: string
+          description: ステータス
+  responses:
+    BadRequest:
+      description: 400 Bad Request
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetailError"
+    Unauthorized:
+      description: 401 Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetailError"
+    Forbidden:
+      description: 403 Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetailError"
+    NotFound:
+      description: 404 Not Found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetailError"
+    Conflict:
+      description: 409 Conflict
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetailError"
+    UnprocessableEntity:
+      description: 422 Unprocessable Content
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetailError"
+    InternalServer:
+      description: 500 Internal Server
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetailError"
+    ServiceUnavaliable:
+      description: 503 Service Unavailable
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ProblemDetailError"
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Bearer トークン認証'
