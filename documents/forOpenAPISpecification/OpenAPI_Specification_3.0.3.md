@@ -382,8 +382,12 @@ APIの認証方式を記載する。
   良い例；
 
   ```yaml
-  # 認証しない場合のみ個別で定義する
-  security: []
+  paths:
+    /signin:
+      post:
+        operation_id: signin
+          # 認証しない場合のみ個別で定義する
+          security: []
   ```
 
 ## components
@@ -712,9 +716,10 @@ components:
 標準で用いるAPI認証の定義を行う。
 
 ```yaml
-# Bearer トークによる認証
-securitySchemes:
-    BearerAuth:
+components:
+  securitySchemes:
+    # Bearer トークンによる認証
+    Bearer:
       type: http
       scheme: bearer
       bearerFormat: JWT
