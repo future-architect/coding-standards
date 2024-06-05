@@ -110,7 +110,7 @@ git push origin HEAD --force-with-lease --force-if-includes
 
 - 各ロールの権限については、公式ドキュメントを参照
 - 通常、開発者には「Write」ロールを付与する
-- 開発を行わない、例えばスキーマファイルの参照のみ必要であれば、「Read」権限を、Issuseの起票などのみ実施するマネージャーであれば「Triage」ロールを付与する
+- 開発を行わない、例えばスキーマファイルの参照のみ必要であれば、「Read」権限を、Issueの起票などのみ実施するマネージャーであれば「Triage」ロールを付与する
 - 「Maintain」権限は、付与しない
 - 「Admin」権限は、マネージャークラスに対して合計2~3名を付与し、属人化しないようにする
     - 1名でも駄目。4名以上でも駄目
@@ -130,7 +130,7 @@ Branch protection rules にdevelop, mainなど永続的なブランチに保護�
 |                           | Require status checks to pass before merging | ✅️ | CIの成功を条件とする |
 |                           | Require branches to be up to date before merging | 任意 | CIパイプラインのワークフロー名を指定 |
 |                           | Require conversation resolution before merging | ✅️ | レビューコメントがすべて解決していることを条件とする |
-|                           | Require signed commitsng | ✅️ | 署名付きコミットを必須化し、セキュアな設定にする |
+|                           | Require signed commits | ✅️ | 署名付きコミットを必須化し、セキュアな設定にする |
 |                           | Require linear history | ✅️/- | mainブランチの場合はOFFとするが、developの場合はSquash mergeを求めるため有効にする |
 |                           | Do not allow bypassing the above settings | ✅️ | パイパスを許容しない |
 
@@ -210,7 +210,7 @@ mainブランチとdevelopブランチが分かれている場合はほぼ必須
 featureブランチで実現する機能を複数人で開発する場合に使用する。  
 featureブランチからtopicブランチを作成し、topicブランチ上で個人の開発を行った後、featureブランチへマージする。（masterブランチ/developブランチとfeatureブランチの関係と同等。）  
 topicブランチが必要なケースでは、featureブランチへの直接pushは原則行わない。  
-GithubFlowではfeatureブランチのことをtopicブランチと呼称する場合があるが、本規約ではfeatureブランチから派生するブランチをtopicブランチと定義する。  
+GitHub Flowではfeatureブランチのことをtopicブランチと呼称する場合があるが、本規約ではfeatureブランチから派生するブランチをtopicブランチと定義する。  
 
 ![topic branch](branch_strategy_topic.drawio.png)
 
@@ -227,13 +227,13 @@ GithubFlowではfeatureブランチのことをtopicブランチと呼称する�
 
 実際に利用する可能性が高いパターンを３つ示す。  
 基本的には運用コストが最小になるパターンを選択し、プロジェクトの体制に応じて運用を変更する。  
-ex) Github Flow → Lite GitLab Flow → GitLab Flow
+ex) GitHub Flow → Lite GitLab Flow → GitLab Flow
 
 | 名称                 | 使用ブランチ                                                          | 概要                                                                                                                                                                                                                                                                                                                                                                                                                        | 運用コスト | 使い所                                                                                               | 
 | -------------------- | --------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------- | 
-| Github Flow          | `main`<br>`feature`                                                   | 最小のブランチ管理パターン。このパターンはGithubFlowと呼ばれる。<br>開発人数が少なく、検証作業は全員で行う場合に有効。<br>また、プロジェクトの初期フェーズ等断面管理を厳密に行わない場合もこのパターンで問題無い。<br>マージの都度本番環境へデプロイする前提。                                                                                                                                                              | 低         | ・個人開発<br>・プロジェクト初期フェーズ                                                             | 
-| Lite GitLab Flow<br> | `main`<br>`feature`<br>`develop`<br>（`topic`/`hotfix`）              | GithubFlowに`develop`ブランチを追加するパターン。（特定の呼称はないのでLite GitLab FLowと命名。）<br>`main`ブランチをプロダクトリリースブランチとし、開発中ソースコードとは分ける。<br>開発作業とリリース作業が並行しないチーム構成であれば必ずしも`release`ブランチを作る必要はない。<br>必要に応じて`hotfix`や`topic`ブランチを作る。                                                                                     | 低         | ・本番リリース済みプロダクトの開発などで、一定品質を保証する必要がある場合                           | 
-| GitLab Flow          | `main`<br>`feature`<br>`develop`<br>`release`<br>（`topic`/`hotfix`） | Github Flowに`develop`ブランチと`release`ブランチを追加するとGitlabFlowとなる。<br>GitLabFlowでは`main`ブランチのことを`productio`nブランチと呼称したり、`release`ブランチのことを`pre production`ブランチと呼称するが、本規約では`main`/`release`に統一する。<br>リリース作業と開発作業が並行して行われる場合や、断面を指定して複数テスト環境にデプロイしたい場合に有効。<br>必要に応じて`hotfix`や`topic`ブランチを作る。 | 中         | ・リリース作業と開発作業が並行して行われる場合<br>  ・断面を指定して複数テスト環境にデプロイしたい場合 | 
+| GitHub Flow          | `main`<br>`feature`                                                   | 最小のブランチ管理パターン。このパターンはGitHub Flowと呼ばれる。<br>開発人数が少なく、検証作業は全員で行う場合に有効。<br>また、プロジェクトの初期フェーズ等断面管理を厳密に行わない場合もこのパターンで問題無い。<br>マージの都度本番環境へデプロイする前提。                                                                                                                                                              | 低         | ・個人開発<br>・プロジェクト初期フェーズ                                                             | 
+| Lite GitLab Flow<br> | `main`<br>`feature`<br>`develop`<br>（`topic`/`hotfix`）              | GitHub Flowに`develop`ブランチを追加するパターン。（特定の呼称はないのでLite GitLab FLowと命名。）<br>`main`ブランチをプロダクトリリースブランチとし、開発中ソースコードとは分ける。<br>開発作業とリリース作業が並行しないチーム構成であれば必ずしも`release`ブランチを作る必要はない。<br>必要に応じて`hotfix`や`topic`ブランチを作る。                                                                                     | 低         | ・本番リリース済みプロダクトの開発などで、一定品質を保証する必要がある場合                           | 
+| GitLab Flow          | `main`<br>`feature`<br>`develop`<br>`release`<br>（`topic`/`hotfix`） | GitHub Flowに`develop`ブランチと`release`ブランチを追加するとGitLab Flowとなる。<br>GitLab Flowでは`main`ブランチのことを`production`ブランチと呼称したり、`release`ブランチのことを`pre production`ブランチと呼称するが、本規約では`main`/`release`に統一する。<br>リリース作業と開発作業が並行して行われる場合や、断面を指定して複数テスト環境にデプロイしたい場合に有効。<br>必要に応じて`hotfix`や`topic`ブランチを作る。 | 中         | ・リリース作業と開発作業が並行して行われる場合<br>  ・断面を指定して複数テスト環境にデプロイしたい場合 | 
 
 ### 変則的なパターン
 
