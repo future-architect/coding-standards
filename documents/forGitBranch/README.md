@@ -266,7 +266,7 @@ TODO: 要議論
 
 GitHubやGitLabでは、プルリクエスト作成時のテンプレートを作ることができる。チームでプルリクエストで書いてほしいことを明らかにすることで、レビュー効率を上げたり、リリース後の調査などに役立てることができる。
 
-GitHubでは `.github/PULL_REQUEST_TEMPLATE.md` に記載する。
+GitHubでは `.github/PULL_REQUEST_TEMPLATE.md` に記載する。（GitLabでは `.gitlab/merge_request_templates/{your_template}.md` を配置する。）
 
 テンプレートの例を以下にあげる。
 
@@ -614,6 +614,43 @@ GitHubを利用する場合、開発ブランチに機能ブランチの変更�
 
 ![Squash and Merge](merge_strategy_feature_to_develop_squash_and_merge.drawio.png)
 
+<details>
+  <summary>GitLabを利用する場合</summary>
+
+  開発ブランチに機能ブランチの変更を取り込む方法は3種類ある。  
+  ただし、マージリクエスト上のオプションによってコミット履歴が変わるため、別途記載する。
+
+  - Merge commit
+  - Merge commit with semi-linear history
+  - Fast-forward merge
+
+  #### Merge commit
+
+  動作としては、GitHubにおける `Create a merge commit` と同様のマージ方法になる。  
+  ただし、マージリクエスト上で `Squash commits` を選択してマージした場合、`squash commit` と `merge commit` の2つのコミットが作成されるため注意する。
+
+  ![Merge commit with squash commits](merge_strategy_feature_to_develop_squash_and_merge_gitlab.drawio.png)
+
+  ```bash
+  # マージ方法で Merge commit を選択して、マージリクエスト上で Squash commits オプションを選択してマージした場合
+  git checkout `git merge-base feature/A develop`
+  git merge --squash feature/A
+  SOURCE_SHA=`git rev-parse HEAD`
+  git checkout develop
+  git merge --no-ff $SOURCE_SHA
+  ```
+
+  #### Merge commit with semi-linear history
+
+  動作としては、前述の `Merge commit` と同じコマンドを使用して、機能ブランチの変更を取り込む形になる。  
+  この方法を選択した場合は、ソースブランチがターゲットブランチより古い場合はリベースしないとマージできない。
+
+  #### Fast-forward merge
+
+  動作としては、GitHubにおける `Rebase and merge` と同様のマージ方法になる。  
+  ただし、マージリクエスト上で `Squash commits` を選択してマージした場合、GitHubにおける `Squash and merge` と同様のマージ方法になる。
+</details>
+
 #### 推奨方法
 
 本規約では「Squash and merge」による方法を推奨する。
@@ -634,7 +671,7 @@ https://zenn.dev/daku10/articles/github-merge-guardian
 * マージ後は機能ブランチを削除すること。  
 変更元の機能ブランチのコミットをまとめたコミットが新たに作成されるめ、元の機能ブランチを再利用して（例えば追加のコミットを作成して）PRを作成してもコンフリクトが発生する。  
 マージ後はリモート/ローカルの双方で速やかに機能ブランチを削除することが望ましい。
-  * リモート側の機能ブランチはGitHubの設定にて「Automatically delete head branches」を選択することで、マージ後に自動でブランチの削除が行われる。
+  * リモート側の機能ブランチはGitHubの設定にて「Automatically delete head branches」を選択することで、マージ後に自動でブランチの削除が行われる。（GitLabでは、マージリクエストから「Delete source branch」オプションを有効にすることで、マージ後に自動でブランチの削除が行われる。プロジェクトの設定で「Enable "Delete source branch" option by default」を選択しておくとデフォルトで有効になる。）
   * ローカル側の機能ブランチは `branch -d` コマンドでは削除できないため、`branch -D` コマンドを用いて削除する必要がある。
 
 * 部分的なコミットの取り消しができない。  
