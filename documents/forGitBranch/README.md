@@ -648,3 +648,85 @@ https://docs.github.com/ja/pull-requests/committing-changes-to-your-project/crea
 
 * 機能ブランチの取り込み以外のケースでは、「Squash and merge」以外を選択すること。  
 例えば、`develop` ブランチを `main` ブランチや `release`ブランチにマージする場合など、取り込み元のブランチの変更が大きい場合は、コミットメッセージを1つにまとめることによる弊害が大きいため、別のマージ戦略を検討すること。
+
+## （参考）VSCode上でのGit操作
+
+基本的に、VSCode上でのGit操作は、サイドバーの "Source Control" から行います。  
+また、ほとんど全ての操作はコマンドパレットからも実行可能ですが、ここでは割愛します。
+
+### 必要な拡張機能
+
+GUIでのGit操作にあたり、次の2つの拡張機能をインストールしておくと便利（ほぼ必須）です。  
+※ 以降では、これらの拡張機能がインストールされていることを前提に説明を行います。
+
+- [GitLens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
+  - Gitに関する様々な機能を提供する拡張機能です。
+  - 詳細を語りだすとキリがないため、ここでは割愛します。（フューチャー技術ブログにも解説記事があります。「[VSCodeでGitLensを使う ](https://future-architect.github.io/articles/）20240415a/)」）
+- [Git Graph](https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph)
+  - コミットグラフを表示する拡張機能です。
+  - GitLensにもコミットグラフはありますが、Pro（有料版）限定の提供のため、ここではこちらの拡張機能を使用します。
+
+### リポジトリのクローン (`git clone`)
+
+サイドバー > Explorer か Source Control > Clone Repository ボタンをクリックし、URLを入力すると、リポジトリをクローンできます。
+
+![Clone1](vscode_git_clone1.png)  ![Clone2](vscode_git_clone2.png)
+
+### コミットグラフの表示
+
+SOURCE CONTROL パネル > 黒丸のグラフアイコン (View Git Graph (git log)) をクリックすると、コミットグラフを表示できます。  
+※ 白丸のグラフアイコン (Show Commit Graph) はGitLensのコミットグラフですが、冒頭の記述通り、Pro版でのみの提供となります。
+
+![Graph1](vscode_git_graph1.png)  ![Graph2](vscode_git_graph2.png)
+
+### リモートのフェッチ／プル (`git fetch` / `git pull`)
+
+以下のいずれかの操作を実行すると、リモートリポジトリをフェッチできます。
+- SOURCE CONTROL パネル > 三点リーダーアイコン (More Actions...) をクリックし、 Fetch を選択する。
+- コミットグラフ > 雲アイコン (Fetch from Remote(s)) をクリックする。
+
+![Fetch1](vscode_git_fetch1.png)
+
+なお、フェッチ後に以下のようなダイアログが表示される場合がありますが、 "Yes" を選択すると、自動で定期的にフェッチを行うようになります。
+
+![Fetch2](vscode_git_fetch2.png)
+
+[TODO] プルを追記する。
+
+### ブランチの作成／チェックアウト (`git branch` / `git checkout`)
+
+以下のいずれかの操作を実行すると、ブランチを作成できます。
+- SOURCE CONTROL パネル > 三点リーダーアイコン (More Actions...) をクリックし、Branch > Create Branch... を選択する。
+  - 現在チェックアウトしているブランチから新規ブランチが作成されますが、Create Branch From... を選択すると、作成元のブランチを選択することができます。
+  - 作成したブランチに自動的にチェックアウトします。
+- コミットグラフ > 作成元コミットの行上で右クリックし、Create Branch... を選択する。
+  - "Check out" にチェックを入れると、作成したブランチにチェックアウトします。
+
+![Branch1](vscode_git_branch1.png)  ![Branch2](vscode_git_branch2.png)
+
+[TODO] チェックアウトを追記する。
+
+### ステージ／コミット／プッシュ (`git add` / `git commit` / `git push`)
+
+SOURCE CONTROL パネル > 変更ファイルの行 > +アイコン (Stage Changes) をクリックすると、対象ファイルをステージできます。（Changes > +アイコン (Stage All Changes) をクリックすると、すべての変更をステージします）
+
+![Stage](vscode_git_stage.png)
+
+必要な変更をステージ後、 SOURCE CONTROL パネル内でコミットメッセージを入力し、 Commit ボタンをクリックすると、コミットを作成できます。
+
+![Commit](vscode_git_commit.png)
+
+以下のいずれかの操作を実行すると、作成したコミットをリモートリポジトリにプッシュできます。
+- SOURCE CONTROL パネル > 三点リーダーアイコン (More Actions...) をクリックし、Push を選択する。
+- BRANCHES パネル > 対象ブランチの行 > 雲アイコン (Publish Branch) をクリックする。
+- コミットグラフ > 対象ブランチの上で右クリックし、Push Branch... を選択する。
+
+![push1](vscode_git_push1.png)  ![push2](vscode_git_push2.png)  ![push3](vscode_git_push3.png)
+
+### リバート (`git revert`)
+
+### マージ (`git merge`)
+
+### リベース (`git rebase`)
+
+### スタッシュ (`git stash`)
