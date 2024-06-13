@@ -135,7 +135,7 @@ paths:
           $ref: '#/components/responses/InternalServer'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
-  /trainers/{trainerId}/menu:
+  /trainers/{trainer_id}/menu:
     get:
       tags:
         - trainer
@@ -143,7 +143,7 @@ paths:
       operationId: getTrainingMenu
       security: []
       parameters:
-        - name: trainerId
+        - name: trainer_id
           in: path
           description: トレーナーのID
           required: true
@@ -161,7 +161,7 @@ paths:
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
 
-  /trainers/{trainerId}/profile:
+  /trainers/{trainer_id}/profile:
     get:
       tags:
         - trainer
@@ -169,7 +169,7 @@ paths:
       operationId: getTrainerProfile
       security: []
       parameters:
-        - name: trainerId
+        - name: trainer_id
           in: path
           description: トレーナーのID
           required: true
@@ -186,7 +186,7 @@ paths:
           $ref: '#/components/responses/InternalServer'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
-  /trainers/{trainerId}/reviews:
+  /trainers/{trainer_id}/reviews:
     get:
       tags:
         - trainer
@@ -194,7 +194,7 @@ paths:
       operationId: getTrainerReviews
       security: []
       parameters:
-        - name: trainerId
+        - name: trainer_id
           in: path
           description: トレーナーのID
           required: true
@@ -211,7 +211,7 @@ paths:
           $ref: '#/components/responses/InternalServer'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
-  /trainers/{trainerId}/schedule:
+  /trainers/{trainer_id}/schedule:
     get:
       tags:
         - trainer
@@ -219,7 +219,7 @@ paths:
       operationId: getTrainerSchedule
       security: []
       parameters:
-        - name: trainerId
+        - name: trainer_id
           in: path
           description: トレーナーのID
           required: true
@@ -277,14 +277,14 @@ paths:
           $ref: '#/components/responses/InternalServer'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
-  /bookings/{bookingId}:
+  /bookings/{booking_id}:
     delete:
       tags:
         - booking
       summary: API-013 トレーニング予約削除
       operationId: deleteBooking
       parameters:
-        - name: bookingId
+        - name: booking_id
           in: path
           description: 予約ID
           required: true
@@ -303,14 +303,14 @@ paths:
           $ref: '#/components/responses/InternalServer'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
-  /bookings/{bookingId}/confirm:
+  /bookings/{booking_id}/confirm:
     post:
       tags:
         - booking
       summary: API-014 トレーニング予約（本登録）
       operationId: confirmBooking
       parameters:
-        - name: bookingId
+        - name: booking_id
           in: path
           description: 予約ID
           required: true
@@ -337,14 +337,14 @@ paths:
           $ref: '#/components/responses/InternalServer'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
-  /booking/{bookingId}/status:
+  /booking/{booking_id}/status:
     put:
       tags:
         - booking
       summary: API-015 トレーニング受講ステータス変更
       operationId: updateTrainingStatus
       parameters:
-        - name: bookingId
+        - name: booking_id
           in: path
           description: 予約ID
           required: true
@@ -414,13 +414,13 @@ paths:
       responses:
         '200':
           description: 口コミ登録成功
-  /reviews/{reviewId}:
+  /reviews/{review_id}:
     put:
       tags:
         - review
       summary: API-018 口コミ修正
       parameters:
-        - name: reviewId
+        - name: review_id
           in: path
           description: 口コミID
           required: true
@@ -440,7 +440,7 @@ paths:
         - review
       summary: API-019 口コミ削除
       parameters:
-        - name: reviewId
+        - name: review_id
           in: path
           description: 口コミID
           required: true
@@ -491,13 +491,13 @@ paths:
       responses:
         '200':
           description: トレーニングメニュー登録成功
-  /training-menu/{menuId}:
+  /training-menu/{menu_id}:
     put:
       tags:
         - provider
       summary: API-023 トレーニングメニュー更新
       parameters:
-        - name: menuId
+        - name: menu_id
           in: path
           description: メニューID
           required: true
@@ -517,7 +517,7 @@ paths:
         - provider
       summary: API-024 トレーニングメニュー削除
       parameters:
-        - name: menuId
+        - name: menu_id
           in: path
           description: メニューID
           required: true
