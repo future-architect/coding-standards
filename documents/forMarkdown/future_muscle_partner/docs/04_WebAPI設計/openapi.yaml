@@ -25,7 +25,7 @@ paths:
     post:
       tags:
         - account
-      summary: "[API01] ログインAPI"
+      summary: API-001 ログイン
       operationId: loginUser
       security: []
       requestBody:
@@ -47,7 +47,7 @@ paths:
     post:
       tags:
         - account
-      summary: "[API02] ログアウトAPI"
+      summary: API-002 ログアウト
       operationId: logoutUser
       security: []
       responses:
@@ -69,7 +69,7 @@ paths:
     post:
       tags:
         - account
-      summary: "[API03] 会員登録API"
+      summary: API-003 会員登録
       operationId: registerUser
       security: []
       requestBody:
@@ -91,7 +91,7 @@ paths:
     post:
       tags:
         - account
-      summary: "[API04] 会員退会API"
+      summary: API-004 会員退会
       operationId: signoutUser
       responses:
         '200':
@@ -108,7 +108,7 @@ paths:
     get:
       tags:
         - profile
-      summary: "[API05] 自分のプロフィール表示API"
+      summary: API-005 自分のプロフィール表示
       operationId: getUserProfile
       responses:
         '200':
@@ -123,7 +123,7 @@ paths:
     get:
       tags:
         - trainer
-      summary: "[API06] パーソナルトレーナー検索API"
+      summary: API-006 パーソナルトレーナー検索
       operationId: searchTrainers
       security: []
       responses:
@@ -139,7 +139,7 @@ paths:
     get:
       tags:
         - trainer
-      summary: "[API07] トレーニングメニュー取得API"
+      summary: API-007 トレーニングメニュー取得
       operationId: getTrainingMenu
       security: []
       parameters:
@@ -165,7 +165,7 @@ paths:
     get:
       tags:
         - trainer
-      summary: "[API08] トレーナープロフィール取得API"
+      summary: API-008 トレーナープロフィール取得
       operationId: getTrainerProfile
       security: []
       parameters:
@@ -190,7 +190,7 @@ paths:
     get:
       tags:
         - trainer
-      summary: "[API09] トレーナー口コミ取得API"
+      summary: API-009 トレーナー口コミ取得
       operationId: getTrainerReviews
       security: []
       parameters:
@@ -215,7 +215,7 @@ paths:
     get:
       tags:
         - trainer
-      summary: "[API10] トレーナースケジュール取得API"
+      summary: API-010 トレーナースケジュール取得
       operationId: getTrainerSchedule
       security: []
       parameters:
@@ -240,7 +240,7 @@ paths:
     get:
       tags:
         - booking
-      summary: "[API11] 予約済みトレーニング取得API"
+      summary: API-011 予約済みトレーニング取得
       operationId: getBookings
       responses:
         '200':
@@ -254,7 +254,7 @@ paths:
     post:
       tags:
         - booking
-      summary: "[API12] トレーニング予約API（仮登録）"
+      summary: API-012 トレーニング予約（仮登録）
       operationId: bookTraining
       requestBody:
         required: true
@@ -281,7 +281,7 @@ paths:
     delete:
       tags:
         - booking
-      summary: "[API13] トレーニング予約削除"
+      summary: API-013 トレーニング予約削除
       operationId: deleteBooking
       parameters:
         - name: bookingId
@@ -307,7 +307,7 @@ paths:
     post:
       tags:
         - booking
-      summary: "[API14] トレーニング予約API（本登録）"
+      summary: API-014 トレーニング予約（本登録）
       operationId: confirmBooking
       parameters:
         - name: bookingId
@@ -341,7 +341,7 @@ paths:
     put:
       tags:
         - booking
-      summary: "[API15] トレーニング受講ステータス変更API"
+      summary: API-015 トレーニング受講ステータス変更
       operationId: updateTrainingStatus
       parameters:
         - name: bookingId
@@ -377,7 +377,7 @@ paths:
     post:
       tags:
         - payment
-      summary: "[API16] 決済API"
+      summary: API-016 決済
       operationId: makePayment
       requestBody:
         required: true
@@ -404,7 +404,7 @@ paths:
     post:
       tags:
         - review
-      summary: "[API17] 口コミ登録"
+      summary: API-017 口コミ登録
       requestBody:
         required: true
         content:
@@ -418,7 +418,7 @@ paths:
     put:
       tags:
         - review
-      summary: "[API18] 口コミ修正"
+      summary: API-018 口コミ修正
       parameters:
         - name: reviewId
           in: path
@@ -438,7 +438,7 @@ paths:
     delete:
       tags:
         - review
-      summary: "[API19] 口コミ削除"
+      summary: API-019 口コミ削除
       parameters:
         - name: reviewId
           in: path
@@ -453,7 +453,7 @@ paths:
     post:
       tags:
         - provider
-      summary: "[API20] トレーナー登録"
+      summary: API-020 トレーナー登録
       requestBody:
         required: true
         content:
@@ -467,7 +467,7 @@ paths:
     put:
       tags:
         - provider
-      summary: "[API21]トレーナー属性更新"
+      summary: API-021 トレーナー属性更新
       requestBody:
         required: true
         content:
@@ -481,7 +481,7 @@ paths:
     post:
       tags:
         - provider
-      summary: "[API22] トレーニングメニュー登録"
+      summary: API-022 トレーニングメニュー登録
       requestBody:
         required: true
         content:
@@ -495,7 +495,7 @@ paths:
     put:
       tags:
         - provider
-      summary: "[API23] トレーニングメニュー更新"
+      summary: API-023 トレーニングメニュー更新
       parameters:
         - name: menuId
           in: path
@@ -515,7 +515,7 @@ paths:
     delete:
       tags:
         - provider
-      summary: "[API24] トレーニングメニュー削除"
+      summary: API-024 トレーニングメニュー削除
       parameters:
         - name: menuId
           in: path
