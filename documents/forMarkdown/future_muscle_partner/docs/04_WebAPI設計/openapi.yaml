@@ -29,11 +29,7 @@ paths:
       operationId: loginUser
       security: []
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LoginRequest'
+        $ref: '#/components/requestBodies/ReqPostLoginBody'
       responses:
         '200':
           description: ログインに成功しました。
@@ -73,11 +69,7 @@ paths:
       operationId: registerUser
       security: []
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SigninRequest'
+        $ref: '#/components/requestBodies/ReqPostSigninBody'
       responses:
         '200':
           description: 会員登録に成功しました。
@@ -257,11 +249,7 @@ paths:
       summary: API-012 トレーニング予約（仮登録）
       operationId: bookTraining
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BookingRequest'
+        $ref: '#/components/requestBodies/ReqPostBookingBody'
       responses:
         '200':
           description: 予約が仮登録されました。
@@ -317,11 +305,7 @@ paths:
           schema:
             type: string
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BookingConfirmationRequest'
+        $ref: '#/components/requestBodies/ReqPostBookingConfirmationBody'
       responses:
         '200':
           description: 予約が本登録されました。
@@ -351,11 +335,7 @@ paths:
           schema:
             type: string
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TrainingStatusUpdateRequest'
+        $ref: '#/components/requestBodies/ReqPostTrainingStatusUpdateBody'
       responses:
         '200':
           description: ステータスが更新されました。
@@ -380,11 +360,7 @@ paths:
       summary: API-016 決済
       operationId: makePayment
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PaymentRequest'
+        $ref: '#/components/requestBodies/ReqPostPaymentBody'
       responses:
         '200':
           description: 決済が完了しました。
@@ -406,11 +382,7 @@ paths:
         - review
       summary: API-017 口コミ登録
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Review'
+        $ref: '#/components/requestBodies/ReqPostReviewBody'
       responses:
         '200':
           description: 口コミ登録成功
@@ -455,11 +427,7 @@ paths:
         - provider
       summary: API-020 トレーナー登録
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Trainer'
+        $ref: '#/components/requestBodies/ReqPostTrainerBody'
       responses:
         '200':
           description: トレーナー登録成功
@@ -469,11 +437,7 @@ paths:
         - provider
       summary: API-021 トレーナー属性更新
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TrainerAttributes'
+        $ref: '#/components/requestBodies/ReqPostTrainerAttributesBody'
       responses:
         '200':
           description: トレーナー属性更新成功
@@ -483,11 +447,7 @@ paths:
         - provider
       summary: API-022 トレーニングメニュー登録
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TrainingMenu'
+        $ref: '#/components/requestBodies/ReqPostTrainingMenuBody'
       responses:
         '200':
           description: トレーニングメニュー登録成功
@@ -647,6 +607,67 @@ components:
           type: string
         description:
           type: string
+  requestBodies:
+    ReqPostLoginBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LoginRequest'
+    ReqPostSigninBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SigninRequest'
+    ReqPostBookingBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BookingRequest'
+    ReqPostPaymentBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentRequest'
+    ReqPostBookingConfirmationBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BookingConfirmationRequest'
+    ReqPostTrainingStatusUpdateBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TrainingStatusUpdateRequest'
+    ReqPostReviewBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Review'
+    ReqPostTrainerBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Trainer'
+    ReqPostTrainerAttributesBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TrainerAttributes'
+    ReqPostTrainingMenuBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TrainingMenu'
   responses:
     BadRequest:
       description: 400 Bad Request
