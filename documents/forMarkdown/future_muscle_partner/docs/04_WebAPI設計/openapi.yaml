@@ -25,15 +25,11 @@ paths:
     post:
       tags:
         - account
-      summary: "[API01] ログインAPI"
+      summary: API-001 ログイン
       operationId: loginUser
       security: []
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LoginRequest'
+        $ref: '#/components/requestBodies/ReqPostLoginBody'
       responses:
         '200':
           description: ログインに成功しました。
@@ -47,7 +43,7 @@ paths:
     post:
       tags:
         - account
-      summary: "[API02] ログアウトAPI"
+      summary: API-002 ログアウト
       operationId: logoutUser
       security: []
       responses:
@@ -69,15 +65,11 @@ paths:
     post:
       tags:
         - account
-      summary: "[API03] 会員登録API"
+      summary: API-003 会員登録
       operationId: registerUser
       security: []
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/SigninRequest'
+        $ref: '#/components/requestBodies/ReqPostSigninBody'
       responses:
         '200':
           description: 会員登録に成功しました。
@@ -91,7 +83,7 @@ paths:
     post:
       tags:
         - account
-      summary: "[API04] 会員退会API"
+      summary: API-004 会員退会
       operationId: signoutUser
       responses:
         '200':
@@ -108,7 +100,7 @@ paths:
     get:
       tags:
         - profile
-      summary: "[API05] 自分のプロフィール表示API"
+      summary: API-005 自分のプロフィール表示
       operationId: getUserProfile
       responses:
         '200':
@@ -123,7 +115,7 @@ paths:
     get:
       tags:
         - trainer
-      summary: "[API06] パーソナルトレーナー検索API"
+      summary: API-006 パーソナルトレーナー検索
       operationId: searchTrainers
       security: []
       responses:
@@ -135,15 +127,15 @@ paths:
           $ref: '#/components/responses/InternalServer'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
-  /trainers/{trainerId}/menu:
+  /trainers/{trainer_id}/menu:
     get:
       tags:
         - trainer
-      summary: "[API07] トレーニングメニュー取得API"
+      summary: API-007 トレーニングメニュー取得
       operationId: getTrainingMenu
       security: []
       parameters:
-        - name: trainerId
+        - name: trainer_id
           in: path
           description: トレーナーのID
           required: true
@@ -161,15 +153,15 @@ paths:
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
 
-  /trainers/{trainerId}/profile:
+  /trainers/{trainer_id}/profile:
     get:
       tags:
         - trainer
-      summary: "[API08] トレーナープロフィール取得API"
+      summary: API-008 トレーナープロフィール取得
       operationId: getTrainerProfile
       security: []
       parameters:
-        - name: trainerId
+        - name: trainer_id
           in: path
           description: トレーナーのID
           required: true
@@ -186,15 +178,15 @@ paths:
           $ref: '#/components/responses/InternalServer'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
-  /trainers/{trainerId}/reviews:
+  /trainers/{trainer_id}/reviews:
     get:
       tags:
         - trainer
-      summary: "[API09] トレーナー口コミ取得API"
+      summary: API-009 トレーナー口コミ取得
       operationId: getTrainerReviews
       security: []
       parameters:
-        - name: trainerId
+        - name: trainer_id
           in: path
           description: トレーナーのID
           required: true
@@ -211,15 +203,15 @@ paths:
           $ref: '#/components/responses/InternalServer'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
-  /trainers/{trainerId}/schedule:
+  /trainers/{trainer_id}/schedule:
     get:
       tags:
         - trainer
-      summary: "[API10] トレーナースケジュール取得API"
+      summary: API-010 トレーナースケジュール取得
       operationId: getTrainerSchedule
       security: []
       parameters:
-        - name: trainerId
+        - name: trainer_id
           in: path
           description: トレーナーのID
           required: true
@@ -240,7 +232,7 @@ paths:
     get:
       tags:
         - booking
-      summary: "[API11] 予約済みトレーニング取得API"
+      summary: API-011 予約済みトレーニング取得
       operationId: getBookings
       responses:
         '200':
@@ -254,14 +246,10 @@ paths:
     post:
       tags:
         - booking
-      summary: "[API12] トレーニング予約API（仮登録）"
+      summary: API-012 トレーニング予約（仮登録）
       operationId: bookTraining
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BookingRequest'
+        $ref: '#/components/requestBodies/ReqPostBookingBody'
       responses:
         '200':
           description: 予約が仮登録されました。
@@ -277,14 +265,14 @@ paths:
           $ref: '#/components/responses/InternalServer'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
-  /bookings/{bookingId}:
+  /bookings/{booking_id}:
     delete:
       tags:
         - booking
-      summary: "[API13] トレーニング予約削除"
+      summary: API-013 トレーニング予約削除
       operationId: deleteBooking
       parameters:
-        - name: bookingId
+        - name: booking_id
           in: path
           description: 予約ID
           required: true
@@ -303,25 +291,21 @@ paths:
           $ref: '#/components/responses/InternalServer'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
-  /bookings/{bookingId}/confirm:
+  /bookings/{booking_id}/confirm:
     post:
       tags:
         - booking
-      summary: "[API14] トレーニング予約API（本登録）"
+      summary: API-014 トレーニング予約（本登録）
       operationId: confirmBooking
       parameters:
-        - name: bookingId
+        - name: booking_id
           in: path
           description: 予約ID
           required: true
           schema:
             type: string
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/BookingConfirmationRequest'
+        $ref: '#/components/requestBodies/ReqPostBookingConfirmationBody'
       responses:
         '200':
           description: 予約が本登録されました。
@@ -337,25 +321,21 @@ paths:
           $ref: '#/components/responses/InternalServer'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
-  /booking/{bookingId}/status:
+  /booking/{booking_id}/status:
     put:
       tags:
         - booking
-      summary: "[API15] トレーニング受講ステータス変更API"
+      summary: API-015 トレーニング受講ステータス変更
       operationId: updateTrainingStatus
       parameters:
-        - name: bookingId
+        - name: booking_id
           in: path
           description: 予約ID
           required: true
           schema:
             type: string
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TrainingStatusUpdateRequest'
+        $ref: '#/components/requestBodies/ReqPostTrainingStatusUpdateBody'
       responses:
         '200':
           description: ステータスが更新されました。
@@ -377,14 +357,10 @@ paths:
     post:
       tags:
         - payment
-      summary: "[API16] 決済API"
+      summary: API-016 決済
       operationId: makePayment
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PaymentRequest'
+        $ref: '#/components/requestBodies/ReqPostPaymentBody'
       responses:
         '200':
           description: 決済が完了しました。
@@ -404,23 +380,19 @@ paths:
     post:
       tags:
         - review
-      summary: "[API17] 口コミ登録"
+      summary: API-017 口コミ登録
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Review'
+        $ref: '#/components/requestBodies/ReqPostReviewBody'
       responses:
         '200':
           description: 口コミ登録成功
-  /reviews/{reviewId}:
+  /reviews/{review_id}:
     put:
       tags:
         - review
-      summary: "[API18] 口コミ修正"
+      summary: API-018 口コミ修正
       parameters:
-        - name: reviewId
+        - name: review_id
           in: path
           description: 口コミID
           required: true
@@ -438,9 +410,9 @@ paths:
     delete:
       tags:
         - review
-      summary: "[API19] 口コミ削除"
+      summary: API-019 口コミ削除
       parameters:
-        - name: reviewId
+        - name: review_id
           in: path
           description: 口コミID
           required: true
@@ -453,13 +425,9 @@ paths:
     post:
       tags:
         - provider
-      summary: "[API20] トレーナー登録"
+      summary: API-020 トレーナー登録
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Trainer'
+        $ref: '#/components/requestBodies/ReqPostTrainerBody'
       responses:
         '200':
           description: トレーナー登録成功
@@ -467,13 +435,9 @@ paths:
     put:
       tags:
         - provider
-      summary: "[API21]トレーナー属性更新"
+      summary: API-021 トレーナー属性更新
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TrainerAttributes'
+        $ref: '#/components/requestBodies/ReqPostTrainerAttributesBody'
       responses:
         '200':
           description: トレーナー属性更新成功
@@ -481,23 +445,19 @@ paths:
     post:
       tags:
         - provider
-      summary: "[API22] トレーニングメニュー登録"
+      summary: API-022 トレーニングメニュー登録
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TrainingMenu'
+        $ref: '#/components/requestBodies/ReqPostTrainingMenuBody'
       responses:
         '200':
           description: トレーニングメニュー登録成功
-  /training-menu/{menuId}:
+  /training-menu/{menu_id}:
     put:
       tags:
         - provider
-      summary: "[API23] トレーニングメニュー更新"
+      summary: API-023 トレーニングメニュー更新
       parameters:
-        - name: menuId
+        - name: menu_id
           in: path
           description: メニューID
           required: true
@@ -515,9 +475,9 @@ paths:
     delete:
       tags:
         - provider
-      summary: "[API24] トレーニングメニュー削除"
+      summary: API-024 トレーニングメニュー削除
       parameters:
-        - name: menuId
+        - name: menu_id
           in: path
           description: メニューID
           required: true
@@ -647,6 +607,67 @@ components:
           type: string
         description:
           type: string
+  requestBodies:
+    ReqPostLoginBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/LoginRequest'
+    ReqPostSigninBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/SigninRequest'
+    ReqPostBookingBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BookingRequest'
+    ReqPostPaymentBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/PaymentRequest'
+    ReqPostBookingConfirmationBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/BookingConfirmationRequest'
+    ReqPostTrainingStatusUpdateBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TrainingStatusUpdateRequest'
+    ReqPostReviewBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Review'
+    ReqPostTrainerBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Trainer'
+    ReqPostTrainerAttributesBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TrainerAttributes'
+    ReqPostTrainingMenuBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/TrainingMenu'
   responses:
     BadRequest:
       description: 400 Bad Request
