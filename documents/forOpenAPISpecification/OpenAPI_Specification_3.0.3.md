@@ -18,8 +18,8 @@ meta:
 本ドキュメントは [OpenAPI Specification 3.0.3](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md)に則った API ドキュメントを記述する際のコーディング規約をまとめている。
 旧バージョンである[OpenAPI Specification 2.0 の規約](OpenAPI_Specification_2.0.md)も存在するため、v2を使用している場合はそちらを参照されたい。
 
-本規約は[前提条件](prerequisite.md)に基づいて作成されており、ToC向けの LSUDs（Large Set of Unknown Developers）向けの Web API には適合しない場合もあるのでご留意いただきたい。
-Web APIの設計自体はこの規約の範囲外であるが、[API 設計標準](API_Design.md) にステータスコード等の標準を記載しているため、必要に応じて参考にされたい。
+本規約は[前提条件](prerequisite.md)に基づいて作成されており、ToC 向けの LSUDs（Large Set of Unknown Developers）向けの Web API には適合しない場合もあるのでご留意いただきたい。
+Web API の設計自体はこの規約の範囲外であるが、[API 設計標準](API_Design.md) にステータスコード等の標準を記載しているため、必要に応じて参考にされたい。
 
 ## ファイルフォーマット
 
@@ -149,7 +149,7 @@ servers:
 
 API の利用可能なエンドポイントと操作方法を記載する。
 
-- API ごとに機能IDを定義している場合、`paths` 配下の各パスは機能 ID の昇順に定義する。
+- API ごとに機能 ID を定義している場合、`paths` 配下の各パスは機能 ID の昇順に定義する。
 - URL パスが複数の単語からなる場合、ケバブケースで表現する。
 - HTTP メソッドは `GET`, `POST`, `PUT`, `PATCH`, `DELETE` の順に定義する。  
 
@@ -175,7 +175,7 @@ API の利用可能なエンドポイントと操作方法を記載する。
         ...
   ```
 
-- HTTPメソッドの配下に定義されるオペレーションオブジェクトは、下記の項目を必須項目とする。
+- HTTP メソッドの配下に定義されるオペレーションオブジェクトは、下記の項目を必須項目とする。
 
   | フィールド名 | 必須 | 記載内容                                 |
   | ------------ | :--: | ---------------------------------------- |
@@ -251,8 +251,8 @@ API の論理的なグループを指定する。
 
 API を識別するための一意な文字列を記載する。
 
-- HTTP メソッドとURLパスをアッパーキャメルケースで表現する。  
-  ただしOpenAPI ドキュメントのエディタとして広く使用されるStoplightが提供する[Linter](https://docs.stoplight.io/docs/spectral/674b27b261c3c-overview)の定義としてケバブケースが標準になっているため、Stoplightを使用する場合はケバブケースで表現しても良い。
+- HTTP メソッドと URL パスをアッパーキャメルケースで表現する。  
+  ただし OpenAPI ドキュメントのエディタとして広く使用される Stoplight が提供する[Linter](https://docs.stoplight.io/docs/spectral/674b27b261c3c-overview)の定義としてケバブケースが標準になっているため、Stoplight を使用する場合はケバブケースで表現しても良い。
 
   良い例：
 
@@ -295,7 +295,7 @@ API の操作概要を記載する。
 
 ### paths > description
 
-APIの振る舞いの詳細や注意点を記載する。  
+API の振る舞いの詳細や注意点を記載する。  
 別途参照させるべき設計書があるのであれば、設計書へのリンクを記載しても良い。
 
 ### paths > parameters
@@ -313,8 +313,8 @@ API のリクエストボディを記載する。
 
 - リクエストボディを記載する。  
   標準仕様の [describing-request-body](https://swagger.io/docs/specification/describing-request-body/) の章にも記載がある通り、リクエストボディは `POST`、`PUT`、`PATCH` で使用され、`GET`、`DELETE`、`HEAD` には使用できない。
-- requestBodyの定義は、`components/requestBodies` で宣言し、`$refs` で参照する。
-- requestBodyの命名は、`Req` というプレフィクスと、`Body` というサフィックスで終える必要がある。
+- requestBody の定義は、`components/requestBodies` で宣言し、`$refs` で参照する。
+- requestBody の命名は、`Req` というプレフィクスと、`Body` というサフィックスで終える必要がある。
 
 ```yaml
 paths:
@@ -374,10 +374,10 @@ components:
 
 ### paths > security
 
-APIの認証方式を記載する。
+API の認証方式を記載する。
 
-- 通常はルートレベルの `security` でAPI共通的な認証方式を設定し、個々のAPIで個別に設定は行わない。
-- ヘルスチェックのような認証を通す必要がないAPIのみ、上書きで定義する。
+- 通常はルートレベルの `security` で API 共通的な認証方式を設定し、個々の API で個別に設定は行わない。
+- ヘルスチェックのような認証を通す必要がない API のみ、上書きで定義する。
 
   良い例；
 
@@ -412,22 +412,22 @@ components:
 
 ### schemas
 
-- API定義共通で利用するスキーマを定義する。
-- schemasに定義する項目はリソースやエラー等のドメインオブジェクトのみとし、リクエストパラメータやレスポンスパラメータは`parameter`や`requestBodies`、`responses`に記載する。
+- API 定義共通で利用するスキーマを定義する。
+- schemas に定義する項目はリソースやエラー等のドメインオブジェクトのみとし、リクエストパラメータやレスポンスパラメータは`parameter`や`requestBodies`、`responses`に記載する。
   - `paths.requestBodies`から直接参照されるリクエストパラメータオブジェクトは`requestBodies`に定義する。
   - `paths`から直接参照されるレスポンスパラメータは`responses`に定義する。また400や500などのエラーレスポンスも`responses`に定義する。
-  - HTTPヘッダやCookie、もしくは検索上限やページングのようなHTTPレイヤのパラメータに相当するものは`parameter`に定義する。
+  - HTTP ヘッダや Cookie、もしくは検索上限やページングのような HTTP レイヤのパラメータに相当するものは`parameter`に定義する。
   - レスポンスヘッダーは`headers`にて定義する。
-  - 上記いずれにも該当しないuserやidなどのリソース、エラーを示すオブジェクトは`schemas`に定義する。
-  - 各APIのリクエストレスポンスオブジェクトは可能な限り、`parameter`,`requestBodies`,`responses`に定義する方針とし、API固有のオブジェクト（所謂`ReqXXX`、`ResXXX`等）は`schemas`には定義しない。
-  - ただし、オブジェクトがネストしてしまう場合はAPI固有のオブジェクトであっても`schemas`に定義する。  
+  - 上記いずれにも該当しない user や id などのリソース、エラーを示すオブジェクトは`schemas`に定義する。
+  - 各 API のリクエストレスポンスオブジェクトは可能な限り、`parameter`,`requestBodies`,`responses`に定義する方針とし、API 固有のオブジェクト（所謂`ReqXXX`、`ResXXX`等）は`schemas`には定義しない。
+  - ただし、オブジェクトがネストしてしまう場合は API 固有のオブジェクトであっても`schemas`に定義する。  
   ※定義するオブジェクトの`properties`配下に更に`type: object`が定義されしまう（ネストしてしまう）と生成ツールによってはうまく型が生成されないため。
 
 - 規約
   - リソース名はアッパーキャメルケースで定義する。
   - リソース名は単数形で定義する。
   - `type` に複数の型定義の指定不可。
-  - `type: null`は原則として利用せず、undefinedを利用する。  
+  - `type: null`は原則として利用せず、undefined を利用する。  
   [差分更新APIの場合](#差分更新-API-の場合)にあるとおり、空更新を行う場合は空文字を利用する。
   - `allOf`、`anyOf`、`oneOf` を利用したスキーマ定義は許容しない。
 
@@ -545,7 +545,7 @@ components:
     ...
 ```
 ​
-正常系のレスポンスの例としてはファイルアップロード・ダウンロードなどが該当する。個別のアプリケーション要件でブレが少ないと複数のエンドポイントで用いられる場合に定義する。オブジェクトのスキーマは、schemasに切り出して定義し、コード生成ツールのために型情報を付与させる。
+正常系のレスポンスの例としてはファイルアップロード・ダウンロードなどが該当する。個別のアプリケーション要件でブレが少ないと複数のエンドポイントで用いられる場合に定義する。オブジェクトのスキーマは、schemas に切り出して定義し、コード生成ツールのために型情報を付与させる。
 
 ```yaml
 components:
@@ -581,7 +581,7 @@ components:
             format: binary
 ```
 
-それらの後に、paths登場順にエンドポイント固有のレスポンスを定義する。レスポンスオブジェクトのスキーマは、schemasに切り出して定義する。
+それらの後に、paths 登場順にエンドポイント固有のレスポンスを定義する。レスポンスオブジェクトのスキーマは、schemas に切り出して定義する。
 
 ```yaml
 components:
@@ -615,12 +615,12 @@ API 共通で利用するパラメータ（パスパラメータ、クエリパ�
 ##### パスパラメータ
 
 - API 全体で利用されるパスパラメータが必要なケースが想定されないため、原則定義しない。
-特定リソースの操作（例えば更新と削除）を行う際のリソースIDはパスパラメータとして再利用できるが、コンフリクトを避けるため原則共通化は行わない。
+特定リソースの操作（例えば更新と削除）を行う際のリソース ID はパスパラメータとして再利用できるが、コンフリクトを避けるため原則共通化は行わない。
 
 ##### クエリパラメータ
 
-- API 全体で利用可能な共通のクエリパラメータを定義する （例: 検索数のlimit, offset）
-- 命名は クエリパラメータ名に `Query` というプレフィクスを付与する形式を推奨する。
+- API 全体で利用可能な共通のクエリパラメータを定義する（例: 検索数の limit, offset）
+- 命名はクエリパラメータ名に `Query` というプレフィクスを付与する形式を推奨する。
 
 
 ```yaml
@@ -643,7 +643,7 @@ parameters:
 ##### ヘッダパラメータ
 
 - API 全体で利用可能な共通のリクエストヘッダを定義する。
-- 命名は ヘッダ名に `Header` というプレフィクスを付与する形式を推奨する。
+- 命名はヘッダ名に `Header` というプレフィクスを付与する形式を推奨する。
 
 ```yaml
 paths:
@@ -664,7 +664,7 @@ components:
 
 ##### Cookie パラメータ
 
-- API 全体で利用可能な共通のCookieパラメータを定義する。（例: CSRF用のトークン）
+- API 全体で利用可能な共通の Cookie パラメータを定義する。（例: CSRF 用のトークン）
 - 命名は Cookie パラメータ名に `Cookie` というプレフィクスを付与する形式を推奨する。
 - Cookie 認証を定義する場合は、`APIKey` を利用すること。
 
@@ -690,7 +690,7 @@ components:
 
 API 共通で利用するレスポンスヘッダを記載する。
 
-- 命名は ヘッダ名からハイフンを除去した形式を推奨する。
+- 命名はヘッダ名からハイフンを除去した形式を推奨する。
 
 ```yaml
 paths:
@@ -713,7 +713,7 @@ components:
 
 ### securitySchemes
 
-標準で用いるAPI認証の定義を行う。
+標準で用いる API 認証の定義を行う。
 
 ```yaml
 components:
@@ -728,36 +728,36 @@ components:
 
 ### links
 
-[links](https://swagger.io/docs/specification/links/) は OpenAPI 3.0 の新機能の1つで、あるAPIレスポンスの値を用いて、別のAPIを呼び出す方法を明示できるセクションである。
+[links](https://swagger.io/docs/specification/links/) は OpenAPI 3.0 の新機能の1つで、ある API レスポンスの値を用いて、別の API を呼び出す方法を明示できるセクションである。
 
-興味深い機能であり、APIのセマンティクスを伝えるのに有用であるが、本規約では記載しないことを推奨とする。
+興味深い機能であり、API のセマンティクスを伝えるのに有用であるが、本規約では記載しないことを推奨とする。
 
 理由は下記の通りである。
 
-- 業務システムでは、業務フローを抑えておけば、API操作フローの理解はそこまで難しくないことが多い
-    - 逆に、API同士の関係だけを示すだけでは業務モデリング図とのダブルメンテナンスになったり、中途半端になりうる
-- [OAS 3.0 Support Backlog](https://github.com/swagger-api/swagger-ui/issues/3641) にあるように、2023/12/15時点ではSwagger-UIが対応していない
-    - linksを書いたと言って、APIドキュメントに影響しない
+- 業務システムでは、業務フローを抑えておけば、API 操作フローの理解はそこまで難しくないことが多い
+    - 逆に、API 同士の関係だけを示すだけでは業務モデリング図とのダブルメンテナンスになったり、中途半端になりうる
+- [OAS 3.0 Support Backlog](https://github.com/swagger-api/swagger-ui/issues/3641) にあるように、2023/12/15時点では Swagger-UI が対応していない
+    - links を書いたと言って、API ドキュメントに影響しない
 
 ### callbacks
 
-[callbacks](https://swagger.io/docs/specification/callbacks/) は OpenAPI 3.0 の新機能の1つで、APIサーバ側が指定されたコールバックURLを呼び出すという仕組みである。
+[callbacks](https://swagger.io/docs/specification/callbacks/) は OpenAPI 3.0 の新機能の1つで、API サーバ側が指定されたコールバック URL を呼び出すという仕組みである。
 
-仕様書には、ECショップで購入のたびにマネージャーに通知を送るといった、何かしらの処理をトリガーにコールバックURLを呼び出す例が示されている。
+仕様書には、EC ショップで購入のたびにマネージャーに通知を送るといった、何かしらの処理をトリガーにコールバック URL を呼び出す例が示されている。
 
 利便性は高い仕様だが、本規約では記載しないことを推奨とする。
 
 理由は下記の通りである。
 
-- コールバックURL呼び出しの、エラーハンドリングが難しい
+- コールバック URL 呼び出しの、エラーハンドリングが難しい
 - 業務システムでは欠損が許されない、または将来的に許されなくなる可能性があり、その場合にこの機能に頼ると想定以上の追加作業が発生する
 
 コールバックのような仕組みを実現するには、別途キューイングのメッセージサービスの利用などを検討する。
 
 ## security
 
-全APIに共通で適用されるセキュリティ設定を定義する。  
-業務システムの Web API において 認証が全く存在しないケースは考えにくいため、本規約ではルートレベルで認証を設定し、個々のAPIへの適応漏れをなくす。
+全 API に共通で適用されるセキュリティ設定を定義する。  
+業務システムの Web API において認証が全く存在しないケースは考えにくいため、本規約ではルートレベルで認証を設定し、個々の API への適応漏れをなくす。
 
 良い例：
 
@@ -773,7 +773,7 @@ API を論理的にグループ化するためのタグを定義する。ドキ�
 - `name`, `description` を必須項目とする。
 -  **単数形** で、小文字かつ半角スペース区切りで記載する。  
   半角スペース区切りで記載する理由は　HTML ドキュメントで参照する場合の可読性を上げるためである。
-- コード生成で利用される（Go においてはパッケージ、 TypeScriptにおいてはクラスに相当する）ため、シンプルな命名にする。
+- コード生成で利用される（Go においてはパッケージ、 TypeScript においてはクラスに相当する）ため、シンプルな命名にする。
 
 良い例：
 
@@ -797,8 +797,8 @@ tags:
 
 ## externalDocs
 
-参照情報としてのURLの記載が可能。  
-ただし、`description` にて参考情報となるURLを記載する方が、複数リンクを指定可能であるなど自由度が高く使いやすい。そのため `externalDocs` は利用せず `description` の利用を推奨する。
+参照情報としての URL の記載が可能。  
+ただし、`description` にて参考情報となる URL を記載する方が、複数リンクを指定可能であるなど自由度が高く使いやすい。そのため `externalDocs` は利用せず `description` の利用を推奨する。
 
 
 良い例：
@@ -894,12 +894,12 @@ CORS（Cross-Origin Resource Sharing）のために、options メソッドの追
 
 ## OpenTelemetry Traceparent HTTP Header
 
-OpenOpenTelemetryで用いるられる[traceparent](https://www.w3.org/TR/trace-context/) のリクエストヘッダーはOpenAPIで **原則不要** とする。
+OpenOpenTelemetry で用いるられる[traceparent](https://www.w3.org/TR/trace-context/) のリクエストヘッダーは OpenAPI で **原則不要** とする。
 
 理由は以下である。
 
-- OpenTelemetryが定めるヘッダー類は、API横断的に設定されるべきものであり、ミドルウェアやフレームワーク側などでの一律の制御を推奨するため
-- 記載することにより、OpenOpenTelemetryに対応していることを明記し開発者に周知できるメリットより、各アプリ開発者が生成されたコードで悩んだり、誤解されることを回避したいため
+- OpenTelemetry が定めるヘッダー類は、API 横断的に設定されるべきものであり、ミドルウェアやフレームワーク側などでの一律の制御を推奨するため
+- 記載することにより、OpenOpenTelemetry に対応していることを明記し開発者に周知できるメリットより、各アプリ開発者が生成されたコードで悩んだり、誤解されることを回避したいため
 
 ## バリデーションについて
 
@@ -933,21 +933,21 @@ description: 検索結果の項目数上限（1~100が指定可能）
 
 型（`type`）は `string(文字列)`, `number（数値）`, `integer（整数値）`, `boolean（真偽値）` `array（配列）` のうちどれか指定する.
 
-フォーマット（`format`） は以下の型の詳細情報を示すもので、可能な限り設定する。
+フォーマット（`format`）は以下の型の詳細情報を示すもので、可能な限り設定する。
 
-- `integer` （整数）
+- `integer`（整数）
   - `int32`, `int64`
-- `number` （数値）
+- `number`（数値）
   - `float`, `double`
-- `string` （バイナリ）
+- `string`（バイナリ）
   - `byte`: Base64 でエンコードされた文字列
   - `binary`: バイト配列
-- `string` （日付）
+- `string`（日付）
   - `date`: [RFC3339](https://www.rfc-editor.org/rfc/rfc3339) full-date(例: 2023-07-21)
     - 項目名は `_on` を接尾辞につけることを推奨とする
   - `date-time`: [RFC3339](https://www.rfc-editor.org/rfc/rfc3339) date-time(例: 2023-07-21T17:32:28Z)
     - 項目名は `_at` を接尾辞につけることを推奨とする
-- `string` （その他）
+- `string`（その他）
   - `password`: Swagger UI で入力が隠される
   - その他、 `email`, `uuid` など Open API 仕様に存在しない任意のフォーマットを独自のドキュメント生成などのために記載しても良い
 
@@ -993,7 +993,7 @@ description: |
     9: 適用不能
 ```
 
-OpenAPI 3.0 では区分値の再利用ができるため、横断的に用いる区分値はcomponents側で定義する。
+OpenAPI 3.0 では区分値の再利用ができるため、横断的に用いる区分値は components 側で定義する。
 
 ```yaml
 paths:
@@ -1118,7 +1118,7 @@ remind_time:
   <details>
   <summary>Golang</summary>
   
-  - Golangの場合、以下のように、`nil` になり得る項目はポインタ型とした上で、`undefined` となり得る項目は `omitempty` タグを付与する。
+  - Golang の場合、以下のように、`nil` になり得る項目はポインタ型とした上で、`undefined` となり得る項目は `omitempty` タグを付与する。
   
   ```go
     type Data struct {
@@ -1157,7 +1157,7 @@ remind_time:
     fmt.Printf("After decoded: %#v\n", v)
   ```
 
-  - シリアライズ後のjsonを見ると、値がセットされない場合には、項目にゼロ値（ポインタ型は`nil`, string型は空文字、int型は`0`）が入っている。
+  - シリアライズ後の json を見ると、値がセットされない場合には、項目にゼロ値（ポインタ型は`nil`, string 型は空文字、int 型は`0`）が入っている。
   - 項目がゼロ値の場合に`omitempty` が付与されていると、 項目ごと除外されている（`undefined` となっている）。
 
   ```json
@@ -1298,7 +1298,7 @@ remind_time:
   <details>
   <summary>TypeScript</summary>
   
-  - TypeScriptの場合、以下のように、`null`, `undefined` を区別して定義することが可能である。Optional指定（項目名に`?`を付与）することで`undefined`をセットする必要がなくなる（項目が「非必須」となる）。
+  - TypeScript の場合、以下のように、`null`, `undefined` を区別して定義することが可能である。Optional 指定（項目名に`?`を付与）することで`undefined`をセットする必要がなくなる（項目が「非必須」となる）。
   
   ```typescript
     interface Data {
@@ -1331,7 +1331,7 @@ remind_time:
     console.log(deserialized)
   ```
 
-  - シリアライズ後のjsonを見ると、`undefined`定義した項目は除外されている。
+  - シリアライズ後の json を見ると、`undefined`定義した項目は除外されている。
 
   ```json
   {
@@ -1371,20 +1371,20 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
 
 ### 分割方法の選定
 
-開発方針やOpenAPIの使用用途に合わせて、都合の良いファイルの分割方法を採用する。例えば、以下のような方法がある。
+開発方針や OpenAPI の使用用途に合わせて、都合の良いファイルの分割方法を採用する。例えば、以下のような方法がある。
 
-1. APIごとに設計担当者を分けて、それぞれにOpenAPIを編集する場合は、APIの単位で分割する。
+1. API ごとに設計担当者を分けて、それぞれに OpenAPI を編集する場合は、API の単位で分割する。
 2. テストツールとして [stoplightio/prism](https://github.com/stoplightio/prism)を使用する場合、テストケースごとにデータファイルを作成して、`examples` にファイルパスを指定する。
 
 ### サンプル説明
 
 分割方法1, 2の両方に当てはまる場合のサンプルを用いて説明する。`openapi.yaml` とディレクトリ構成は下の通り。サンプルの全量は [サンプルzip Download](./reference/divided_files_sample.zip)からダウンロード可能。
 
-- 機能単位（path, method単位）にディレクトリを作成して、それぞれの定義ファイルを格納する。ディレクトリ名は `{path}_{method}` とすると管理し易い。
+- 機能単位（path, method 単位）にディレクトリを作成して、それぞれの定義ファイルを格納する。ディレクトリ名は `{path}_{method}` とすると管理し易い。
 - `components` の `schemas` には、
-  - API間で同じモデルを使用する場合は共通化して記載する（例えば、`Pet`）。
-  - 各APIのリクエスト/リスポンスモデルの中で、モデルがネストする場合は、各モデルの単位で書き出す（例えば、`PetDetail`, `Pedigree`）。
-  - ※schemasのモデルの中身は別ファイルに定義が可能だが、大本のopenapi.yamlにも命名のみ定義が必要。openapi.yamlの定義が無いとswaggerUIで確認した際にschemas定義が見えなくなってしまう。
+  - API 間で同じモデルを使用する場合は共通化して記載する（例えば、`Pet`）。
+  - 各 API のリクエスト/リスポンスモデルの中で、モデルがネストする場合は、各モデルの単位で書き出す（例えば、`PetDetail`, `Pedigree`）。
+  - ※schemas のモデルの中身は別ファイルに定義が可能だが、大本の openapi.yaml にも命名のみ定義が必要。openapi.yaml の定義が無いと swaggerUI で確認した際に schemas 定義が見えなくなってしまう。
 
   <details open>
     <summary>ファイル分割例： openapi.yaml</summary>
@@ -1454,9 +1454,9 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
 
   </details>
 
-- `openapi.yaml` の `paths` に記載したAPIファイルは以下のように作成する。
-- 複数API間に共通のモデルについては `openapi.yaml` に指定したキー（`../openapi.yaml#/components/schemas/Pet`）を参照する。
-- `examples` には、各APIのテストケースIDをキーとして指定（`ResExample1`）し、`value` に該当するテストケースのデータファイルパスを指定（`./examples/res_example1.yaml`）する。ファイル名は、指定したキーをスネークケースに変換したものを使用するとよい。
+- `openapi.yaml` の `paths` に記載した API ファイルは以下のように作成する。
+- 複数 API 間に共通のモデルについては `openapi.yaml` に指定したキー（`../openapi.yaml#/components/schemas/Pet`）を参照する。
+- `examples` には、各 API のテストケース ID をキーとして指定（`ResExample1`）し、`value` に該当するテストケースのデータファイルパスを指定（`./examples/res_example1.yaml`）する。ファイル名は、指定したキーをスネークケースに変換したものを使用するとよい。
 
   <details open>
     <summary>API別ファイルの記載例： pets-pet-id_get.yaml</summary>
@@ -1540,7 +1540,7 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
   </details>
 
 
-- OpenAPIの使用用途により、分割ファイルを1つのファイルにまとめる必要がある場合には、例えば[swagger-cli](https://apitools.dev/swagger-cli/)を使用して以下コマンドを実行する。
+- OpenAPI の使用用途により、分割ファイルを1つのファイルにまとめる必要がある場合には、例えば[swagger-cli](https://apitools.dev/swagger-cli/)を使用して以下コマンドを実行する。
   
   ```bash
   swagger-cli bundle openapi.yaml --outfile openapi.gen.yaml --type yaml
