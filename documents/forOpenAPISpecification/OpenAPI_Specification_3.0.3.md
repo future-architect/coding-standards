@@ -150,8 +150,52 @@ servers:
 API の利用可能なエンドポイントと操作方法を記載する。
 
 - API ごとに機能 ID を定義している場合、`paths` 配下の各パスは機能 ID の昇順に定義する
+
+  良い例：
+
+  ```yaml
+  paths:
+    /users:
+      get:
+        summary: API-101 ユーザ一覧取得
+    /products:
+      get:
+        summary: API-201 商品一覧取得
+  ```
+
+  悪い例：
+
+  ```yaml
+  paths:
+    /products:
+      get:
+        summary: API-201 商品一覧取得
+    /users:
+      get:
+        summary: API-101 ユーザ一覧取得
+  ```
+
 - URL パスが複数の単語からなる場合、ケバブケースで表現する
-- HTTP メソッドは `GET`, `POST`, `PUT`, `PATCH`, `DELETE` の順に定義する。  
+
+  良い例：
+
+  ```yaml
+  paths:
+    /product-owners:
+      get:
+        ...
+  ```
+
+  悪い例：
+
+  ```yaml
+  paths:
+    /productOwners:
+      get:
+        ...
+  ```
+
+- HTTP メソッドは `GET`, `POST`, `PUT`, `PATCH`, `DELETE` の順に定義する
 
   良い例：
 
@@ -177,23 +221,26 @@ API の利用可能なエンドポイントと操作方法を記載する。
 
 - HTTP メソッドの配下に定義されるオペレーションオブジェクトは、下記の項目を必須項目とする
 
-  | フィールド名 | 必須 | 記載内容                                 |
-  | ------------ | :--: | ---------------------------------------- |
-  | tags         |  ○   | API の論理的なグループ                   |
-  | operationId  |  ○   | API の利用可能なエンドポイントと操作方法 |
-  | summary      |  ○   | API の操作概要                           |
-  | description  |      | API の振る舞いの詳細や注意点を記載する。 |
-  | parameters   |      | API のリクエストパラメータ               |
-  | requestBody  |      | API のリクエストボディ                   |
-  | response     |  ○   | API のレスポンス                         |
-  | security     |      | API のセキュリティ機構        |
+| フィールド名       | 必須  | 記載内容                   |
+|--------------|-:-:-|------------------------|
+| tags         | ○   | API の論理的なグループ          |
+| summary      | ○   | API の操作概要              |
+| description  | ○   | API の振る舞いの詳細や注意点       |
+| externalDocs |     | API に関する追加の文書          |
+| operationId  | ○   | API の利用可能なエンドポイントと操作方法 |
+| parameters   |     | API のリクエストパラメータ        |
+| requestBody  |     | API のリクエストボディ          |
+| responses    | ○   | API のレスポンス             |
+| callbacks    |     |                        |
+| deprecated   |     | API が非推奨であることの宣言       |
+| security     |     | API のセキュリティ機構          |
+| servers      |     | API に対応する代替サーバ         |
 
-
-### paths > tags
+### paths > {path} > {method} > tags
 
 API の論理的なグループを指定する。
 
-- タグオブジェクトとして事前定義したタグの中から選択すること
+- タグオブジェクトとして事前定義したタグの中から選択する
 
   良い例：
 
@@ -221,7 +268,7 @@ API の論理的なグループを指定する。
   tags: []
   ```
 
-- 1 API につき 1つのタグを指定すること
+- 1 API につき 1つのタグを指定する
 
   良い例：
 
@@ -247,42 +294,11 @@ API の論理的なグループを指定する。
         ...
   ```
 
-### paths > operationId
-
-API を識別するための一意な文字列を記載する。
-
-- HTTP メソッドと URL パスをアッパーキャメルケースで表現する。  
-  ただし OpenAPI ドキュメントのエディタとして広く使用される Stoplight が提供する[Linter](https://docs.stoplight.io/docs/spectral/674b27b261c3c-overview)の定義としてケバブケースが標準になっているため、Stoplight を使用する場合はケバブケースで表現しても良い
-
-  良い例：
-
-  ```yaml
-  paths:
-    /users/me:
-      get:
-        operationId: get-users-me
-        ...
-    /products/{product_id}:
-      put:
-        operationId: put-products-product-id
-        ...
-  ```
-
-  良い例：
-
-  ```yaml
-  paths:
-    /users/me:
-      get:
-        operationId: get_users_me
-        ...
-  ```
-
-### paths > summary
+### paths > {path} > {method} > summary
 
 API の操作概要を記載する。
 
-- 機能 ID や機能名があるのであれば記載する
+- API ごとに機能 ID や機能名があるのであれば記載する
 
   良い例：
 
@@ -293,85 +309,286 @@ API の操作概要を記載する。
         summary: API-001 ユーザアカウント取得 
   ```
 
-### paths > description
+### paths > {path} > {method} > description
 
 API の振る舞いの詳細や注意点を記載する。  
 別途参照させるべき設計書があるのであれば、設計書へのリンクを記載しても良い。
 
-### paths > parameters
+  良い例：
 
-API のリクエストパラメータ（パスパラメータ、クエリパラメータ、ヘッダ）を記載する。
+  ```yaml
+  paths:
+    /users/me:
+      get:
+        description: [API詳細設計書（API-001）](https://example.com/API-001.md)
+  ```
 
-- HTTP メソッドが `GET`, `DELETE` の場合にのみ指定する
-- パスパラメータはスネークケースで表現する
+### paths > {path} > {method} > operationId
+
+API を識別するための一意な文字列を記載する。
+
+- HTTP メソッドと URL パスの組み合わせをアッパーキャメルケースで表現する
+
+  良い例：
+
+  ```yaml
+  paths:
+    /users/me:
+      get:
+        operationId: GetUsersMe
+        ...
+    /products/{product_id}:
+      put:
+        operationId: PutProductsProductId
+        ...
+  ```
+
+  悪い例：
+
+  ```yaml
+  paths:
+    /users/me:
+      get:
+        operationId: get_users_me
+        ...
+  ```
+
+- OpenAPI ドキュメントエディタとして広く使用される Stoplight が提供する[Linter](https://docs.stoplight.io/docs/spectral/674b27b261c3c-overview)の定義としては、ケバブケースが標準になっているため、Stoplight を使用する場合はケバブケースで表現しても良い
+
+### paths > {path} > {method} > parameters
+
+API のリクエストパラメータを記載する。
+
 - クエリパラメータはスネークケースで表現する
+
+  良い例：
+
+  ```yaml
+  paths:
+    /users:
+      get:
+        ...
+        parameters:
+          - name: account_type
+            in: query
+  ```
+
+  悪い例：
+
+  ```yaml
+  paths:
+    /users:
+      get:
+        ...
+        parameters:
+          - name: account-type
+            in: query
+  ```
+
+- クエリパラメータは HTTP メソッドが `GET`, `DELETE` の場合にのみ指定する
+
+  良い例：
+
+  ```yaml
+  paths:
+    /users:
+      get:
+        ...
+        parameters:
+          - name: account_type
+            in: query
+  ```
+
+  悪い例：
+
+  ```yaml
+  paths:
+    /users:
+      post:
+        ...
+        parameters:
+          - name: acaccount_type
+            in: query
+  ```
+
 - ヘッダはハイフンを区切り文字とするパスカルケースで表現する
 
-### paths > requestBody
+  良い例：
+
+  ```yaml
+  paths:
+    /users:
+      post:
+        ...
+        parameters:
+          - name: Content-Type
+            in: header
+  ```
+
+  悪い例：
+
+  ```yaml
+  paths:
+    /users:
+      post:
+        ...
+        parameters:
+          - name: ContentType
+            in: header
+  ```
+
+### paths > {path} > {method} > requestBody
 
 API のリクエストボディを記載する。
 
-- リクエストボディを記載する。  
-  標準仕様の [describing-request-body](https://swagger.io/docs/specification/describing-request-body/) の章にも記載がある通り、リクエストボディは `POST`、`PUT`、`PATCH` で使用され、`GET`、`DELETE`、`HEAD` には使用できない
-- requestBody の定義は、`components/requestBodies` で宣言し、`$refs` で参照する
-- requestBody の命名は、`Req` というプレフィックスと、`Body` というサフィックスで終える必要がある
+- 標準仕様の [describing-request-body](https://swagger.io/docs/specification/describing-request-body/) の章にも記載がある通り、リクエストボディは HTTP メソッドが `POST`, `PUT`, `PATCH` の場合のみ指定する
 
-```yaml
-paths:
-  /products:
-    post:
-      operation_id: post-products
-      requestBody:
-        $ref: '#/components/requestBodies/ReqPostProductsBody'
-      ...
-```
+  良い例：
 
-### paths > responses
+  ```yaml
+  paths:
+    /users:
+      post:
+        ...
+        requestBody:
+          required: true
+          content:
+            application/json:
+              ...
+  ```
+
+  悪い例：
+
+  ```yaml
+  paths:
+    /users:
+      get:
+        ...
+        # HTTP メソッドが GET の場合にリクエストボディを指定
+        requestBody:
+          ...
+  ```
+
+- リクエストボディそのものは通常複数の API を跨いで再利用されるものではないため、原則 `components` オブジェクトとして共通化（コンポーネント化）を行わない  
+
+  - [openapi-generator](https://github.com/OpenAPITools/openapi-generator)を使用する場合は、コンポーネント化をせず、`title` を指定することで名称の指定が可能となる
+  - [oapi-codegen](https://github.com/oapi-codegen/oapi-codegen)を使用する場合は、名称を指定するためにコンポーネント化が必要となるが、極力コンポーネント化せずデフォルトの名称を使用することを推奨する
+
+  良い例：
+
+  ```yaml
+  paths:
+    /users:
+      post:
+        ...
+        requestBody:
+          required: true
+          content:
+            application/json:
+              ...
+  ```
+
+  悪い例：
+
+  ```yaml
+  paths:
+    /users:
+      get:
+        ...
+        requestBody:
+          # コンポーネント化したリクエストボディを参照
+          $ref: '#/components/requestBodies/ReqPostProductsBody'
+  
+  components:
+    requestBodies:
+      ReqPostProductsBody:
+        content:
+          application/json:
+  ```
+
+### paths > {path} > {method} > responses
 
 API のレスポンスを記載する。
 
-- OpenAPI ドキュメントからソースコードを自動生成する際に生成されるのクラスや構造体の命名をコントロールしたい場合などにおいては、スキーマ定義は `components` オブジェクトとして任意の名称で定義し `$ref` で参照する。  
-- スキーマ定義の名称は、全体で統一された命名ルールを定めること。（例. `operation_id` をアッパーキャメルケースへ変換の上、プレフィックスに `Res` を付与）
-- `schema` オブジェクトの `type` は `object` を指定する
-- 異常系（`4xx`, `5xx`）の HTTP ステータスコードに対応するレスポンス定義は設計者が個別に定義するのではなく、事前に共通的なレスポンスオブジェクトを定義し `$ref` で参照することが望ましい
-        
-```yaml
-paths:
-  /products:
-    post:
-      operation_id: post-products
-      responses:
-        '200':
-          $ref: '#/components/responses/RespPostProducts'
-        '400':
-          $ref: '#/components/responses/BadRequest'
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '403':
-          $ref: '#/components/responses/Forbidden'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '409':
-          $ref: '#/components/responses/Conflict'
-        '422':
-          $ref: '#/components/responses/UnprocessableEntity'
-        '500':
-          $ref: '#/components/responses/InternalServer'
-        '503':
-          $ref: '#/components/responses/ServiceUnavailable'
-      ...
 
-components:
-  responses:
-    RespPostProducts:
-      type: object
-      properties:
-        ...
-    BadRequest:
-      ...
-```
+- 正常系（`2xx`）のレスポンスは通常複数の API を跨いで再利用されるものではないため、原則 `components` オブジェクトとして共通化（コンポーネント化）を行わない  
 
-### paths > security
+  - [openapi-generator](https://github.com/OpenAPITools/openapi-generator)を使用する場合は、コンポーネント化をせず、`title` を指定することで名称の指定が可能となる
+  - [oapi-codegen](https://github.com/oapi-codegen/oapi-codegen)を使用する場合は、レスポンスの構造体を出力するために `strict-server` オプションを `true` に指定する必要がある。名称を指定するためにコンポーネント化が必要となるが、極力コンポーネント化せずデフォルトの名称を使用することを推奨する
+
+  良い例：
+
+  ```yaml
+  paths:
+    /products:
+      post:
+        responses:
+          '200':
+            description: 200 OK
+            content:
+              application/json:
+                ...
+  ```
+
+  悪い例：
+
+  ```yaml
+  paths:
+    /products:
+      post:
+        responses:
+          '200':
+            # コンポーネント化したレスポンスオブジェクトを参照
+            $ref: '#/components/responses/BadRequest'
+  
+  components:
+    responses:
+      BadRequest:
+        description: 200 OK
+        content:
+          application/json:
+            ...
+  ```
+
+
+- 異常系（`4xx`, `5xx`）のレスポンスは個別に定義するのではなく、事前に `components` オブジェクトとして定義を行い `$ref` で参照する
+
+  良い例：
+
+  ```yaml
+  paths:
+    /products:
+      post:
+        responses:
+          '400':
+            # コンポーネント化したレスポンスオブジェクトを参照
+            $ref: '#/components/responses/BadRequest'
+  
+  components:
+    responses:
+      BadRequest:
+        description: 400 Bad Request
+        content:
+          application/json:
+            ...
+  ```
+
+  悪い例：
+
+  ```yaml
+  paths:
+    /products:
+      post:
+        responses:
+          '400':
+            # レスポンスオブジェクトを個別に定義
+            description: 400 Bad Request
+            content:
+              application/json:
+                ...
+  ```
+
+### paths > {path} > {method} > security
 
 API の認証方式を記載する。
 
@@ -382,11 +599,11 @@ API の認証方式を記載する。
 
   ```yaml
   paths:
-    /signin:
+    /session:
       post:
-        operation_id: signin
-          # 認証しない場合のみ個別で定義する
-          security: []
+        ...
+        # 認証しない場合のみ個別で定義
+        security: []
   ```
 
 ## components
@@ -416,7 +633,7 @@ components:
   - HTTP ヘッダや Cookie、もしくは検索上限やページングのような HTTP レイヤのパラメータに相当するものは`parameter`に定義する
   - レスポンスヘッダーは`headers`にて定義する
   - 上記いずれにも該当しない user や id などのリソース、エラーを示すオブジェクトは`schemas`に定義する
-  - 各 API のリクエストレスポンスオブジェクトは可能な限り、`parameter`,`requestBodies`,`responses`に定義する方針とし、API 固有のオブジェクト（所謂`ReqXXX`、`ResXXX`等）は`schemas`には定義しない
+  - 各 API のリクエストレスポンスオブジェクトは可能な限り、`parameter`, `requestBodies`, `responses`に定義する方針とし、API 固有のオブジェクト（所謂`ReqXXX`、`ResXXX`等）は`schemas`には定義しない
   - ただし、オブジェクトがネストしてしまう場合は API 固有のオブジェクトであっても`schemas`に定義する。  
   ※定義するオブジェクトの`properties`配下に更に`type: object`が定義されしまう（ネストしてしまう）と生成ツールによってはうまく型が生成されないため。
 
