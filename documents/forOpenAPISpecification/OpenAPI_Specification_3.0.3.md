@@ -79,7 +79,7 @@ openapi: 3.0
 
 ### info > title
 
-WebAPI の総称を記載する。
+Web API の総称を記載する。
 
 - システム名やサービス名 + API のような命名を推奨する。  
 
@@ -314,7 +314,7 @@ API のリクエストボディを記載する。
 - リクエストボディを記載する。  
   標準仕様の [describing-request-body](https://swagger.io/docs/specification/describing-request-body/) の章にも記載がある通り、リクエストボディは `POST`、`PUT`、`PATCH` で使用され、`GET`、`DELETE`、`HEAD` には使用できない
 - requestBody の定義は、`components/requestBodies` で宣言し、`$refs` で参照する
-- requestBody の命名は、`Req` というプレフィクスと、`Body` というサフィックスで終える必要がある
+- requestBody の命名は、`Req` というプレフィックスと、`Body` というサフィックスで終える必要がある
 
 ```yaml
 paths:
@@ -620,7 +620,7 @@ API 共通で利用するパラメータ（パスパラメータ、クエリパ�
 ##### クエリパラメータ
 
 - API 全体で利用可能な共通のクエリパラメータを定義する（例: 検索数の limit, offset）
-- 命名はクエリパラメータ名に `Query` というプレフィクスを付与する形式を推奨する
+- 命名はクエリパラメータ名に `Query` というプレフィックスを付与する形式を推奨する
 
 
 ```yaml
@@ -643,7 +643,7 @@ parameters:
 ##### ヘッダパラメータ
 
 - API 全体で利用可能な共通のリクエストヘッダを定義する
-- 命名はヘッダ名に `Header` というプレフィクスを付与する形式を推奨する
+- 命名はヘッダ名に `Header` というプレフィックスを付与する形式を推奨する
 
 ```yaml
 paths:
@@ -665,7 +665,7 @@ components:
 ##### Cookie パラメータ
 
 - API 全体で利用可能な共通の Cookie パラメータを定義する。（例: CSRF 用のトークン）
-- 命名は Cookie パラメータ名に `Cookie` というプレフィクスを付与する形式を推奨する
+- 命名は Cookie パラメータ名に `Cookie` というプレフィックスを付与する形式を推奨する
 - Cookie 認証を定義する場合は、`APIKey` を利用すること
 
 ```yaml
