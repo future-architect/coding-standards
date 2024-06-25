@@ -108,7 +108,7 @@ Web API が提供する機能の概要・想定する利用者やユースケー
     version: 1.0
   ```
 
-- もし他チームへの API ドキュメントの頻繁な共有が必要であれば、`major.minor` の代わりに `YYYY.MM.DD` の日付形式も許容する。
+- もし他チームへの API ドキュメントの頻繁な共有が必要であれば、`major.minor` の代わりに `YYYY.MM.DD` の日付形式も許容する
 
   良い例：
 
@@ -121,9 +121,9 @@ Web API が提供する機能の概要・想定する利用者やユースケー
 
 Web API を提供するサーバの情報を記載する。  
 
-- `url`, `description` を必須項目とする。
+- `url`, `description` を必須項目とする
 - ステージ（local, develop, staging など）が複数ある場合は各ステージ分の情報を記載する。 
-- SSKDs 向けの Web API 開発においては本番環境の URL を不用意に公開したくないケースが多く、記載は避けるべきである。
+- SSKDs 向けの Web API 開発においては本番環境の URL を不用意に公開したくないケースが多く、記載は避けるべきである
 
 良い例：
 
@@ -149,8 +149,8 @@ servers:
 
 API の利用可能なエンドポイントと操作方法を記載する。
 
-- API ごとに機能 ID を定義している場合、`paths` 配下の各パスは機能 ID の昇順に定義する。
-- URL パスが複数の単語からなる場合、ケバブケースで表現する。
+- API ごとに機能 ID を定義している場合、`paths` 配下の各パスは機能 ID の昇順に定義する
+- URL パスが複数の単語からなる場合、ケバブケースで表現する
 - HTTP メソッドは `GET`, `POST`, `PUT`, `PATCH`, `DELETE` の順に定義する。  
 
   良い例：
@@ -175,7 +175,7 @@ API の利用可能なエンドポイントと操作方法を記載する。
         ...
   ```
 
-- HTTP メソッドの配下に定義されるオペレーションオブジェクトは、下記の項目を必須項目とする。
+- HTTP メソッドの配下に定義されるオペレーションオブジェクトは、下記の項目を必須項目とする
 
   | フィールド名 | 必須 | 記載内容                                 |
   | ------------ | :--: | ---------------------------------------- |
@@ -193,7 +193,7 @@ API の利用可能なエンドポイントと操作方法を記載する。
 
 API の論理的なグループを指定する。
 
-- タグオブジェクトとして事前定義したタグの中から選択すること。
+- タグオブジェクトとして事前定義したタグの中から選択すること
 
   良い例：
 
@@ -221,7 +221,7 @@ API の論理的なグループを指定する。
   tags: []
   ```
 
-- 1 API につき 1つのタグを指定すること。
+- 1 API につき 1つのタグを指定すること
 
   良い例：
 
@@ -252,7 +252,7 @@ API の論理的なグループを指定する。
 API を識別するための一意な文字列を記載する。
 
 - HTTP メソッドと URL パスをアッパーキャメルケースで表現する。  
-  ただし OpenAPI ドキュメントのエディタとして広く使用される Stoplight が提供する[Linter](https://docs.stoplight.io/docs/spectral/674b27b261c3c-overview)の定義としてケバブケースが標準になっているため、Stoplight を使用する場合はケバブケースで表現しても良い。
+  ただし OpenAPI ドキュメントのエディタとして広く使用される Stoplight が提供する[Linter](https://docs.stoplight.io/docs/spectral/674b27b261c3c-overview)の定義としてケバブケースが標準になっているため、Stoplight を使用する場合はケバブケースで表現しても良い
 
   良い例：
 
@@ -282,7 +282,7 @@ API を識別するための一意な文字列を記載する。
 
 API の操作概要を記載する。
 
-- 機能 ID や機能名があるのであれば記載する。
+- 機能 ID や機能名があるのであれば記載する
 
   良い例：
 
@@ -302,19 +302,19 @@ API の振る舞いの詳細や注意点を記載する。
 
 API のリクエストパラメータ（パスパラメータ、クエリパラメータ、ヘッダ）を記載する。
 
-- HTTP メソッドが `GET`, `DELETE` の場合にのみ指定する。
-- パスパラメータはスネークケースで表現する。
-- クエリパラメータはスネークケースで表現する。
-- ヘッダはハイフンを区切り文字とするパスカルケースで表現する。
+- HTTP メソッドが `GET`, `DELETE` の場合にのみ指定する
+- パスパラメータはスネークケースで表現する
+- クエリパラメータはスネークケースで表現する
+- ヘッダはハイフンを区切り文字とするパスカルケースで表現する
 
 ### paths > requestBody
 
 API のリクエストボディを記載する。
 
 - リクエストボディを記載する。  
-  標準仕様の [describing-request-body](https://swagger.io/docs/specification/describing-request-body/) の章にも記載がある通り、リクエストボディは `POST`、`PUT`、`PATCH` で使用され、`GET`、`DELETE`、`HEAD` には使用できない。
-- requestBody の定義は、`components/requestBodies` で宣言し、`$refs` で参照する。
-- requestBody の命名は、`Req` というプレフィクスと、`Body` というサフィックスで終える必要がある。
+  標準仕様の [describing-request-body](https://swagger.io/docs/specification/describing-request-body/) の章にも記載がある通り、リクエストボディは `POST`、`PUT`、`PATCH` で使用され、`GET`、`DELETE`、`HEAD` には使用できない
+- requestBody の定義は、`components/requestBodies` で宣言し、`$refs` で参照する
+- requestBody の命名は、`Req` というプレフィクスと、`Body` というサフィックスで終える必要がある
 
 ```yaml
 paths:
@@ -332,7 +332,7 @@ API のレスポンスを記載する。
 
 - OpenAPI ドキュメントからソースコードを自動生成する際に生成されるのクラスや構造体の命名をコントロールしたい場合などにおいては、スキーマ定義は `components` オブジェクトとして任意の名称で定義し `$ref` で参照する。  
 - スキーマ定義の名称は、全体で統一された命名ルールを定めること。（例. `operation_id` をアッパーキャメルケースへ変換の上、プレフィックスに `Res` を付与）
-- `schema` オブジェクトの `type` は `object` を指定する。
+- `schema` オブジェクトの `type` は `object` を指定する
 - 異常系（`4xx`, `5xx`）の HTTP ステータスコードに対応するレスポンス定義は設計者が個別に定義するのではなく、事前に共通的なレスポンスオブジェクトを定義し `$ref` で参照することが望ましい。
         ​
 
@@ -376,8 +376,8 @@ components:
 
 API の認証方式を記載する。
 
-- 通常はルートレベルの `security` で API 共通的な認証方式を設定し、個々の API で個別に設定は行わない。
-- ヘルスチェックのような認証を通す必要がない API のみ、上書きで定義する。
+- 通常はルートレベルの `security` で API 共通的な認証方式を設定し、個々の API で個別に設定は行わない
+- ヘルスチェックのような認証を通す必要がない API のみ、上書きで定義する
 
   良い例；
 
@@ -412,24 +412,24 @@ components:
 
 ### schemas
 
-- API 定義共通で利用するスキーマを定義する。
-- schemas に定義する項目はリソースやエラー等のドメインオブジェクトのみとし、リクエストパラメータやレスポンスパラメータは`parameter`や`requestBodies`、`responses`に記載する。
-  - `paths.requestBodies`から直接参照されるリクエストパラメータオブジェクトは`requestBodies`に定義する。
-  - `paths`から直接参照されるレスポンスパラメータは`responses`に定義する。また400や500などのエラーレスポンスも`responses`に定義する。
-  - HTTP ヘッダや Cookie、もしくは検索上限やページングのような HTTP レイヤのパラメータに相当するものは`parameter`に定義する。
-  - レスポンスヘッダーは`headers`にて定義する。
-  - 上記いずれにも該当しない user や id などのリソース、エラーを示すオブジェクトは`schemas`に定義する。
-  - 各 API のリクエストレスポンスオブジェクトは可能な限り、`parameter`,`requestBodies`,`responses`に定義する方針とし、API 固有のオブジェクト（所謂`ReqXXX`、`ResXXX`等）は`schemas`には定義しない。
+- API 定義共通で利用するスキーマを定義する
+- schemas に定義する項目はリソースやエラー等のドメインオブジェクトのみとし、リクエストパラメータやレスポンスパラメータは`parameter`や`requestBodies`、`responses`に記載する
+  - `paths.requestBodies`から直接参照されるリクエストパラメータオブジェクトは`requestBodies`に定義する
+  - `paths`から直接参照されるレスポンスパラメータは`responses`に定義する。また400や500などのエラーレスポンスも`responses`に定義する
+  - HTTP ヘッダや Cookie、もしくは検索上限やページングのような HTTP レイヤのパラメータに相当するものは`parameter`に定義する
+  - レスポンスヘッダーは`headers`にて定義する
+  - 上記いずれにも該当しない user や id などのリソース、エラーを示すオブジェクトは`schemas`に定義する
+  - 各 API のリクエストレスポンスオブジェクトは可能な限り、`parameter`,`requestBodies`,`responses`に定義する方針とし、API 固有のオブジェクト（所謂`ReqXXX`、`ResXXX`等）は`schemas`には定義しない
   - ただし、オブジェクトがネストしてしまう場合は API 固有のオブジェクトであっても`schemas`に定義する。  
   ※定義するオブジェクトの`properties`配下に更に`type: object`が定義されしまう（ネストしてしまう）と生成ツールによってはうまく型が生成されないため。
 
 - 規約
-  - リソース名はアッパーキャメルケースで定義する。
-  - リソース名は単数形で定義する。
-  - `type` に複数の型定義の指定不可。
+  - リソース名はアッパーキャメルケースで定義する
+  - リソース名は単数形で定義する
+  - `type` に複数の型定義の指定不可
   - `type: null`は原則として利用せず、undefined を利用する。  
   [差分更新APIの場合](#差分更新-API-の場合)にあるとおり、空更新を行う場合は空文字を利用する。
-  - `allOf`、`anyOf`、`oneOf` を利用したスキーマ定義は許容しない。
+  - `allOf`、`anyOf`、`oneOf` を利用したスキーマ定義は許容しない
 
 ```yaml
 components:
@@ -500,7 +500,7 @@ components:
 - `requestBody` 直下の `required` は必須で `true` を指定する
 - OpenAPI ドキュメントからソースコードを自動生成する際に生成されるのクラスや構造体の命名をコントロールしたい場合などにおいては、スキーマ定義は `component` オブジェクトとして任意の名称で定義し `$ref` で参照する。  
 スキーマ定義の名称は、全体で統一された命名ルールを定めること。（例. `operation_id` をアッパーキャメルケースへ変換の上、プレフィックスに `Req` を付与）
-- `schema` オブジェクトの `type` は `object` を指定する。
+- `schema` オブジェクトの `type` は `object` を指定する
 
 ```yaml
 components:
@@ -614,13 +614,13 @@ API 共通で利用するパラメータ（パスパラメータ、クエリパ�
 
 ##### パスパラメータ
 
-- API 全体で利用されるパスパラメータが必要なケースが想定されないため、原則定義しない。
+- API 全体で利用されるパスパラメータが必要なケースが想定されないため、原則定義しない
 特定リソースの操作（例えば更新と削除）を行う際のリソース ID はパスパラメータとして再利用できるが、コンフリクトを避けるため原則共通化は行わない。
 
 ##### クエリパラメータ
 
 - API 全体で利用可能な共通のクエリパラメータを定義する（例: 検索数の limit, offset）
-- 命名はクエリパラメータ名に `Query` というプレフィクスを付与する形式を推奨する。
+- 命名はクエリパラメータ名に `Query` というプレフィクスを付与する形式を推奨する
 
 
 ```yaml
@@ -642,8 +642,8 @@ parameters:
 
 ##### ヘッダパラメータ
 
-- API 全体で利用可能な共通のリクエストヘッダを定義する。
-- 命名はヘッダ名に `Header` というプレフィクスを付与する形式を推奨する。
+- API 全体で利用可能な共通のリクエストヘッダを定義する
+- 命名はヘッダ名に `Header` というプレフィクスを付与する形式を推奨する
 
 ```yaml
 paths:
@@ -665,8 +665,8 @@ components:
 ##### Cookie パラメータ
 
 - API 全体で利用可能な共通の Cookie パラメータを定義する。（例: CSRF 用のトークン）
-- 命名は Cookie パラメータ名に `Cookie` というプレフィクスを付与する形式を推奨する。
-- Cookie 認証を定義する場合は、`APIKey` を利用すること。
+- 命名は Cookie パラメータ名に `Cookie` というプレフィクスを付与する形式を推奨する
+- Cookie 認証を定義する場合は、`APIKey` を利用すること
 
 ```yaml
 paths:
@@ -690,7 +690,7 @@ components:
 
 API 共通で利用するレスポンスヘッダを記載する。
 
-- 命名はヘッダ名からハイフンを除去した形式を推奨する。
+- 命名はヘッダ名からハイフンを除去した形式を推奨する
 
 ```yaml
 paths:
@@ -770,10 +770,10 @@ security:
 
 API を論理的にグループ化するためのタグを定義する。ドキュメントやツールにとって重要であるため、 **必須** で指定する。
 
-- `name`, `description` を必須項目とする。
+- `name`, `description` を必須項目とする
 -  **単数形** で、小文字かつ半角スペース区切りで記載する。  
   半角スペース区切りで記載する理由は　HTML ドキュメントで参照する場合の可読性を上げるためである。
-- コード生成で利用される（Go においてはパッケージ、 TypeScript においてはクラスに相当する）ため、シンプルな命名にする。
+- コード生成で利用される（Go においてはパッケージ、 TypeScript においてはクラスに相当する）ため、シンプルな命名にする
 
 良い例：
 
@@ -841,7 +841,7 @@ Web API におけるファイルアップロードのよく利用される実装
    - Amazon API Gateway を利用する場合は、2023 年 6 月時点で[ペイロード上限が 10MB](https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html)、[AWS Lambda でもペイロード制限がある](https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/gettingstarted-limits.html#api-requests)ため、許容するファイルサイズによってはこの手法一択となる
    - メリット: オブジェクトストレージの可用性・信頼性を享受できる
    - デメリット: アップロードするために複数の API エンドポイント呼び出しが必要なため、煩雑である
-   - 2023 年 6 月に AWS ブログでこの方式について解説した記事が出たので、詳細は参照ください。
+   - 2023 年 6 月に AWS ブログでこの方式について解説した記事が出たので、詳細は参照ください
      - [https://aws.amazon.com/jp/blogs/news/large-size-files-transferring-by-serverless-s3presignedurl-and-clientside-javascript/](https://aws.amazon.com/jp/blogs/news/large-size-files-transferring-by-serverless-s3presignedurl-and-clientside-javascript/)
 
 本規約でファイルアップロードについて上記の 3. Signed URL を推奨する。API 呼び出しとしては次のようなフローとする。
@@ -1041,7 +1041,7 @@ remind_time:
 
 ### undefined と null
 
-- リクエスト/レスポンスにおいて、ある項目の値が存在しないという状態を表現する場合、① その項目自体を含めず `undefined` とする方法と、② 値に `null` を使用する方法がある。
+- リクエスト/レスポンスにおいて、ある項目の値が存在しないという状態を表現する場合、① その項目自体を含めず `undefined` とする方法と、② 値に `null` を使用する方法がある
 
   ① `undefined` とする場合、OpenAPI 定義と JSON データの例
 
@@ -1095,22 +1095,22 @@ remind_time:
   {} //この場合は、required指定の、id項目がないためバリデーションエラーとなる
   ```
 
-- 原則としては、①`undefined` による定義を使用する方が、API 仕様の表現が煩雑にならず、また通信サイズの点からも有利である。
+- 原則としては、①`undefined` による定義を使用する方が、API 仕様の表現が煩雑にならず、また通信サイズの点からも有利である
 
 ### 差分更新 API の場合
 
-- 差分更新（PATCH）API においては、項目が更新対象外であることと、項目が更新してクリアする対象であることを明確に区別する必要がある。このような場合には、以下のいずれかの方法を採用する。
+- 差分更新（PATCH）API においては、項目が更新対象外であることと、項目が更新してクリアする対象であることを明確に区別する必要がある。このような場合には、以下のいずれかの方法を採用する
 
   １）項目を文字列として定義し、空値として空文字("")を採用する。
 
-  - float や int 等の数値についても、文字列型として定義することで、項目が `undefined` または `null` であれば「更新対象外」、項目が空文字であれば「更新してクリアする対象」であると判定できる。
+  - float や int 等の数値についても、文字列型として定義することで、項目が `undefined` または `null` であれば「更新対象外」、項目が空文字であれば「更新してクリアする対象」であると判定できる
   - この場合、空文字は OpenAPI の`format`定義に許容されないため注意が必要である。`format`定義の代わりに、`pattern`に空文字を許容する正規表現を定義する必要がある。  
     <br>
 
   ２）カスタムモデルを使用する
 
-  - API で受け取るデータをデシリアライズする際に、`undefined` と `null` を区別できるようなカスタムモデルを作成すると、１）のように数値を文字列型として扱う必要がなく、OpenAPI の`format` 定義を使用することも可能である。
-  - この場合、OpenAPI からの自動生成モデルにはカスタマイズが必要となる。
+  - API で受け取るデータをデシリアライズする際に、`undefined` と `null` を区別できるようなカスタムモデルを作成すると、１）のように数値を文字列型として扱う必要がなく、OpenAPI の`format` 定義を使用することも可能である
+  - この場合、OpenAPI からの自動生成モデルにはカスタマイズが必要となる
   - カスタムモデルの例 (参照元: [技術ブログ](https://future-architect.github.io/articles/20211028b/#プログラムの観点))
 
 ### 各言語による表現の違い
@@ -1118,7 +1118,7 @@ remind_time:
   <details>
   <summary>Golang</summary>
   
-  - Golang の場合、以下のように、`nil` になり得る項目はポインタ型とした上で、`undefined` となり得る項目は `omitempty` タグを付与する。
+  - Golang の場合、以下のように、`nil` になり得る項目はポインタ型とした上で、`undefined` となり得る項目は `omitempty` タグを付与する
   
   ```go
     type Data struct {
@@ -1157,8 +1157,8 @@ remind_time:
     fmt.Printf("After decoded: %#v\n", v)
   ```
 
-  - シリアライズ後の json を見ると、値がセットされない場合には、項目にゼロ値（ポインタ型は`nil`, string 型は空文字、int 型は`0`）が入っている。
-  - 項目がゼロ値の場合に`omitempty` が付与されていると、 項目ごと除外されている（`undefined` となっている）。
+  - シリアライズ後の json を見ると、値がセットされない場合には、項目にゼロ値（ポインタ型は`nil`, string 型は空文字、int 型は`0`）が入っている
+  - 項目がゼロ値の場合に`omitempty` が付与されていると、 項目ごと除外されている（`undefined` となっている）
 
   ```json
     {
@@ -1173,7 +1173,7 @@ remind_time:
     }
   ```
 
-  - デシリアライズ後の構造体を見ると、json の項目が`undefined`であっても `null` であっても、`nil` として保持されている。
+  - デシリアライズ後の構造体を見ると、json の項目が`undefined`であっても `null` であっても、`nil` として保持されている
 
   ```go
     After decoded:
@@ -1198,8 +1198,8 @@ remind_time:
   <details>
   <summary>Java</summary>
 
-  - Java の場合、`int` や `double` などのプリミティブ型は `null` になれないため、`nullable` にするためには、それぞれのラッパークラスである参照型（`Integer`, `Double` など）を使用する必要がある。
-  - json にシリアライズ後に`null` の項目を保持するか否かは、例えば、[Jackson ライブラリ](https://github.com/FasterXML)を用いて以下のように区別される。
+  - Java の場合、`int` や `double` などのプリミティブ型は `null` になれないため、`nullable` にするためには、それぞれのラッパークラスである参照型（`Integer`, `Double` など）を使用する必要がある
+  - json にシリアライズ後に`null` の項目を保持するか否かは、例えば、[Jackson ライブラリ](https://github.com/FasterXML)を用いて以下のように区別される
 
   ```java
     public class Data {
@@ -1261,9 +1261,9 @@ remind_time:
     }
   ```
 
-  - シリアライズ後の json を見ると、参照型`String`の初期値は`null`、プリミティブ型`int`の初期値は`0`となっている。
-  - `@JsonInclude(JsonInclude.Include.ALWAYS)` アノテーションを付与した項目は、値が`null`の場合でも項目が保持される。
-  - `@JsonInclude(JsonInclude.Include.NON_NULL)` アノテーションを付与した項目は、値が`null`の場合には項目ごと除外されている（`undefined`となっている）。
+  - シリアライズ後の json を見ると、参照型`String`の初期値は`null`、プリミティブ型`int`の初期値は`0`となっている
+  - `@JsonInclude(JsonInclude.Include.ALWAYS)` アノテーションを付与した項目は、値が`null`の場合でも項目が保持される
+  - `@JsonInclude(JsonInclude.Include.NON_NULL)` アノテーションを付与した項目は、値が`null`の場合には項目ごと除外されている（`undefined`となっている）
 
   ```json
     {
@@ -1283,7 +1283,7 @@ remind_time:
     }
   ```
 
-  - デシリアライズ後のオブジェクトを見ると、json の項目が`undefined`であっても `null` であっても、`null` として保持されている。
+  - デシリアライズ後のオブジェクトを見ると、json の項目が`undefined`であっても `null` であっても、`null` として保持されている
 
   ```java
     Data[nullableString1=<null>,nullableString2=<null>,notNullableInt=0]
@@ -1298,7 +1298,7 @@ remind_time:
   <details>
   <summary>TypeScript</summary>
   
-  - TypeScript の場合、以下のように、`null`, `undefined` を区別して定義することが可能である。Optional 指定（項目名に`?`を付与）することで`undefined`をセットする必要がなくなる（項目が「非必須」となる）。
+  - TypeScript の場合、以下のように、`null`, `undefined` を区別して定義することが可能である。Optional 指定（項目名に`?`を付与）することで`undefined`をセットする必要がなくなる（項目が「非必須」となる）
   
   ```typescript
     interface Data {
@@ -1331,7 +1331,7 @@ remind_time:
     console.log(deserialized)
   ```
 
-  - シリアライズ後の json を見ると、`undefined`定義した項目は除外されている。
+  - シリアライズ後の json を見ると、`undefined`定義した項目は除外されている
 
   ```json
   {
@@ -1344,7 +1344,7 @@ remind_time:
   }
   ```
 
-  - デシリアライズ後のオブジェクトを見ると、json の項目が`null` の場合にのみ`null` として保持されており、項目のない場合と区別されている。
+  - デシリアライズ後のオブジェクトを見ると、json の項目が`null` の場合にのみ`null` として保持されており、項目のない場合と区別されている
 
   ```typescript
   nullable_string1: "value1";
@@ -1358,8 +1358,8 @@ remind_time:
 
 ### 参照リンク
 
-- `undefined` と `null` の使い方について詳細な解説は、[技術ブログ記事](https://future-architect.github.io/articles/20211028b/)を参照されたい。
-- OpenAPI 定義を DB 定義に対応させることにより、異なる API 間で整合のとれた処理設計をすることがのぞましい。DB 定義と OpenAPI 定義の対応例は、[DB 定義と OpenAPI 定義のマッピング](./reference/DB_OpenAPI_Mapping_Example.md)を参照されたい。
+- `undefined` と `null` の使い方について詳細な解説は、[技術ブログ記事](https://future-architect.github.io/articles/20211028b/)を参照されたい
+- OpenAPI 定義を DB 定義に対応させることにより、異なる API 間で整合のとれた処理設計をすることがのぞましい。DB 定義と OpenAPI 定義の対応例は、[DB 定義と OpenAPI 定義のマッピング](./reference/DB_OpenAPI_Mapping_Example.md)を参照されたい
 
 ## ファイル単位
 
@@ -1373,18 +1373,18 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
 
 開発方針や OpenAPI の使用用途に合わせて、都合の良いファイルの分割方法を採用する。例えば、以下のような方法がある。
 
-1. API ごとに設計担当者を分けて、それぞれに OpenAPI を編集する場合は、API の単位で分割する。
-2. テストツールとして [stoplightio/prism](https://github.com/stoplightio/prism)を使用する場合、テストケースごとにデータファイルを作成して、`examples` にファイルパスを指定する。
+1. API ごとに設計担当者を分けて、それぞれに OpenAPI を編集する場合は、API の単位で分割する
+2. テストツールとして [stoplightio/prism](https://github.com/stoplightio/prism)を使用する場合、テストケースごとにデータファイルを作成して、`examples` にファイルパスを指定する
 
 ### サンプル説明
 
 分割方法1, 2の両方に当てはまる場合のサンプルを用いて説明する。`openapi.yaml` とディレクトリ構成は下の通り。サンプルの全量は [サンプルzip Download](./reference/divided_files_sample.zip)からダウンロード可能。
 
-- 機能単位（path, method 単位）にディレクトリを作成して、それぞれの定義ファイルを格納する。ディレクトリ名は `{path}_{method}` とすると管理し易い。
+- 機能単位（path, method 単位）にディレクトリを作成して、それぞれの定義ファイルを格納する。ディレクトリ名は `{path}_{method}` とすると管理し易い
 - `components` の `schemas` には、
-  - API 間で同じモデルを使用する場合は共通化して記載する（例えば、`Pet`）。
-  - 各 API のリクエスト/リスポンスモデルの中で、モデルがネストする場合は、各モデルの単位で書き出す（例えば、`PetDetail`, `Pedigree`）。
-  - ※schemas のモデルの中身は別ファイルに定義が可能だが、大本の openapi.yaml にも命名のみ定義が必要。openapi.yaml の定義が無いと swaggerUI で確認した際に schemas 定義が見えなくなってしまう。
+  - API 間で同じモデルを使用する場合は共通化して記載する（例えば、`Pet`）
+  - 各 API のリクエスト/リスポンスモデルの中で、モデルがネストする場合は、各モデルの単位で書き出す（例えば、`PetDetail`, `Pedigree`）
+  - ※schemas のモデルの中身は別ファイルに定義が可能だが、大本の openapi.yaml にも命名のみ定義が必要。openapi.yaml の定義が無いと swaggerUI で確認した際に schemas 定義が見えなくなってしまう
 
   <details open>
     <summary>ファイル分割例： openapi.yaml</summary>
@@ -1454,9 +1454,9 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
 
   </details>
 
-- `openapi.yaml` の `paths` に記載した API ファイルは以下のように作成する。
-- 複数 API 間に共通のモデルについては `openapi.yaml` に指定したキー（`../openapi.yaml#/components/schemas/Pet`）を参照する。
-- `examples` には、各 API のテストケース ID をキーとして指定（`ResExample1`）し、`value` に該当するテストケースのデータファイルパスを指定（`./examples/res_example1.yaml`）する。ファイル名は、指定したキーをスネークケースに変換したものを使用するとよい。
+- `openapi.yaml` の `paths` に記載した API ファイルは以下のように作成する
+- 複数 API 間に共通のモデルについては `openapi.yaml` に指定したキー（`../openapi.yaml#/components/schemas/Pet`）を参照する
+- `examples` には、各 API のテストケース ID をキーとして指定（`ResExample1`）し、`value` に該当するテストケースのデータファイルパスを指定（`./examples/res_example1.yaml`）する。ファイル名は、指定したキーをスネークケースに変換したものを使用するとよい
 
   <details open>
     <summary>API別ファイルの記載例： pets-pet-id_get.yaml</summary>
@@ -1540,7 +1540,7 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
   </details>
 
 
-- OpenAPI の使用用途により、分割ファイルを1つのファイルにまとめる必要がある場合には、例えば[swagger-cli](https://apitools.dev/swagger-cli/)を使用して以下コマンドを実行する。
+- OpenAPI の使用用途により、分割ファイルを1つのファイルにまとめる必要がある場合には、例えば[swagger-cli](https://apitools.dev/swagger-cli/)を使用して以下コマンドを実行する
   
   ```bash
   swagger-cli bundle openapi.yaml --outfile openapi.gen.yaml --type yaml
