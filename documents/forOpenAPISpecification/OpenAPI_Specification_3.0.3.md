@@ -982,7 +982,7 @@ participant C as オブジェクトストレージ
 A->>B: ①アップロード先URL取得
   B->>C: Signed URL発行
   C-->>B: Signed URL
-  B-->>A: アップロードURL、受付ID（加えて、アップロードで指定したいHTTP Methodや必要なリクエストヘッダーがあれば応答の項目に追加する）
+  B-->>A: アップロードURL、受付ID（加えて、アップロードで指定したいHTTP Methodや必要なリクエストヘッダがあれば応答の項目に追加する）
 
 A->>C: ②ファイルアップロード
 
@@ -1021,11 +1021,11 @@ CORS（Cross-Origin Resource Sharing）のために、options メソッドの追
 
 ## OpenTelemetry Traceparent HTTP Header
 
-OpenOpenTelemetry で用いるられる[traceparent](https://www.w3.org/TR/trace-context/) のリクエストヘッダーは OpenAPI で **原則不要** とする。
+OpenOpenTelemetry で用いるられる[traceparent](https://www.w3.org/TR/trace-context/) のリクエストヘッダは OpenAPI で **原則不要** とする。
 
 理由は以下である。
 
-- OpenTelemetry が定めるヘッダー類は、API 横断的に設定されるべきものであり、ミドルウェアやフレームワーク側などでの一律の制御を推奨するため
+- OpenTelemetry が定めるヘッダ類は、API 横断的に設定されるべきものであり、ミドルウェアやフレームワーク側などでの一律の制御を推奨するため
 - 記載することにより、OpenOpenTelemetry に対応していることを明記し開発者に周知できるメリットより、各アプリ開発者が生成されたコードで悩んだり、誤解されることを回避したいため
 
 ## バリデーションについて
