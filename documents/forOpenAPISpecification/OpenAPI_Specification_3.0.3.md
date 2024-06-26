@@ -608,47 +608,41 @@ API の認証方式を記載する。
 
 ## components
 
-API 定義で利用する共通のデータモデルを定義する。
+API 定義で利用する共通のデータモデルを定義する。定義方針は下記の通りである。
 
-```yaml
-components:
-  schemas: ...
-  parameters: ...
-  securitySchemes: ...
-  requestBodies:
-  responses: ...
-  headers: ...
-  examples: ...
-  links: ...
-  callbacks: ...
-```
+| フィールド名          | 方針                                             |
+|-----------------|------------------------------------------------|
+| schemas         | API 共通的なリソース（例. ユーザや商品など）やエラー等のドメインオブジェクトを定義する |
+| responses       | API 共通的なレスポンス（例. 異常系（`4xx`, `5xx`）のレスポンス）を定義する |
+| parameters      | API 共通的なリクエストパラメータ（HTTP ヘッダやクエリパラメータ等）を定義する    |
+| examples        | 原則何も定義しない                                      |
+| requestBodies   | 原則何も定義せず、リクエストボディは API 個別に定義する                 |
+| headers         | API 共通的なレスポンスヘッダを定義する                          |
+| securitySchemes | 標準で用いる API 認証のスキームを定義する                        |
+| links           | 原則何も定義しない                                      |
+| callbacks       | 原則何も定義しない                                      |
 
+※ リクエストボディやレスポンスボディにおいてオブジェクトがネストする場合、 API 固有のオブジェクトであっても `schemas` に定義する。
+これは、定義するオブジェクトの `properties` 配下に更に `type: object` が定義される場合に、生成ツールによってはうまく型が生成されないためである。
+生成ツール上問題ないのであれば、API 固有のオブジェクトを `schemas` に定義する必要はない。
 
-### schemas
+### components　> schemas
 
-- API 定義共通で利用するスキーマを定義する
-- schemas に定義する項目はリソースやエラー等のドメインオブジェクトのみとし、リクエストパラメータやレスポンスパラメータは`parameter`や`requestBodies`、`responses`に記載する
-  - `paths.requestBodies`から直接参照されるリクエストパラメータオブジェクトは`requestBodies`に定義する
-  - `paths`から直接参照されるレスポンスパラメータは`responses`に定義する。また400や500などのエラーレスポンスも`responses`に定義する
-  - HTTP ヘッダや Cookie、もしくは検索上限やページングのような HTTP レイヤのパラメータに相当するものは`parameter`に定義する
-  - レスポンスヘッダーは`headers`にて定義する
-  - 上記いずれにも該当しない user や id などのリソース、エラーを示すオブジェクトは`schemas`に定義する
-  - 各 API のリクエストレスポンスオブジェクトは可能な限り、`parameter`, `requestBodies`, `responses`に定義する方針とし、API 固有のオブジェクト（所謂`ReqXXX`、`ResXXX`等）は`schemas`には定義しない
-  - ただし、オブジェクトがネストしてしまう場合は API 固有のオブジェクトであっても`schemas`に定義する。  
-  ※定義するオブジェクトの`properties`配下に更に`type: object`が定義されしまう（ネストしてしまう）と生成ツールによってはうまく型が生成されないため。
+API 共通的なリソースやエラー等のドメインオブジェクトを記載する。
 
-- 規約
-  - リソース名はアッパーキャメルケースで定義する
-  - リソース名は単数形で定義する
-  - `type` に複数の型定義の指定不可
-  - `type: null`は原則として利用せず、undefined を利用する。  
-  [差分更新APIの場合](#差分更新-API-の場合)にあるとおり、空更新を行う場合は空文字を利用する。
-  - `allOf`、`anyOf`、`oneOf` を利用したスキーマ定義は許容しない
+- 名称はアッパーキャメルケースで定義する
+- 名称は単数形で定義する
+- `type` に複数の型を定義しない
+- `type` に `null` は原則指定しない（`null` 値を用いる代わりに、キー自体を含めない）  
+  [差分更新APIの場合](#差分更新-API-の場合)にあるとおり、空更新を行う場合は空文字を利用する
+- `allOf`, `anyOf`, `oneOf` は利用しない
+
+良い例；
 
 ```yaml
 components:
   schemas:
-    # リソースを示すオブジェクト
+    # 共通で使用するリソースを表すオブジェクト
     Product:
       type: object
       properties:
@@ -656,85 +650,21 @@ components:
     User:
       type: object
       properties:
-    # エラーを示すオブジェクト
+    # 共通で使用するエラーを表すオブジェクト
     ProblemDetailError:
       type: object
       properties:
         ...
-    # リクエストパラメータやレスポンスパラメータはrequestBodies、もしくはresponsesに記載する。
-    # ReqPostProductsBodyParam:
-    #   type: object
-    #   properties:
-    #     ...
-  parameter:
-    # HTTPヘッダやCookie、もしくは検索上限やページングのようなHTTPレイヤのパラメータ定義
-    QueryLimit:
-      name: limit
-      in: query
-      required: false
-      schema:
-        type: integer
-      description: 検索数上限
-  requestBodies:
-    # 各API定義（paths.requestBody）から参照されるレスポンス定義
-    ReqPostProductsBody:
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              product:
-                $ref: '#/components/schemas/Product'
-              ...
-  responses:
-    # 各API定義（paths）から参照されるレスポンス定義
-    RespPostProducts:
-      description: 商品登録の応答
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              product:
-                $ref: '#/components/schemas/Product'
-              ...
-    # 共通で使用するエラーレスポンス定義
-    BadRequest:
-      description: 400 Bad Request
-      content:
-        application/json:
-          schema:
-            "$ref": "#/components/schemas/ProblemDetailError"
-
 ```
 
-#### requestBodies(components)
+### components > responses
 
-- `requestBody` 直下の `required` は必須で `true` を指定する
-- OpenAPI ドキュメントからソースコードを自動生成する際に生成されるのクラスや構造体の命名をコントロールしたい場合などにおいては、スキーマ定義は `component` オブジェクトとして任意の名称で定義し `$ref` で参照する。  
-スキーマ定義の名称は、全体で統一された命名ルールを定めること。（例. `operation_id` をアッパーキャメルケースへ変換の上、プレフィックスに `Req` を付与）
-- `schema` オブジェクトの `type` は `object` を指定する
+API 共通的なレスポンスを記載する。主に異常系（`4xx`, `5xx`）のレスポンスを定義する。
 
-```yaml
-components:
-  schemas:
-    Product:
-      type: object
-      properties:
-        ...
-  requestBodies:
-    ReqPostProductsBody:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Product'   
-```
+- 名称はアッパーキャメルケースで定義する
+- 異常系（`4xx`, `5xx`）のレスポンスの場合、名称にステータスコードの名称（例. BadRequest, Unauthorized）を用いる
 
-#### responses(components)
-
-レスポンスの先頭には複数のエンドポイントで横断的に用いるモデルを定義する。例えば、ステータスコード400~500系のエラーモデルがある。
+良い例；
 
 ```yaml
 components:
@@ -744,12 +674,14 @@ components:
       properties:
         ...
   responses:
+    # HTTP ステータスコード 400 のレスポンスオブジェクト
     BadRequest:
       description: 400 Bad Request
       content:
         application/json:
           schema:
             "$ref": "#/components/schemas/ProblemDetailError"
+    # HTTP ステータスコード 401 のレスポンスオブジェクト
     Unauthorized:
       description: 401 Unauthorized
       content:
@@ -759,7 +691,10 @@ components:
     ...
 ```
 
-正常系のレスポンスの例としてはファイルアップロード・ダウンロードなどが該当する。個別のアプリケーション要件でブレが少ないと複数のエンドポイントで用いられる場合に定義する。オブジェクトのスキーマは、schemas に切り出して定義し、コード生成ツールのために型情報を付与させる。
+正常系のレスポンスの例としてはファイルアップロード・ダウンロードのレスポンスなどが該当する。  
+個別のアプリケーション要件でブレが少なく、複数のエンドポイントで用いられる場合に定義する。オブジェクトのスキーマは、`schemas` に切り出して定義し、コード生成ツールのために型情報を付与させる。
+
+良い例；
 
 ```yaml
 components:
@@ -795,47 +730,21 @@ components:
             format: binary
 ```
 
-それらの後に、paths 登場順にエンドポイント固有のレスポンスを定義する。レスポンスオブジェクトのスキーマは、schemas に切り出して定義する。
+### components > parameters
 
-```yaml
-components:
-  schemas:
-    Product:
-      type: object
-      properties:
-        product_id:
-          type: string
-          ...
-  responses:
-    ...
-    RespPostProducts:
-      description: 商品登録の応答
-      content:
-        application/json:
-          schema:
-            "$ref": "#/components/schemas/Product"
-          examples:
-            default:
-              value:
-                ...
-            example-1:
-              $ref: './examples/post-product.example.1.yaml'
-```
+API 共通的なリクエストパラメータ（パスパラメータ、クエリパラメータ、ヘッダ, Cookie）を記載する。
 
-#### parameters
+#### パスパラメータ
 
-API 共通で利用するパラメータ（パスパラメータ、クエリパラメータ、ヘッダ, Cookie）を記載する。
+- API 全体で利用されるパスパラメータが必要なケースが想定されないため、原則定義しない  
+  特定リソースの操作（例えば更新と削除）を行う際のリソース ID はパスパラメータとして再利用できるが、コンフリクトを避けるため原則共通化は行わない
 
-##### パスパラメータ
+#### クエリパラメータ
 
-- API 全体で利用されるパスパラメータが必要なケースが想定されないため、原則定義しない
-特定リソースの操作（例えば更新と削除）を行う際のリソース ID はパスパラメータとして再利用できるが、コンフリクトを避けるため原則共通化は行わない。
-
-##### クエリパラメータ
-
-- API 全体で利用可能な共通のクエリパラメータを定義する（例: 検索数の limit, offset）
+- API 全体で利用可能な共通のクエリパラメータ（例: 検索数の limit, offset）を定義する
 - 命名はクエリパラメータ名に `Query` というプレフィックスを付与する形式を推奨する
 
+良い例：
 
 ```yaml
 paths:
@@ -844,20 +753,23 @@ paths:
       parameters:
         - $ref: '#/components/parameters/QueryLimit'
 
-parameters:
-  QueryLimit:
-    name: limit
-    in: query
-    required: false
-    schema:
-      type: integer
-    description: 検索数上限
+components:
+  parameters:
+    QueryLimit:
+      name: limit
+      in: query
+      required: false
+      schema:
+        type: integer
+      description: 検索数上限
 ```
 
-##### ヘッダパラメータ
+#### ヘッダ
 
 - API 全体で利用可能な共通のリクエストヘッダを定義する
 - 命名はヘッダ名に `Header` というプレフィックスを付与する形式を推奨する
+
+良い例：
 
 ```yaml
 paths:
@@ -865,7 +777,7 @@ paths:
     /products:
       parameters:
         - $ref: '#/components/parameters/HeaderContentType'
-...
+
 components:
   parameters:
     HeaderContentType:
@@ -876,11 +788,13 @@ components:
       required: true
 ```
 
-##### Cookie パラメータ
+#### Cookie
 
-- API 全体で利用可能な共通の Cookie パラメータを定義する。（例: CSRF 用のトークン）
-- 命名は Cookie パラメータ名に `Cookie` というプレフィックスを付与する形式を推奨する
-- Cookie 認証を定義する場合は、`APIKey` を利用すること
+- API 全体で利用可能な共通の Cookie（例: CSRF 用のトークン）を定義する
+- 命名は Cookie 名に `Cookie` というプレフィックスを付与する形式を推奨する
+- Cookie 認証を定義する場合は、`APIKey` を利用する
+
+良い例：
 
 ```yaml
 paths:
@@ -888,7 +802,7 @@ paths:
     /products:
       parameters:
         - $ref: '#/components/parameters/CookieCSRFToken'
-...
+
 components:
   parameters:
     CookieCSRFToken:
@@ -900,11 +814,17 @@ components:
       description: CSRFトークン
 ```
 
-### headers
+### components > requestBodies
 
-API 共通で利用するレスポンスヘッダを記載する。
+原則何も定義せず、リクエストボディは API 個別に記載する。
+
+### components > headers
+
+API 共通的なレスポンスヘッダを記載する。
 
 - 命名はヘッダ名からハイフンを除去した形式を推奨する
+
+良い例：
 
 ```yaml
 paths:
@@ -913,21 +833,22 @@ paths:
       responses:
         '200':
           headers:
-            ContentType:
-              $ref: '#/components/headers/ContentType'
-...
+            XCacheInfo:
+              $ref: '#/components/headers/XCacheInfo'
 
 components:
   headers:
-    ContentType:
-      description: the original media type of the resource
+    XCacheInfo:
+      description: not cacheable; meta data too large
       schema:
         type: string
 ```
 
-### securitySchemes
+### components > securitySchemes
 
 標準で用いる API 認証の定義を行う。
+
+良い例；
 
 ```yaml
 components:
@@ -940,7 +861,7 @@ components:
       description: 'Bearer トークン認証'
 ```
 
-### links
+### components > links
 
 [links](https://swagger.io/docs/specification/links/) は OpenAPI 3.0 の新機能の1つで、ある API レスポンスの値を用いて、別の API を呼び出す方法を明示できるセクションである。
 
@@ -953,7 +874,7 @@ components:
 - [OAS 3.0 Support Backlog](https://github.com/swagger-api/swagger-ui/issues/3641) にあるように、2023/12/15時点では Swagger-UI が対応していない
     - links を書いたと言って、API ドキュメントに影響しない
 
-### callbacks
+### components > callbacks
 
 [callbacks](https://swagger.io/docs/specification/callbacks/) は OpenAPI 3.0 の新機能の1つで、API サーバ側が指定されたコールバック URL を呼び出すという仕組みである。
 
@@ -971,7 +892,7 @@ components:
 ## security
 
 全 API に共通で適用されるセキュリティ設定を定義する。  
-業務システムの Web API において認証が全く存在しないケースは考えにくいため、本規約ではルートレベルで認証を設定し、個々の API への適応漏れをなくす。
+業務システムの Web API において認証が全く存在しないケースは考えにくいため、本規約ではルートレベルで認証を設定し、個々の API への適応漏れを無くす。
 
 良い例：
 
@@ -982,11 +903,12 @@ security:
 
 ## tags
 
-API を論理的にグループ化するためのタグを定義する。ドキュメントやツールにとって重要であるため、 **必須** で指定する。
+API を論理的にグループ化するためのタグを定義する。
 
+- ドキュメントやツールにとって重要であるため **必須** で指定する
 - `name`, `description` を必須項目とする
--  **単数形** で、小文字かつ半角スペース区切りで記載する。  
-  半角スペース区切りで記載する理由は　HTML ドキュメントで参照する場合の可読性を上げるためである。
+-  **単数形** で、小文字かつ半角スペース区切りで記載する  
+  半角スペース区切りで記載する理由は　HTML ドキュメントで参照する場合の可読性を上げるためである
 - コード生成で利用される（Go においてはパッケージ、 TypeScript においてはクラスに相当する）ため、シンプルな命名にする
 
 良い例：
@@ -1011,9 +933,8 @@ tags:
 
 ## externalDocs
 
-参照情報としての URL の記載が可能。  
-ただし、`description` にて参考情報となる URL を記載する方が、複数リンクを指定可能であるなど自由度が高く使いやすい。そのため `externalDocs` は利用せず `description` の利用を推奨する。
-
+参照情報としての URL を記載できる。  
+ただし、`description` にて参考情報となる URL を記載する方が、複数リンクを指定可能であるなど自由度が高く使いやすいため `externalDocs` は利用せず `description` の利用を推奨する。
 
 良い例：
 
@@ -1025,14 +946,6 @@ info:
     - [The source API definition for the Pet Store](https://github.com/swagger-api/swagger-petstore/blob/master/src/main/resources/openapi.yaml)
 
 # 特別な場合を除き非推奨
-externalDocs:
-  description: Find out more about Swagger
-  url: http://swagger.io
-```
-
-悪い例：
-
-```yaml
 externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
