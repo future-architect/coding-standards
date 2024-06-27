@@ -27,6 +27,7 @@ const links = {
   "/documents/forOpenAPISpecification/": [
     "/documents/forOpenAPISpecification/",
     "/documents/forOpenAPISpecification/OpenAPI_Specification_2.0.html",
+    "/documents/forOpenAPISpecification/OpenAPI_Specification_3.0.3.html",
   ],
 };
 console.log(links);
@@ -125,6 +126,10 @@ module.exports = {
               {
                 text: "For OAS 2.0（Swagger 2.0）",
                 link: "/documents/forOpenAPISpecification/OpenAPI_Specification_2.0.html",
+              },
+              {
+                text: "For OAS 3.0.3",
+                link: "/documents/forOpenAPISpecification/OpenAPI_Specification_3.0.3.html",
               },
             ],
           },
