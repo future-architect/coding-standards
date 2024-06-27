@@ -61,7 +61,7 @@ paths:
           $ref: '#/components/responses/InternalServer'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
-  /signin:
+  /signup:
     post:
       tags:
         - account
@@ -524,7 +524,7 @@ components:
           type: string
           format: password
           description: パスワード
-    SigninRequest:
+    SignupRequest:
       type: object
       properties:
         email:
@@ -619,7 +619,7 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/SigninRequest'
+            $ref: '#/components/schemas/SignupRequest'
     ReqPostBookingBody:
       required: true
       content:
