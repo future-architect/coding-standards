@@ -421,7 +421,7 @@ paths:
       responses:
         '200':
           description: 口コミ削除成功
-  /trainer-register:
+  /trainer:
     post:
       tags:
         - provider
@@ -431,13 +431,12 @@ paths:
       responses:
         '200':
           description: トレーナー登録成功
-  /trainer-attributes:
     put:
       tags:
         - provider
       summary: API-021 トレーナー属性更新
       requestBody:
-        $ref: '#/components/requestBodies/ReqPostTrainerAttributesBody'
+        $ref: '#/components/requestBodies/ReqPostTrainerBody'
       responses:
         '200':
           description: トレーナー属性更新成功
@@ -591,13 +590,6 @@ components:
           type: string
         age:
           type: integer
-    TrainerAttributes:
-      type: object
-      properties:
-        speciality:
-          type: string
-        experience:
-          type: integer
     TrainingMenu:
       type: object
       properties:
@@ -656,12 +648,6 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/Trainer'
-    ReqPostTrainerAttributesBody:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/TrainerAttributes'
     ReqPostTrainingMenuBody:
       required: true
       content:
