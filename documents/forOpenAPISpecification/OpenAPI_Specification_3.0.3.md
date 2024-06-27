@@ -953,7 +953,6 @@ externalDocs:
 # 設計上のポイント
 
 OpenAPI ドキュメントを作成する上での設計上ポイントをいくつか記載する。  
-一部の内容については、
 
 ## ファイルアップロード
 
@@ -1024,7 +1023,7 @@ CORS（Cross-Origin Resource Sharing）のために、options メソッドの追
 理由は以下である。
 
 - サーバ側
-  - options メソッド対応は、API 使用ではなく実装レベルの機能横断的な処理（Java における Servlet Filter や Spring の Interceptor、Go における Middleware など）で行うことが大半であり、コード生成が不要
+  - options メソッド対応は、API 仕様ではなく実装レベルの機能横断的な処理（Java における Servlet Filter や Spring の Interceptor、Go における Middleware など）で行うことが大半であり、コード生成が不要
 - クライアント側
   - options メソッドを用いるのはクライアントがブラウザであり、クライアントのアプリケーションコードが明示的にアクセスしないため、コード生成が不要
 - 使用面として
