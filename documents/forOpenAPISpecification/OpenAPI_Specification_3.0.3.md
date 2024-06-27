@@ -222,7 +222,7 @@ API の利用可能なエンドポイントと操作方法を記載する。
 - HTTP メソッドの配下に定義されるオペレーションオブジェクトは、下記の項目を必須項目とする
 
 | フィールド名       | 必須  | 記載内容                   |
-|--------------|-:-:-|------------------------|
+|--------------| :--: |------------------------|
 | tags         | ○   | API の論理的なグループ          |
 | summary      | ○   | API の操作概要              |
 | description  | ○   | API の振る舞いの詳細や注意点       |
@@ -246,7 +246,7 @@ API の論理的なグループを指定する。
 
   ```yaml
   paths:
-    /users/me:
+    /users:
       get:
         tags:
           - users
@@ -259,7 +259,7 @@ API の論理的なグループを指定する。
 
   ```yaml
   paths:
-    /users/me:
+    /users:
       get:
         tags:
           # タグオブジェクトとして定義されていないタグが指定されている
@@ -274,7 +274,7 @@ API の論理的なグループを指定する。
 
   ```yaml
   paths:
-    /users/me:
+    /users:
       get:
         tags:
           - users
@@ -285,7 +285,7 @@ API の論理的なグループを指定する。
 
   ```yaml
   paths:
-    /users/me:
+    /users:
       get:
         # 複数のタグが指定されている
         tags:
@@ -304,9 +304,9 @@ API の操作概要を記載する。
 
   ```yaml
   paths:
-    /users/me:
+    /users:
       get:
-        summary: API-001 ユーザアカウント取得 
+        summary: API-001 ユーザ一覧取得 
   ```
 
 ### paths > {path} > {method} > description
@@ -318,7 +318,7 @@ API の振る舞いの詳細や注意点を記載する。
 
   ```yaml
   paths:
-    /users/me:
+    /users:
       get:
         description: [API詳細設計書（API-001）](https://example.com/API-001.md)
   ```
@@ -333,9 +333,9 @@ API を識別するための一意な文字列を記載する。
 
   ```yaml
   paths:
-    /users/me:
+    /users:
       get:
-        operationId: GetUsersMe
+        operationId: GetUsers
         ...
     /products/{product_id}:
       put:
@@ -347,9 +347,9 @@ API を識別するための一意な文字列を記載する。
 
   ```yaml
   paths:
-    /users/me:
+    /users:
       get:
-        operationId: get_users_me
+        operationId: get_users
         ...
   ```
 
@@ -594,7 +594,7 @@ API の認証方式を記載する。
 - 通常はルートレベルの `security` で API 共通的な認証方式を設定し、個々の API で個別に設定は行わない
 - ヘルスチェックのような認証を通す必要がない API のみ、上書きで定義する
 
-  良い例；
+  良い例：
 
   ```yaml
   paths:
@@ -636,7 +636,7 @@ API 共通的なリソースやエラー等のドメインオブジェクトを�
   [差分更新APIの場合](#差分更新-API-の場合)にあるとおり、空更新を行う場合は空文字を利用する
 - `allOf`, `anyOf`, `oneOf` は利用しない
 
-良い例；
+良い例：
 
 ```yaml
 components:
@@ -663,7 +663,7 @@ API 共通的なレスポンスを記載する。主に異常系（`4xx`, `5xx`�
 - 名称はアッパーキャメルケースで定義する
 - 異常系（`4xx`, `5xx`）のレスポンスの場合、名称にステータスコードの名称（例. BadRequest, Unauthorized）を用いる
 
-良い例；
+良い例：
 
 ```yaml
 components:
@@ -693,7 +693,7 @@ components:
 正常系のレスポンスの例としてはファイルアップロード・ダウンロードのレスポンスなどが該当する。  
 個別のアプリケーション要件でブレが少なく、複数のエンドポイントで用いられる場合に定義する。オブジェクトのスキーマは、`schemas` に切り出して定義し、コード生成ツールのために型情報を付与させる。
 
-良い例；
+良い例：
 
 ```yaml
 components:
@@ -847,7 +847,7 @@ components:
 
 標準で用いる API 認証の定義を行う。
 
-良い例；
+良い例：
 
 ```yaml
 components:
