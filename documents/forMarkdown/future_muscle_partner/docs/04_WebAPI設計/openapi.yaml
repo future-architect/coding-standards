@@ -29,7 +29,11 @@ paths:
       operationId: LoginUser
       security: []
       requestBody:
-        $ref: '#/components/requestBodies/ReqPostLoginBody'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
       responses:
         '200':
           description: ログインに成功しました。
@@ -69,7 +73,11 @@ paths:
       operationId: RegisterUser
       security: []
       requestBody:
-        $ref: '#/components/requestBodies/ReqPostSigninBody'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SignupRequest'
       responses:
         '200':
           description: 会員登録に成功しました。
@@ -399,7 +407,11 @@ paths:
           schema:
             type: string
       requestBody:
-        $ref: '#/components/requestBodies/ReqPostReviewBody'
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Review'
       responses:
         '200':
           description: 口コミ修正成功
@@ -602,18 +614,6 @@ components:
         description:
           type: string
   requestBodies:
-    ReqPostLoginBody:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/LoginRequest'
-    ReqPostSigninBody:
-      required: true
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/SignupRequest'
     ReqPostBookingBody:
       required: true
       content:
