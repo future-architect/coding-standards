@@ -399,11 +399,7 @@ paths:
           schema:
             type: string
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Review'
+        $ref: '#/components/requestBodies/ReqPostReviewBody'
       responses:
         '200':
           description: 口コミ修正成功
@@ -463,11 +459,7 @@ paths:
           schema:
             type: integer
       requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TrainingMenu'
+        $ref: '#/components/requestBodies/ReqPostTrainingMenuBody'
       responses:
         '200':
           description: トレーニングメニュー更新成功
@@ -540,13 +532,20 @@ components:
     BookingRequest:
       type: object
       properties:
-        trainingId:
+        menu_id:
           type: string
-          description: トレーニングのID
-        date:
+          description: トレーニングメニューのID
+        trainee_id:
+          type: string
+          description: トレーニーID
+        training_start_at:
           type: string
           format: date
-          description: トレーニングの日付
+          description: トレーニング開始日時
+        training_end_at:
+          type: string
+          format: date
+          description: トレーニング終了日時
     PaymentRequest:
       type: object
       properties:
@@ -560,18 +559,21 @@ components:
     BookingConfirmationRequest:
       type: object
       properties:
-        bookingId:
+        booking_id:
           type: string
           description: 予約のID
+        booking_status_kbn:
+          type: string
+          description: 予約ステータス区分
     TrainingStatusUpdateRequest:
       type: object
       properties:
-        trainingId:
+        booking_id:
           type: string
           description: トレーニングのID
-        status:
+        training_status_kbn:
           type: string
-          description: ステータス
+          description: トレーニングステータス区分
     Review:
       type: object
       properties:
