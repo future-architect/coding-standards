@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Future Muscle Partner API
-  description: パーソナルトレーナーのマッチング
+  description: パーソナルトレーナーのマッチングサービスAPI
   version: 1.0.0
 tags:
   - name: account
@@ -26,7 +26,7 @@ paths:
       tags:
         - account
       summary: API-001 ログイン
-      operationId: loginUser
+      operationId: login
       security: []
       requestBody:
         $ref: '#/components/requestBodies/ReqPostLoginBody'
@@ -40,11 +40,11 @@ paths:
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
   /logout:
-    post:
+    post: 
       tags:
         - account
       summary: API-002 ログアウト
-      operationId: logoutUser
+      operationId: logout
       security: []
       responses:
         '200':
@@ -61,15 +61,15 @@ paths:
           $ref: '#/components/responses/InternalServer'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
-  /signin:
+  /signup:
     post:
       tags:
         - account
       summary: API-003 会員登録
-      operationId: registerUser
+      operationId: signup
       security: []
       requestBody:
-        $ref: '#/components/requestBodies/ReqPostSigninBody'
+        $ref: '#/components/requestBodies/ReqPostSignupBody'
       responses:
         '200':
           description: 会員登録に成功しました。
@@ -79,12 +79,12 @@ paths:
           $ref: '#/components/responses/InternalServer'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
-  /signout:
-    post:
+  /account:
+    delete:
       tags:
         - account
       summary: API-004 会員退会
-      operationId: signoutUser
+      operationId: deleteAccount
       responses:
         '200':
           description: 会員退会に成功しました。
@@ -111,11 +111,25 @@ paths:
           $ref: '#/components/responses/InternalServer'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
+    put:
+      tags:
+        - profile
+      summary: API-006 プロフィール更新
+      operationId: putUserProfile
+      responses:
+        '200':
+          description: プロフィールの更新に成功しました。
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServer'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
   /trainers:
     get:
       tags:
         - trainer
-      summary: API-006 パーソナルトレーナー検索
+      summary: API-007 パーソナルトレーナー検索
       operationId: searchTrainers
       security: []
       responses:
@@ -131,7 +145,7 @@ paths:
     get:
       tags:
         - trainer
-      summary: API-007 トレーニングメニュー取得
+      summary: API-008 トレーニングメニュー取得
       operationId: getTrainingMenu
       security: []
       parameters:
@@ -157,7 +171,7 @@ paths:
     get:
       tags:
         - trainer
-      summary: API-008 トレーナープロフィール取得
+      summary: API-009 トレーナープロフィール取得
       operationId: getTrainerProfile
       security: []
       parameters:
@@ -182,7 +196,7 @@ paths:
     get:
       tags:
         - trainer
-      summary: API-009 トレーナー口コミ取得
+      summary: API-010 トレーナー口コミ取得
       operationId: getTrainerReviews
       security: []
       parameters:
@@ -207,7 +221,7 @@ paths:
     get:
       tags:
         - trainer
-      summary: API-010 トレーナースケジュール取得
+      summary: API-011 トレーナースケジュール取得
       operationId: getTrainerSchedule
       security: []
       parameters:
@@ -232,7 +246,7 @@ paths:
     get:
       tags:
         - booking
-      summary: API-011 予約済みトレーニング取得
+      summary: API-012 予約済みトレーニング取得
       operationId: getBookings
       responses:
         '200':
@@ -246,7 +260,7 @@ paths:
     post:
       tags:
         - booking
-      summary: API-012 トレーニング予約（仮登録）
+      summary: API-013 トレーニング予約（仮登録）
       operationId: bookTraining
       requestBody:
         $ref: '#/components/requestBodies/ReqPostBookingBody'
@@ -269,7 +283,7 @@ paths:
     delete:
       tags:
         - booking
-      summary: API-013 トレーニング予約削除
+      summary: API-014 トレーニング予約削除
       operationId: deleteBooking
       parameters:
         - name: booking_id
@@ -295,7 +309,7 @@ paths:
     post:
       tags:
         - booking
-      summary: API-014 トレーニング予約（本登録）
+      summary: API-015 トレーニング予約（本登録）
       operationId: confirmBooking
       parameters:
         - name: booking_id
@@ -325,7 +339,7 @@ paths:
     put:
       tags:
         - booking
-      summary: API-015 トレーニング受講ステータス変更
+      summary: API-016 トレーニング受講ステータス変更
       operationId: updateTrainingStatus
       parameters:
         - name: booking_id
@@ -357,7 +371,7 @@ paths:
     post:
       tags:
         - payment
-      summary: API-016 決済
+      summary: API-017 決済
       operationId: makePayment
       requestBody:
         $ref: '#/components/requestBodies/ReqPostPaymentBody'
@@ -380,7 +394,8 @@ paths:
     post:
       tags:
         - review
-      summary: API-017 口コミ登録
+      summary: API-018 口コミ登録
+      operationId: postReview
       requestBody:
         $ref: '#/components/requestBodies/ReqPostReviewBody'
       responses:
@@ -390,7 +405,8 @@ paths:
     put:
       tags:
         - review
-      summary: API-018 口コミ修正
+      summary: API-019 口コミ修正
+      operationId: putReview
       parameters:
         - name: review_id
           in: path
@@ -410,7 +426,8 @@ paths:
     delete:
       tags:
         - review
-      summary: API-019 口コミ削除
+      summary: API-020 口コミ削除
+      operationId: deleteReview
       parameters:
         - name: review_id
           in: path
@@ -421,21 +438,22 @@ paths:
       responses:
         '200':
           description: 口コミ削除成功
-  /trainer-register:
+  /trainer:
     post:
       tags:
         - provider
-      summary: API-020 トレーナー登録
+      summary: API-021 トレーナー登録
+      operationId: postTrainer
       requestBody:
         $ref: '#/components/requestBodies/ReqPostTrainerBody'
       responses:
         '200':
           description: トレーナー登録成功
-  /trainer-attributes:
     put:
       tags:
         - provider
-      summary: API-021 トレーナー属性更新
+      summary: API-022 トレーナー属性更新
+      operationId: putTrainer
       requestBody:
         $ref: '#/components/requestBodies/ReqPostTrainerAttributesBody'
       responses:
@@ -445,17 +463,19 @@ paths:
     post:
       tags:
         - provider
-      summary: API-022 トレーニングメニュー登録
+      summary: API-023 トレーニングメニュー登録
+      operationId: postTrainingMenu
       requestBody:
         $ref: '#/components/requestBodies/ReqPostTrainingMenuBody'
       responses:
         '200':
           description: トレーニングメニュー登録成功
-  /training-menu/{menu_id}:
+  /training-menus/{menu_id}:
     put:
       tags:
         - provider
-      summary: API-023 トレーニングメニュー更新
+      summary: API-024 トレーニングメニュー更新
+      operationId: putTrainingMenu
       parameters:
         - name: menu_id
           in: path
@@ -475,7 +495,8 @@ paths:
     delete:
       tags:
         - provider
-      summary: API-024 トレーニングメニュー削除
+      summary: API-025 トレーニングメニュー削除
+      operationId: deleteTrainingMenu
       parameters:
         - name: menu_id
           in: path
@@ -614,7 +635,7 @@ components:
         application/json:
           schema:
             $ref: '#/components/schemas/LoginRequest'
-    ReqPostSigninBody:
+    ReqPostSignupBody:
       required: true
       content:
         application/json:
