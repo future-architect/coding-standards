@@ -1,7 +1,7 @@
 openapi: 3.0.3
 info:
   title: Future Muscle Partner API
-  description: パーソナルトレーナーのマッチング
+  description: パーソナルトレーナーのマッチングサービスAPI
   version: 1.0.0
 tags:
   - name: account
@@ -26,7 +26,7 @@ paths:
       tags:
         - account
       summary: API-001 ログイン
-      operationId: LoginUser
+      operationId: login
       security: []
       requestBody:
         required: true
@@ -48,7 +48,7 @@ paths:
       tags:
         - account
       summary: API-002 ログアウト
-      operationId: LogoutUser
+      operationId: Logout
       security: []
       responses:
         '200':
@@ -70,7 +70,7 @@ paths:
       tags:
         - account
       summary: API-003 会員登録
-      operationId: RegisterUser
+      operationId: Signup
       security: []
       requestBody:
         required: true
@@ -87,12 +87,12 @@ paths:
           $ref: '#/components/responses/InternalServer'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
-  /signout:
-    post:
+  /account:
+    delete:
       tags:
         - account
       summary: API-004 会員退会
-      operationId: SignoutUser
+      operationId: DeleteAccount
       responses:
         '200':
           description: 会員退会に成功しました。
@@ -119,11 +119,25 @@ paths:
           $ref: '#/components/responses/InternalServer'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
+    put:
+      tags:
+        - profile
+      summary: API-006 プロフィール更新
+      operationId: putUserProfile
+      responses:
+        '200':
+          description: プロフィールの更新に成功しました。
+        '401':
+          $ref: '#/components/responses/Unauthorized'
+        '500':
+          $ref: '#/components/responses/InternalServer'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
   /trainers:
     get:
       tags:
         - trainer
-      summary: API-006 パーソナルトレーナー検索
+      summary: API-007 パーソナルトレーナー検索
       operationId: SearchTrainers
       security: []
       responses:
@@ -139,7 +153,7 @@ paths:
     get:
       tags:
         - trainer
-      summary: API-007 トレーニングメニュー取得
+      summary: API-008 トレーニングメニュー取得
       operationId: GetTrainingMenu
       security: []
       parameters:
@@ -165,7 +179,7 @@ paths:
     get:
       tags:
         - trainer
-      summary: API-008 トレーナープロフィール取得
+      summary: API-009 トレーナープロフィール取得
       operationId: GetTrainerProfile
       security: []
       parameters:
@@ -190,7 +204,7 @@ paths:
     get:
       tags:
         - trainer
-      summary: API-009 トレーナー口コミ取得
+      summary: API-010 トレーナー口コミ取得
       operationId: GetTrainerReviews
       security: []
       parameters:
@@ -215,7 +229,7 @@ paths:
     get:
       tags:
         - trainer
-      summary: API-010 トレーナースケジュール取得
+      summary: API-011 トレーナースケジュール取得
       operationId: GetTrainerSchedule
       security: []
       parameters:
@@ -240,7 +254,7 @@ paths:
     get:
       tags:
         - booking
-      summary: API-011 予約済みトレーニング取得
+      summary: API-012 予約済みトレーニング取得
       operationId: GetBookings
       responses:
         '200':
@@ -254,7 +268,7 @@ paths:
     post:
       tags:
         - booking
-      summary: API-012 トレーニング予約（仮登録）
+      summary: API-013 トレーニング予約（仮登録）
       operationId: BookTraining
       requestBody:
         required: true
@@ -281,7 +295,7 @@ paths:
     delete:
       tags:
         - booking
-      summary: API-013 トレーニング予約削除
+      summary: API-014 トレーニング予約削除
       operationId: DeleteBooking
       parameters:
         - name: booking_id
@@ -307,7 +321,7 @@ paths:
     post:
       tags:
         - booking
-      summary: API-014 トレーニング予約（本登録）
+      summary: API-015 トレーニング予約（本登録）
       operationId: ConfirmBooking
       parameters:
         - name: booking_id
@@ -341,7 +355,7 @@ paths:
     put:
       tags:
         - booking
-      summary: API-015 トレーニング受講ステータス変更
+      summary: API-016 トレーニング受講ステータス変更
       operationId: UpdateTrainingStatus
       parameters:
         - name: booking_id
@@ -377,7 +391,7 @@ paths:
     post:
       tags:
         - payment
-      summary: API-016 決済
+      summary: API-017 決済
       operationId: MakePayment
       requestBody:
         required: true
@@ -404,7 +418,8 @@ paths:
     post:
       tags:
         - review
-      summary: API-017 口コミ登録
+      summary: API-018 口コミ登録
+      operationId: postReview
       requestBody:
         required: true
         content:
@@ -418,7 +433,8 @@ paths:
     put:
       tags:
         - review
-      summary: API-018 口コミ修正
+      summary: API-019 口コミ修正
+      operationId: putReview
       parameters:
         - name: review_id
           in: path
@@ -438,7 +454,8 @@ paths:
     delete:
       tags:
         - review
-      summary: API-019 口コミ削除
+      summary: API-020 口コミ削除
+      operationId: deleteReview
       parameters:
         - name: review_id
           in: path
@@ -453,7 +470,8 @@ paths:
     post:
       tags:
         - provider
-      summary: API-020 トレーナー登録
+      summary: API-021 トレーナー登録
+      operationId: postTrainer
       requestBody:
         required: true
         content:
@@ -466,7 +484,8 @@ paths:
     put:
       tags:
         - provider
-      summary: API-021 トレーナー属性更新
+      summary: API-022 トレーナー属性更新
+      operationId: putTrainer
       requestBody:
         required: true
         content:
@@ -480,7 +499,8 @@ paths:
     post:
       tags:
         - provider
-      summary: API-022 トレーニングメニュー登録
+      summary: API-023 トレーニングメニュー登録
+      operationId: postTrainingMenu
       requestBody:
         required: true
         content:
@@ -490,11 +510,12 @@ paths:
       responses:
         '200':
           description: トレーニングメニュー登録成功
-  /training-menu/{menu_id}:
+  /training-menus/{menu_id}:
     put:
       tags:
         - provider
-      summary: API-023 トレーニングメニュー更新
+      summary: API-024 トレーニングメニュー更新
+      operationId: putTrainingMenu
       parameters:
         - name: menu_id
           in: path
@@ -514,7 +535,8 @@ paths:
     delete:
       tags:
         - provider
-      summary: API-024 トレーニングメニュー削除
+      summary: API-025 トレーニングメニュー削除
+      operationId: deleteTrainingMenu
       parameters:
         - name: menu_id
           in: path
