@@ -327,7 +327,8 @@ API の振る舞いの詳細や注意点を記載する。
 
 API を識別するための一意な文字列を記載する。
 
-- HTTP メソッドと URL パスの組み合わせをアッパーキャメルケースで表現する
+- HTTP メソッドと URL パスの組み合わせをキャメルケースで表現する
+  - キャメルケースの書式は、[OpenAPI 3.0ガイドのPaths and Operations](https://swagger.io/docs/specification/paths-and-operations/#:~:text=role%3Dvalue-,operationId,-operationId%20is%20an)でも利用されているため、一般的である
 
   良い例：
 
@@ -335,11 +336,11 @@ API を識別するための一意な文字列を記載する。
   paths:
     /users:
       get:
-        operationId: GetUsers
+        operationId: getUsers
         ...
     /products/{product_id}:
       put:
-        operationId: PutProductsProductId
+        operationId: putProductsProductId
         ...
   ```
 
