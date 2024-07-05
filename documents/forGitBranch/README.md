@@ -8,61 +8,61 @@ pageClass: lang-home
 footer: ©2015 - 2024 Future Enterprise Coding Standards - Future Corporation
 ---
 
-# Gitブランチ管理標準
+<page-title/>
 
-## はじめに
+本コーディング規約は、世の中のシステム開発プロジェクトのために無償で提供致します。
+ただし、掲載内容および利用に際して発生した問題、それに伴う損害については、フューチャー株式会社は一切の責務を負わないものとします。
+また、掲載している情報は予告なく変更することがございますので、あらかじめご了承下さい。
 
-Gitブランチ管理の標準規則です。2,3名のような小規模チーム～50名程度の中規模での利用を想定しています。
+# はじめに
 
-開発プロダクトには、ライブラリ（他のアプリケーションやライブラリからimportして利用されるもの）か、アプリケーション（CLIツール、サーバアプリケーションなど）と言った区別があるが、本規約はアプリケーション開発を中心として規約をまとめる。
+本ドキュメントはGitブランチ管理の標準的な運用ルールをまとめている。以下の想定で作成されているため留意いただきたい。
 
-Gitリポジトリ構成はモノリポ、マルチレポ複数のケースが存在する前提で記載する。
+- GitHub または GitLab の利用
+- 開発プロダクトには、ライブラリ（他のアプリケーションやライブラリからimportして利用されるもの）か、アプリケーション（CLIツール、サーバアプリケーションなど）という区別があるが、アプリケーション開発を想定
+- トランクベース開発（フィーチャーフラグ）を **採用しない**
 
-GitHub、GitLabでの運用を中心に記載する。
+## 推奨設定
 
-## 前提
-
-- feature branchesが前提
-- trunkやfeature flagsは対象外
+GitやGitHubの推奨設定をまとめる。本ドキュメントにあるGitブランチ運用はこの設定が行われている前提で説明する箇所があるため、最初に記載している。
 
 ## git config推奨設定
 
-`git config` の推奨設定を紹介する。
+`git config` の推奨設定を紹介する。特にGitワークフローの設定が重要である。
 
 ```sh
 # 基礎
 git config --global user.name "Your Name"
 git config --global user.email "your_email@example.com"
 
-# プロキシ
+# プロキシ設定（存在する場合）
 git config --global http.proxy http://id:password@proxy.example.co.jp:8000/
 git config --global https.proxy http://id:password@proxy.example.co.jp:8000/
 
-# プロキシが独自の証明書を持っている場合は、git config http.sslVerify false するのではなく、証明書を設定させる
+# プロキシが独自の証明書を持っている場合は、git config http.sslVerify false ではなく、証明書を設定する
 git config --global http.sslCAInfo ~/custom_ca_sha2.cer
 
-# git workflow
+# Gitワークフロー
 git config --global pull.rebase true
 git config --global rerere.enabled true
 git config --global fetch.prune true
 
-# エイリアス
+# エイリアス（メンバーそれぞれで別のエイリアスを登録されると、チャットなどのトラブルシュート時に混乱をきすため、ベーシックなものはチームで統一して、認識齟齬を減らす目的で設定を推奨する）
 git config --global alias.st status
 git config --global alias.co checkout
 git config --global alias.ci commit
 git config --global alias.br branch
 ```
 
-補足説明:
+> [!NOTE]
+> git workflowの補足説明:
+> - `pull.rebase`: pull時にリベースする
+> - `rerere.enabled`: コンフリクトの解決を記録しておき、再び同様のコンフリクトが発生した場合に自動適用する
+> - `fetch.prune`: リモートリポジトリで削除されたブランチを削除する
 
-- git workflow
-  - `pull.rebase`: pull時にリベースする
-  - `rerere.enabled`: コンフリクトの解決を記録しておき、再び同様のコンフリクトが発生した場合に自動適用する
-  - `fetch.prune`: リモートリポジトリで削除されたブランチを削除する
-- エイリアス
-  - メンバーそれぞれで別のエイリアスを登録されると、チャットなどのトラブルシュート時に混乱をきすため、ベーシックなものはチームで統一して、認識齟齬を減らす目的で設定を推奨する
+### ローカルでの作業例（※ TODO 推奨ブランチフローの章に引っ越し）
 
-## ワークフロー
+gitコマンドでの作業例を記載する。リモートブランチへのプッシュは、`--force-with-lease --force-if-includes` オプションを付けることを必須とする。
 
 ```sh
 # 変更作業
@@ -113,7 +113,7 @@ git push origin HEAD --force-with-lease --force-if-includes
 - 開発を行わない、例えばスキーマファイルの参照のみ必要であれば、「Read」権限を、Issueの起票などのみ実施するマネージャーであれば「Triage」ロールを付与する
 - 「Maintain」権限は、付与しない
 - 「Admin」権限は、マネージャークラスに対して合計2~3名を付与し、属人化しないようにする
-    - 1名でも駄目。4名以上でも駄目
+    - 1名でも、4名以上でもNGとする
 
 ### Code and automation
 
@@ -155,6 +155,48 @@ Branch protection rules にdevelop, mainなど永続的なブランチに保護�
 |            | Dependabot security updates | ✅️ |  | 
 |            | Dependabot version updates | ✅️ |  | 
 
+## 設定ファイル
+
+### .gitattribute
+
+チーム開発において開発環境がWindows/Macなど複数存在することは少なくなく、また、Gitリポジトリ上の改行コードは統一した方が余計な差分が生じず扱いやすくなる。このときよく用いるのが、 `autocrlf` という設定である。
+
+| 名称 | 機能 |
+| -- | --- |
+| autocrlf | trueにすると、リポジトリからファイルをワーキングツリーに持ってくるときにテキストファイルの改行コードをCRLFに変換する。にコミットする時に、CRLFからLFに変換する|
+
+`.gitattributes` というファイルをGitリポジトリのルートにコミットしておけば、そのGitリポジトリを使う全員で改行コードの扱いをLFに統一できる。
+
+```sh .gitattributes
+* text=auto eol=lf
+```
+
+通常、改行コードやインデントの設定は[EditorConfig](https://editorconfig.org/)で行うことが多く、 `.gitattributes` の設定とは重複する。しかし、環境構築ミスなど何らかのトラブルで動作しなかった場合に改行コードミスで特にジュニアクラスのメンバーが困る状況もゼロとは言えないため、本規約では `.gitattributes` も作成しておくことを推奨する。
+
+### Pull Request / Merge Request テンプレート
+
+GitHubやGitLabでは、プルリクエスト作成時のテンプレートを作ることができる。チームでプルリクエストで書いてほしいことを明示的にすることで、レビュー効率の向上や障害調査に役立てることができる。
+
+GitHubでは `.github/PULL_REQUEST_TEMPLATE.md` に記載する。（GitLabでは `.gitlab/merge_request_templates/{your_template}.md` を配置する。）
+
+テンプレートの例を以下にあげる。
+
+```md
+## 作業チケットのリンク
+
+## レビュー依頼ポイント
+
+## 残課題（別プルリクエストで対応予定の内容）
+
+## 動作確認内容（画面キャプチャなど）
+
+## セルフチェックリスト
+
+- [ ] 開発規約(DEVELOPMENT.md) を確認した
+- [ ] Files changed を開き、変更内容を確認した
+- [ ] コードの変更に伴い、同期必要な設計ドキュメントを更新した
+- [ ] 今回のPRでは未対応の事項を記載したIssueを作成した
+```
 
 ## ブランチ戦略
 
@@ -262,39 +304,6 @@ TODO: 要議論
   - 管理方法としては一番楽。デプロイ断面の確認にコミュニケーションコストを割かなくて済む。
   - 10人以上の開発で効いてくる。
 
-## Pull Request / Merge Request
-
-GitHubやGitLabでは、プルリクエスト作成時のテンプレートを作ることができる。チームでプルリクエストで書いてほしいことを明らかにすることで、レビュー効率を上げたり、リリース後の調査などに役立てることができる。
-
-GitHubでは `.github/PULL_REQUEST_TEMPLATE.md` に記載する。（GitLabでは `.gitlab/merge_request_templates/{your_template}.md` を配置する。）
-
-テンプレートの例を以下にあげる。
-
-```md
-<!-- 初めてPRを上げるときは、開発規約(DEVELOPMENT.md) に目を通しておきましょう -->
-
-## Ticket
-<!--- 関係するチケットのリンクを列挙ください（複数可） -->
-
-## Description
-<!--- 背景・目的・変更内容などの説明を記載ください -->
-
-## TODO
-<!--- 残課題があれば記載ください -->
-
-## Checked list
-<!--- 動作を確認するために行ったテストを記載してください -->
-
-## Related PRs
-<!--- 関連するプルリクエストがあれば列挙してください -->
-
-## Self checklist
-
-- [ ] Files changed を確認し、セルフレビューを実施した
-- [ ] 必要な設計ドキュメントを更新した
-- [ ] 今回のPRでは未対応の事項を記載したIssueを作成した
-```
-
 ### コミットメッセージ
 
 Gitのコミットメッセージにの書式についてルール化する運用とする。
@@ -316,7 +325,6 @@ type、subject、gitmojiの最大3つの要素から構成され、それぞれ�
 #### type
 
 typeについては必須の要素となり、以下のいずれかを選択するものとする。
-
 
 | type     | 説明                                                                                   |
 |--------|--------------------------------------------------------------------------------------|
@@ -482,20 +490,6 @@ $ git tag -a backend/v3.0.0 -m "🚀Release version v2.0.0"
 - 開発しているプロダクトがシステム（アプリケーション）の場合、その成熟度や初回リリースの区切りでバージョンアップを行うことを推奨する。適切なバージョンアップを行うことで視認性が上がり、運用負荷を下げることができる
     - 例1: 初回リリース、カットオーバーで `v1.0.0` に上げる
     - 例2: 稼働後1年以上経過し、中規模以上の大きな機能アップデートがあったので、 `v2.0.0` に上げる
-
-## autocrlf
-
-チーム開発において開発環境がWindows/Macなど複数存在することは少なくなく、また、Gitリポジトリ上の改行コードは統一した方が余計な差分が生じず扱いやすくなる。このときよく用いるのが、 `autocrlf` という設定である。
-
-| 名称 | 機能 |
-| -- | --- |
-| autocrlf | trueにすると、リポジトリからファイルをワーキングツリーに持ってくるときにテキストファイルの改行コードをCRLFに変換する。にコミットする時に、CRLFからLFに変換する|
-
-`.gitattributes` というファイルをGitにコミットしておけば、そのGitリポジトリを使う全員で改行コードの扱いをLFに統一できる。
-
-```sh .gitattributes
-* text=auto eol=lf
-```
 
 ## マージ戦略
 
