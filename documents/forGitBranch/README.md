@@ -8,59 +8,58 @@ pageClass: lang-home
 footer: ©2015 - 2024 Future Enterprise Coding Standards - Future Corporation
 ---
 
-# Gitブランチ管理標準
+<page-title/>
 
-## はじめに
+本コーディング規約は、世の中のシステム開発プロジェクトのために無償で提供致します。
+ただし、掲載内容および利用に際して発生した問題、それに伴う損害については、フューチャー株式会社は一切の責務を負わないものとします。
+また、掲載している情報は予告なく変更することがございますので、あらかじめご了承下さい。
 
-Gitブランチ管理の標準規則です。2,3名のような小規模チーム～50名程度の中規模での利用を想定しています。
+# はじめに
 
-開発プロダクトには、ライブラリ（他のアプリケーションやライブラリからimportして利用されるもの）か、アプリケーション（CLIツール、サーバアプリケーションなど）と言った区別があるが、本規約はアプリケーション開発を中心として規約をまとめる。
+本ドキュメントはGitブランチ管理の標準的な運用ルールをまとめている。以下の想定で作成されているため留意いただきたい。
 
-Gitリポジトリ構成はモノリポ、マルチレポ複数のケースが存在する前提で記載する。
+- GitHub または GitLab の利用
+- 数名～50名のチーム規模
+- 開発プロダクトには、ライブラリ（他のアプリケーションやライブラリからimportして利用されるもの）か、アプリケーション（CLIツール、サーバアプリケーションなど）という区別があるが、アプリケーション開発を想定
+- Gitリポジトリ構成はモノリポ、マルチレポの両方があるとし、トランクベース開発（フィーチャーフラグ）の利用は想定していない
 
-GitHub、GitLabでの運用を中心に記載する。
+## 推奨設定
 
-## 前提
-
-- feature branchesが前提
-- trunkやfeature flagsは対象外
+GitやGitHubの推奨設定をまとめる。本ドキュメントにあるGitブランチ運用はこの設定が行われている前提で説明する箇所があるため、最初に記載している。
 
 ## git config推奨設定
 
-`git config` の推奨設定を紹介する。
+`git config` の推奨設定を紹介する。特にGitワークフローの設定が重要である。
 
 ```sh
 # 基礎
 git config --global user.name "Your Name"
 git config --global user.email "your_email@example.com"
 
-# プロキシ
+# プロキシ設定（存在する場合）
 git config --global http.proxy http://id:password@proxy.example.co.jp:8000/
 git config --global https.proxy http://id:password@proxy.example.co.jp:8000/
 
-# プロキシが独自の証明書を持っている場合は、git config http.sslVerify false するのではなく、証明書を設定させる
+# プロキシが独自の証明書を持っている場合は、git config http.sslVerify false ではなく、証明書を設定する
 git config --global http.sslCAInfo ~/custom_ca_sha2.cer
 
-# git workflow
+# Gitワークフロー
 git config --global pull.rebase true
 git config --global rerere.enabled true
 git config --global fetch.prune true
 
-# エイリアス
+# エイリアス（メンバーそれぞれで別のエイリアスを登録されると、チャットなどのトラブルシュート時に混乱をきすため、ベーシックなものはチームで統一して、認識齟齬を減らす目的で設定を推奨する）
 git config --global alias.st status
 git config --global alias.co checkout
 git config --global alias.ci commit
 git config --global alias.br branch
 ```
 
-補足説明:
-
-- git workflow
-  - `pull.rebase`: pull時にリベースする
-  - `rerere.enabled`: コンフリクトの解決を記録しておき、再び同様のコンフリクトが発生した場合に自動適用する
-  - `fetch.prune`: リモートリポジトリで削除されたブランチを削除する
-- エイリアス
-  - メンバーそれぞれで別のエイリアスを登録されると、チャットなどのトラブルシュート時に混乱をきすため、ベーシックなものはチームで統一して、認識齟齬を減らす目的で設定を推奨する
+> [!NOTE]
+> git workflowの補足説明:
+> - `pull.rebase`: pull時にリベースする
+> - `rerere.enabled`: コンフリクトの解決を記録しておき、再び同様のコンフリクトが発生した場合に自動適用する
+> - `fetch.prune`: リモートリポジトリで削除されたブランチを削除する
 
 ## ワークフロー
 
@@ -113,7 +112,7 @@ git push origin HEAD --force-with-lease --force-if-includes
 - 開発を行わない、例えばスキーマファイルの参照のみ必要であれば、「Read」権限を、Issueの起票などのみ実施するマネージャーであれば「Triage」ロールを付与する
 - 「Maintain」権限は、付与しない
 - 「Admin」権限は、マネージャークラスに対して合計2~3名を付与し、属人化しないようにする
-    - 1名でも駄目。4名以上でも駄目
+    - 1名でも、4名以上でもNGとする
 
 ### Code and automation
 
