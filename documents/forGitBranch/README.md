@@ -61,7 +61,9 @@ git config --global alias.br branch
 > - `rerere.enabled`: コンフリクトの解決を記録しておき、再び同様のコンフリクトが発生した場合に自動適用する
 > - `fetch.prune`: リモートリポジトリで削除されたブランチを削除する
 
-## ワークフロー
+### ローカルでの作業例
+
+gitコマンドでの作業例を記載する。リモートブランチへのプッシュは、`--force-with-lease --force-if-includes` オプションを付けることを必須とする。
 
 ```sh
 # 変更作業
