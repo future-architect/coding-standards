@@ -599,12 +599,28 @@ components:
         name:
           type: string
           description: 名前
+    PaymentRequest:
+      type: object
+      properties:
+        amount:
+          type: number
+          format: double
+          description: 支払金額
+        method:
+          type: string
+          description: 支払方法
     BookingRequest:
       type: object
       properties:
         menu_id:
           type: string
           description: トレーニングメニューのID
+        booking_status_kbn:
+          type: string
+          enum: ["0"]
+          description: |
+            予約ステータス区分
+              0: 仮登録
         trainee_id:
           type: string
           description: トレーニーID
@@ -616,39 +632,28 @@ components:
           type: string
           format: date
           description: トレーニング終了日時
-    PaymentRequest:
-      type: object
-      properties:
-        amount:
-          type: number
-          format: double
-          description: 支払金額
-        method:
-          type: string
-          description: 支払方法
     BookingConfirmationRequest:
       type: object
       properties:
-        booking_id:
-          type: string
-          description: 予約のID
         booking_status_kbn:
           type: string
-          description: 予約ステータス区分
+          enum: ["1"]
+          description: |
+            予約ステータス区分
+              1: 本登録
     TrainingStatusUpdateRequest:
       type: object
       properties:
-        booking_id:
+        booking_status_kbn:
           type: string
-          description: トレーニングのID
-        training_status_kbn:
-          type: string
-          description: トレーニングステータス区分
+          enum: ["2", "3"]
+          description: |
+            予約ステータス区分
+              2: 受講中
+              3: 受講済み
     Review:
       type: object
       properties:
-        id:
-          type: string
         title:
           type: string
         content:
