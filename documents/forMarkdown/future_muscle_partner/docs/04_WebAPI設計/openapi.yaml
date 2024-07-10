@@ -48,7 +48,7 @@ paths:
       tags:
         - account
       summary: API-002 ログアウト
-      operationId: Logout
+      operationId: logout
       security: []
       responses:
         '200':
@@ -70,7 +70,7 @@ paths:
       tags:
         - account
       summary: API-003 会員登録
-      operationId: Signup
+      operationId: signup
       security: []
       requestBody:
         required: true
@@ -92,7 +92,7 @@ paths:
       tags:
         - account
       summary: API-004 会員退会
-      operationId: DeleteAccount
+      operationId: deleteAccount
       responses:
         '200':
           description: 会員退会に成功しました。
@@ -109,7 +109,7 @@ paths:
       tags:
         - profile
       summary: API-005 自分のプロフィール表示
-      operationId: GetUserProfile
+      operationId: getUserProfile
       responses:
         '200':
           description: プロフィールの取得に成功しました。
@@ -138,7 +138,7 @@ paths:
       tags:
         - trainer
       summary: API-007 パーソナルトレーナー検索
-      operationId: SearchTrainers
+      operationId: searchTrainers
       security: []
       responses:
         '200':
@@ -154,7 +154,7 @@ paths:
       tags:
         - trainer
       summary: API-008 トレーニングメニュー取得
-      operationId: GetTrainingMenu
+      operationId: getTrainingMenu
       security: []
       parameters:
         - name: trainer_id
@@ -180,7 +180,7 @@ paths:
       tags:
         - trainer
       summary: API-009 トレーナープロフィール取得
-      operationId: GetTrainerProfile
+      operationId: getTrainerProfile
       security: []
       parameters:
         - name: trainer_id
@@ -205,7 +205,7 @@ paths:
       tags:
         - trainer
       summary: API-010 トレーナー口コミ取得
-      operationId: GetTrainerReviews
+      operationId: getTrainerReviews
       security: []
       parameters:
         - name: trainer_id
@@ -230,7 +230,7 @@ paths:
       tags:
         - trainer
       summary: API-011 トレーナースケジュール取得
-      operationId: GetTrainerSchedule
+      operationId: getTrainerSchedule
       security: []
       parameters:
         - name: trainer_id
@@ -255,7 +255,7 @@ paths:
       tags:
         - booking
       summary: API-012 予約済みトレーニング取得
-      operationId: GetBookings
+      operationId: getBookings
       responses:
         '200':
           description: ユーザーの予約情報を取得しました。
@@ -269,7 +269,7 @@ paths:
       tags:
         - booking
       summary: API-013 トレーニング予約（仮登録）
-      operationId: BookTraining
+      operationId: bookTraining
       requestBody:
         required: true
         content:
@@ -296,7 +296,7 @@ paths:
       tags:
         - booking
       summary: API-014 トレーニング予約削除
-      operationId: DeleteBooking
+      operationId: deleteBooking
       parameters:
         - name: booking_id
           in: path
@@ -322,7 +322,7 @@ paths:
       tags:
         - booking
       summary: API-015 トレーニング予約（本登録）
-      operationId: ConfirmBooking
+      operationId: confirmBooking
       parameters:
         - name: booking_id
           in: path
@@ -356,7 +356,7 @@ paths:
       tags:
         - booking
       summary: API-016 トレーニング受講ステータス変更
-      operationId: UpdateTrainingStatus
+      operationId: updateTrainingStatus
       parameters:
         - name: booking_id
           in: path
@@ -392,7 +392,7 @@ paths:
       tags:
         - payment
       summary: API-017 決済
-      operationId: MakePayment
+      operationId: makePayment
       requestBody:
         required: true
         content:
