@@ -104,15 +104,19 @@ paths:
           $ref: '#/components/responses/InternalServer'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
-  /profile:
+  /profile/{trainee_id}:
     get:
       tags:
         - profile
-      summary: API-005 自分のプロフィール表示
+      summary: API-005 プロフィール表示
       operationId: getUserProfile
       responses:
         '200':
           description: プロフィールの取得に成功しました。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '500':
@@ -124,6 +128,19 @@ paths:
         - profile
       summary: API-006 プロフィール更新
       operationId: putUserProfile
+      parameters:
+        - name: trainee_id
+          in: path
+          description: トレーニーID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ProfileRequest'
       responses:
         '200':
           description: プロフィールの更新に成功しました。
@@ -574,6 +591,16 @@ components:
         status: 400 # HTTP response status, appropriate for the problem type
         detail: Description of specific occurrence of the problem
 
+    Profile:
+      type: object
+      properties:
+        display_name:
+          type: string
+          description: 表示名
+        self_introduction:
+          type: string
+          description: 自己紹介
+
     LoginRequest:
       type: object
       properties:
@@ -599,6 +626,15 @@ components:
         name:
           type: string
           description: 名前
+    ProfileRequest:
+      type: object
+      properties:
+        display_name:
+          type: string
+          description: 表示名
+        self_introduction:
+          type: string
+          description: 自己紹介
     PaymentRequest:
       type: object
       properties:
