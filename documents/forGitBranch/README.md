@@ -85,7 +85,7 @@ git config --global alias.br branch
 
 | Category                 | Item | Value | Memo |
 | ------------------------ | ---- | ----- | ---- |
-| Collaborators and teams | Choose a role | 任意の権限 | ※後述 |  
+| Collaborators and teams | Choose a role | 任意の権限 | ※後述 |
 
 - 各ロールの権限については、公式ドキュメントを参照
 - 通常、開発者には「Write」ロールを付与する
@@ -102,10 +102,10 @@ Branch protection rules にdevelop, mainなど永続的なブランチに保護�
 
 | Category      | Item | Value | Memo |
 | ------------- | ---- | ----- | ---- |
-| Protect matching branches | Require a pull request before merging | ✅️ | プルリクエストを必須とする | 
-|                           | Require approvals | ✅️ | レビューを必須とする | 
-|                           | Required number of approvals before merging | 1 | 最低1名以上の承認を必須とする | 
-|                           | Dismiss stale pull request approvals when new commits are pushed | - | レビュー承認後のPushで再承認を必要とするかだが、レビュー運用上に支障となることも多く、チェックを外す | 
+| Protect matching branches | Require a pull request before merging | ✅️ | プルリクエストを必須とする |
+|                           | Require approvals | ✅️ | レビューを必須とする |
+|                           | Required number of approvals before merging | 1 | 最低1名以上の承認を必須とする |
+|                           | Dismiss stale pull request approvals when new commits are pushed | - | レビュー承認後のPushで再承認を必要とするかだが、レビュー運用上に支障となることも多く、チェックを外す |
 |                           | Require status checks to pass before merging | ✅️ | CIの成功を条件とする |
 |                           | Require branches to be up to date before merging | 任意 | CIパイプラインのワークフロー名を指定 |
 |                           | Require conversation resolution before merging | ✅️ | レビューコメントがすべて解決していることを条件とする |
@@ -117,22 +117,22 @@ Branch protection rules にdevelop, mainなど永続的なブランチに保護�
 
 | Category      | Item | Value | Memo |
 | ------------- | ---- | ----- | ---- |
-|  | Protect tags | v[0-9]+.[0-9]+.[0-9] | セマンティックバージョニングに則ったタグのみ、削除を防ぐ | 
+|  | Protect tags | v[0-9]+.[0-9]+.[0-9] | セマンティックバージョニングに則ったタグのみ、削除を防ぐ |
 
 #### GitHub Actions
 
 | Category      | Item | Value | Memo |
 | ------------- | ---- | ----- | ---- |
-| Actions permissions | Allow asset-taskforce, and select non-asset-taskforce, actions and reusable workflows > Allow actions created by GitHub | ✅️ |  | 
-|                     | Allow asset-taskforce, and select non-asset-taskforce, actions and reusable workflows > Allow actions Marketplace verified creators | ✅️ |  | 
+| Actions permissions | Allow asset-taskforce, and select non-asset-taskforce, actions and reusable workflows > Allow actions created by GitHub | ✅️ |  |
+|                     | Allow asset-taskforce, and select non-asset-taskforce, actions and reusable workflows > Allow actions Marketplace verified creators | ✅️ |  |
 
 #### Code security and analysis
 
 | Category      | Item | Value | Memo |
 | ------------- | ---- | ----- | ---- |
-| Dependabot | Dependabot alerts | ✅️ | 依存パッケージのアップデートを検知するため | 
-|            | Dependabot security updates | ✅️ |  | 
-|            | Dependabot version updates | ✅️ |  | 
+| Dependabot | Dependabot alerts | ✅️ | 依存パッケージのアップデートを検知するため |
+|            | Dependabot security updates | ✅️ |  |
+|            | Dependabot version updates | ✅️ |  |
 
 ## 設定ファイル
 
@@ -157,6 +157,12 @@ Branch protection rules にdevelop, mainなど永続的なブランチに保護�
 ```
 
 通常、改行コードやインデントの設定は[EditorConfig](https://editorconfig.org/)で行うことが多く、 `.gitattributes` の設定とは重複する。しかし、環境構築ミスなど何らかのトラブルで動作しなかった場合に改行コードミスで特にジュニアクラスのメンバーが困る状況もゼロとは言えないため、本規約では `.gitattributes` も作成しておくことを推奨する。
+
+### .gitignore
+
+Gitで管理したくないファイル名のルールを定義する`.gitignore`ファイルも入れる。ウェブフロントエンドであれば新規プロジェクトを作成すると大抵作成されるのでそれを登録すれば良いが、もしない場合、あるいは複数の言語を使っている場合などは[GitHubが提供するテンプレート](https://github.com/github/gitignore)を元に作成すると良い。GlobalフォルダにはWindows/macOSのOS固有設定や、エディタ設定などもある。
+
+環境設定を`.env`で行うのが一般的になってきているが、`.env.local`、`.env.dev.local`といった`.local`がついたファイルはクレデンシャルなどの機微な情報を扱うファイルとして定着しているため、 `*.local`も追加すると良い。
 
 ### Pull Request / Merge Request テンプレート
 
@@ -187,15 +193,15 @@ GitHubでは `.github/PULL_REQUEST_TEMPLATE.md` に記載する。（GitLabで�
 
 現実的に利用する可能性が高いブランチの運用パターン３つ示す。
 
-基本的には運用コストが最小になるパターンを選択し、プロジェクトの体制に応じて運用を変更する。  
+基本的には運用コストが最小になるパターンを選択し、プロジェクトの体制に応じて運用を変更する。
 
 （例） GitHub Flow → Lite GitLab Flow → GitLab Flow
 
-| 名称                 | 使用ブランチ                                                          | 概要                                                                                                                                                                                                                                                                                                                                                                                                                        | 運用コスト | 使い所                                                                                               | 
-| -------------------- | --------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------- | 
-| GitHub Flow          | `main`<br>`feature`                                                   | 最小のブランチ管理パターン。このパターンはGitHub Flowと呼ばれる。<br>開発人数が少なく、検証作業は全員で行う場合に有効。<br>また、プロジェクトの初期フェーズ等断面管理を厳密に行わない場合もこのパターンで問題無い。<br>マージの都度本番環境へデプロイする前提。                                                                                                                                                              | 低         | ・個人開発<br>・プロジェクト初期フェーズ                                                             | 
-| Lite GitLab Flow<br> | `main`<br>`feature`<br>`develop`<br>（`topic`/`hotfix`）              | GitHub Flowに`develop`ブランチを追加するパターン。（特定の呼称はないのでLite GitLab FLowと命名。）<br>`main`ブランチをプロダクトリリースブランチとし、開発中ソースコードとは分ける。<br>開発作業とリリース作業が並行しないチーム構成であれば必ずしも`release`ブランチを作る必要はない。<br>必要に応じて`hotfix`や`topic`ブランチを作る。                                                                                     | 低         | ・本番リリース済みプロダクトの開発などで、一定品質を保証する必要がある場合                           | 
-| GitLab Flow          | `main`<br>`feature`<br>`develop`<br>`release`<br>（`topic`/`hotfix`） | GitHub Flowに`develop`ブランチと`release`ブランチを追加するとGitLab Flowとなる。<br>GitLab Flowでは`main`ブランチのことを`production`ブランチと呼称したり、`release`ブランチのことを`pre production`ブランチと呼称するが、本規約では`main`/`release`に統一する。<br>リリース作業と開発作業が並行して行われる場合や、断面を指定して複数テスト環境にデプロイしたい場合に有効。<br>必要に応じて`hotfix`や`topic`ブランチを作る。 | 中         | ・リリース作業と開発作業が並行して行われる場合<br>  ・断面を指定して複数テスト環境にデプロイしたい場合 | 
+| 名称                 | 使用ブランチ                                                          | 概要                                                                                                                                                                                                                                                                                                                                                                                                                        | 運用コスト | 使い所                                                                                               |
+| -------------------- | --------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- | ---------------------------------------------------------------------------------------------------- |
+| GitHub Flow          | `main`<br>`feature`                                                   | 最小のブランチ管理パターン。このパターンはGitHub Flowと呼ばれる。<br>開発人数が少なく、検証作業は全員で行う場合に有効。<br>また、プロジェクトの初期フェーズ等断面管理を厳密に行わない場合もこのパターンで問題無い。<br>マージの都度本番環境へデプロイする前提。                                                                                                                                                              | 低         | ・個人開発<br>・プロジェクト初期フェーズ                                                             |
+| Lite GitLab Flow<br> | `main`<br>`feature`<br>`develop`<br>（`topic`/`hotfix`）              | GitHub Flowに`develop`ブランチを追加するパターン。（特定の呼称はないのでLite GitLab FLowと命名。）<br>`main`ブランチをプロダクトリリースブランチとし、開発中ソースコードとは分ける。<br>開発作業とリリース作業が並行しないチーム構成であれば必ずしも`release`ブランチを作る必要はない。<br>必要に応じて`hotfix`や`topic`ブランチを作る。                                                                                     | 低         | ・本番リリース済みプロダクトの開発などで、一定品質を保証する必要がある場合                           |
+| GitLab Flow          | `main`<br>`feature`<br>`develop`<br>`release`<br>（`topic`/`hotfix`） | GitHub Flowに`develop`ブランチと`release`ブランチを追加するとGitLab Flowとなる。<br>GitLab Flowでは`main`ブランチのことを`production`ブランチと呼称したり、`release`ブランチのことを`pre production`ブランチと呼称するが、本規約では`main`/`release`に統一する。<br>リリース作業と開発作業が並行して行われる場合や、断面を指定して複数テスト環境にデプロイしたい場合に有効。<br>必要に応じて`hotfix`や`topic`ブランチを作る。 | 中         | ・リリース作業と開発作業が並行して行われる場合<br>  ・断面を指定して複数テスト環境にデプロイしたい場合 |
 
 なお、本ドキュメントで想定する各ブランチ役割については[ブランチの整理](each_branch.md)に記載している。
 
@@ -252,11 +258,11 @@ TODO: 要議論
 マージによる変更の取り込みが既存のブランチを変更しないのに対し、リベースは全く新しい（元のコミットIDとは別のコミットIDで）コミットを作成する。
 リベースを用いる場合は、次の3点に注意すること。
 
-* 複数人に影響を及ぼすpublicなブランチでは、決してリベースを使用しないこと。  
+* 複数人に影響を及ぼすpublicなブランチでは、決してリベースを使用しないこと。
 例えば メインの開発ブランチである `develop` ブランチや `main` ブランチが該当する。先述のとおりリベースにより全く新しいコミットが作成されるため、他の人が作業しているブランチと整合性が取れなくなり、大きな混乱を招く可能性がある。このようなブランチはブランチは **強制プッシュできないよう保護しておく** ことが望ましい。
 
 * リモートにプッシュ済のブランチでリベースを行った場合、強制プッシュ（Force Push）が必要になること。
-開発者はプッシュ時に `--force-with-lease --force-if-includes` フラグを渡すことで、意図せずリモートブランチの変更を上書きしないよう条件付きで強制プッシュを行うことが望ましい。  
+開発者はプッシュ時に `--force-with-lease --force-if-includes` フラグを渡すことで、意図せずリモートブランチの変更を上書きしないよう条件付きで強制プッシュを行うことが望ましい。
 
   * `--force-with-lease`: ローカルのリモート追跡ブランチの ref とリモートの ref を比較し、ローカルの状態が最新でない場合（要はプッシュ先のリモートブランチに変更が入ったが、ローカルで `git fetch` していない場合）は、プッシュに失敗する。逆にいうと、プッシュ前に `git fetch` を実行済みの場合は、リモートの変更を上書きする形で強制プッシュができてしまうため、これを防ぐには `--force-if-includes` フラグを併用する。
 
@@ -279,32 +285,32 @@ GitHubを利用する場合、[開発ブランチに機能ブランチの変更�
 
 これは、メインの開発ブランチの履歴をクリーンに保つことが大きな理由になるが、機能ブランチのPRが単一のコミットメッセージで表現できるくらいシンプルで明確な単位にするということが前提となる。
 
-なお、プロテクトブランチの設定にて、メインの開発ブランチに対し「require linear history」を選択することを推奨する。  
+なお、プロテクトブランチの設定にて、メインの開発ブランチに対し「require linear history」を選択することを推奨する。
 本設定を行うと、開発ブランチに対して「Create a merge commit」が選択できないよう制御することができる。
 
-また、意図しない方法でのマージを避けるためにブランチごとにマージ戦略を設定しておき、想定外のマージ戦略が選択された時に警告色を表示するとサードパーティ製のChrome拡張も存在する。こちらは必要に応じて導入することが望ましい。  
+また、意図しない方法でのマージを避けるためにブランチごとにマージ戦略を設定しておき、想定外のマージ戦略が選択された時に警告色を表示するとサードパーティ製のChrome拡張も存在する。こちらは必要に応じて導入することが望ましい。
 https://zenn.dev/daku10/articles/github-merge-guardian
 
 #### 注意点
 
 「Squash and merge」による変更の取り込みを行う場合の注意点は次の通りとなる。
 
-* マージ後は機能ブランチを削除すること。  
-変更元の機能ブランチのコミットをまとめたコミットが新たに作成されるめ、元の機能ブランチを再利用して（例えば追加のコミットを作成して）PRを作成してもコンフリクトが発生する。  
+* マージ後は機能ブランチを削除すること。
+変更元の機能ブランチのコミットをまとめたコミットが新たに作成されるめ、元の機能ブランチを再利用して（例えば追加のコミットを作成して）PRを作成してもコンフリクトが発生する。
 マージ後はリモート/ローカルの双方で速やかに機能ブランチを削除することが望ましい。
   * リモート側の機能ブランチはGitHubの設定にて「Automatically delete head branches」を選択することで、マージ後に自動でブランチの削除が行われる。（GitLabでは、マージリクエストから「Delete source branch」オプションを有効にすることで、マージ後に自動でブランチの削除が行われる。プロジェクトの設定で「Enable "Delete source branch" option by default」を選択しておくとデフォルトで有効になる。）
   * ローカル側の機能ブランチは `branch -d` コマンドでは削除できないため、`branch -D` コマンドを用いて削除する必要がある。
 
-* 部分的なコミットの取り消しができない。  
-履歴上は1つのコミットになるので、マージ後に一部の変更だけを取り消すということができない。  
+* 部分的なコミットの取り消しができない。
+履歴上は1つのコミットになるので、マージ後に一部の変更だけを取り消すということができない。
 取り消しはPRの単位となるため、PRの単位をなるべく小さなまとまりにすることが望ましい。
 
-* Authorが失われる。  
-機能ブランチにコミットを行った人がAuthorになるのではなく、「Squash and merge」を行った人がAuthorになるため、OSS開発を行う場合など、厳密にコントリビューションを管理する必要がある場合は注意されたい。  
-GitHubでは「Squash and merge」を行う場合、デフォルトでコミットメッセージに `co-authored-by` トレーラーが追加され、1つのコミットが複数の作成者に帰属するようにするようになっている。この記述は削除しないようにする。  
+* Authorが失われる。
+機能ブランチにコミットを行った人がAuthorになるのではなく、「Squash and merge」を行った人がAuthorになるため、OSS開発を行う場合など、厳密にコントリビューションを管理する必要がある場合は注意されたい。
+GitHubでは「Squash and merge」を行う場合、デフォルトでコミットメッセージに `co-authored-by` トレーラーが追加され、1つのコミットが複数の作成者に帰属するようにするようになっている。この記述は削除しないようにする。
 https://docs.github.com/ja/pull-requests/committing-changes-to-your-project/creating-and-editing-commits/creating-a-commit-with-multiple-authors
 
-* 機能ブランチの取り込み以外のケースでは、「Squash and merge」以外を選択すること。  
+* 機能ブランチの取り込み以外のケースでは、「Squash and merge」以外を選択すること。
 例えば、`develop` ブランチを `main` ブランチや `release`ブランチにマージする場合など、取り込み元のブランチの変更が大きい場合は、コミットメッセージを1つにまとめることによる弊害が大きいため、別のマージ戦略を検討すること。
 
 ## コミットメッセージ
@@ -402,7 +408,7 @@ TODO ![](VSCodeクライアントで階層表示されている画像.png)
 - 実用的な利用用途が思いつかない場合は、開発者視点での楽しみリリースの大きなマイルストーンの名称など、チームの関心事を記入することを推奨とする
 
 ![](create_new_tag_title.png)
- 
+
 何かしらの理由で、コマンドラインからタグを作成する必要がある場合は、GitHub利用時の規則に合わせて次のように作成する。
 
 入力例:
