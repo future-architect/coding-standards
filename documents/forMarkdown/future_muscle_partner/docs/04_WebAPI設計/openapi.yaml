@@ -288,20 +288,6 @@ paths:
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
   /bookings:
-    get:
-      tags:
-        - booking
-      summary: API-012 予約済みトレーニング取得
-      operationId: getBookings
-      responses:
-        '200':
-          description: ユーザーの予約情報を取得しました。
-        '401':
-          $ref: '#/components/responses/Unauthorized'
-        '500':
-          $ref: '#/components/responses/InternalServer'
-        '503':
-          $ref: '#/components/responses/ServiceUnavailable'
     post:
       tags:
         - booking
@@ -324,6 +310,25 @@ paths:
           $ref: '#/components/responses/Conflict'
         '422':
           $ref: '#/components/responses/UnprocessableEntity'
+        '500':
+          $ref: '#/components/responses/InternalServer'
+        '503':
+          $ref: '#/components/responses/ServiceUnavailable'
+  /bookings/{trainee_id}:
+    get:
+      tags:
+        - booking
+      summary: API-012 予約済みトレーニング取得
+      operationId: getBookings
+      responses:
+        '200':
+          description: ユーザーの予約情報を取得しました。
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Booking'
+        '401':
+          $ref: '#/components/responses/Unauthorized'
         '500':
           $ref: '#/components/responses/InternalServer'
         '503':
@@ -639,6 +644,9 @@ components:
     ProfileRequest:
       type: object
       properties:
+        trainee_name:
+          type: string
+          description: トレーニー名
         display_name:
           type: string
           description: 表示名
@@ -733,6 +741,40 @@ components:
         self_introduction:
           type: string
           description: 自己紹介
+    Booking:
+      type: object
+      properties:
+        booking_id:
+          type: string
+          description: 予約ID
+        trainee_id:
+          type: string
+          description: トレーニーID
+        menu_id:
+          type: string
+          description: トレーニングメニューのID
+        start_at:
+          type: string
+          format: date
+          description: 開始日時
+        end_at:
+          type: string
+          format: date
+          description: 終了日時
+        booking_status_typ:
+          type: string
+          enum: ["1"]
+          description: |
+            予約ステータス区分
+              1: 本登録
+        training_start_at:
+          type: string
+          format: date
+          description: トレーニング開始日時
+        training_end_at:
+          type: string
+          format: date
+          description: トレーニング終了日時
     Trainer:
       type: object
       properties:
