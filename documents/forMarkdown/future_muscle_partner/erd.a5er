@@ -1,7 +1,7 @@
-﻿# A5:ER FORMAT:18
+﻿# A5:ER FORMAT:17
 # A5:ER ENCODING:UTF8
 # A5:ER Mk-1 Copyright © 2007 m.matsubara
-# A5:SQL Mk-2 Version 2.19.0 Copyright © 1997 - 2024 m.matsubara
+# A5:SQL Mk-2 Version 2.18.3 Copyright © 1997 - 2023 m.matsubara
 #  https://a5m2.mmatsubara.com
 
 [Manager]
@@ -42,7 +42,6 @@ BugFixEntityWidth=1
 PName=trainee
 LName=トレーニー
 Comment=
-TableInnerOption=
 TableOption=
 Page=MAIN
 Left=900
@@ -61,7 +60,6 @@ ZOrder=1
 PName=booking
 LName=予約
 Comment=
-TableInnerOption=
 TableOption=
 Page=MAIN
 Left=1100
@@ -86,7 +84,6 @@ ZOrder=2
 PName=menu
 LName=メニュー
 Comment=
-TableInnerOption=
 TableOption=
 Page=MAIN
 Left=1300
@@ -109,7 +106,6 @@ ZOrder=3
 PName=trainer
 LName=トレーナー
 Comment=
-TableInnerOption=
 TableOption=
 Page=MAIN
 Left=1650
@@ -131,7 +127,6 @@ ZOrder=4
 PName=calendar
 LName=カレンダー
 Comment=
-TableInnerOption=
 TableOption=
 Page=MAIN
 Left=1650
@@ -197,7 +192,6 @@ ZOrder=5
 PName=trainer_workspace
 LName=トレーナー勤務先
 Comment=
-TableInnerOption=
 TableOption=
 Page=MAIN
 Left=2200
@@ -217,18 +211,17 @@ ZOrder=6
 PName=gym
 LName=ジム
 Comment=
-TableInnerOption=
 TableOption=
 Page=MAIN
 Left=2350
-Top=250
+Top=200
 Field="ジムID","gym_id","",,,"","",$FFFFFFFF,""
 Field="ジム名","ジム名","",,,"","",$FFFFFFFF,""
 EffectMode=None
 Color=$000000
 BkColor=$FFFFFF
 ModifiedDateTime=20240419163332
-Position="MAIN",2350,250
+Position="MAIN",2350,200
 ZOrder=7
 
 [Relation]
@@ -362,3 +355,65 @@ Bar3=285
 TermPos1=R
 TermPos2=R
 ZOrder=13
+
+[Entity]
+PName=review
+LName=レビュー
+Comment=
+TableOption=
+Page=MAIN
+Left=1650
+Top=100
+Field="レビューID","review_id","",,,"","",$FFFFFFFF,""
+Field="トレーナーID","trainer_id","",,,"","",$FFFFFFFF,""
+Field="トレーニーID","トレーニーID","",,,"","",$FFFFFFFF,""
+Field="コメント","comment","",,,"","",$FFFFFFFF,""
+Field="投稿日時","posted_at","",,,"","",$FFFFFFFF,""
+EffectMode=None
+Color=$000000
+BkColor=$FFFFFF
+ModifiedDateTime=20240711123631
+Position="MAIN",1650,100,132,141
+ZOrder=14
+
+[Relation]
+Entity1=trainee
+Entity2=review
+RelationType1=1
+RelationType2=3
+Fields1=
+Fields2=
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,1183,1379,2885,R,R,""
+Dependence=1
+Caption=
+PName=
+LineMode=0
+Bar1=118
+Bar2=138
+Bar3=288
+TermPos1=R
+TermPos2=R
+ZOrder=17
+
+[Relation]
+Entity1=trainer
+Entity2=review
+RelationType1=1
+RelationType2=3
+Fields1=
+Fields2=
+Cardinarity1=
+Cardinarity2=
+Position="MAIN",0,6333,4889,5822,R,R,""
+Dependence=1
+Caption=
+PName=
+LineMode=0
+Bar1=633
+Bar2=489
+Bar3=582
+TermPos1=R
+TermPos2=R
+ZOrder=18
