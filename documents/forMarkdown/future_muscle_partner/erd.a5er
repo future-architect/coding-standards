@@ -1,7 +1,7 @@
-﻿# A5:ER FORMAT:17
+﻿# A5:ER FORMAT:18
 # A5:ER ENCODING:UTF8
 # A5:ER Mk-1 Copyright © 2007 m.matsubara
-# A5:SQL Mk-2 Version 2.18.3 Copyright © 1997 - 2023 m.matsubara
+# A5:SQL Mk-2 Version 2.19.2 Copyright © 1997 - 2024 m.matsubara
 #  https://a5m2.mmatsubara.com
 
 [Manager]
@@ -42,6 +42,7 @@ BugFixEntityWidth=1
 PName=trainee
 LName=トレーニー
 Comment=
+TableInnerOption=
 TableOption=
 Page=MAIN
 Left=900
@@ -61,6 +62,7 @@ ZOrder=1
 PName=booking
 LName=予約
 Comment=
+TableInnerOption=
 TableOption=
 Page=MAIN
 Left=1100
@@ -85,6 +87,7 @@ ZOrder=2
 PName=menu
 LName=メニュー
 Comment=
+TableInnerOption=
 TableOption=
 Page=MAIN
 Left=1300
@@ -107,6 +110,7 @@ ZOrder=3
 PName=trainer
 LName=トレーナー
 Comment=
+TableInnerOption=
 TableOption=
 Page=MAIN
 Left=1650
@@ -129,6 +133,7 @@ ZOrder=4
 PName=calendar
 LName=カレンダー
 Comment=
+TableInnerOption=
 TableOption=
 Page=MAIN
 Left=1650
@@ -194,6 +199,7 @@ ZOrder=5
 PName=trainer_workspace
 LName=トレーナー勤務先
 Comment=
+TableInnerOption=
 TableOption=
 Page=MAIN
 Left=2200
@@ -213,6 +219,7 @@ ZOrder=6
 PName=gym
 LName=ジム
 Comment=
+TableInnerOption=
 TableOption=
 Page=MAIN
 Left=2350
@@ -362,6 +369,7 @@ ZOrder=13
 PName=review
 LName=レビュー
 Comment=
+TableInnerOption=
 TableOption=
 Page=MAIN
 Left=1650
