@@ -22,174 +22,11 @@ footer: ©2015 - 2024 Future Enterprise Coding Standards - Future Corporation
 - 開発プロダクトには、ライブラリ（他のアプリケーションやライブラリからimportして利用されるもの）か、アプリケーション（CLIツール、サーバアプリケーションなど）という区別があるが、アプリケーション開発を想定
 - トランクベース開発（フィーチャーフラグ）を **採用しない**
 
-## 推奨設定
+導入に際して行う、GitやGitHub/GitLabの環境設定は、[推奨設定](recommended_settings.md)ページに記載している。
 
-GitやGitHubの推奨設定をまとめる。本ドキュメントにあるGitブランチ運用はこの設定が行われている前提で説明する箇所があるため、最初に記載している。
+## ブランチ運用パターン
 
-## git config推奨設定
-
-`git config` の推奨設定を紹介する。特にGitワークフローの設定が重要である。
-
-```sh
-# 基礎
-git config --global user.name "Your Name"
-git config --global user.email "your_email@example.com"
-
-# プロキシ設定（存在する場合）
-git config --global http.proxy http://id:password@proxy.example.co.jp:8000/
-git config --global https.proxy http://id:password@proxy.example.co.jp:8000/
-
-# プロキシが独自の証明書を持っている場合は、git config http.sslVerify false ではなく、証明書を設定する
-git config --global http.sslCAInfo ~/custom_ca_sha2.cer
-
-# Gitワークフロー
-git config --global pull.rebase true
-git config --global rerere.enabled true
-git config --global fetch.prune true
-
-# エイリアス（メンバーそれぞれで別のエイリアスを登録されると、チャットなどのトラブルシュート時に混乱をきすため、ベーシックなものはチームで統一して、認識齟齬を減らす目的で設定を推奨する）
-git config --global alias.st status
-git config --global alias.co checkout
-git config --global alias.ci commit
-git config --global alias.br branch
-```
-
-> [!NOTE]
-> git workflowの補足説明:
-> - `pull.rebase`: pull時にリベースする
-> - `rerere.enabled`: コンフリクトの解決を記録しておき、再び同様のコンフリクトが発生した場合に自動適用する
-> - `fetch.prune`: リモートリポジトリで削除されたブランチを削除する
-
-## GitHub推奨設定
-
-業務利用でのチーム開発を想定しており、リポジトリは以下の条件を満たす前提とする。
-
-- プライベートリポジトリ
-- Organization配下に作成
-- Teamsプラン以上の有料契約
-
-### General
-
-| Category      | Item | Value | Memo |
-| ------------- | ---- | ----- | ---- |
-| General       | Require contributors to sign off on web-based commits | チェックなし | 著作権・ライセンス承諾の場合に用いるが、業務アプリ開発では不要 |
-|               | Default branch | develop |  |
-| Pull Requests | Allow merge commits  | ✅️ | main <- developなどのマージ時に必要 |
-|               | Allow squash merging  | ✅️ | develop <- feature はSquash mergeを推奨 |
-|               | Allow rebase merging  | -   | 利用しないため、チェックを外す |
-|               | Allow suggest updating pull request branches | ✅️  | Pull Request作成後、ベースブランチが更新された場合、ソースブランチの更新を提案してくれる |
-|               | Automatically delete head branches | ✅️  | マージ後にfeature branchを削除するため有効にする |
-| Pushes        | Limit how many branches and tags can be updated in a single push | 5  | git push origin –mirrorで誤ってリモートブランチを破壊しないようにする。推奨値の5を設定する |
-
-### Access
-
-| Category                 | Item | Value | Memo |
-| ------------------------ | ---- | ----- | ---- |
-| Collaborators and teams | Choose a role | 任意の権限 | ※後述 |
-
-- 各ロールの権限については、公式ドキュメントを参照
-- 通常、開発者には「Write」ロールを付与する
-- 開発を行わない、例えばスキーマファイルの参照のみ必要であれば、「Read」権限を、Issueの起票などのみ実施するマネージャーであれば「Triage」ロールを付与する
-- 「Maintain」権限は、付与しない
-- 「Admin」権限は、マネージャークラスに対して合計2~3名を付与し、属人化しないようにする
-    - 1名でも、4名以上でもNGとする
-
-### Code and automation
-
-#### Branches
-
-Branch protection rules にdevelop, mainなど永続的なブランチに保護設定を追加する。
-
-| Category      | Item | Value | Memo |
-| ------------- | ---- | ----- | ---- |
-| Protect matching branches | Require a pull request before merging | ✅️ | プルリクエストを必須とする |
-|                           | Require approvals | ✅️ | レビューを必須とする |
-|                           | Required number of approvals before merging | 1 | 最低1名以上の承認を必須とする |
-|                           | Dismiss stale pull request approvals when new commits are pushed | - | レビュー承認後のPushで再承認を必要とするかだが、レビュー運用上に支障となることも多く、チェックを外す |
-|                           | Require status checks to pass before merging | ✅️ | CIの成功を条件とする |
-|                           | Require branches to be up to date before merging | 任意 | CIパイプラインのワークフロー名を指定 |
-|                           | Require conversation resolution before merging | ✅️ | レビューコメントがすべて解決していることを条件とする |
-|                           | Require signed commits | ✅️ | 署名付きコミットを必須化し、セキュアな設定にする |
-|                           | Require linear history | ✅️/- | mainブランチの場合はOFFとするが、developの場合はSquash mergeを求めるため有効にする |
-|                           | Do not allow bypassing the above settings | ✅️ | パイパスを許容しない |
-
-#### Tags
-
-| Category      | Item | Value | Memo |
-| ------------- | ---- | ----- | ---- |
-|  | Protect tags | v[0-9]+.[0-9]+.[0-9] | セマンティックバージョニングに則ったタグのみ、削除を防ぐ |
-
-#### GitHub Actions
-
-| Category      | Item | Value | Memo |
-| ------------- | ---- | ----- | ---- |
-| Actions permissions | Allow asset-taskforce, and select non-asset-taskforce, actions and reusable workflows > Allow actions created by GitHub | ✅️ |  |
-|                     | Allow asset-taskforce, and select non-asset-taskforce, actions and reusable workflows > Allow actions Marketplace verified creators | ✅️ |  |
-
-#### Code security and analysis
-
-| Category      | Item | Value | Memo |
-| ------------- | ---- | ----- | ---- |
-| Dependabot | Dependabot alerts | ✅️ | 依存パッケージのアップデートを検知するため |
-|            | Dependabot security updates | ✅️ |  |
-|            | Dependabot version updates | ✅️ |  |
-
-## 設定ファイル
-
-### .gitattribute
-
-チーム開発において開発環境がWindows/Macなど複数存在することは少なくなく、また、Gitリポジトリ上の改行コードは統一した方が余計な差分が生じず扱いやすくなる。このときよく用いるのが、 `core.autocrlf` という設定である。
-
-| 名称 | 設定値 | チェックアウト時の挙動 | コミット時の挙動 |
-| -- | -- | --- | -- |
-| core.autocrlf | true | 改行コードをCRLFに変換 | 改行コードをLFに変換 |
-|               | input | 何もしない | 改行コードをLFに変換 |
-|               | false | 何もしない | 何もしない |
-
-特にWindowsでの開発者の作業ミスを防ぐため、 `git config --global core.autocrlf input` のような設定を行うチームも多い。
-
-しかし、上記の設定漏れや手順が増えてしまうため、本規約では `.gitattributes` での対応を推奨する。
-
-`.gitattributes` というファイルをGitリポジトリのルートにコミットしておけば、そのGitリポジトリを使う全員で改行コードの扱いをLFに統一できる。
-
-```sh .gitattributes
-* text=auto eol=lf
-```
-
-通常、改行コードやインデントの設定は[EditorConfig](https://editorconfig.org/)で行うことが多く、 `.gitattributes` の設定とは重複する。しかし、環境構築ミスなど何らかのトラブルで動作しなかった場合に改行コードミスで特にジュニアクラスのメンバーが困る状況もゼロとは言えないため、本規約では `.gitattributes` も作成しておくことを推奨する。
-
-### .gitignore
-
-Gitで管理したくないファイル名のルールを定義する`.gitignore`ファイルも入れる。ウェブフロントエンドであれば新規プロジェクトを作成すると大抵作成されるのでそれを登録すれば良いが、もしない場合、あるいは複数の言語を使っている場合などは[GitHubが提供するテンプレート](https://github.com/github/gitignore)を元に作成すると良い。GlobalフォルダにはWindows/macOSのOS固有設定や、エディタ設定などもある。
-
-環境設定を`.env`で行うのが一般的になってきているが、`.env.local`、`.env.dev.local`といった`.local`がついたファイルはクレデンシャルなどの機微な情報を扱うファイルとして定着しているため、 `*.local`も追加すると良い。
-
-### Pull Request / Merge Request テンプレート
-
-GitHubやGitLabでは、プルリクエスト作成時のテンプレートを作ることができる。チームでプルリクエストで書いてほしいことを明示的にすることで、レビュー効率の向上や障害調査に役立てることができる。
-
-GitHubでは `.github/PULL_REQUEST_TEMPLATE.md` に記載する。（GitLabでは `.gitlab/merge_request_templates/{your_template}.md` を配置する。）
-
-テンプレートの例を以下にあげる。
-
-```md
-## チケットURL
-
-## 特に見てほしいレビューポイント
-
-## 残課題（別チケットで対応予定の内容、別プルリクエストで対応予定の内容）
-
-## 動作確認内容（画面キャプチャなど）
-
-## セルフチェックリスト
-
-- [ ] 開発規約(DEVELOPMENT.md) を確認した
-- [ ] Files changed を開き、変更内容を確認した
-- [ ] コードの変更に伴い、同期必要な設計ドキュメントを更新した
-- [ ] 今回のPRでは未対応の残課題があればIssueに起票した
-```
-
-## ブランチ運用
+本ドキュメントで想定する各ブランチ役割については[ブランチの整理](each_branch.md)に記載する。
 
 現実的に利用する可能性が高いブランチの運用パターン３つ示す。
 
@@ -203,13 +40,11 @@ GitHubでは `.github/PULL_REQUEST_TEMPLATE.md` に記載する。（GitLabで�
 | Lite GitLab Flow<br> | `main`<br>`feature`<br>`develop`<br>（`topic`/`hotfix`）              | GitHub Flowに`develop`ブランチを追加するパターン。（特定の呼称はないのでLite GitLab FLowと命名。）<br>`main`ブランチをプロダクトリリースブランチとし、開発中ソースコードとは分ける。<br>開発作業とリリース作業が並行しないチーム構成であれば必ずしも`release`ブランチを作る必要はない。<br>必要に応じて`hotfix`や`topic`ブランチを作る。                                                                                     | 低         | ・本番リリース済みプロダクトの開発などで、一定品質を保証する必要がある場合                           |
 | GitLab Flow          | `main`<br>`feature`<br>`develop`<br>`release`<br>（`topic`/`hotfix`） | GitHub Flowに`develop`ブランチと`release`ブランチを追加するとGitLab Flowとなる。<br>GitLab Flowでは`main`ブランチのことを`production`ブランチと呼称したり、`release`ブランチのことを`pre production`ブランチと呼称するが、本規約では`main`/`release`に統一する。<br>リリース作業と開発作業が並行して行われる場合や、断面を指定して複数テスト環境にデプロイしたい場合に有効。<br>必要に応じて`hotfix`や`topic`ブランチを作る。 | 中         | ・リリース作業と開発作業が並行して行われる場合<br>  ・断面を指定して複数テスト環境にデプロイしたい場合 |
 
-なお、本ドキュメントで想定する各ブランチ役割については[ブランチの整理](each_branch.md)に記載している。
-
 ### 変則的なパターン
 
 #### developブランチが複数作成する場合
 
-![multi develop branch](branch_strategy_multi_develop.drawio.png)
+![multi develop branch](image/branch_strategy_multi_develop.drawio.png)
 
 複数リリースバージョンを並行して開発する場合、developブランチを複数作るパターンも考えられる。  
 上記の例では日々のエンハンスとは別に数カ月後に大型リリースがある場合を想定する。  
@@ -220,7 +55,7 @@ GitHubでは `.github/PULL_REQUEST_TEMPLATE.md` に記載する。（GitLabで�
 
 #### 過去バージョンをサポートする場合
 
-![multi version branch](branch_strategy_multi_version.drawio.png)
+![multi version branch](image/branch_strategy_multi_version.drawio.png)
 
 過去のバージョンをサポートする場合、バージョン別にsupportブランチを作成するパターンも考えられる。
 インターフェースの大型改善や、仕様変更を受けてversion1からversion2へupdateを行った場合を想定する。
@@ -259,9 +94,9 @@ TODO: 要議論
 複数人により同時並行的に開発が進む場合、特定の機能ブランチで開発を進めている最中に、メインの開発ブランチがアップデートされることはよく起こる。
 このような状況において、開発者は自らの機能ブランチに対して、最新の開発ブランチの変更を定期的に取り込むことが望まれる。
 
-![開発ブランチと機能ブランチ](merge_strategy_develop_to_feature.drawio.png)
+![開発ブランチと機能ブランチ](image/merge_strategy_develop_to_feature.drawio.png)
 
-機能ブランチに対して[開発ブランチの変更を取り込む方法](merge_main_to_feature.md)は「マージ」と「リベース」2つの方法が考えられる。
+[開発ブランチの変更を取り込む方法](merge_develop_to_feature.md)に記載している通り、機能ブランチに対しては「マージ」と「リベース」2つの方法が考えられる。
 
 本規約では「リベース」による方法を推奨する。マージによる変更の取り込みを行う場合、メインの開発ブランチの変更を取り込むたびに機能ブランチにマージコミットが作成され、履歴が複雑になる。リベースによりシンプルな履歴をつくることで、レビューアの負荷を軽減することが、リベースを推奨する理由の1つである。
 
@@ -272,30 +107,28 @@ TODO: 要議論
 マージによる変更の取り込みが既存のブランチを変更しないのに対し、リベースは全く新しい（元のコミットIDとは別のコミットIDで）コミットを作成する。
 リベースを用いる場合は、次の3点に注意すること。
 
-* 複数人に影響を及ぼすpublicなブランチでは、決してリベースを使用しないこと。
+- 複数人に影響を及ぼすpublicなブランチでは、決してリベースを使用しないこと。
 例えば メインの開発ブランチである `develop` ブランチや `main` ブランチが該当する。先述のとおりリベースにより全く新しいコミットが作成されるため、他の人が作業しているブランチと整合性が取れなくなり、大きな混乱を招く可能性がある。このようなブランチはブランチは **強制プッシュできないよう保護しておく** ことが望ましい。
 
-* リモートにプッシュ済のブランチでリベースを行った場合、強制プッシュ（Force Push）が必要になること。
+- リモートにプッシュ済のブランチでリベースを行った場合、強制プッシュ（Force Push）が必要になること。
 開発者はプッシュ時に `--force-with-lease --force-if-includes` フラグを渡すことで、意図せずリモートブランチの変更を上書きしないよう条件付きで強制プッシュを行うことが望ましい。
 
-  * `--force-with-lease`: ローカルのリモート追跡ブランチの ref とリモートの ref を比較し、ローカルの状態が最新でない場合（要はプッシュ先のリモートブランチに変更が入ったが、ローカルで `git fetch` していない場合）は、プッシュに失敗する。逆にいうと、プッシュ前に `git fetch` を実行済みの場合は、リモートの変更を上書きする形で強制プッシュができてしまうため、これを防ぐには `--force-if-includes` フラグを併用する。
+  - `--force-with-lease`: ローカルのリモート追跡ブランチの ref とリモートの ref を比較し、ローカルの状態が最新でない場合（要はプッシュ先のリモートブランチに変更が入ったが、ローカルで `git fetch` していない場合）は、プッシュに失敗する。逆にいうと、プッシュ前に `git fetch` を実行済みの場合は、リモートの変更を上書きする形で強制プッシュができてしまうため、これを防ぐには `--force-if-includes` フラグを併用する。
 
-  * `--force-if-includes`: リモート追跡ブランチの変更がローカルに全て取り込まれていない場合は、プッシュに失敗する。これにより意図せず他の人のコミットを上書きすることを防ぎつつ、必要な変更を強制的にプッシュすることができる。
+  - `--force-if-includes`: リモート追跡ブランチの変更がローカルに全て取り込まれていない場合は、プッシュに失敗する。これにより意図せず他の人のコミットを上書きすることを防ぎつつ、必要な変更を強制的にプッシュすることができる。
 
-* メインの開発ブランチの変更を頻繁に取り込む場合、同じようなコンフリクトの解消を何度も求められる可能性がある。
+- メインの開発ブランチの変更を頻繁に取り込む場合、同じようなコンフリクトの解消を何度も求められる可能性がある。
 GitのRerereを有効化する（`git config rerere.enabled true`）ことでコンフリクトの解消を記録し、繰り返しの操作を自動化することが望ましい。
 
 ### メインの開発ブランチに機能ブランチの変更を取り込む
 
 プルリクエストを経由して、開発が完了した機能ブランチをメインの開発ブランチに取り込むためには、GitHub（GitLab）上でプルリクエスト（マージリクエスト）を経由する運用を前提とする。
 
-GitHubを利用する場合、[開発ブランチに機能ブランチの変更を取り込む方法](merge_feature_to_main.md)は3パターンある。
+[開発ブランチに機能ブランチの変更を取り込む方法](merge_feature_to_develop.md)に記載している通り、次の3パターンの方法があり、3の「Squash and merge」による方法を推奨する。
 
 1. Create a merge commit
 2. Rebase and merge
-3. Squash and merge
-
-本規約では「Squash and merge」による方法を推奨する。
+3. Squash and merge（★推奨）
 
 これは、メインの開発ブランチの履歴をクリーンに保つことが大きな理由になるが、機能ブランチのPRが単一のコミットメッセージで表現できるくらいシンプルで明確な単位にするということが前提となる。
 
@@ -309,22 +142,22 @@ https://zenn.dev/daku10/articles/github-merge-guardian
 
 「Squash and merge」による変更の取り込みを行う場合の注意点は次の通りとなる。
 
-* マージ後は機能ブランチを削除すること。
+- マージ後は機能ブランチを削除すること。
 変更元の機能ブランチのコミットをまとめたコミットが新たに作成されるめ、元の機能ブランチを再利用して（例えば追加のコミットを作成して）PRを作成してもコンフリクトが発生する。
 マージ後はリモート/ローカルの双方で速やかに機能ブランチを削除することが望ましい。
-  * リモート側の機能ブランチはGitHubの設定にて「Automatically delete head branches」を選択することで、マージ後に自動でブランチの削除が行われる。（GitLabでは、マージリクエストから「Delete source branch」オプションを有効にすることで、マージ後に自動でブランチの削除が行われる。プロジェクトの設定で「Enable "Delete source branch" option by default」を選択しておくとデフォルトで有効になる。）
-  * ローカル側の機能ブランチは `branch -d` コマンドでは削除できないため、`branch -D` コマンドを用いて削除する必要がある。
+  - リモート側の機能ブランチはGitHubの設定にて「Automatically delete head branches」を選択することで、マージ後に自動でブランチの削除が行われる。（GitLabでは、マージリクエストから「Delete source branch」オプションを有効にすることで、マージ後に自動でブランチの削除が行われる。プロジェクトの設定で「Enable "Delete source branch" option by default」を選択しておくとデフォルトで有効になる。）
+  - ローカル側の機能ブランチは `branch -d` コマンドでは削除できないため、`branch -D` コマンドを用いて削除する必要がある。
 
-* 部分的なコミットの取り消しができない。
+- 部分的なコミットの取り消しができない。
 履歴上は1つのコミットになるので、マージ後に一部の変更だけを取り消すということができない。
 取り消しはPRの単位となるため、PRの単位をなるべく小さなまとまりにすることが望ましい。
 
-* Authorが失われる。
+- Authorが失われる。
 機能ブランチにコミットを行った人がAuthorになるのではなく、「Squash and merge」を行った人がAuthorになるため、OSS開発を行う場合など、厳密にコントリビューションを管理する必要がある場合は注意されたい。
 GitHubでは「Squash and merge」を行う場合、デフォルトでコミットメッセージに `co-authored-by` トレーラーが追加され、1つのコミットが複数の作成者に帰属するようにするようになっている。この記述は削除しないようにする。
 https://docs.github.com/ja/pull-requests/committing-changes-to-your-project/creating-and-editing-commits/creating-a-commit-with-multiple-authors
 
-* 機能ブランチの取り込み以外のケースでは、「Squash and merge」以外を選択すること。
+- 機能ブランチの取り込み以外のケースでは、「Squash and merge」以外を選択すること。
 例えば、`develop` ブランチを `main` ブランチや `release`ブランチにマージする場合など、取り込み元のブランチの変更が大きい場合は、コミットメッセージを1つにまとめることによる弊害が大きいため、別のマージ戦略を検討すること。
 
 ## コミットメッセージ
@@ -378,7 +211,7 @@ Gitにはタグ機能があり、リリースポイントとしてタグを作�
 - 入力間違えなどのケースを除き、一度タグをつけた後は削除しない
 - 後述する「タグの命名規則」に従う
 
-![GitHub画面でbackend/v1.6.0のタグを作成する](create_new_tag.png)
+![GitHub画面でbackend/v1.6.0のタグを作成する](image/create_new_tag.png)
 
 何かしらの理由で、コマンドラインからタグを作成する必要がある場合は、以下に注意する。画面経由・コマンドライン経由でのタグ作成は混ぜないようにし、運用手順は統一する。
 
@@ -396,7 +229,7 @@ $ git tag "v1.0.4"
 
 - `v1.2.4` などの [セマンティックバージョニング](https://semver.org/lang/ja/) を基本とする
 - モノリポの場合は `frontend/v1.0.0`、`backend/v2.0.1` など領域ごとにプレフィックスを付与する形式を取る
-    - プレフィックスにすることで、タグをリスト表示した場合に視認性を上げることができる
+  - プレフィックスにすることで、タグをリスト表示した場合に視認性を上げることができる
 
 命名に従うと、次のようなコマンドで絞り込みで表示できる。
 
@@ -412,7 +245,7 @@ frontend/v1.1.0
 また、Gitクライアントによっては `/` を使うことでフォルダのように階層表示ができるため、プレフィックスの区切り文字は `-` ハイフンではなく、スラッシュとする。
 
 ```
-TODO ![](VSCodeクライアントで階層表示されている画像.png)
+![TODO -](VSCodeクライアントで階層表示されている画像.png)
 ```
 
 タグメッセージの規則:
@@ -421,7 +254,7 @@ TODO ![](VSCodeクライアントで階層表示されている画像.png)
 - フロントエンド・バックエンドで整合性を保っているのであれば、メモ目的でバージョンを記載する運用を推奨とする
 - 実用的な利用用途が思いつかない場合は、開発者視点での楽しみリリースの大きなマイルストーンの名称など、チームの関心事を記入することを推奨とする
 
-![](create_new_tag_title.png)
+![create new tag](image/create_new_tag_title.png)
 
 何かしらの理由で、コマンドラインからタグを作成する必要がある場合は、GitHub利用時の規則に合わせて次のように作成する。
 
@@ -441,10 +274,10 @@ $ git tag -a backend/v3.0.0 -m "🚀Release version v2.0.0"
 
 - 開発しているプロダクトがライブラリの場合、セマンティックバージョニングに厳密に従う
 - 開発しているプロダクトがシステム（アプリケーション）の場合、その成熟度や初回リリースの区切りでバージョンアップを行うことを推奨する。適切なバージョンアップを行うことで視認性が上がり、運用負荷を下げることができる
-    - 例1: 初回リリース、カットオーバーで `v1.0.0` に上げる
-    - 例2: 稼働後1年以上経過し、中規模以上の大きな機能アップデートがあったので、 `v2.0.0` に上げる
+  - 例1: 初回リリース、カットオーバーで `v1.0.0` に上げる
+  - 例2: 稼働後1年以上経過し、中規模以上の大きな機能アップデートがあったので、 `v2.0.0` に上げる
 
-## （参考1）ローカルでの作業例
+## 参考1:ローカルでの作業例
 
 gitコマンドでの作業例を記載する。リモートブランチへのプッシュは、`--force-with-lease --force-if-includes` オプションを付けることを必須とする。
 
@@ -465,6 +298,6 @@ git commit -a
 git push origin HEAD --force-with-lease --force-if-includes
 ```
 
-## （参考2）VS Code上でのGit操作
+## 参考2: VS Code上でのGit操作
 
 [VSCode上でのGit操作](vscode_git_ope.md)で、利用頻度が高いとされるGitクライアントである、VS Code上でのGit操作を紹介する。

@@ -21,7 +21,7 @@ GUIでのGit操作にあたり、次の2つの拡張機能をインストール�
 
 サイドバー > Explorer か Source Control > Clone Repository ボタンをクリックし、URLを入力すると、リポジトリをクローンできる。
 
-![Clone1](vscode_git_clone1.png)  ![Clone2](vscode_git_clone2.png)
+![Clone1](image/vscode_git_clone1.png)  ![Clone2](image/vscode_git_clone2.png)
 
 ## コミットグラフの表示
 
@@ -29,7 +29,7 @@ SOURCE CONTROL パネル > 黒丸のグラフアイコン (View Git Graph (git l
 
 白丸のグラフアイコン (Show Commit Graph) はGitLensのコミットグラフだが、冒頭の記述通り、Pro版でのみの提供となる。
 
-![Graph1](vscode_git_graph1.png)  ![Graph2](vscode_git_graph2.png)
+![Graph1](image/vscode_git_graph1.png)  ![Graph2](image/vscode_git_graph2.png)
 
 ## リモートのフェッチ／プル (`git fetch` / `git pull`)
 
@@ -38,11 +38,11 @@ SOURCE CONTROL パネル > 黒丸のグラフアイコン (View Git Graph (git l
 - SOURCE CONTROL パネル > 三点リーダーアイコン (More Actions...) をクリックし、 Fetch を選択
 - コミットグラフ > 雲アイコン (Fetch from Remote(s)) をクリック
 
-![Fetch1](vscode_git_fetch1.png)
+![Fetch1](image/vscode_git_fetch1.png)
 
 なお、フェッチ後に以下のようなダイアログが表示される場合があるが、 "Yes" を選択すると、自動で定期的にフェッチを行う。
 
-![Fetch2](vscode_git_fetch2.png)
+![Fetch2](image/vscode_git_fetch2.png)
 
 [TODO] プルを追記する。
 
@@ -56,7 +56,7 @@ SOURCE CONTROL パネル > 黒丸のグラフアイコン (View Git Graph (git l
 - コミットグラフ > 作成元コミットの行上で右クリックし、Create Branch... を選択
   - "Check out" にチェックを入れると、作成したブランチにチェックアウトする
 
-![Branch1](vscode_git_branch1.png)  ![Branch2](vscode_git_branch2.png)
+![Branch1](image/vscode_git_branch1.png)  ![Branch2](image/vscode_git_branch2.png)
 
 [TODO] チェックアウトを追記する。
 
@@ -64,11 +64,11 @@ SOURCE CONTROL パネル > 黒丸のグラフアイコン (View Git Graph (git l
 
 SOURCE CONTROL パネル > 変更ファイルの行 > +アイコン (Stage Changes) をクリックすると、対象ファイルをステージできる。（Changes > +アイコン (Stage All Changes) をクリックすると、すべての変更をステージする）
 
-![Stage](vscode_git_stage.png)
+![Stage](image/vscode_git_stage.png)
 
 必要な変更をステージ後、 SOURCE CONTROL パネル内でコミットメッセージを入力し、 Commit ボタンをクリックすると、コミットを作成できる。
 
-![Commit](vscode_git_commit.png)
+![Commit](image/vscode_git_commit.png)
 
 以下のいずれかの操作を実行すると、作成したコミットをリモートリポジトリにプッシュできる。
 
@@ -76,7 +76,7 @@ SOURCE CONTROL パネル > 変更ファイルの行 > +アイコン (Stage Chang
 - BRANCHES パネル > 対象ブランチの行 > 雲アイコン (Publish Branch) をクリック
 - コミットグラフ > 対象ブランチの上で右クリックし、Push Branch... を選択
 
-![push1](vscode_git_push1.png)  ![push2](vscode_git_push2.png)  ![push3](vscode_git_push3.png)
+![push1](image/vscode_git_push1.png)  ![push2](image/vscode_git_push2.png)  ![push3](image/vscode_git_push3.png)
 
 ## リバート (`git revert`)
 

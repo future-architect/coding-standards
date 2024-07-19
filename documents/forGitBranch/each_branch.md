@@ -11,7 +11,6 @@
 | `hotfix`       | mainブランチに対する即時修正                          | developブランチの利用が前提となる。<br>本番リリースに対して迅速にパッチを当てたい場合にmainブランチから作成する。<br>mainブランチとfeatureブランチのみの運用の場合は必ずしも利用する必要はない。 | `hotfix/${任意名称}`<br>可能な限りわかりやすい命名とすること。                                                                         | ◯         | 
 | `topic`        | featureブランチにて複数人開発をする場合の開発ブランチ | featureブランチで実現する機能を複数人で開発する場合にfeatureブランチから作成する。                                                                                                               | `topic/${任意名称}`<br>可能な限りわかりやすい命名とすること。                                                                          | ◯         | 
 
-
 ## main(master)ブランチ
 
 Gitリポジトリを新規作成するとデフォルトで作成されるブランチ。  
@@ -25,7 +24,7 @@ production環境と対応するブランチとなる場合が多い。
 ひとつの変更に対してひとつのfeatureブランチを作成することになるため、開発中で最も使われるブランチとなる。  
 mainブランチあるいはdevelopブランチから派生させ、作業完了後に作成元ブランチにマージする。  
 
-![feature branch](branch_strategy_feature.drawio.png)
+![feature branch](image/branch_strategy_feature.drawio.png)
 
 ## developブランチ
 
@@ -35,7 +34,7 @@ mainブランチあるいはdevelopブランチから派生させ、作業完了
 都度リリースをするのであればmainブランチとfeatureブランチのみの運用でも問題ないが、リリース断面と開発断面を分けたい場合にdevelopブランチを利用する。  
 開発スケジュールによっては複数のdevelopブランチが発生することもある。  
 
-![develop branch](branch_strategy_develop.drawio.png)
+![develop branch](image/branch_strategy_develop.drawio.png)
 
 ## releaseブランチ
 
@@ -46,7 +45,7 @@ releaseブランチではバグ修正、ドキュメント生成、その他の�
 developブランチからreleaseブランチを作成、リリース準備作業を実施し、mainブランチへマージ後、mainブランチからリリースを行う。  
 masterブランチのマージコミットにリリースタグ（バージョンなど）を打ち、mainブランチをdevelopブランチへマージ後、releaseブランチを削除する。  
 
-![release branch](branch_strategy_release.drawio.png)
+![release branch](image/branch_strategy_release.drawio.png)
 
 ## hotfixブランチ
 
@@ -55,7 +54,7 @@ developブランチではなく、mainブランチをベースとする。
 修正が完了するとmainとdevelopの両方(あるいは進行中のreleaseブランチ)に直ちにマージされ、mainは更新されたバージョン番号でタグ付けされる。  
 mainブランチとdevelopブランチが分かれている場合はほぼ必須で発生すると考えて良いが、mainブランチ+featureブランチのみの運用では必ずしも必要ではない。（管理上の目的でfeatureとhotfixを分けることはあり得る。）  
 
-![hotfix branch](branch_strategy_hotfix.drawio.png)
+![hotfix branch](image/branch_strategy_hotfix.drawio.png)
 
 ## topicブランチ  
 
@@ -64,4 +63,4 @@ featureブランチからtopicブランチを作成し、topicブランチ上で
 topicブランチが必要なケースでは、featureブランチへの直接pushは原則行わない。  
 GitHub Flowではfeatureブランチのことをtopicブランチと呼称する場合があるが、本規約ではfeatureブランチから派生するブランチをtopicブランチと定義する。  
 
-![topic branch](branch_strategy_topic.drawio.png)
+![topic branch](image/branch_strategy_topic.drawio.png)
