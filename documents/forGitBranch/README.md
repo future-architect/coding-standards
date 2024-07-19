@@ -209,7 +209,7 @@ GitHubでは `.github/PULL_REQUEST_TEMPLATE.md` に記載する。（GitLabで�
 
 #### developブランチが複数作成する場合
 
-![develop branch](branch_strategy_multi_develop.drawio.png)
+![multi develop branch](branch_strategy_multi_develop.drawio.png)
 
 複数リリースバージョンを並行して開発する場合、developブランチを複数作るパターンも考えられる。  
 上記の例では日々のエンハンスとは別に数カ月後に大型リリースがある場合を想定する。  
@@ -218,9 +218,16 @@ GitHubでは `.github/PULL_REQUEST_TEMPLATE.md` に記載する。（GitLabで�
 `develop1`の変更にはバグフィックスや軽微なUI向上が含まれる想定であり、これらの変更は日次あるいは週次の比較的高頻度で本番環境へリリースされる。  
 当然、`develop2`はこれらの変更を加味して大型リリース向け開発を進める必要があるので、`develop1`のmainブランチ反映されるたびに`develop1`から`develop2`への同期を行う必要がある。  
 
-#### 複数バージョンをサポートする場合
+#### 過去バージョンをサポートする場合
 
-TODO: `support`ブランチを使用する。
+![multi version branch](branch_strategy_multi_version.drawio.png)
+
+過去のバージョンをサポートする場合、バージョン別にsupportブランチを作成するパターンも考えられる。
+インターフェースの大型改善や、仕様変更を受けてversion1からversion2へupdateを行った場合を想定する。
+メインの更新はversion2（mainブランチ）に対して行っていくが、version1の利用ユーザーが存在する場合、バグfixやセキュリティアップデートを並行して行うことが考えられる。  
+そういった場合はversion1を示すブランチ（`support/v1`）を別途作成、そのブランチからfeatureブランチを作成してfixを行う。  
+featureブランチのマージ後、マイナーバージョン（あるいはパッチバージョン）を上げたtagをcommitし、本番環境へリリースする。  
+※この例ではversion1とversion2が別リソースとして動いていることを前提としている。同一リソースで複数バージョンが稼働する場合はversion2のブランチで対応を行う必要がある。
 
 ### ブランチとデプロイ先環境
 
