@@ -198,24 +198,7 @@ Gitのコミットメッセージは原則自由とする。理由は以下で�
 
 ## ブランチ名
 
-ブランチ戦略で選択したパターンのブランチ名（develop/release/topic/hotfix）を利用する。
-
-featureブランチは以下の命名に従う。
-
-- `feature/` のプレフィックスを付ける
-- 課題管理システムと紐付けられるようなブランチ名にする
-
-```sh
-# OK（課題管理システムの課題番号をブランチ名に利用）
-feature/#12345
-
-# OK（GitHub Issue や JIRA や Backlog のプロジェクトIDをブランチ名に利用）
-feature/<PROJECTID>-9403
-feature/gh-issue-12345
-
-# NG（プレフィックスが無い）
-fixtypo
-```
+ブランチ名の命名規則は、[ブランチの整理](each_branch.md)に記載する。
 
 ## ラベル
 
