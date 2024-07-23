@@ -4,7 +4,7 @@ title: Gitブランチフロー規約 - 推奨設定
 author: フューチャー株式会社
 ---
 
-# 推奨設定
+## 推奨設定
 
 GitやGitHubの推奨設定をまとめる。本ドキュメントにあるGitブランチ運用はこの設定が行われている前提で説明する箇所がある。
 
@@ -36,9 +36,7 @@ git config --global alias.ci commit
 git config --global alias.br branch
 ```
 
-::: tip
-
-git workflowの補足説明:
+::: tip git workflowの補足説明
 
 - `pull.rebase`: pull時にリベースする
 - `rerere.enabled`: コンフリクトの解決を記録しておき、再び同様のコンフリクトが発生した場合に自動適用する
