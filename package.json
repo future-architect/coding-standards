@@ -17,7 +17,9 @@
     "pandoc:awsresource-html": "pandoc ./documents/forAWSResource/AWSインフラリソース命名規約.md -s --self-contained --number-sections --toc -t html5 -c ./documents/common/pandoc_styles/css/style.css -o ./documents/forAWSResource/AWSインフラリソース命名規約.html",
     "pandoc:awsresource-word": "pandoc ./documents/forAWSResource/AWSインフラリソース命名規約.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./documents/forAWSResource/AWSインフラリソース命名規約.docx",
     "pandoc:swagger-html": "pandoc ./documents/forOpenAPISpecification/OpenAPI_Specification_2.0.md -s --self-contained --number-sections --toc -t html5 -F mermaid-filter.cmd -c ./documents/common/pandoc_styles/css/style.css -o ./documents/forOpenAPISpecification/OpenAPI_Specification_2.0規約.html",
-    "pandoc:swagger-word": "pandoc ./documents/forOpenAPISpecification/OpenAPI_Specification_2.0.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -F mermaid-filter.cmd -s -o ./documents/forOpenAPISpecification/OpenAPI_Specification_2.0規約.docx"
+    "pandoc:swagger-word": "pandoc ./documents/forOpenAPISpecification/OpenAPI_Specification_2.0.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -F mermaid-filter.cmd -s -o ./documents/forOpenAPISpecification/OpenAPI_Specification_2.0規約.docx",
+    "pandoc:gitbranch-html": "pandoc ./documents/forGitBranch/Gitブランチフロー規約.md -s --self-contained --number-sections --toc -t html5 -F mermaid-filter.cmd -c ./documents/common/pandoc_styles/css/style.css -o ./documents/forGitBranch/Gitブランチフロー規約.html",
+    "pandoc:gitbranch-word": "pandoc ./documents/forGitBranch/Gitブランチフロー規約.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -F mermaid-filter.cmd -s -o ./documents/forGitBranch/Gitブランチフロー.docx"
   },
   "repository": {
     "type": "git  ",
