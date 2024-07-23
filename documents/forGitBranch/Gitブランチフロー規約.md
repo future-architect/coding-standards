@@ -15,7 +15,7 @@ meta:
 
 また、掲載している情報は予告なく変更することがございますので、あらかじめご了承下さい。
 
-## はじめに
+# はじめに
 
 本ドキュメントはGitブランチ管理の標準的な運用ルールをまとめている。以下の想定で作成されているため留意いただきたい。
 
@@ -25,7 +25,7 @@ meta:
 
 導入に際して行う、GitやGitHub/GitLabの環境設定は、[推奨設定](recommended_settings.md)ページに記載している。
 
-## ブランチ運用パターン
+# ブランチ運用パターン
 
 本ドキュメントで想定する各ブランチ役割については[ブランチの整理](each_branch.md)に記載する。
 
@@ -41,9 +41,9 @@ meta:
 | Lite GitLab Flow | `main`<br>`develop`<br>`feature`<br>`topic`<br> `hotfix`  | GitHub Flowに`develop`ブランチを追加するパターン。（特定の呼称はないのでLite GitLab FLowと命名。）<br>`main`ブランチをプロダクトリリースブランチとし、開発中ソースコードとは分ける。 | 低         | ・本番リリース済みプロダクトの開発などで、一定品質を保証する必要がある場合<br>・開発作業とリリース作業が並行しないチーム構成である場合                           |
 | GitLab Flow      | `main`<br>`develop`<br>`release` <br>`feature`<br>`topic` <br> `hotfix` | GitHub Flowに`develop`ブランチと`release`ブランチを追加するパターン。<br>GitLab Flowでは`main`ブランチを`production`ブランチ、`release`ブランチとを`pre production`ブランチと呼称するが、本規約では`main`/`release`に統一する。 | 中         | ・リリース作業と開発作業が並行して行われる場合<br>  ・断面を指定して複数テスト環境にデプロイしたい場合 |
 
-### 変則的なパターン
+## 変則的なパターン
 
-#### developブランチが複数作成する場合
+### developブランチが複数作成する場合
 
 ![multi develop branch](img/branch_strategy_multi_develop.drawio.png)
 
@@ -71,7 +71,7 @@ develop2のリリースは以下の手順で行う。
 - 本番環境（=`develop`）との差分を把握することができる
 - より一般的な名称である `develop` ブランチのみ残るため、新規参画者フレンドリーである
 
-#### 過去バージョンをサポートする場合
+### 過去バージョンをサポートする場合
 
 ![multi version branch](img/branch_strategy_multi_version.drawio.png)
 
@@ -82,7 +82,7 @@ develop2のリリースは以下の手順で行う。
 featureブランチのマージ後、マイナーバージョン（あるいはパッチバージョン）を上げたタグをコミットし、本番環境へリリースする。  
 ※この例ではversion1とversion2が別リソースとして動いていることを前提としている。同一リソースで複数バージョンが稼働する場合はversion2のブランチで対応を行う必要がある。
 
-## マージ戦略
+# マージ戦略
 
 マージ戦略とは、複数のブランチ間でコードの変更を統合する際に使用される方法やポリシーを指し、以下の事項に影響を与えます。
 
@@ -100,7 +100,7 @@ featureブランチのマージ後、マイナーバージョン（あるいは�
 1. 開発中の機能ブランチに対してメインの開発ブランチの変更をどう取り込むか
 2. メインの開発ブランチに開発およびレビューが完了した機能ブランチをどう取り込むか
 
-### 1. 機能ブランチにメインの開発ブランチの変更を取り込む
+## 1. 機能ブランチにメインの開発ブランチの変更を取り込む
 
 複数人により同時並行的に開発が進む場合、特定の機能ブランチで開発を進めている最中に、メインの開発ブランチがアップデートされることはよく起こる。
 
@@ -148,7 +148,7 @@ featureブランチのマージ後、マイナーバージョン（あるいは�
 | AWS CodeCommit | 残る           | 消える                            | 消える                              | 強制プッシュ関係なく、最新のコミットに対してのみレビューコメントが紐づく。そのため、新しいコミットをPushすると、過去につけたレビューコメントがファイル詳細から消えたように見える |
 :::
 
-### 2. メインの開発ブランチに機能ブランチの変更を取り込む
+## 2. メインの開発ブランチに機能ブランチの変更を取り込む
 
 プルリクエストを経由して、開発が完了した機能ブランチをメインの開発ブランチに取り込むためには、GitHub（GitLab）上でプルリクエスト（マージリクエスト）を経由する運用を前提とする。
 
@@ -184,11 +184,11 @@ https://zenn.dev/daku10/articles/github-merge-guardian
 
 [^1]: https://docs.github.com/ja/pull-requests/committing-changes-to-your-project/creating-and-editing-commits/creating-a-commit-with-multiple-authors
 
-## ブランチ運用アンチパターン
+# ブランチ運用アンチパターン
 
 ブランチ運用でよく課題に上がるパターンとその対応を紹介する。
 
-### 追い抜きリリース
+## 追い抜きリリース
 
 以下のような状況とします。
 
@@ -220,7 +220,7 @@ https://zenn.dev/daku10/articles/github-merge-guardian
 
 ![hotfixで追い抜き](img/release_overtaking_hotfix.drawio.png)
 
-## コミットメッセージ
+# コミットメッセージ
 
 Gitのコミットメッセージは原則自由とする。理由は以下である。
 
@@ -232,17 +232,17 @@ Gitのコミットメッセージは原則自由とする。理由は以下で�
 
 - [コミットメッセージ規約](commit_message_rule.md)
 
-## ブランチ名
+# ブランチ名
 
-ブランチ名の命名規則は、[ブランチの整理](each_branch.md)に記載する。
+ブランチ名の命名規則は、[ブランチの整理](each_branch.md)の記載内容に従うこと。
 
-## ラベル
+# ラベル
 
 TODO ラベルについて方針を追加する。（ラベルを利用することで、issue, プルリクエストを分類することができる。適切に設定することでリリースノート作成時に有用である。）
 
 https://docs.github.com/ja/issues/using-labels-and-milestones-to-track-work/managing-labels
 
-## タグ
+# タグ
 
 Gitにはタグ機能があり、リリースポイントとしてタグを作成する運用とする。
 
@@ -250,7 +250,7 @@ Gitにはタグ機能があり、リリースポイントとしてタグを作�
 
 タグを利用するうえでの運用ルール・命名規則などは[タグ規則](git_tag.md)を参考にする。
 
-## 参考1:ローカルでの作業例
+# 参考1:ローカルでの作業例
 
 gitコマンドでの作業例を記載する。リモートブランチへのプッシュは、`--force-with-lease --force-if-includes` オプションを付けることを必須とする。
 
@@ -271,6 +271,6 @@ git commit -a
 git push origin HEAD --force-with-lease --force-if-includes
 ```
 
-## 参考2: VS Code上でのGit操作
+# 参考2: VS Code上でのGit操作
 
 [VSCode上でのGit操作](vscode_git_ope.md)で、利用頻度が高いとされるGitクライアントである、VS Code上でのGit操作を紹介する。

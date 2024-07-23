@@ -148,7 +148,6 @@ module.exports = {
                 text: "Gitブランチフロー規約",
                 link: "/documents/forGitBranch/Gitブランチフロー規約.html",
               },
-
             ],
           },
         ],

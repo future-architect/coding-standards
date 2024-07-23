@@ -36,9 +36,7 @@ git config --global alias.ci commit
 git config --global alias.br branch
 ```
 
-::: tip
-
-git workflowの補足説明:
+::: tip git workflowの補足説明
 
 - `pull.rebase`: pull時にリベースする
 - `rerere.enabled`: コンフリクトの解決を記録しておき、再び同様のコンフリクトが発生した場合に自動適用する
