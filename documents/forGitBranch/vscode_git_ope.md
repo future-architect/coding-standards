@@ -80,8 +80,16 @@ SOURCE CONTROL パネル > 変更ファイルの行 > +アイコン (Stage Chang
 
 ## リバート (`git revert`)
 
+TODO
+
 ## マージ (`git merge`)
+
+TODO
 
 ## リベース (`git rebase`)
 
+TODO
+
 ## スタッシュ (`git stash`)
+
+TODO
