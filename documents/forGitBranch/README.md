@@ -57,7 +57,7 @@ footer: ©2015 - 2024 Future Enterprise Coding Standards - Future Corporation
 `develop`から`develop2`への同期は以下の様に行う。
 
 - rebaseとしてしまうと`develop2`を元にfeatureブランチを作成して開発している開発者が混乱することになるため、merge commitにて同期を行う。  
-- 誤操作を避ける目的でcherry picは行わない。
+- 誤操作を避ける目的でcherry-pickは行わない。
 
 ![release multi develop branch](image/branch_strategy_release_multi_develop.drawio.png)
 
