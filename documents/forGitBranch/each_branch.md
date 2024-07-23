@@ -33,7 +33,7 @@ Gitリポジトリを新規作成するとデフォルトで作成されるブ�
 - mainブランチあるいはdevelopブランチから派生させ、作業完了後に作成元ブランチにマージし、その後削除する
 - 後述するtopicブランチを利用しない場合は、基本的に1人の開発者のみが利用する
 
-![feature branch](image/branch_strategy_feature.drawio.png)
+![feature branch](img/branch_strategy_feature.drawio.png)
 
 以下の命名に従う。
 
@@ -61,7 +61,7 @@ fixtypo
 - 都度リリースをするのであればmainブランチとfeatureブランチのみの運用でも問題ないが、リリース断面と開発断面を分けたい場合にdevelopブランチを利用する
 - 体制・開発スケジュールによっては複数のdevelopブランチが発生することもある
 
-![develop branch](image/branch_strategy_develop.drawio.png)
+![develop branch](img/branch_strategy_develop.drawio.png)
 
 ## releaseブランチ
 
@@ -73,7 +73,7 @@ fixtypo
 - developブランチからreleaseブランチを作成、リリース準備作業を実施し、mainブランチへマージ後、mainブランチからリリースを行う
 - masterブランチのマージコミットにリリースタグ（バージョンなど）を打ち、mainブランチをdevelopブランチへマージ後、releaseブランチを削除する
 
-![release branch](image/branch_strategy_release.drawio.png)
+![release branch](img/branch_strategy_release.drawio.png)
 
 ## hotfixブランチ
 
@@ -83,7 +83,7 @@ fixtypo
 - 修正が完了するとmainとdevelopの両方(あるいは進行中のreleaseブランチ)に直ちにマージされ、mainは更新されたバージョン番号でタグ付けされる
 - mainブランチとdevelopブランチが分かれている場合はほぼ必須で発生すると考えて良いが、mainブランチ+featureブランチのみの運用では必ずしも必要ではない。（管理上の目的でfeatureとhotfixを分けることはあり得る。）  
 
-![hotfix branch](image/branch_strategy_hotfix.drawio.png)
+![hotfix branch](img/branch_strategy_hotfix.drawio.png)
 
 命名はfeatureブランチと同じく、課題管理システムと紐づけるようなブランチ名とする。
 
@@ -95,6 +95,6 @@ featureブランチで実現する機能を複数人で開発する場合に使�
 - topicブランチが必要なケースでは、featureブランチへの直接pushは原則行わない
 - GitHub Flowではfeatureブランチのことをtopicブランチと呼称する場合があるが、本規約ではfeatureブランチから派生するブランチをtopicブランチと定義する
 
-![topic branch](image/branch_strategy_topic.drawio.png)
+![topic branch](img/branch_strategy_topic.drawio.png)
 
 命名はfeatureブランチと同じく、課題管理システムと紐づけるようなブランチ名とする。

@@ -7,6 +7,7 @@
     "install": "npm install --global mermaid-filter",
     "lint": "eslint . .vuepress --ext .js,.vue",
     "watch": "vuepress dev . --debug --no-cache",
+    "copy": "cp -r documents/forGitBranch/img docs/documents/forGitBranch/img",
     "build": "vuepress build .",
     "format": "prettier . --write",
     "pandoc": "npm-run-all pandoc:*",

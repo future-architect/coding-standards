@@ -47,7 +47,9 @@ jobs:
           npm i --legacy-peer-deps
           npm i --global mermaid-filter
       - name: Build all
-        run: npm run build
+        run: |
+          npm run build
+          npm run copy
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:

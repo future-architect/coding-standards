@@ -45,7 +45,7 @@ meta:
 
 #### developブランチが複数作成する場合
 
-![multi develop branch](image/branch_strategy_multi_develop.drawio.png)
+![multi develop branch](img/branch_strategy_multi_develop.drawio.png)
 
 複数リリースバージョンを並行して開発する場合、developブランチを複数作るパターンも考えられる。  
 上記の例では日々のエンハンスとは別に数カ月後に大型リリースがある場合を想定する。  
@@ -58,7 +58,7 @@ meta:
 - rebaseとしてしまうと`develop2`を元にfeatureブランチを作成して開発している開発者が混乱することになるため、マージコミットにて同期を行う。  
 - 誤操作を避ける目的でcherry-pickは行わない。
 
-![release multi develop branch](image/branch_strategy_release_multi_develop.drawio.png)
+![release multi develop branch](img/branch_strategy_release_multi_develop.drawio.png)
 
 develop2のリリースは以下の手順で行う。
 
@@ -73,7 +73,7 @@ develop2のリリースは以下の手順で行う。
 
 #### 過去バージョンをサポートする場合
 
-![multi version branch](image/branch_strategy_multi_version.drawio.png)
+![multi version branch](img/branch_strategy_multi_version.drawio.png)
 
 社内ライブラリなど過去のバージョンをサポートする場合、バージョン別にsupportブランチを作成するパターンも考えられる。
 インターフェースの大型改善や、仕様変更を受けてversion1からversion2へupdateを行った場合を想定する。
@@ -106,7 +106,7 @@ featureブランチのマージ後、マイナーバージョン（あるいは�
 
 このような状況において、開発者は自らの機能ブランチに対して、最新の開発ブランチの変更を定期的に取り込むことが望まれる。
 
-![開発ブランチと機能ブランチ](image/merge_strategy_develop_to_feature.drawio.png)
+![開発ブランチと機能ブランチ](img/merge_strategy_develop_to_feature.drawio.png)
 
 [開発ブランチの変更を機能ブランチに取り込む方法](merge_develop_to_feature.md)に記載している通り、次の2つの方法があり、2の「リベース」による方法を推奨する。
 
@@ -196,7 +196,7 @@ https://zenn.dev/daku10/articles/github-merge-guardian
   - issue-312のリリースは業務上の合意が得られていない（エンドユーザ操作に影響があるため、事前告知した日時でリリースしたいなど）
   - issue-394は不具合修正であり業務課題として目につくため、なるべく早くリリースして解消したい
 
-![同一ファイルを複数](image/release_overtaking.drawio.png)
+![同一ファイルを複数](img/release_overtaking.drawio.png)
 
 よく陥りがちな対策としては次の2点が考えられる。
 
@@ -216,7 +216,7 @@ https://zenn.dev/daku10/articles/github-merge-guardian
 
 2の例を以下に図示する
 
-![hotfixで追い抜き](image/release_overtaking_hotfix.drawio.png)
+![hotfixで追い抜き](img/release_overtaking_hotfix.drawio.png)
 
 ## コミットメッセージ
 
@@ -254,7 +254,7 @@ Gitにはタグ機能があり、リリースポイントとしてタグを作�
 - 入力間違えなどのケースを除き、一度タグをつけた後は削除しない
 - 後述する「タグの命名規則」に従う
 
-![GitHub画面でbackend/v1.6.0のタグを作成する](image/create_new_tag.png)
+![GitHub画面でbackend/v1.6.0のタグを作成する](img/create_new_tag.png)
 
 何かしらの理由で、コマンドラインからタグを作成する必要がある場合は、以下に注意する。画面経由・コマンドライン経由でのタグ作成は混ぜないようにし、運用手順は統一する。
 
@@ -297,7 +297,7 @@ frontend/v1.1.0
 - フロントエンド・バックエンドで整合性を保っているのであれば、メモ目的でバージョンを記載する運用を推奨とする
 - 実用的な利用用途が思いつかない場合は、開発者視点での楽しみリリースの大きなマイルストーンの名称など、チームの関心事を記入することを推奨とする
 
-![create new tag](image/create_new_tag_title.png)
+![create new tag](img/create_new_tag_title.png)
 
 何かしらの理由で、コマンドラインからタグを作成する必要がある場合は、GitHub利用時の規則に合わせて次のように作成する。
 
