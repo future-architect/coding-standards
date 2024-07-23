@@ -63,7 +63,7 @@ footer: ©2015 - 2024 Future Enterprise Coding Standards - Future Corporation
 
 develop2のリリースは以下の手順で行う。
 
-1. `develop`から`develop2`へmerge commitによって同期を行う。（2でconflictが起こらないよう、前準備の意味合いで実施する。）
+1. `develop`から`develop2`へマージコミットによって同期を行う。（2でconflictが起こらないよう、前準備の意味合いで実施する。）
 2. `develop2`から`develop`にmergeを行い、その後は通常のリリースフローに従う。
 3. 問題なくリリースが完了し次第、`develop2`を削除する。
 
