@@ -8,11 +8,13 @@ pageClass: lang-home
 footer: ©2015 - 2024 Future Enterprise Coding Standards - Future Corporation
 ---
 
-# Resources
+# Gitブランチフロー規約
 
-[Gitブランチフローの規約] です。
+チーム開発する上で必要となるGitブランチフローの規約です。
 
-次のリンクから単一ファイルで作成されたコーディング規約を取得できます。
+- [Gitブランチフローの規約](Gitブランチフロー規約.md)
+
+次のリンクから単一ファイル版を取得できます。
 
 - [Markdown](https://github.com/future-architect/coding-standards/blob/master/documents/forGitBranch/Gitブランチフロー規約.md)
 - [HTML](https://github.com/future-architect/coding-standards/blob/gh-pages/resources/Gitブランチフロー規約.html)
