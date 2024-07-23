@@ -29,6 +29,10 @@ const links = {
     "/documents/forOpenAPISpecification/OpenAPI_Specification_2.0.html",
     "/documents/forOpenAPISpecification/OpenAPI_Specification_3.0.3.html",
   ],
+  "/documents/forGitBranch/": [
+    "/documents/forGitBranch/",
+    "/documents/forGitBranch/Gitブランチフロー規約.html",
+  ],
 };
 console.log(links);
 
@@ -131,6 +135,20 @@ module.exports = {
                 text: "For OAS 3.0.3",
                 link: "/documents/forOpenAPISpecification/OpenAPI_Specification_3.0.3.html",
               },
+            ],
+          },
+          {
+            text: "Gitブランチフロー規約",
+            items: [
+              {
+                text: "Home",
+                link: "/documents/forGitBranch/",
+              },
+              {
+                text: "Gitブランチフロー規約",
+                link: "/documents/forGitBranch/Gitブランチフロー規約.html",
+              },
+
             ],
           },
         ],

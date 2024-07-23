@@ -1,4 +1,10 @@
-# VSCode上でのGit操作
+---
+sidebarDepth: 4
+title: Gitブランチフロー規約 - VSCode上でのGit操作
+author: フューチャー株式会社
+---
+
+## VSCode上でのGit操作
 
 利用頻度が高いとされるVS CodeでのGit操作を紹介する。
 
