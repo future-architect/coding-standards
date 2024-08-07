@@ -251,9 +251,11 @@ Gitにはタグ機能があり、リリースポイントとしてタグを作�
 
 # ラベル規則
 
-TODO ラベルについて方針を追加する。（ラベルを利用することで、issue, プルリクエストを分類することができる。適切に設定することでリリースノート作成時に有用である。）
+Issueやプルリクエストを分類することができるラベルについての利用は自由とする。
 
-https://docs.github.com/ja/issues/using-labels-and-milestones-to-track-work/managing-labels
+プルリクエストに適切なラベルを設定し、 [自動生成リリースノート - GitHub Docs](https://docs.github.com/ja/repositories/releasing-projects-on-github/automatically-generated-release-notes) に記載があるように `.github/release.yml` への設定を行うことで、リリースノートの生成をラベル単位にグルーピングできる。
+
+プルリクエストを後で探しやすくするための検索キーとしての位置づけと、リリースノート自動生成という観点でラベルを準備すること。
 
 # 参考1:ローカルでの作業例
 
