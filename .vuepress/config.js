@@ -32,6 +32,13 @@ const links = {
   "/documents/forGitBranch/": [
     "/documents/forGitBranch/",
     "/documents/forGitBranch/Gitブランチフロー規約.html",
+    "/documents/forGitBranch/recommended_settings.html",
+    "/documents/forGitBranch/each_branch.html",
+    "/documents/forGitBranch/merge_develop_to_feature.html",
+    "/documents/forGitBranch/merge_feature_to_develop.html",
+    "/documents/forGitBranch/git_tag.html",
+    "/documents/forGitBranch/commit_message_rule.html",
+    "/documents/forGitBranch/vscode_git_ope.html",
   ],
 };
 console.log(links);

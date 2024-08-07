@@ -1,6 +1,6 @@
 ---
 sidebarDepth: 4
-title: Gitブランチフロー規約 - コミットメッセージ規約
+title: コミットメッセージ規約
 author: フューチャー株式会社
 ---
 

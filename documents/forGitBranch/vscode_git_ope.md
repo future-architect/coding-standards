@@ -1,6 +1,6 @@
 ---
 sidebarDepth: 4
-title: Gitブランチフロー規約 - VSCode上でのGit操作
+title: VSCode上でのGit操作
 author: フューチャー株式会社
 ---
 
