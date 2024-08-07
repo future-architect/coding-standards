@@ -1,6 +1,6 @@
 ---
 sidebarDepth: 4
-title: Gitブランチフロー規約 - ブランチの整理
+title: ブランチの整理
 author: フューチャー株式会社
 ---
 

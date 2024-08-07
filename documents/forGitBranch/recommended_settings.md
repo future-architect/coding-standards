@@ -1,6 +1,6 @@
 ---
 sidebarDepth: 4
-title: Gitブランチフロー規約 - 推奨設定
+title: 推奨設定
 author: フューチャー株式会社
 ---
 

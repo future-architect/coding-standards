@@ -1,6 +1,6 @@
 ---
 sidebarDepth: 4
-title: Gitブランチフロー規約 - タグ規則
+title: タグ規則
 author: フューチャー株式会社
 ---
 
