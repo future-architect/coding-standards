@@ -12,25 +12,25 @@ author: フューチャー株式会社
 
 GitHubを利用する場合、開発ブランチに機能ブランチの変更を取り込む方法は3種類ある。
 
-1. Create a merge commit
-2. Rebase and merge
-3. Squash and merge
+1. スカッシュ マージ（Create a merge commit）
+2. リベース（Rebase and merge）
+3. スカッシュマージ（Squash and merge）
 
-### 1. Create a merge commit
+### 1. マージコミット
 
 動作としては `git merge --no-ff` コマンドを使用して、機能ブランチの変更を取り込む形になる。  
 この方法を選択した場合は、下記のとおり、メインの開発ブランチにマージコミットが作成される。
 
 ![Merge Commit](img/merge_strategy_feature_to_develop_merge_commit.drawio.png)
 
-### 2. Rebase and merge
+### 2. リベース
 
 動作としては機能ブランチを最新の開発ブランチにリベースした後に、`git merge --ff` コマンドを使用して、機能ブランチの変更を取り込む形になる。  
 この方法を選択した場合は、下記のとおり、メインの開発ブランチにマージコミットは作成されず、履歴が一直線になる。
 
 ![Rebase and Merge](img/merge_strategy_feature_to_develop_rebase_and_merge.drawio.png)
 
-### 3. Squash and merge
+### 3. スカッシュマージ
 
 動作としては `git merge --squash` コマンドを使用して、機能ブランチの変更を取り込む形になる。  
 この方法では、機能ブランチで行った変更YとZを1つにまとめたコミットがメインの開発ブランチに作成されます。

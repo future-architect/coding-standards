@@ -96,6 +96,12 @@ Branch protection rules にdevelop, mainなど永続的なブランチに保護�
 |                           | Require linear history | ✅️/- | mainブランチの場合はOFFとするが、developの場合はSquash mergeを求めるため有効にする |
 |                           | Do not allow bypassing the above settings | ✅️ | パイパスを許容しない |
 
+開発ブランチに対し「require linear history」を選択することを推奨することで、「Create a merge commit」が選択できないようにする。
+
+また、意図しない方法でのマージを避けるためにブランチごとにマージ戦略を設定しておき、想定外のマージ戦略が選択された時に警告色を表示するというサードパーティ製のChrome拡張[^1]も存在する。必要に応じて導入を検討する。
+
+[^1]: [GitHubで誤ったマージ戦略のマージを防ぐChrome拡張機能の開発をした](https://zenn.dev/daku10/articles/github-merge-guardian)
+
 #### Tags
 
 | Category      | Item | Value | Memo |
