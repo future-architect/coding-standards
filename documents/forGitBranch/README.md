@@ -12,7 +12,7 @@ footer: ©2015 - 2024 Future Enterprise Coding Standards - Future Corporation
 
 チーム開発する上で必要となるGitブランチフローの規約です。
 
-- [Gitブランチフローの規約](Gitブランチフロー規約.md)
+- [Gitブランチフロー規約](GitBranchStandards.md)
 
 次のリンクから単一ファイル版を取得できます。
 
