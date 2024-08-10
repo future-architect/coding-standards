@@ -123,6 +123,12 @@ Branch protection rules にdevelop, mainなど永続的なブランチに保護�
 |            | Dependabot security updates | ✅️ |  |
 |            | Dependabot version updates | ✅️ |  |
 
+## GitLab推奨設定
+
+- GitHubの「Automatically delete head branches」
+  - マージリクエストから「Delete source branch」オプションを有効にすることが該当
+  - プロジェクトの設定で「Enable "Delete source branch" option by default」を選択しておくとデフォルトで有効になる
+
 ## 設定ファイル
 
 ### .gitattribute
