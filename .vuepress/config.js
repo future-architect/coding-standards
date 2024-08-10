@@ -31,7 +31,7 @@ const links = {
   ],
   "/documents/forGitBranch/": [
     "/documents/forGitBranch/",
-    "/documents/forGitBranch/GitBranchStandards.html",
+    "/documents/forGitBranch/git_branch_standards.html",
     "/documents/forGitBranch/merge_develop_to_feature.html",
     "/documents/forGitBranch/merge_feature_to_develop.html",
     "/documents/forGitBranch/git_tag.html",
