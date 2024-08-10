@@ -15,11 +15,11 @@ VSCode上でのGit操作は、サイドバーの "Source Control" から行う�
 GUIでのGit操作にあたり、次の2つの拡張機能をインストールしておくと利便性が高い。業務上はほぼ必須と見て良い。
 
 - [GitLens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
-  - Gitに関する様々な機能を提供する拡張機能です。
-  - 詳細を語りだすとキリがないため、ここでは割愛します。（フューチャー技術ブログにも解説記事があります。「[VSCodeでGitLensを使う ](https://future-architect.github.io/articles/）20240415a/)」）
+  - Gitに関する様々な機能を提供する拡張機能
+  - 詳細：: [VSCodeでGitLensを使う - フューチャー技術ブログ](https://future-architect.github.io/articles/）20240415a/)
 - [Git Graph](https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph)
-  - コミットグラフを表示する拡張機能です。
-  - GitLensにもコミットグラフはありますが、Pro（有料版）限定の提供のため、ここではこちらの拡張機能を使用します。
+  - コミットグラフを表示する拡張機能
+  - GitLensにもコミットグラフはありますが、Pro（有料版）限定の提供のため、ここではこちらの拡張機能を使用する
 
 以降では、これらの拡張機能がインストールされていることを前提に説明を行う。
 
