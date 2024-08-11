@@ -29,7 +29,7 @@ meta:
 
 - すべての機能開発や不具合修正に、機能ブランチを使用する
 - プルリクエストを経由して機能ブランチの修正内容をマージする
-- 永続ブランチはデプロイ可能なように整合性を保つ
+- 永続ブランチはデプロイ可能であるように整合性を保つ
 
 # ブランチの種類
 
@@ -37,8 +37,8 @@ meta:
 
 | ブランチ名称    | 役割                | ライフサイクル | 派生元ブランチ          | 命名規則                                              | 直プッシュ |
 |-----------|-------------------|---------|------------------|---------------------------------------------------|---------|
-| `main`    | プロダクション環境へのデプロイ用途 | 永続的     | -                | `main` 固定                                         | ❌️       |
-| `feature` | 特定機能の追加/変更        | 短命      | `main`／`develop` | `feature/${任意名称}`: 詳細は[featureブランチ](#featureブランチ)           | ✅️※1       |
+| `main`    | プロダクション環境との同期 | 永続的     | -                | `main` 固定                                         | ❌️       |
+| `feature` | 特定機能の追加/変更        | 短命      | `main`／`develop` | `feature/${任意名称}`: 詳細は[featureブランチ](#featureブランチ) を参照          | ✅️※1       |
 | `develop` | 開発の大元             | 永続的     | `main`           | `develop` 固定。複数必要な場合は `develop2` と連番にする         | ❌️       |
 | `release` | リリース作業用途          | 短命      | `develop`        | `release/${yyyymmdd}` や `release/${リリースバージョン}` など | ❌️       |
 | `hotfix`  | mainブランチに対する即時修正  | 短命      | `main`           | `hotfix/${任意名称}`: featureブランチに準じる                 | ✅️       |
@@ -49,6 +49,8 @@ meta:
 ## mainブランチ
 
 Gitリポジトリを新規作成するとデフォルトで作成されるブランチ。masterからmainに改名された経緯を持つ[^3]。
+
+マージ毎にプロダクション環境へデプロイし同期を取る。
 
 [^3]: https://github.com/github/renaming
 
@@ -123,9 +125,9 @@ featureブランチで実現する機能を複数人で開発する場合に使�
 
 | 名称               | 利用ブランチ                                                                  | デフォルトブランチ | リリース作業    | 使い所                                                    | 備考                                                                                                           |
 |------------------|-------------------------------------------------------------------------|-----------|-----------|--------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
-| GitHub Flow      | `main`<br> `feature`                                                    | `main`    | `main`    | ・開発人数が少なく、検証作業を全員で行う場合                                 | マージ毎にプロダクション環境へデプロイする。                                                                                       |
-| Lite GitLab Flow | `main`<br>`develop`<br>`feature`<br>`topic`<br> `hotfix`                | `develop` | `develop` | ・稼働済みのプロダクトなど、一定品質を保証する必要がある場合<br>・開発作業とリリース作業が並行しない場合 | GitHub Flowに`develop`ブランチを追加するパターンで、特定の呼称はないためLite GitLab FLowと命名する                                          |
-| GitLab Flow      | `main`<br>`develop`<br>`release` <br>`feature`<br>`topic` <br> `hotfix` | `develop` | `release` | ・リリース作業と開発作業が並行して行われる場合<br>・断面を指定して複数テスト環境にデプロイしたい場合   | GitLab Flowでは`main`ブランチを`production`ブランチ、`release`ブランチとを`pre production`ブランチと呼称するが、本規約では`main`/`release` とする |
+| GitHub Flow      | `main`<br> `feature`                                                    | `main`    | `main`    | ・開発人数が少なく、検証作業を全員で行う場合                                 |                                                                                        |
+| Lite GitLab Flow | `main`<br>`develop`<br>`feature`<br>`topic`<br> `hotfix`                | `develop` | `develop` | ・稼働済みのプロダクトなど、一定品質を保証する必要がある場合<br>・開発作業とリリース作業が並行しない場合 | 特定の呼称はないためLite GitLab FLowと命名する                                          |
+| GitLab Flow      | `main`<br>`develop`<br>`release` <br>`feature`<br>`topic` <br> `hotfix` | `develop` | `release` | ・リリース作業と開発作業が並行して行われる場合<br>・断面を指定して複数テスト環境にデプロイしたい場合   | 本来のGitLab Flowでは`main`を`production`、`release`を`pre production`と呼称する |
 
 ## 変則的なパターン
 
