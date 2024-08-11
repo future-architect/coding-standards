@@ -21,7 +21,7 @@ meta:
 
 - GitHub ／ GitLab の利用
 - トランクベース開発（フィーチャーフラグ）を **採用しない**
-- ライブラリではなく、アプリケーション（CLIツール、サーバアプリケーションなど）開発で利用する
+- ライブラリではなく、アプリケーション（CLIツール、Webアプリケーションなどの）開発で利用する
 
 # 基本方針
 
@@ -29,7 +29,7 @@ meta:
 
 - すべての機能開発や不具合修正に、機能ブランチを使用する
 - プルリクエストを経由して機能ブランチの修正内容をマージする
-- 永続ブランチはデプロイ可能であるように整合性を保つ
+- 永続ブランチは各環境にデプロイ可能となるよう整合性を保つ
 
 # ブランチの種類
 
@@ -74,7 +74,6 @@ feature/#12345
 
 # OK（GitHub Issue や JIRA や Backlog のプロジェクトIDをブランチ名に利用）
 feature/<PROJECTID>-9403
-feature/gh-issue-12345
 
 # NG（プレフィックスが無い）
 fixtypo
@@ -121,17 +120,41 @@ featureブランチで実現する機能を複数人で開発する場合に使�
 - できるかぎりシンプルなモデルを選択し、運用コストを下げる
 - プロジェクトのフェーズや体制に応じて、変更を許容する
 
-現実的に利用する可能性が高いブランチの運用パターンを、運用コストが低い順に３つ示す。
+有名なブランチ戦略として以下がある。
 
-| 名称               | 利用ブランチ                                                                  | デフォルトブランチ | リリース作業    | 使い所                                                    | 備考                                                                                                           |
-|------------------|-------------------------------------------------------------------------|-----------|-----------|--------------------------------------------------------|--------------------------------------------------------------------------------------------------------------|
-| GitHub Flow      | `main`<br> `feature`                                                    | `main`    | `main`    | ・開発人数が少なく、検証作業を全員で行う場合                                 |                                                                                        |
-| Lite GitLab Flow | `main`<br>`develop`<br>`feature`<br>`topic`<br> `hotfix`                | `develop` | `develop` | ・稼働済みのプロダクトなど、一定品質を保証する必要がある場合<br>・開発作業とリリース作業が並行しない場合 | 特定の呼称はないためLite GitLab FLowと命名する                                          |
-| GitLab Flow      | `main`<br>`develop`<br>`release` <br>`feature`<br>`topic` <br> `hotfix` | `develop` | `release` | ・リリース作業と開発作業が並行して行われる場合<br>・断面を指定して複数テスト環境にデプロイしたい場合   | 本来のGitLab Flowでは`main`を`production`、`release`を`pre production`と呼称する |
+- [git-flow](https://nvie.com/posts/a-successful-git-branching-model/)
+- [GitHub flow](https://docs.github.com/ja/get-started/using-github/github-flow)
+- [GitLab Flow](https://docs.gitlab.co.jp/ee/topics/gitlab_flow.html)
 
-## 変則的なパターン
+現実的に利用する可能性が高いGitHub Flow、GitLab Flowとその亜種を、運用コストが低い順に３つ示す。本規約ではこれらからベースとなるパターンを選択する。
 
-### developブランチが複数作成する場合
+| 名称               | 利用ブランチ                                                                  | デフォルトブランチ | リリース作業ブランチ    | 使い所                                                    | 備考 |
+|------------------|-------------------------------------------------------------------------|-----------|-----------|--------------------------------------------------------|----|
+| GitHub Flow      | `main`<br>`feature`                                                     | `main`    | `main`    | ・開発人数がごく限られる場合                                         |    |
+| Lite GitLab Flow | `main`<br>`develop`<br>`feature`<br>`topic`<br> `hotfix`                | `develop` | `develop` | ・稼働済みのプロダクトなど、品質を保証する必要がある場合                         | ※1 |
+| GitLab Flow      | `main`<br>`develop`<br>`release` <br>`feature`<br>`topic` <br> `hotfix` | `develop` | `release` | ・リリース作業と開発作業が並行して行う必要がる場合<br>・断面を指定して複数テスト環境にデプロイしたい場合 |    |
+
+- ※1: 特定の呼称はないためLite GitLab FLowと命名する
+- ※2: 本規約では、本来のGitLab Flowの呼称である `production`を`main`、`pre production`を`release`に言い換えている
+
+# ブランチ戦略とデプロイメント環境
+
+各ブランチ戦略ごとに、デプロイメント環境に対応するブランチを整理する。プロダクション環境リリース前には、mainブランチでタグを打つこととする。
+
+| 名称               | 開発環境    | ステージング環境 | プロダクション環境 | 備考                                                                                                                                     |
+|------------------|---------|----------|-----------|----------------------------------------------------------------------------------------------------------------------------------------|
+| GitHub Flow      | feature | main     | main      |                                                                                                                                        |
+| Lite GitLab Flow | feature | develop  | main      | ・開発環境へはfeatureブランチのPRレビュー後にデプロイする<br>・開発環境へのデプロイ漏れを防ぐため定期的にCI/CDでdevelop断面をリリースすることを推奨する<br>・ステージング環境へはdevelopマージをトリガーにCI/CDでデプロイを推奨する |
+| GitLab Flow      | develop | release  | main      | ・開発環境へはdevelopマージをトリガーにCI/CDでデプロイを推奨する<br>・検証期間が長引きそうな場合は、PRレビュー承認後にfeatureブランチから開発環境へのデプロイを許容する                                       |
+
+# ブランチ戦略の拡張
+
+次のような要件があった場合には、ベースとなるブランチ戦略を拡張する必要がある。
+
+1. developブランチが複数作成する場合
+2. 過去バージョンをサポートする場合
+
+## 1. developブランチが複数作成する場合
 
 ![multi develop branch](img/branch_strategy_multi_develop.drawio.png)
 
@@ -159,7 +182,7 @@ develop2のリリースは以下の手順で行う。
 - プロダクション環境（=`develop`）との差分を把握することができる
 - より一般的な名称である `develop` ブランチのみ残るため、新規参画者フレンドリーである
 
-### 過去バージョンをサポートする場合
+## 2. 過去バージョンをサポートする場合
 
 ![multi version branch](img/branch_strategy_multi_version.drawio.png)
 
@@ -521,7 +544,7 @@ Branch protection rules にdevelop, mainなど永続的なブランチに保護�
 
 また、意図しない方法でのマージを避けるためにブランチごとにマージ戦略を設定しておき、想定外のマージ戦略が選択された時に警告色を表示するというサードパーティ製のChrome拡張[^1]も存在する。必要に応じて導入を検討する。
 
-[^1]: [GitHubで誤ったマージ戦略のマージを防ぐChrome拡張機能の開発をした](https://zenn.dev/daku10/articles/github-merge-guardian)
+[^1]: https://zenn.dev/daku10/articles/github-merge-guardian
 
 #### Tags
 
