@@ -34,7 +34,6 @@ const links = {
     "/documents/forGitBranch/git_branch_standards.html",
     "/documents/forGitBranch/merge_develop_to_feature.html",
     "/documents/forGitBranch/merge_feature_to_develop.html",
-    "/documents/forGitBranch/git_tag.html",
     "/documents/forGitBranch/commit_message_rule.html",
     "/documents/forGitBranch/vscode_git_ope.html",
   ],
