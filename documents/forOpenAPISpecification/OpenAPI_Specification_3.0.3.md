@@ -539,11 +539,11 @@ API のレスポンスを記載する。
         responses:
           '200':
             # コンポーネント化したレスポンスオブジェクトを参照
-            $ref: '#/components/responses/BadRequest'
+            $ref: '#/components/responses/RespPostProductsBody'
   
   components:
     responses:
-      BadRequest:
+      RespPostProductsBody:
         description: 200 OK
         content:
           application/json:
