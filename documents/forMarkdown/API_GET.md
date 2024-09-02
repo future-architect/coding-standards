@@ -64,4 +64,3 @@ end note
 | town                           | 市区町村大字                                                                                | m_user                        |      |
 | building                       | 番地・マンション名                                                                          | m_user                        |      |
 | address_kana                   | 住所カナ                                                                                    | m_user                        |      |
-
