@@ -1,0 +1,16 @@
+pet:
+  id: 10001
+  name: ToyPoodle
+  category: dog
+  sub_category: ToyPoodle
+  age: 1
+  sex: male
+  note: friendly
+  tag: dog10001
+pet_detail:
+  breeder: BreederName
+  date_of_birth: '2023-10-31'
+  pedigree:
+    registration_no: 11111111
+    date_of_registration: '2023-10-31'
+    pedigree_image: 9j2wBDAA...8QAPxAAAQQABAMGBAYDAAEDAg

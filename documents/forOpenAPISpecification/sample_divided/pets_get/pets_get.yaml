@@ -1,0 +1,53 @@
+operation:
+  summary: List all pets
+  operationId: get-pets
+  tags:
+    - pets
+  parameters:
+    - name: limit
+      in: query
+      description: How many items to return at one time (max 100)
+      required: false
+      schema:
+        type: integer
+        maximum: 100
+        format: int32
+  responses:
+    "200":
+      description: A paged array of pets
+      headers:
+        x-next:
+          description: A link to the next page of responses
+          schema:
+            type: string
+      content:
+        application/json:    
+          schema:
+            $ref: "#/components/responses/ResPetsGet"
+          examples:
+            ResExample1:
+              value:
+                $ref: "./examples/res_example1.yaml"
+            ResExample2:
+              value:
+                $ref: "./examples/res_example2.yaml"
+    "404":
+      description: not found error
+      content:
+        application/json:
+          schema:
+            $ref: "../openapi.yaml#/components/schemas/Error"
+    "500":
+      description: unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "../openapi.yaml#/components/schemas/Error"
+
+components:
+  responses:
+    ResPetsGet:
+      type: array
+      maxItems: 100
+      items:
+        $ref: "../common/pet.yaml"

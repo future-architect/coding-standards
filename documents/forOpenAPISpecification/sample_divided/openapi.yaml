@@ -1,0 +1,30 @@
+openapi: "3.0.3"
+info:
+  version: 1.0.0
+  title: Swagger Petstore
+  license:
+    name: MIT
+servers:
+  - url: http://petstore.swagger.io/v1
+tags:
+  - name: pets
+    description: Everything about your Pets
+paths:
+  /pets:
+    get:
+      $ref: "./pets_get/pets_get.yaml#/operation"
+    post:
+      $ref: "./pets_post/pets_post.yaml#/operation"
+  /pets/{petId}:
+    get:
+      $ref: "./pets-pet-id_get/pets-pet-id_get.yaml#/operation"
+components:
+  schemas:
+    PetDetail:
+      $ref: "./pets-pet-id_get/pets-pet-id_get.yaml#/components/schemas/PetDetail"
+    Pedigree:
+      $ref: "./pets-pet-id_get/pets-pet-id_get.yaml#/components/schemas/Pedigree"
+    Pet:
+      $ref: "./common/pet.yaml"
+    Error:
+      $ref: "./common/error.yaml"

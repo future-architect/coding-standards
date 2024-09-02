@@ -1,0 +1,40 @@
+operation:
+  summary: Register a pet
+  operationId: post-pets
+  tags:
+    - pets
+  requestBody:
+    content:
+      application/json:
+        schema:
+          $ref: "#/components/responses/ReqPetsPost"
+        examples:
+          ReqExample1:
+            value:
+              $ref: "./examples/req_example1.yaml"
+    required: false
+  responses:
+    "201":
+      description: Null response
+    "404":
+      description: not found error
+      content:
+        application/json:
+          schema:
+            $ref: "../openapi.yaml#/components/schemas/Error"
+    "500":
+      description: unexpected error
+      content:
+        application/json:
+          schema:
+            $ref: "../openapi.yaml#/components/schemas/Error"
+
+components:
+  responses:
+    ReqPetsPost:
+      required:
+      - pet
+      type: object
+      properties:
+        pet:
+          $ref: "../common/pet.yaml"
