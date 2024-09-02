@@ -1309,81 +1309,81 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
   <details open>
     <summary>API別ファイルの記載例： pets-pet-id_get.yaml</summary>
 
-      ```yaml
-      operation:
-        operationId: get-pets-pet-id
-        summary: Details for a pet
-        tags:
-          - pets
-        parameters:
-          - name: petId
-            in: path
-            required: true
-            description: The id of the pet to retrieve
-            schema:
+    ```yaml
+    operation:
+      operationId: get-pets-pet-id
+      summary: Details for a pet
+      tags:
+        - pets
+      parameters:
+        - name: petId
+          in: path
+          required: true
+          description: The id of the pet to retrieve
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/responses/ResPetsPetIdGet"
+              examples:
+                ResExample1:
+                  value:
+                    $ref: "./examples/res_example1.yaml"
+        "404":
+          description: not found error
+          content:
+            application/json:
+              schema:
+                $ref: "../openapi.yaml#/components/schemas/Error"
+        "500":
+          description: unexpected error
+          content:
+            application/json:
+              schema:
+                $ref: "../openapi.yaml#/components/schemas/Error"
+    components:
+      schemas:
+        PetDetail:
+          type: object
+          properties:
+            breeder:
               type: string
-        responses:
-          "200":
-            description: Expected response to a valid request
-            content:
-              application/json:
-                schema:
-                  $ref: "#/components/responses/ResPetsPetIdGet"
-                examples:
-                  ResExample1:
-                    value:
-                      $ref: "./examples/res_example1.yaml"
-          "404":
-            description: not found error
-            content:
-              application/json:
-                schema:
-                  $ref: "../openapi.yaml#/components/schemas/Error"
-          "500":
-            description: unexpected error
-            content:
-              application/json:
-                schema:
-                  $ref: "../openapi.yaml#/components/schemas/Error"
-      components:
-        schemas:
-          PetDetail:
-            type: object
-            properties:
-              breeder:
-                type: string
-              date_of_birth:
-                type: string
-                format: date
-              pedigree:
-                $ref: "#/components/schemas/Pedigree"
-          Pedigree:
-            required:
-              - registration_no
-              - date_of_registration
-              - pedigree_image
-            type: object
-            properties:
-              registration_no:
-                type: integer
-                format: int64
-              date_of_registration:
-                type: string
-                format: date
-              pedigree_image:
-                type: string
-        responses:
-          ResPetsPetIdGet:
-            required:
-              - pet
-              - pet_detail
-            type: object
-            properties:
-              pet:
-                $ref: "../common/pet.yaml"
-              pet_detail:
-                $ref: "#/components/schemas/PetDetail"
-      ```
+            date_of_birth:
+              type: string
+              format: date
+            pedigree:
+              $ref: "#/components/schemas/Pedigree"
+        Pedigree:
+          required:
+            - registration_no
+            - date_of_registration
+            - pedigree_image
+          type: object
+          properties:
+            registration_no:
+              type: integer
+              format: int64
+            date_of_registration:
+              type: string
+              format: date
+            pedigree_image:
+              type: string
+      responses:
+        ResPetsPetIdGet:
+          required:
+            - pet
+            - pet_detail
+          type: object
+          properties:
+            pet:
+              $ref: "../common/pet.yaml"
+            pet_detail:
+              $ref: "#/components/schemas/PetDetail"
+    ```
 
   </details>
 
