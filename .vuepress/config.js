@@ -27,6 +27,15 @@ const links = {
   "/documents/forOpenAPISpecification/": [
     "/documents/forOpenAPISpecification/",
     "/documents/forOpenAPISpecification/OpenAPI_Specification_2.0.html",
+    "/documents/forOpenAPISpecification/OpenAPI_Specification_3.0.3.html",
+  ],
+  "/documents/forGitBranch/": [
+    "/documents/forGitBranch/",
+    "/documents/forGitBranch/git_branch_standards.html",
+    "/documents/forGitBranch/merge_develop_to_feature.html",
+    "/documents/forGitBranch/merge_feature_to_develop.html",
+    "/documents/forGitBranch/commit_message_rule.html",
+    "/documents/forGitBranch/vscode_git_ope.html",
   ],
 };
 console.log(links);
@@ -125,6 +134,23 @@ module.exports = {
               {
                 text: "For OAS 2.0（Swagger 2.0）",
                 link: "/documents/forOpenAPISpecification/OpenAPI_Specification_2.0.html",
+              },
+              {
+                text: "For OAS 3.0.3",
+                link: "/documents/forOpenAPISpecification/OpenAPI_Specification_3.0.3.html",
+              },
+            ],
+          },
+          {
+            text: "Gitブランチフロー規約",
+            items: [
+              {
+                text: "Home",
+                link: "/documents/forGitBranch/",
+              },
+              {
+                text: "Gitブランチフロー規約",
+                link: "/documents/forGitBranch/Gitブランチフロー規約.html",
               },
             ],
           },

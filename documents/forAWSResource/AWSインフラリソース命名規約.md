@@ -7,13 +7,11 @@ meta:
     content: AWS,命名規約,コーディング規約
 ---
 
-<page-title/>
+# AWSインフラ命名規約
 
 本コーディング規約は、世の中のシステム開発プロジェクトのために無償で提供致します。
 ただし、掲載内容および利用に際して発生した問題、それに伴う損害については、フューチャー株式会社は一切の責務を負わないものとします。
 また、掲載している情報は予告なく変更することがございますので、あらかじめご了承下さい。
-
-# はじめに
 
 ## 前提条件
 
@@ -267,7 +265,7 @@ API Gateway は [全体ポリシーの命名規約](#命名規約) に則る。�
 {env}-{product}-{role}-{usage}-{access}
 
 # 例
-stg-fuga-web-potal-private
+stg-fuga-web-portal-private
 stg-fuga-web-fileupload-public
 ```
 

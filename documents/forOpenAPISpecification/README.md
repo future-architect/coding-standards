@@ -36,11 +36,11 @@ OAS は次のように複数のバージョンが存在します。
 
 [https://openapi.tools/](https://openapi.tools/)
 
-# OpenAPI Specification Standards 規約
+# OpenAPI Specification Standards
 
-| Version | コーディング規約                                           |
-| ------- | ---------------------------------------------------------- |
-| 3.0.3   | OAS 3.0.3 規約（作成中）                                   |
+| Version | コーディング規約                                               |
+|---------|--------------------------------------------------------|
+| 3.0.3   | [OAS 3.0.3 規約](OpenAPI_Specification_3.0.3.md)         |
 | 2.0     | [OAS 2.0（Swagger 2.0）規約](OpenAPI_Specification_2.0.md) |
 
 # Resources

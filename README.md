@@ -7,7 +7,7 @@ features:
     details: エンタープライズ領域では、社員・パートナーの方々を合わせて、数百人が同時に開発することも珍しくありません。 ちょっとした悩み、失敗も、人数が集まれば大変なコスト・リスクになります。 誰もが引っかかる落とし穴、悩みの種をあらかじめ排除します。
   - title: Performance
     details: 時に読みやすいソースコードはパフォーマンス劣化を招くことがあります。 しかし、常にパフォーマンスを優先したソースコードは人間の読めないソースコードになりがちです。 今、書こうとしているソースコードが、どの程度のパフォーマンスになるのか、指標を示すことで、ソフトウェア開発プロジェクトごとに最適なソースコードを選択することができます。
-footer: ©2015 - 2023 Future Enterprise Coding Standards - Future Corporation
+footer: ©2015 - 2024 Future Enterprise Coding Standards - Future Corporation
 ---
 
 [![GitHub last commit](https://img.shields.io/github/last-commit/future-architect/coding-standards.svg)](https://github.com/future-architect/coding-standards)
@@ -19,6 +19,7 @@ footer: ©2015 - 2023 Future Enterprise Coding Standards - Future Corporation
 | 2   | [SQL コーディング規約](./documents/forSQL/)                        | <page-info   href="https://future-architect.github.io/coding-standards/documents/forSQL/SQLコーディング規約（Oracle）.html"></page-info>              |
 | 3   | [AWS インフラリソース命名規約](./documents/forAWSResource/)        | <page-info   href="https://future-architect.github.io/coding-standards/documents/forAWSResource/AWSインフラリソース命名規約.html"></page-info>        |
 | 4   | [OpenAPI Specification 規約](./documents/forOpenAPISpecification/) | <page-info   href="https://future-architect.github.io/coding-standards/documents/forOpenAPISpecification/OpenAPI_Specification規約.html"></page-info> |
+| 5   | [Gitブランチフロー規約](./documents/forGitBranch/) | <page-info   href="https://future-architect.github.io/coding-standards/documents/forGitBranch/git_branch_standards.html"></page-info> |
 
 ---
 
