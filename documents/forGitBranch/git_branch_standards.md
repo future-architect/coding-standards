@@ -126,12 +126,12 @@ featureブランチで実現する機能を複数人で開発する場合に使�
 - [GitHub flow](https://docs.github.com/ja/get-started/using-github/github-flow)
 - [GitLab Flow](https://docs.gitlab.co.jp/ee/topics/gitlab_flow.html)
 
-システム開発において、現実的に利用する可能性が高いのは次の2パターンである。本規約ではこれをベースとなるパターンとして選択することとする。
+本規約で推奨するブランチ戦略は次の2パターンであり、これをベースとして選択する。
 
-| 名称               | 利用ブランチ                                                                  | デフォルトブランチ | リリース作業ブランチ    | 使い所                                                    |
+| 名称               | 利用ブランチ                                                                  | デフォルトブランチ | リリース作業ブランチ    | 備考                                                    |
 |------------------|-------------------------------------------------------------------------|-----------|-----------|--------------------------------------------------------|
-| Lite GitLab Flow<br>※1 | `main`<br>`develop`<br>`feature`<br>`topic`<br> `hotfix`                | `develop` | `develop` | ・GitLab Flowからreleaseブランチを除いたパターン<br>・リリース作業時にdevelopマージを止められる場合                         |
-| GitLab Flow      | `main`<br>`develop`<br>`release` <br>`feature`<br>`topic` <br> `hotfix`<br>※2 | `develop` | `release` | ・リリース作業と開発作業が並行して行う必要がある場合<br>・断面を指定して複数テスト環境にデプロイしたい場合 |
+| Lite GitLab Flow<br>※1 | `main`<br>`develop`<br>`feature`<br>`topic`<br> `hotfix`                | `develop` | `develop` | ・GitLab Flowからreleaseブランチを除いたパターン<br>・リリース作業時にdevelopマージを止められる場合に利用する                         |
+| GitLab Flow      | `main`<br>`develop`<br>`release` <br>`feature`<br>`topic` <br> `hotfix`<br>※2 | `develop` | `release` | ・リリース作業と開発作業が並行して行う必要があるか、<br>断面を指定して複数テスト環境にデプロイしたい場合に利用する |
 
 - ※1: 特定の呼称はないためLite GitLab FLowと命名する
 - ※2: 本規約では、本来のGitLab Flowの呼称である `production`を`main`、`pre production`を`release`に言い換えている
