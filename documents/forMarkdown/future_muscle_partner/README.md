@@ -1,6 +1,6 @@
 # Future Muscle Partner
 
-～いきつけのジムでパーソナルトレーニングを受けよう～ のFuture Muscle Partnerのリポジトリ。
+「いきつけのジムでパーソナルトレーニングを受けよう」のFuture Muscle Partnerのリポジトリ。
 
 ## サービスコンセプト
 
