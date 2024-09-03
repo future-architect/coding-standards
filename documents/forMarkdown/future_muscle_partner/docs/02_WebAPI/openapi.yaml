@@ -157,6 +157,42 @@ paths:
       summary: API-007 パーソナルトレーナー検索
       operationId: searchTrainers
       security: []
+      parameters:
+        - name: favorite_gym_name
+          in: query
+          description: 行きつけのジム名
+          required: true
+          schema:
+            type: string
+        - name: store_name
+          in: query
+          description: 店舗名
+          required: true
+          schema:
+            type: string
+        - name: training_start_at
+          in: query
+          description: トレーニング開始
+          schema:
+            type: string
+        - name: training_end_at
+          in: query
+          description: トレーニング終了時間
+          schema:
+            type: string
+        - name: budget
+          in: query
+          description: 予算
+          schema:
+            type: number
+            format: integer
+        - name: training_menu_typ
+          in: query
+          description: トレーニングメニュー区分
+          schema:
+            type: number
+            format: integer
+            enum: [1, 2, 3]
       responses:
         '200':
           description: トレーナーの検索結果を取得しました。
@@ -291,7 +327,7 @@ paths:
     post:
       tags:
         - booking
-      summary: API-013 トレーニング予約（仮登録）
+      summary: API-012 トレーニング予約（仮登録）
       operationId: bookTraining
       requestBody:
         required: true
@@ -318,15 +354,32 @@ paths:
     get:
       tags:
         - booking
-      summary: API-012 予約済みトレーニング取得
+      summary: API-013 予約済みトレーニング取得
       operationId: getBookings
+      parameters:
+        - name: trainee_id
+          in: path
+          description: トレーニーID
+          required: true
+          schema:
+            type: string
+        - name: start_at
+          in: query
+          description: 開始日時
+          schema:
+            type: string
+        - name: end_at
+          in: query
+          description: 終了日時
+          schema:
+            type: string
       responses:
         '200':
           description: ユーザーの予約情報を取得しました。
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Booking'
+                $ref: '#/components/schemas/Bookings'
         '401':
           $ref: '#/components/responses/Unauthorized'
         '500':
@@ -741,6 +794,13 @@ components:
         self_introduction:
           type: string
           description: 自己紹介
+    Bookings:
+      type: object
+      properties:
+        bokkings:
+          type: array
+          items:
+            $ref: '#/components/schemas/Booking'
     Booking:
       type: object
       properties:
