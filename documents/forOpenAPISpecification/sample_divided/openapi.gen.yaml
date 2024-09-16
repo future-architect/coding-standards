@@ -3,7 +3,10 @@ info:
   version: 1.0.0
   title: Swagger Petstore
   license:
-    name: MIT
+    name: Apache 2.0
+    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+security:
+  - Bearer: []
 servers:
   - url: 'http://petstore.swagger.io/v1'
 tags:
@@ -12,7 +15,8 @@ tags:
 paths:
   /pets:
     get:
-      summary: List all pets
+      summary: FunctionID2
+      description: List all pets
       operationId: get-pets
       tags:
         - pets
@@ -20,11 +24,11 @@ paths:
         - name: limit
           in: query
           description: How many items to return at one time (max 100)
-          required: false
           schema:
             type: integer
             maximum: 100
             format: int32
+          required: false
       responses:
         '200':
           description: A paged array of pets
@@ -36,61 +40,90 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                maxItems: 100
-                items:
-                  $ref: '#/components/schemas/Pet'
+                type: object
+                properties:
+                  pets:
+                    type: array
+                    maxItems: 100
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: integer
+                          format: int64
+                        name:
+                          type: string
+                          maxLength: 50
+                        category:
+                          type: string
+                          maxLength: 10
+                        sub_category:
+                          type: string
+                          maxLength: 50
+                        age:
+                          type: integer
+                          format: int32
+                        sex:
+                          type: string
+                          maxLength: 6
+                        note:
+                          type: string
+                          maxLength: 200
+                        tag:
+                          type: string
+                          maxLength: 20
+                      required:
+                        - id
+                        - name
+                        - category
+                        - age
+                        - sex
               examples:
                 ResExample1:
                   value:
-                    - id: 10001
-                      name: ToyPoodle
-                      category: dog
-                      sub_category: ToyPoodle
-                      age: 1
-                      sex: male
-                      note: friendly
-                      tag: dog10001
-                    - id: 10002
-                      name: Chihuahua
-                      category: dog
-                      sub_category: Chihuahua
-                      age: 1
-                      sex: female
-                      note: friendly
-                      tag: dog10002
-                    - id: 10003
-                      name: Shiba
-                      category: dog
-                      sub_category: Shiba
-                      age: 1
-                      sex: male
-                      note: friendly
-                      tag: dog10003
-                    - id: 10004
-                      name: MiniatureDachshund
-                      category: dog
-                      sub_category: MiniatureDachshund
-                      age: 1
-                      sex: female
-                      note: friendly
-                      tag: dog10004
+                    pets:
+                      - id: 10001
+                        name: ToyPoodle
+                        category: dog
+                        sub_category: ToyPoodle
+                        age: 1
+                        sex: male
+                        note: friendly
+                        tag: dog10001
+                      - id: 10002
+                        name: Chihuahua
+                        category: dog
+                        sub_category: Chihuahua
+                        age: 1
+                        sex: female
+                        note: friendly
+                        tag: dog10002
+                      - id: 10003
+                        name: Shiba
+                        category: dog
+                        sub_category: Shiba
+                        age: 1
+                        sex: male
+                        note: friendly
+                        tag: dog10003
+                      - id: 10004
+                        name: MiniatureDachshund
+                        category: dog
+                        sub_category: MiniatureDachshund
+                        age: 1
+                        sex: female
+                        note: friendly
+                        tag: dog10004
                 ResExample2:
-                  value: []
+                  value:
+                    pets: []
         '404':
-          description: not found error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: '#/components/responses/NotFound'
         '500':
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: '#/components/responses/InternalServerError'
     post:
-      summary: Register a pet
+      summary: FunctionID3
+      description: Register a pet
       operationId: post-pets
       tags:
         - pets
@@ -98,12 +131,43 @@ paths:
         content:
           application/json:
             schema:
-              required:
-                - pet
               type: object
               properties:
                 pet:
-                  $ref: '#/components/schemas/Pet'
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      format: int64
+                    name:
+                      type: string
+                      maxLength: 50
+                    category:
+                      type: string
+                      maxLength: 10
+                    sub_category:
+                      type: string
+                      maxLength: 50
+                    age:
+                      type: integer
+                      format: int32
+                    sex:
+                      type: string
+                      maxLength: 6
+                    note:
+                      type: string
+                      maxLength: 200
+                    tag:
+                      type: string
+                      maxLength: 20
+                  required:
+                    - id
+                    - name
+                    - category
+                    - age
+                    - sex
+              required:
+                - pet
             examples:
               ReqExample1:
                 value:
@@ -118,60 +182,97 @@ paths:
                     tag: dog10005
         required: false
       responses:
-        '201':
-          description: Null response
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: integer
+                    format: int64
+                  name:
+                    type: string
+                    maxLength: 50
+                  category:
+                    type: string
+                    maxLength: 10
+                  sub_category:
+                    type: string
+                    maxLength: 50
+                  age:
+                    type: integer
+                    format: int32
+                  sex:
+                    type: string
+                    maxLength: 6
+                  note:
+                    type: string
+                    maxLength: 200
+                  tag:
+                    type: string
+                    maxLength: 20
+                required:
+                  - id
+                  - name
+                  - category
+                  - age
+                  - sex
         '404':
-          description: not found error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: '#/components/responses/NotFound'
         '500':
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
-  '/pets/{petId}':
+          $ref: '#/components/responses/InternalServerError'
+  '/pets/{pet_id}':
     get:
-      summary: Details for a pet
+      summary: FunctionID1
+      description: Details for a pet
       operationId: get-pets-pet-id
       tags:
         - pets
       parameters:
-        - name: petId
+        - name: pet_id
           in: path
-          required: true
           description: The id of the pet to retrieve
           schema:
             type: string
+          required: true
       responses:
         '200':
           description: Expected response to a valid request
           content:
             application/json:
               schema:
-                required:
-                  - pet
-                  - pet_detail
                 type: object
                 properties:
-                  pet:
-                    $ref: '#/components/schemas/Pet'
                   pet_detail:
-                    $ref: '#/components/schemas/PetDetail'
+                    type: object
+                    properties:
+                      breeder:
+                        type: string
+                      date_of_birth:
+                        type: string
+                        format: date
+                      pedigree:
+                        type: object
+                        properties:
+                          registration_no:
+                            type: integer
+                            format: int64
+                          date_of_registration:
+                            type: string
+                            format: date
+                          pedigree_image:
+                            type: string
+                        required:
+                          - registration_no
+                          - date_of_registration
+                          - pedigree_image
+                required:
+                  - pet_detail
               examples:
                 ResExample1:
                   value:
-                    pet:
-                      id: 10001
-                      name: ToyPoodle
-                      category: dog
-                      sub_category: ToyPoodle
-                      age: 1
-                      sex: male
-                      note: friendly
-                      tag: dog10001
                     pet_detail:
                       breeder: BreederName
                       date_of_birth: '2023-10-31'
@@ -180,85 +281,38 @@ paths:
                         date_of_registration: '2023-10-31'
                         pedigree_image: 9j2wBDAA...8QAPxAAAQQABAMGBAYDAAEDAg
         '404':
-          description: not found error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: '#/components/responses/NotFound'
         '500':
-          description: unexpected error
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Error'
+          $ref: '#/components/responses/InternalServerError'
 components:
   schemas:
-    PetDetail:
-      type: object
-      properties:
-        breeder:
-          type: string
-        date_of_birth:
-          type: string
-          format: date
-        pedigree:
-          $ref: '#/components/schemas/Pedigree'
-    Pedigree:
-      required:
-        - registration_no
-        - date_of_registration
-        - pedigree_image
-      type: object
-      properties:
-        registration_no:
-          type: integer
-          format: int64
-        date_of_registration:
-          type: string
-          format: date
-        pedigree_image:
-          type: string
-    Pet:
-      type: object
-      required:
-        - id
-        - name
-        - category
-        - age
-        - sex
-      properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
-          maxLength: 50
-        category:
-          type: string
-          maxLength: 10
-        sub_category:
-          type: string
-          maxLength: 50
-        age:
-          type: integer
-          format: int32
-        sex:
-          type: string
-          maxLength: 6
-        note:
-          type: string
-          maxLength: 200
-        tag:
-          type: string
-          maxLength: 20
     Error:
       type: object
-      required:
-        - code
-        - message
       properties:
         code:
           type: integer
           format: int32
         message:
           type: string
+      required:
+        - code
+        - message
+  responses:
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/Error'
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Authenthicaiton with bearer token

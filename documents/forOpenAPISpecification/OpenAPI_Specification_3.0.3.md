@@ -1175,6 +1175,507 @@ remind_time:
   pattern: "^(2[0-3]|[01][0-9]):([0-5][0-9])$"
 ```
 
+## ファイル分割
+
+OpenAPI ドキュメントは単一のファイルで構成することも複数の分割されたファイルで構成することもできるが、**複数のファイルに分割する**ことを推奨する。
+
+理由:
+
+- API path ごとに担当者を分けて設計する場合などに、複数人による編集によって意図しないコンフリクトが発生することを防ぐ
+- ファイルの肥大化による、可読性の低下を防ぐ
+
+### 分割方法の選定
+
+開発方針や OpenAPI の使用用途に合わせて、都合の良いファイルの分割方法を採用する。例えば、以下のような方法がある。
+
+1. API path ごとに設計担当者を分けて、それぞれに OpenAPI を編集する場合は、path の単位で分割する。
+2. テストツールとして [stoplightio/prism](https://github.com/stoplightio/prism)を使用する場合、テストケースごとにデータファイルを作成して、`examples` にファイルパスを指定する。
+
+### サンプル説明
+
+分割方法 1, 2 の両方に当てはまる場合のサンプルを用いて説明する。`openapi.yaml` とディレクトリ構成は下の通り。全量は [sample_divided](https://github.com/future-architect/coding-standards/tree/master/documents/forOpenAPISpecification/sample_divided)を参照すること。
+
+- リソース単位にディレクトリを作成して、path ごとに定義ファイルを格納する。
+- `components` の schemas モデルは、大本の openapi.yaml に命名の定義を記載する。モデルの中身は別ファイルとして切り出すことも可能である。
+
+  ```yaml
+  # openapi.yaml（ファイル分割例）
+  openapi: "3.0.3"
+  info:
+    version: 1.0.0
+    title: Swagger Petstore
+    license: 
+      name: Apache 2.0
+      url: https://www.apache.org/licenses/LICENSE-2.0.html
+  security:
+    - Bearer: []
+  servers:
+    - url: http://petstore.swagger.io/v1
+  tags:
+    - name: pets
+      description: Everything about your Pets
+  paths:
+    /pets:
+      $ref: "./pets/pets.yaml"
+    /pets/{pet_id}:
+      $ref: "./pets/pets_pet_id.yaml"
+
+  components:
+    schemas:
+      Error:
+        type: object
+        properties:
+          code:
+            type: integer
+            format: int32
+          message:
+            type: string
+        required:
+          - code
+          - message
+    responses:
+      NotFound:
+        description: Not Found
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
+      InternalServerError:
+        description: Internal Server Error
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Error"
+    securitySchemes:
+      Bearer:
+        type: http
+        scheme: bearer
+        bearerFormat: JWT
+        description: 'Authenthicaiton with bearer token'
+  ```
+
+  ```sh
+  # ディレクトリ構成（ファイル分割例）
+
+  ├─openapi.gen.yaml
+  ├─openapi.yaml
+  │
+  ├─examples
+  │  ├─pets_get
+  │  │    ├─res_example1.yaml
+  │  │    └─res_example2.yaml
+  │  │
+  │  ├─pets_pet_id_get
+  │  │    └─res_example1.yaml
+  │  │
+  │  └─pets_post
+  │       └─req_example1.yaml
+  │
+  └─pets
+    ├─pets.yaml
+    └─pets_pet_id.yaml
+  ```
+
+- `openapi.yaml` の `paths` に記載した API ファイルは以下のように作成する（例: pets-pet-id.yaml）。
+- `examples` には、各 API のテストケース ID をキーとして指定（`ResExample1`）し、該当するテストケースのデータファイルパスを参照させる。ファイル名は、指定したキーをスネークケースに変換したものを使用するとよい。
+
+  <details>
+  <summary>pets-pet-id.yamlを見る</summary>
+
+  ```yaml
+  # pets-pet-id.yaml（API path 別ファイルの記載例）
+  get:
+    summary: FunctionID1
+    description: Details for a pet 
+    operationId: get-pets-pet-id
+    tags:
+      - pets
+    parameters:
+      - name: pet_id
+        in: path
+        description: The id of the pet to retrieve
+        schema:
+          type: string
+        required: true
+    responses:
+      "200":
+        description: Expected response to a valid request
+        content:
+          application/json:
+            schema:
+                type: object
+                properties:
+                  pet_detail:
+                    type: object
+                    properties:
+                      breeder:
+                        type: string
+                      date_of_birth:
+                        type: string
+                        format: date
+                      pedigree:
+                        type: object
+                        properties:
+                          registration_no:
+                            type: integer
+                            format: int64
+                          date_of_registration:
+                            type: string
+                            format: date
+                          pedigree_image:
+                            type: string
+                        required:
+                          - registration_no
+                          - date_of_registration
+                          - pedigree_image
+                required:
+                  - pet_detail
+            examples:
+              ResExample1:
+                $ref: "../examples/pets_pet_id_get/res_example1.yaml"
+      "404":
+        $ref: "../openapi.yaml#/components/responses/NotFound"
+      "500":
+        $ref: "../openapi.yaml#/components/responses/InternalServerError"
+  ```
+
+  </details>
+
+- OpenAPI の使用用途により、分割ファイルを1つのファイルにまとめる必要がある場合には、例えば[swagger-cli](https://apitools.dev/swagger-cli/)を使用して以下コマンドを実行する
+- まとめたファイルは、以下のようになる（例: openapi.gen.yaml）。
+  
+  ```bash
+  swagger-cli bundle openapi.yaml --outfile openapi.gen.yaml --type yaml
+  ```
+
+
+  <details>
+  <summary>openapi.gen.yamlを見る</summary>
+
+  ```yaml
+  # openapi.gen.yaml（ファイルBundle後）
+  openapi: 3.0.3
+  info:
+    version: 1.0.0
+    title: Swagger Petstore
+    license:
+      name: Apache 2.0
+      url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+  security:
+    - Bearer: []
+  servers:
+    - url: 'http://petstore.swagger.io/v1'
+  tags:
+    - name: pets
+      description: Everything about your Pets
+  paths:
+    /pets:
+      get:
+        summary: FunctionID2
+        description: List all pets
+        operationId: get-pets
+        tags:
+          - pets
+        parameters:
+          - name: limit
+            in: query
+            description: How many items to return at one time (max 100)
+            schema:
+              type: integer
+              maximum: 100
+              format: int32
+            required: false
+        responses:
+          '200':
+            description: A paged array of pets
+            headers:
+              x-next:
+                description: A link to the next page of responses
+                schema:
+                  type: string
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    pets:
+                      type: array
+                      maxItems: 100
+                      items:
+                        type: object
+                        properties:
+                          id:
+                            type: integer
+                            format: int64
+                          name:
+                            type: string
+                            maxLength: 50
+                          category:
+                            type: string
+                            maxLength: 10
+                          sub_category:
+                            type: string
+                            maxLength: 50
+                          age:
+                            type: integer
+                            format: int32
+                          sex:
+                            type: string
+                            maxLength: 6
+                          note:
+                            type: string
+                            maxLength: 200
+                          tag:
+                            type: string
+                            maxLength: 20
+                        required:
+                          - id
+                          - name
+                          - category
+                          - age
+                          - sex
+                examples:
+                  ResExample1:
+                    value:
+                      pets:
+                        - id: 10001
+                          name: ToyPoodle
+                          category: dog
+                          sub_category: ToyPoodle
+                          age: 1
+                          sex: male
+                          note: friendly
+                          tag: dog10001
+                        - id: 10002
+                          name: Chihuahua
+                          category: dog
+                          sub_category: Chihuahua
+                          age: 1
+                          sex: female
+                          note: friendly
+                          tag: dog10002
+                        - id: 10003
+                          name: Shiba
+                          category: dog
+                          sub_category: Shiba
+                          age: 1
+                          sex: male
+                          note: friendly
+                          tag: dog10003
+                        - id: 10004
+                          name: MiniatureDachshund
+                          category: dog
+                          sub_category: MiniatureDachshund
+                          age: 1
+                          sex: female
+                          note: friendly
+                          tag: dog10004
+                  ResExample2:
+                    value:
+                      pets: []
+          '404':
+            $ref: '#/components/responses/NotFound'
+          '500':
+            $ref: '#/components/responses/InternalServerError'
+      post:
+        summary: FunctionID3
+        description: Register a pet
+        operationId: post-pets
+        tags:
+          - pets
+        requestBody:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  pet:
+                    type: object
+                    properties:
+                      id:
+                        type: integer
+                        format: int64
+                      name:
+                        type: string
+                        maxLength: 50
+                      category:
+                        type: string
+                        maxLength: 10
+                      sub_category:
+                        type: string
+                        maxLength: 50
+                      age:
+                        type: integer
+                        format: int32
+                      sex:
+                        type: string
+                        maxLength: 6
+                      note:
+                        type: string
+                        maxLength: 200
+                      tag:
+                        type: string
+                        maxLength: 20
+                    required:
+                      - id
+                      - name
+                      - category
+                      - age
+                      - sex
+                required:
+                  - pet
+              examples:
+                ReqExample1:
+                  value:
+                    pet:
+                      id: 10005
+                      name: FrenchBulldog
+                      category: dog
+                      sub_category: FrenchBulldog
+                      age: 1
+                      sex: male
+                      note: friendly
+                      tag: dog10005
+          required: false
+        responses:
+          '200':
+            description: OK
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    id:
+                      type: integer
+                      format: int64
+                    name:
+                      type: string
+                      maxLength: 50
+                    category:
+                      type: string
+                      maxLength: 10
+                    sub_category:
+                      type: string
+                      maxLength: 50
+                    age:
+                      type: integer
+                      format: int32
+                    sex:
+                      type: string
+                      maxLength: 6
+                    note:
+                      type: string
+                      maxLength: 200
+                    tag:
+                      type: string
+                      maxLength: 20
+                  required:
+                    - id
+                    - name
+                    - category
+                    - age
+                    - sex
+          '404':
+            $ref: '#/components/responses/NotFound'
+          '500':
+            $ref: '#/components/responses/InternalServerError'
+    '/pets/{pet_id}':
+      get:
+        summary: FunctionID1
+        description: Details for a pet
+        operationId: get-pets-pet-id
+        tags:
+          - pets
+        parameters:
+          - name: pet_id
+            in: path
+            description: The id of the pet to retrieve
+            schema:
+              type: string
+            required: true
+        responses:
+          '200':
+            description: Expected response to a valid request
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    pet_detail:
+                      type: object
+                      properties:
+                        breeder:
+                          type: string
+                        date_of_birth:
+                          type: string
+                          format: date
+                        pedigree:
+                          type: object
+                          properties:
+                            registration_no:
+                              type: integer
+                              format: int64
+                            date_of_registration:
+                              type: string
+                              format: date
+                            pedigree_image:
+                              type: string
+                          required:
+                            - registration_no
+                            - date_of_registration
+                            - pedigree_image
+                  required:
+                    - pet_detail
+                examples:
+                  ResExample1:
+                    value:
+                      pet_detail:
+                        breeder: BreederName
+                        date_of_birth: '2023-10-31'
+                        pedigree:
+                          registration_no: 11111111
+                          date_of_registration: '2023-10-31'
+                          pedigree_image: 9j2wBDAA...8QAPxAAAQQABAMGBAYDAAEDAg
+          '404':
+            $ref: '#/components/responses/NotFound'
+          '500':
+            $ref: '#/components/responses/InternalServerError'
+  components:
+    schemas:
+      Error:
+        type: object
+        properties:
+          code:
+            type: integer
+            format: int32
+          message:
+            type: string
+        required:
+          - code
+          - message
+    responses:
+      NotFound:
+        description: Not Found
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+      InternalServerError:
+        description: Internal Server Error
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Error'
+    securitySchemes:
+      Bearer:
+        type: http
+        scheme: bearer
+        bearerFormat: JWT
+        description: Authenthicaiton with bearer token
+  ```
+
+  </details>
+
 ---
 
 # License

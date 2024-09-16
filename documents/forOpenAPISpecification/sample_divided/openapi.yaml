@@ -2,8 +2,11 @@ openapi: "3.0.3"
 info:
   version: 1.0.0
   title: Swagger Petstore
-  license:
-    name: MIT
+  license: 
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+security:
+  - Bearer: []
 servers:
   - url: http://petstore.swagger.io/v1
 tags:
@@ -11,20 +14,39 @@ tags:
     description: Everything about your Pets
 paths:
   /pets:
-    get:
-      $ref: "./pets_get/pets_get.yaml#/operation"
-    post:
-      $ref: "./pets_post/pets_post.yaml#/operation"
-  /pets/{petId}:
-    get:
-      $ref: "./pets-pet-id_get/pets-pet-id_get.yaml#/operation"
+    $ref: "./pets/pets.yaml"
+  /pets/{pet_id}:
+    $ref: "./pets/pets_pet_id.yaml"
+
 components:
   schemas:
-    PetDetail:
-      $ref: "./pets-pet-id_get/pets-pet-id_get.yaml#/components/schemas/PetDetail"
-    Pedigree:
-      $ref: "./pets-pet-id_get/pets-pet-id_get.yaml#/components/schemas/Pedigree"
-    Pet:
-      $ref: "./common/pet.yaml"
     Error:
-      $ref: "./common/error.yaml"
+      type: object
+      properties:
+        code:
+          type: integer
+          format: int32
+        message:
+          type: string
+      required:
+        - code
+        - message
+  responses:
+    NotFound:
+      description: Not Found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+    InternalServerError:
+      description: Internal Server Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: 'Authenthicaiton with bearer token'

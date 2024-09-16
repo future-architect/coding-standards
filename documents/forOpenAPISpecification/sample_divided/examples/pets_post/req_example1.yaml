@@ -1,0 +1,10 @@
+value:
+  pet:
+    id: 10005
+    name: FrenchBulldog
+    category: dog
+    sub_category: FrenchBulldog
+    age: 1
+    sex: male
+    note: friendly
+    tag: dog10005

@@ -1,0 +1,53 @@
+get:
+  summary: FunctionID1
+  description: Details for a pet 
+  operationId: get-pets-pet-id
+  tags:
+    - pets
+  parameters:
+    - name: pet_id
+      in: path
+      description: The id of the pet to retrieve
+      schema:
+        type: string
+      required: true
+  responses:
+    "200":
+      description: Expected response to a valid request
+      content:
+        application/json:
+          schema:
+              type: object
+              properties:
+                pet_detail:
+                  type: object
+                  properties:
+                    breeder:
+                      type: string
+                    date_of_birth:
+                      type: string
+                      format: date
+                    pedigree:
+                      type: object
+                      properties:
+                        registration_no:
+                          type: integer
+                          format: int64
+                        date_of_registration:
+                          type: string
+                          format: date
+                        pedigree_image:
+                          type: string
+                      required:
+                        - registration_no
+                        - date_of_registration
+                        - pedigree_image
+              required:
+                - pet_detail
+          examples:
+            ResExample1:
+              $ref: "../examples/pets_pet_id_get/res_example1.yaml"
+    "404":
+      $ref: "../openapi.yaml#/components/responses/NotFound"
+    "500":
+      $ref: "../openapi.yaml#/components/responses/InternalServerError"
