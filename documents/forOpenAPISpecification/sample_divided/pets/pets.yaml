@@ -1,7 +1,7 @@
 get:
-  summary: FunctionID2
-  description: List all pets
-  operationId: get-pets
+  summary: Search a pet list
+  description: Search a list of registered pets up to 100.
+  operationId: getPets
   tags:
     - pets
   parameters:
@@ -63,19 +63,19 @@ get:
                     - age
                     - sex
           examples:
-            ResExample1:
-              $ref: "../examples/pets_get/res_example1.yaml"
-            ResExample2:
-              $ref: "../examples/pets_get/res_example2.yaml"
+            TestCase001:
+              $ref: "../examples/pets_get/test_case_001.yaml"
+            TestCase002:
+              $ref: "../examples/pets_get/test_case_002.yaml"
     "404":
-      $ref: "../openapi.yaml#/components/responses/NotFound"
+      $ref: "../common/responses.yaml#/components/responses/NotFound"
     "500":
-      $ref: "../openapi.yaml#/components/responses/InternalServerError"
+      $ref: "../common/responses.yaml#/components/responses/InternalServerError"
 
 post:
-  summary: FunctionID3
-  description: Register a pet
-  operationId: post-pets
+  summary: Register a pet
+  description: Reginster basic information of new pet.
+  operationId: postPets
   tags:
     - pets
   requestBody:
@@ -120,9 +120,9 @@ post:
           required:
             - pet
         examples:
-          ReqExample1:
-            $ref: "../examples/pets_post/req_example1.yaml"
-    required: false
+          TestCase004:
+            $ref: "../examples/pets_post/test_case_004.yaml"
+    required: true
   responses:
     "200":
       description: OK
@@ -162,6 +162,6 @@ post:
               - age
               - sex
     "404":
-      $ref: "../openapi.yaml#/components/responses/NotFound"
+      $ref: "../common/responses.yaml#/components/responses/NotFound"
     "500":
-      $ref: "../openapi.yaml#/components/responses/InternalServerError"
+      $ref: "../common/responses.yaml#/components/responses/InternalServerError"

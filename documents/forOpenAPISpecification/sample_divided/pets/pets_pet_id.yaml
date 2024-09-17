@@ -1,7 +1,7 @@
 get:
-  summary: FunctionID1
-  description: Details for a pet 
-  operationId: get-pets-pet-id
+  summary: Get details of a pet
+  description: Get details of a pet by specifying its pet ID.
+  operationId: getPetsPetId
   tags:
     - pets
   parameters:
@@ -45,9 +45,9 @@ get:
               required:
                 - pet_detail
           examples:
-            ResExample1:
-              $ref: "../examples/pets_pet_id_get/res_example1.yaml"
+            TestCase003:
+              $ref: "../examples/pets_pet_id_get/test_case_003.yaml"
     "404":
-      $ref: "../openapi.yaml#/components/responses/NotFound"
+      $ref: "../common/responses.yaml#/components/responses/NotFound"
     "500":
-      $ref: "../openapi.yaml#/components/responses/InternalServerError"
+      $ref: "../common/responses.yaml#/components/responses/InternalServerError"

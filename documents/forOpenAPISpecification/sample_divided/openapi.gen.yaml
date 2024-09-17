@@ -2,22 +2,19 @@ openapi: 3.0.3
 info:
   version: 1.0.0
   title: Swagger Petstore
-  license:
-    name: Apache 2.0
-    url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+servers:
+  - url: http://petstore.swagger.io/v1
 security:
   - Bearer: []
-servers:
-  - url: 'http://petstore.swagger.io/v1'
 tags:
   - name: pets
     description: Everything about your Pets
 paths:
   /pets:
     get:
-      summary: FunctionID2
-      description: List all pets
-      operationId: get-pets
+      summary: Search a pet list
+      description: Search a list of registered pets up to 100.
+      operationId: getPets
       tags:
         - pets
       parameters:
@@ -79,52 +76,18 @@ paths:
                         - age
                         - sex
               examples:
-                ResExample1:
-                  value:
-                    pets:
-                      - id: 10001
-                        name: ToyPoodle
-                        category: dog
-                        sub_category: ToyPoodle
-                        age: 1
-                        sex: male
-                        note: friendly
-                        tag: dog10001
-                      - id: 10002
-                        name: Chihuahua
-                        category: dog
-                        sub_category: Chihuahua
-                        age: 1
-                        sex: female
-                        note: friendly
-                        tag: dog10002
-                      - id: 10003
-                        name: Shiba
-                        category: dog
-                        sub_category: Shiba
-                        age: 1
-                        sex: male
-                        note: friendly
-                        tag: dog10003
-                      - id: 10004
-                        name: MiniatureDachshund
-                        category: dog
-                        sub_category: MiniatureDachshund
-                        age: 1
-                        sex: female
-                        note: friendly
-                        tag: dog10004
-                ResExample2:
-                  value:
-                    pets: []
+                TestCase001:
+                  $ref: '#/components/examples/test_case_001'
+                TestCase002:
+                  $ref: '#/components/examples/test_case_002'
         '404':
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
     post:
-      summary: FunctionID3
-      description: Register a pet
-      operationId: post-pets
+      summary: Register a pet
+      description: Reginster basic information of new pet.
+      operationId: postPets
       tags:
         - pets
       requestBody:
@@ -169,18 +132,9 @@ paths:
               required:
                 - pet
             examples:
-              ReqExample1:
-                value:
-                  pet:
-                    id: 10005
-                    name: FrenchBulldog
-                    category: dog
-                    sub_category: FrenchBulldog
-                    age: 1
-                    sex: male
-                    note: friendly
-                    tag: dog10005
-        required: false
+              TestCase004:
+                $ref: '#/components/examples/test_case_004'
+        required: true
       responses:
         '200':
           description: OK
@@ -223,11 +177,11 @@ paths:
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
-  '/pets/{pet_id}':
+  /pets/{pet_id}:
     get:
-      summary: FunctionID1
-      description: Details for a pet
-      operationId: get-pets-pet-id
+      summary: Get details of a pet
+      description: Get details of a pet by specifying its pet ID.
+      operationId: getPetsPetId
       tags:
         - pets
       parameters:
@@ -271,22 +225,80 @@ paths:
                 required:
                   - pet_detail
               examples:
-                ResExample1:
-                  value:
-                    pet_detail:
-                      breeder: BreederName
-                      date_of_birth: '2023-10-31'
-                      pedigree:
-                        registration_no: 11111111
-                        date_of_registration: '2023-10-31'
-                        pedigree_image: 9j2wBDAA...8QAPxAAAQQABAMGBAYDAAEDAg
+                TestCase003:
+                  $ref: '#/components/examples/test_case_003'
         '404':
           $ref: '#/components/responses/NotFound'
         '500':
           $ref: '#/components/responses/InternalServerError'
 components:
+  securitySchemes:
+    Bearer:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: Authenthicaiton with bearer token
+  examples:
+    test_case_001:
+      value:
+        pets:
+          - id: 10001
+            name: ToyPoodle
+            category: dog
+            sub_category: ToyPoodle
+            age: 1
+            sex: male
+            note: friendly
+            tag: dog10001
+          - id: 10002
+            name: Chihuahua
+            category: dog
+            sub_category: Chihuahua
+            age: 1
+            sex: female
+            note: friendly
+            tag: dog10002
+          - id: 10003
+            name: Shiba
+            category: dog
+            sub_category: Shiba
+            age: 1
+            sex: male
+            note: friendly
+            tag: dog10003
+          - id: 10004
+            name: MiniatureDachshund
+            category: dog
+            sub_category: MiniatureDachshund
+            age: 1
+            sex: female
+            note: friendly
+            tag: dog10004
+    test_case_002:
+      value:
+        pets: []
+    test_case_004:
+      value:
+        pet:
+          id: 10005
+          name: FrenchBulldog
+          category: dog
+          sub_category: FrenchBulldog
+          age: 1
+          sex: male
+          note: friendly
+          tag: dog10005
+    test_case_003:
+      value:
+        pet_detail:
+          breeder: BreederName
+          date_of_birth: '2023-10-31'
+          pedigree:
+            registration_no: 11111111
+            date_of_registration: '2023-10-31'
+            pedigree_image: 9j2wBDAA...8QAPxAAAQQABAMGBAYDAAEDAg
   schemas:
-    Error:
+    ProblemDetailError:
       type: object
       properties:
         code:
@@ -303,16 +315,10 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
+            $ref: '#/components/schemas/ProblemDetailError'
     InternalServerError:
       description: Internal Server Error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/Error'
-  securitySchemes:
-    Bearer:
-      type: http
-      scheme: bearer
-      bearerFormat: JWT
-      description: Authenthicaiton with bearer token
+            $ref: '#/components/schemas/ProblemDetailError'

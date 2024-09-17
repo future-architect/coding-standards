@@ -2,9 +2,6 @@ openapi: "3.0.3"
 info:
   version: 1.0.0
   title: Swagger Petstore
-  license: 
-    name: Apache 2.0
-    url: https://www.apache.org/licenses/LICENSE-2.0.html
 security:
   - Bearer: []
 servers:
@@ -19,31 +16,6 @@ paths:
     $ref: "./pets/pets_pet_id.yaml"
 
 components:
-  schemas:
-    Error:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        message:
-          type: string
-      required:
-        - code
-        - message
-  responses:
-    NotFound:
-      description: Not Found
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/Error"
-    InternalServerError:
-      description: Internal Server Error
-      content:
-        application/json:
-          schema:
-            $ref: "#/components/schemas/Error"
   securitySchemes:
     Bearer:
       type: http

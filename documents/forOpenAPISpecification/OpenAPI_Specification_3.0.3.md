@@ -1191,12 +1191,16 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
 1. API path ごとに設計担当者を分けて、それぞれに OpenAPI を編集する場合は、path の単位で分割する。
 2. テストツールとして [stoplightio/prism](https://github.com/stoplightio/prism)を使用する場合、テストケースごとにデータファイルを作成して、`examples` にファイルパスを指定する。
 
+注意点:
+- OpenAPI 仕様上、`$ref` は[利用できる箇所が限定されている](https://swagger.io/docs/specification/using-ref/#allowed-places)ことに注意する
+  - 例えば[Path](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#path-item-object)は `$ref` が利用可能だが、[Operation](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#operation-object)（HTTPメソッドの粒度）では利用不可である
+
 ### サンプル説明
 
 分割方法 1, 2 の両方に当てはまる場合のサンプルを用いて説明する。`openapi.yaml` とディレクトリ構成は下の通り。全量は [sample_divided](https://github.com/future-architect/coding-standards/tree/master/documents/forOpenAPISpecification/sample_divided)を参照すること。
 
 - リソース単位にディレクトリを作成して、path ごとに定義ファイルを格納する。
-- `components` の schemas モデルは、大本の openapi.yaml に命名の定義を記載する。モデルの中身は別ファイルとして切り出すことも可能である。
+- `components` の schemas モデルの中身は別ファイルとして切り出すことが可能である。
 
   ```yaml
   # openapi.yaml（ファイル分割例）
@@ -1204,9 +1208,6 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
   info:
     version: 1.0.0
     title: Swagger Petstore
-    license: 
-      name: Apache 2.0
-      url: https://www.apache.org/licenses/LICENSE-2.0.html
   security:
     - Bearer: []
   servers:
@@ -1221,31 +1222,6 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
       $ref: "./pets/pets_pet_id.yaml"
 
   components:
-    schemas:
-      Error:
-        type: object
-        properties:
-          code:
-            type: integer
-            format: int32
-          message:
-            type: string
-        required:
-          - code
-          - message
-    responses:
-      NotFound:
-        description: Not Found
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Error"
-      InternalServerError:
-        description: Internal Server Error
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/Error"
     securitySchemes:
       Bearer:
         type: http
@@ -1262,14 +1238,14 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
   │
   ├─examples
   │  ├─pets_get
-  │  │    ├─res_example1.yaml
-  │  │    └─res_example2.yaml
+  │  │    ├─test_case_001.yaml
+  │  │    └─test_case_002.yaml
   │  │
   │  ├─pets_pet_id_get
-  │  │    └─res_example1.yaml
+  │  │    └─test_case_003.yaml
   │  │
   │  └─pets_post
-  │       └─req_example1.yaml
+  │       └─test_case_004.yaml
   │
   └─pets
     ├─pets.yaml
@@ -1277,7 +1253,7 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
   ```
 
 - `openapi.yaml` の `paths` に記載した API ファイルは以下のように作成する（例: pets-pet-id.yaml）。
-- `examples` には、各 API のテストケース ID をキーとして指定（`ResExample1`）し、該当するテストケースのデータファイルパスを参照させる。ファイル名は、指定したキーをスネークケースに変換したものを使用するとよい。
+- `examples` には、例えば各 API のテストケース ID をキーとして指定（`TestCase003`）し、該当するテストケースのデータファイルパスを参照させる。
 
   <details>
   <summary>pets-pet-id.yamlを見る</summary>
@@ -1285,9 +1261,9 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
   ```yaml
   # pets-pet-id.yaml（API path 別ファイルの記載例）
   get:
-    summary: FunctionID1
-    description: Details for a pet 
-    operationId: get-pets-pet-id
+    summary: Get details of a pet
+    description: Get details of a pet by specifying its pet ID.
+    operationId: getPetsPetId
     tags:
       - pets
     parameters:
@@ -1331,21 +1307,21 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
                 required:
                   - pet_detail
             examples:
-              ResExample1:
-                $ref: "../examples/pets_pet_id_get/res_example1.yaml"
+              TestCase003:
+                $ref: "../examples/pets_pet_id_get/test_case_003.yaml"
       "404":
-        $ref: "../openapi.yaml#/components/responses/NotFound"
+        $ref: "../common/responses.yaml#/components/responses/NotFound"
       "500":
-        $ref: "../openapi.yaml#/components/responses/InternalServerError"
+        $ref: "../common/responses.yaml#/components/responses/InternalServerError"
   ```
 
   </details>
 
-- OpenAPI の使用用途により、分割ファイルを1つのファイルにまとめる必要がある場合には、例えば[swagger-cli](https://apitools.dev/swagger-cli/)を使用して以下コマンドを実行する
+- OpenAPI の使用用途により、分割ファイルを1つのファイルにまとめる必要がある場合には、例えば[Redocly CLI](https://redocly.com/redocly-cli)を使用して以下コマンドを実行する
 - まとめたファイルは、以下のようになる（例: openapi.gen.yaml）。
   
   ```bash
-  swagger-cli bundle openapi.yaml --outfile openapi.gen.yaml --type yaml
+  redocly bundle openapi.yaml --output openapi.gen.yaml
   ```
 
 
@@ -1358,22 +1334,19 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
   info:
     version: 1.0.0
     title: Swagger Petstore
-    license:
-      name: Apache 2.0
-      url: 'https://www.apache.org/licenses/LICENSE-2.0.html'
+  servers:
+    - url: http://petstore.swagger.io/v1
   security:
     - Bearer: []
-  servers:
-    - url: 'http://petstore.swagger.io/v1'
   tags:
     - name: pets
       description: Everything about your Pets
   paths:
     /pets:
       get:
-        summary: FunctionID2
-        description: List all pets
-        operationId: get-pets
+        summary: Search a pet list
+        description: Search a list of registered pets up to 100.
+        operationId: getPets
         tags:
           - pets
         parameters:
@@ -1435,52 +1408,18 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
                           - age
                           - sex
                 examples:
-                  ResExample1:
-                    value:
-                      pets:
-                        - id: 10001
-                          name: ToyPoodle
-                          category: dog
-                          sub_category: ToyPoodle
-                          age: 1
-                          sex: male
-                          note: friendly
-                          tag: dog10001
-                        - id: 10002
-                          name: Chihuahua
-                          category: dog
-                          sub_category: Chihuahua
-                          age: 1
-                          sex: female
-                          note: friendly
-                          tag: dog10002
-                        - id: 10003
-                          name: Shiba
-                          category: dog
-                          sub_category: Shiba
-                          age: 1
-                          sex: male
-                          note: friendly
-                          tag: dog10003
-                        - id: 10004
-                          name: MiniatureDachshund
-                          category: dog
-                          sub_category: MiniatureDachshund
-                          age: 1
-                          sex: female
-                          note: friendly
-                          tag: dog10004
-                  ResExample2:
-                    value:
-                      pets: []
+                  TestCase001:
+                    $ref: '#/components/examples/test_case_001'
+                  TestCase002:
+                    $ref: '#/components/examples/test_case_002'
           '404':
             $ref: '#/components/responses/NotFound'
           '500':
             $ref: '#/components/responses/InternalServerError'
       post:
-        summary: FunctionID3
-        description: Register a pet
-        operationId: post-pets
+        summary: Register a pet
+        description: Reginster basic information of new pet.
+        operationId: postPets
         tags:
           - pets
         requestBody:
@@ -1525,18 +1464,9 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
                 required:
                   - pet
               examples:
-                ReqExample1:
-                  value:
-                    pet:
-                      id: 10005
-                      name: FrenchBulldog
-                      category: dog
-                      sub_category: FrenchBulldog
-                      age: 1
-                      sex: male
-                      note: friendly
-                      tag: dog10005
-          required: false
+                TestCase004:
+                  $ref: '#/components/examples/test_case_004'
+          required: true
         responses:
           '200':
             description: OK
@@ -1579,11 +1509,11 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
             $ref: '#/components/responses/NotFound'
           '500':
             $ref: '#/components/responses/InternalServerError'
-    '/pets/{pet_id}':
+    /pets/{pet_id}:
       get:
-        summary: FunctionID1
-        description: Details for a pet
-        operationId: get-pets-pet-id
+        summary: Get details of a pet
+        description: Get details of a pet by specifying its pet ID.
+        operationId: getPetsPetId
         tags:
           - pets
         parameters:
@@ -1627,22 +1557,80 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
                   required:
                     - pet_detail
                 examples:
-                  ResExample1:
-                    value:
-                      pet_detail:
-                        breeder: BreederName
-                        date_of_birth: '2023-10-31'
-                        pedigree:
-                          registration_no: 11111111
-                          date_of_registration: '2023-10-31'
-                          pedigree_image: 9j2wBDAA...8QAPxAAAQQABAMGBAYDAAEDAg
+                  TestCase003:
+                    $ref: '#/components/examples/test_case_003'
           '404':
             $ref: '#/components/responses/NotFound'
           '500':
             $ref: '#/components/responses/InternalServerError'
   components:
+    securitySchemes:
+      Bearer:
+        type: http
+        scheme: bearer
+        bearerFormat: JWT
+        description: Authenthicaiton with bearer token
+    examples:
+      test_case_001:
+        value:
+          pets:
+            - id: 10001
+              name: ToyPoodle
+              category: dog
+              sub_category: ToyPoodle
+              age: 1
+              sex: male
+              note: friendly
+              tag: dog10001
+            - id: 10002
+              name: Chihuahua
+              category: dog
+              sub_category: Chihuahua
+              age: 1
+              sex: female
+              note: friendly
+              tag: dog10002
+            - id: 10003
+              name: Shiba
+              category: dog
+              sub_category: Shiba
+              age: 1
+              sex: male
+              note: friendly
+              tag: dog10003
+            - id: 10004
+              name: MiniatureDachshund
+              category: dog
+              sub_category: MiniatureDachshund
+              age: 1
+              sex: female
+              note: friendly
+              tag: dog10004
+      test_case_002:
+        value:
+          pets: []
+      test_case_004:
+        value:
+          pet:
+            id: 10005
+            name: FrenchBulldog
+            category: dog
+            sub_category: FrenchBulldog
+            age: 1
+            sex: male
+            note: friendly
+            tag: dog10005
+      test_case_003:
+        value:
+          pet_detail:
+            breeder: BreederName
+            date_of_birth: '2023-10-31'
+            pedigree:
+              registration_no: 11111111
+              date_of_registration: '2023-10-31'
+              pedigree_image: 9j2wBDAA...8QAPxAAAQQABAMGBAYDAAEDAg
     schemas:
-      Error:
+      ProblemDetailError:
         type: object
         properties:
           code:
@@ -1659,19 +1647,13 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Error'
+              $ref: '#/components/schemas/ProblemDetailError'
       InternalServerError:
         description: Internal Server Error
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Error'
-    securitySchemes:
-      Bearer:
-        type: http
-        scheme: bearer
-        bearerFormat: JWT
-        description: Authenthicaiton with bearer token
+              $ref: '#/components/schemas/ProblemDetailError'
   ```
 
   </details>
