@@ -252,7 +252,7 @@ featureブランチでの作業中に、developブランチが更新された場
 
 :::
 
-## 2. featireブランチからdevelopブランチへ変更を取り込む
+## 2. featureブランチからdevelopブランチへ変更を取り込む
 
 プルリクエスト（以下、PR）を経由して、開発が完了したfeatureブランチをメインのdevelopブランチに取り込むためには、GitHub（GitLab）上でPRを経由する運用を行うこと。
 
