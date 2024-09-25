@@ -1,0 +1,53 @@
+get:
+  summary: Get details of a pet
+  description: Get details of a pet by specifying its pet ID.
+  operationId: getPetsPetId
+  tags:
+    - pets
+  parameters:
+    - name: pet_id
+      in: path
+      description: The id of the pet to retrieve
+      schema:
+        type: string
+      required: true
+  responses:
+    "200":
+      description: Expected response to a valid request
+      content:
+        application/json:
+          schema:
+              type: object
+              properties:
+                pet_detail:
+                  type: object
+                  properties:
+                    breeder:
+                      type: string
+                    date_of_birth:
+                      type: string
+                      format: date
+                    pedigree:
+                      type: object
+                      properties:
+                        registration_no:
+                          type: integer
+                          format: int64
+                        date_of_registration:
+                          type: string
+                          format: date
+                        pedigree_image:
+                          type: string
+                      required:
+                        - registration_no
+                        - date_of_registration
+                        - pedigree_image
+              required:
+                - pet_detail
+          examples:
+            TestCase003:
+              $ref: "../examples/pets_pet_id_get/test_case_003.yaml"
+    "404":
+      $ref: "../common/responses.yaml#/components/responses/NotFound"
+    "500":
+      $ref: "../common/responses.yaml#/components/responses/InternalServerError"
