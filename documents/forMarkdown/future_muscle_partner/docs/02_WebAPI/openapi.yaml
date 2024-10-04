@@ -199,14 +199,14 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Trainer'
+                $ref: '#/components/schemas/Trainers'
         '400':
           $ref: '#/components/responses/BadRequest'
         '500':
           $ref: '#/components/responses/InternalServer'
         '503':
           $ref: '#/components/responses/ServiceUnavailable'
-  /trainers/{trainer_id}/menu:
+  /trainers/{trainer_id}/menus:
     get:
       tags:
         - trainer
@@ -226,7 +226,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TrainingMenu'
+                $ref: '#/components/schemas/TrainingMenus'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -285,7 +285,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Review'
+                $ref: '#/components/schemas/Reviews'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -314,7 +314,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TrainerSchedule'
+                $ref: '#/components/schemas/TrainerSchedules'
         '400':
           $ref: '#/components/responses/BadRequest'
         '404':
@@ -794,6 +794,9 @@ components:
         self_introduction:
           type: string
           description: 自己紹介
+        thumbnail_url:
+          type: string
+          description: サムネイル画像URL
     Bookings:
       type: object
       properties:
@@ -844,6 +847,16 @@ components:
           type: string
           format: date
           description: トレーニング終了日時
+    Trainers:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: 検索件数
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Trainer'
     Trainer:
       type: object
       properties:
@@ -877,6 +890,20 @@ components:
         gym_name:
           type: string
           description: ジム名
+        star_count:
+          type: number
+          format: float
+          description: 星の数
+    TrainerSchedules:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: 検索件数
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrainerSchedule'
     TrainerSchedule:
       type: object
       properties:
@@ -1223,6 +1250,16 @@ components:
             予約区分 23:30-24:00
               0: 未予約
               1: 予約済み
+    TrainingMenus:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: 検索件数
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/TrainingMenu'
     TrainingMenu:
       type: object
       properties:
@@ -1246,6 +1283,16 @@ components:
         price:
           type: integer
           description: 料金
+    Reviews:
+      type: object
+      properties:
+        count:
+          type: integer
+          description: 検索件数
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/Review'
     Review:
       type: object
       properties:
@@ -1265,6 +1312,10 @@ components:
           type: string
           format: date
           description: 投稿日時
+        star_count:
+          type: number
+          format: float
+          description: 星の数
   responses:
     BadRequest:
       description: 400 Bad Request
