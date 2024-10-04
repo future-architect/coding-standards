@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>SQLコーディング規約（PostgreSQL） | Future Enterprise Coding Standards</title>
+    <meta name="generator" content="VuePress 1.9.10">
+    
+    <meta name="description" content="フューチャー株式会社が作成するエンタープライズ領域に特化したコーディング規約">
+    <meta name="keywords" content="SQLコーディング規約,PostgreSQL,コーディング規約,SQL">
+    
+    <link rel="preload" href="/coding-standards/assets/css/0.styles.dd953bb6.css" as="style"><link rel="preload" href="/coding-standards/assets/js/app.e260c5c1.js" as="script"><link rel="preload" href="/coding-standards/assets/js/2.897cdca7.js" as="script"><link rel="preload" href="/coding-standards/assets/js/1.5830e7b4.js" as="script"><link rel="preload" href="/coding-standards/assets/js/65.5ef196fb.js" as="script"><link rel="preload" href="/coding-standards/assets/js/19.8e148590.js" as="script"><link rel="prefetch" href="/coding-standards/assets/js/10.a71b24e2.js"><link rel="prefetch" href="/coding-standards/assets/js/11.8db3ab3b.js"><link rel="prefetch" href="/coding-standards/assets/js/12.0a1c1664.js"><link rel="prefetch" href="/coding-standards/assets/js/13.0f05644b.js"><link rel="prefetch" href="/coding-standards/assets/js/14.e990d7f3.js"><link rel="prefetch" href="/coding-standards/assets/js/15.f6da2975.js"><link rel="prefetch" href="/coding-standards/assets/js/16.0cf0e456.js"><link rel="prefetch" href="/coding-standards/assets/js/17.ab2a09f5.js"><link rel="prefetch" href="/coding-standards/assets/js/18.f0bc52cc.js"><link rel="prefetch" href="/coding-standards/assets/js/20.14f82d88.js"><link rel="prefetch" href="/coding-standards/assets/js/21.bd27ea3e.js"><link rel="prefetch" href="/coding-standards/assets/js/22.db7c642a.js"><link rel="prefetch" href="/coding-standards/assets/js/23.7ada6c94.js"><link rel="prefetch" href="/coding-standards/assets/js/24.f087f5a1.js"><link rel="prefetch" href="/coding-standards/assets/js/25.ab25f1d5.js"><link rel="prefetch" href="/coding-standards/assets/js/26.0bb7dec3.js"><link rel="prefetch" href="/coding-standards/assets/js/27.bae91630.js"><link rel="prefetch" href="/coding-standards/assets/js/28.48224753.js"><link rel="prefetch" href="/coding-standards/assets/js/29.53c4500f.js"><link rel="prefetch" href="/coding-standards/assets/js/3.78608899.js"><link rel="prefetch" href="/coding-standards/assets/js/30.f8200c2f.js"><link rel="prefetch" href="/coding-standards/assets/js/31.9bdf12f0.js"><link rel="prefetch" href="/coding-standards/assets/js/32.ce801407.js"><link rel="prefetch" href="/coding-standards/assets/js/33.69296d82.js"><link rel="prefetch" href="/coding-standards/assets/js/34.56886c76.js"><link rel="prefetch" href="/coding-standards/assets/js/35.0401875f.js"><link rel="prefetch" href="/coding-standards/assets/js/36.728a2a6d.js"><link rel="prefetch" href="/coding-standards/assets/js/37.3560f613.js"><link rel="prefetch" href="/coding-standards/assets/js/38.910642c2.js"><link rel="prefetch" href="/coding-standards/assets/js/39.24de8f75.js"><link rel="prefetch" href="/coding-standards/assets/js/4.6429750a.js"><link rel="prefetch" href="/coding-standards/assets/js/40.5a92204c.js"><link rel="prefetch" href="/coding-standards/assets/js/41.851c2004.js"><link rel="prefetch" href="/coding-standards/assets/js/42.ec73311a.js"><link rel="prefetch" href="/coding-standards/assets/js/43.68c7c4bf.js"><link rel="prefetch" href="/coding-standards/assets/js/44.dea698ea.js"><link rel="prefetch" href="/coding-standards/assets/js/45.77af657e.js"><link rel="prefetch" href="/coding-standards/assets/js/46.0439c483.js"><link rel="prefetch" href="/coding-standards/assets/js/47.d8d52b6a.js"><link rel="prefetch" href="/coding-standards/assets/js/48.cda6ed21.js"><link rel="prefetch" href="/coding-standards/assets/js/49.f1dd3ebc.js"><link rel="prefetch" href="/coding-standards/assets/js/5.19d9e2bf.js"><link rel="prefetch" href="/coding-standards/assets/js/50.4148676e.js"><link rel="prefetch" href="/coding-standards/assets/js/51.952d40a5.js"><link rel="prefetch" href="/coding-standards/assets/js/52.2518d432.js"><link rel="prefetch" href="/coding-standards/assets/js/53.b523825e.js"><link rel="prefetch" href="/coding-standards/assets/js/54.b30d2f91.js"><link rel="prefetch" href="/coding-standards/assets/js/55.8ac099d9.js"><link rel="prefetch" href="/coding-standards/assets/js/56.45eac90c.js"><link rel="prefetch" href="/coding-standards/assets/js/57.ee6bb810.js"><link rel="prefetch" href="/coding-standards/assets/js/58.096409f1.js"><link rel="prefetch" href="/coding-standards/assets/js/59.e9c4a392.js"><link rel="prefetch" href="/coding-standards/assets/js/6.b62fb3a5.js"><link rel="prefetch" href="/coding-standards/assets/js/60.fb3c4cf7.js"><link rel="prefetch" href="/coding-standards/assets/js/61.cb10dfac.js"><link rel="prefetch" href="/coding-standards/assets/js/62.7777b806.js"><link rel="prefetch" href="/coding-standards/assets/js/63.f53a7797.js"><link rel="prefetch" href="/coding-standards/assets/js/64.4fac599b.js"><link rel="prefetch" href="/coding-standards/assets/js/66.8991810a.js"><link rel="prefetch" href="/coding-standards/assets/js/7.20d91e85.js"><link rel="prefetch" href="/coding-standards/assets/js/vendors~docsearch.af85784a.js">
+    <link rel="stylesheet" href="/coding-standards/assets/css/0.styles.dd953bb6.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/coding-standards/" class="home-link router-link-active"><img src="/coding-standards/images/logo.svg" alt="Future Enterprise Coding Standards" class="logo"> <span class="site-name can-hide">Future Enterprise Coding Standards</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Java" class="dropdown-title"><span class="title">Java</span> <span class="arrow down"></span></button> <button type="button" aria-label="Java" class="mobile-dropdown-title"><span class="title">Java</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forJava/" class="nav-link">
+  Home
+</a></li><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forJava/Javaコーディング規約.html" class="nav-link">
+  For Java17
+</a></li><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forJava/Javaコーディング規約_for_11.html" class="nav-link">
+  For Java11
+</a></li><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forJava/Javaコーディング規約_for_8.html" class="nav-link">
+  For Java8
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="SQL" class="dropdown-title"><span class="title">SQL</span> <span class="arrow down"></span></button> <button type="button" aria-label="SQL" class="mobile-dropdown-title"><span class="title">SQL</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forSQL/" class="nav-link router-link-active">
+  Home
+</a></li><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forSQL/SQLコーディング規約（Oracle）.html" class="nav-link">
+  For Oracle
+</a></li><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html" class="nav-link">
+  For PostgreSQL
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Others" class="dropdown-title"><span class="title">Others</span> <span class="arrow down"></span></button> <button type="button" aria-label="Others" class="mobile-dropdown-title"><span class="title">Others</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          AWS インフラリソース
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/coding-standards/documents/forAWSResource/" class="nav-link">
+  Home
+</a></li><li class="dropdown-subitem"><a href="/coding-standards/documents/forAWSResource/AWSインフラリソース命名規約.html" class="nav-link">
+  AWSインフラ命名規約
+</a></li></ul></li><li class="dropdown-item"><h4>
+          OpenAPI Specification規約
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/coding-standards/documents/forOpenAPISpecification/" class="nav-link">
+  Home
+</a></li><li class="dropdown-subitem"><a href="/coding-standards/documents/forOpenAPISpecification/OpenAPI_Specification_2.0.html" class="nav-link">
+  For OAS 2.0（Swagger 2.0）
+</a></li><li class="dropdown-subitem"><a href="/coding-standards/documents/forOpenAPISpecification/OpenAPI_Specification_3.0.3.html" class="nav-link">
+  For OAS 3.0.3
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Gitブランチフロー規約
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/coding-standards/documents/forGitBranch/" class="nav-link">
+  Home
+</a></li><li class="dropdown-subitem"><a href="/coding-standards/documents/forGitBranch/Gitブランチフロー規約.html" class="nav-link">
+  Gitブランチフロー規約
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="About Us" class="dropdown-title"><span class="title">About Us</span> <span class="arrow down"></span></button> <button type="button" aria-label="About Us" class="mobile-dropdown-title"><span class="title">About Us</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://www.future.co.jp/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  フューチャー株式会社
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://future-architect.github.io/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Blog
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://qiita.com/organizations/future" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Qiita
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://twitter.com/future_techblog" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Twitter
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.facebook.com/future.saiyo/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Facebook
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="mailto:techblog@future.co.jp" class="nav-link external">
+  Email &lt;techblog@future.co.jp&gt;
+  <!----></a></li></ul></div></div> <a href="https://github.com/future-architect/coding-standards" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Java" class="dropdown-title"><span class="title">Java</span> <span class="arrow down"></span></button> <button type="button" aria-label="Java" class="mobile-dropdown-title"><span class="title">Java</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forJava/" class="nav-link">
+  Home
+</a></li><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forJava/Javaコーディング規約.html" class="nav-link">
+  For Java17
+</a></li><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forJava/Javaコーディング規約_for_11.html" class="nav-link">
+  For Java11
+</a></li><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forJava/Javaコーディング規約_for_8.html" class="nav-link">
+  For Java8
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="SQL" class="dropdown-title"><span class="title">SQL</span> <span class="arrow down"></span></button> <button type="button" aria-label="SQL" class="mobile-dropdown-title"><span class="title">SQL</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forSQL/" class="nav-link router-link-active">
+  Home
+</a></li><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forSQL/SQLコーディング規約（Oracle）.html" class="nav-link">
+  For Oracle
+</a></li><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html" class="nav-link">
+  For PostgreSQL
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Others" class="dropdown-title"><span class="title">Others</span> <span class="arrow down"></span></button> <button type="button" aria-label="Others" class="mobile-dropdown-title"><span class="title">Others</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          AWS インフラリソース
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/coding-standards/documents/forAWSResource/" class="nav-link">
+  Home
+</a></li><li class="dropdown-subitem"><a href="/coding-standards/documents/forAWSResource/AWSインフラリソース命名規約.html" class="nav-link">
+  AWSインフラ命名規約
+</a></li></ul></li><li class="dropdown-item"><h4>
+          OpenAPI Specification規約
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/coding-standards/documents/forOpenAPISpecification/" class="nav-link">
+  Home
+</a></li><li class="dropdown-subitem"><a href="/coding-standards/documents/forOpenAPISpecification/OpenAPI_Specification_2.0.html" class="nav-link">
+  For OAS 2.0（Swagger 2.0）
+</a></li><li class="dropdown-subitem"><a href="/coding-standards/documents/forOpenAPISpecification/OpenAPI_Specification_3.0.3.html" class="nav-link">
+  For OAS 3.0.3
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Gitブランチフロー規約
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/coding-standards/documents/forGitBranch/" class="nav-link">
+  Home
+</a></li><li class="dropdown-subitem"><a href="/coding-standards/documents/forGitBranch/Gitブランチフロー規約.html" class="nav-link">
+  Gitブランチフロー規約
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="About Us" class="dropdown-title"><span class="title">About Us</span> <span class="arrow down"></span></button> <button type="button" aria-label="About Us" class="mobile-dropdown-title"><span class="title">About Us</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://www.future.co.jp/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  フューチャー株式会社
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://future-architect.github.io/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Blog
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://qiita.com/organizations/future" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Qiita
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://twitter.com/future_techblog" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Twitter
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.facebook.com/future.saiyo/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Facebook
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="mailto:techblog@future.co.jp" class="nav-link external">
+  Email &lt;techblog@future.co.jp&gt;
+  <!----></a></li></ul></div></div> <a href="https://github.com/future-architect/coding-standards" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><a href="/coding-standards/documents/forSQL/" aria-current="page" class="sidebar-link">Home</a></li><li><a href="/coding-standards/documents/forSQL/SQLコーディング規約（Oracle）.html" class="sidebar-link">SQLコーディング規約（Oracle）</a></li><li><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html" class="active sidebar-link">SQLコーディング規約（PostgreSQL）</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#はじめに" class="sidebar-link">はじめに</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#前提条件" class="sidebar-link">前提条件</a></li></ul></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#sql-コーティング規約-可読性・管理性" class="sidebar-link">SQL コーティング規約（可読性・管理性）</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#書式全般" class="sidebar-link">書式全般</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#予約語" class="sidebar-link">予約語</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#予約語以外" class="sidebar-link">予約語以外</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#短縮名称" class="sidebar-link">短縮名称</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#文字コード" class="sidebar-link">文字コード</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#不要な空白文字-スペース-は除去する" class="sidebar-link">不要な空白文字（スペース）は除去する</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#sql-文の整形" class="sidebar-link">SQL 文の整形</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#コメント" class="sidebar-link">コメント</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#型変換" class="sidebar-link">型変換</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#比較演算子-2" class="sidebar-link">比較演算子</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#order-by-句" class="sidebar-link">ORDER BY 句</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#group-by-句" class="sidebar-link">GROUP BY 句</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#exists-句" class="sidebar-link">EXISTS 句</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#as-句" class="sidebar-link">AS 句</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#where-句" class="sidebar-link">WHERE 句</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#count-文" class="sidebar-link">COUNT 文</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#文字列リテラル" class="sidebar-link">文字列リテラル</a></li></ul></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#sql-コーディング規約-パフォーマンス性" class="sidebar-link">SQL コーディング規約（パフォーマンス性）</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#検索" class="sidebar-link">検索</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#挿入" class="sidebar-link">挿入</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#更新" class="sidebar-link">更新</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#削除" class="sidebar-link">削除</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#distinct-句" class="sidebar-link">DISTINCT 句</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#in-句-2" class="sidebar-link">IN 句</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#not-in-句" class="sidebar-link">NOT IN 句</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#union-句" class="sidebar-link">UNION 句</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#select-for-update" class="sidebar-link">SELECT FOR UPDATE</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#分析関数" class="sidebar-link">分析関数</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#インデックス" class="sidebar-link">インデックス</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#外部結合" class="sidebar-link">外部結合</a></li></ul></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html#license" class="sidebar-link">License</a></li></ul></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><div class="vuepress-page-title" data-v-f2a2eba4><div class="share-buttons" data-v-f2a2eba4><a href="https://twitter.com/share?ref_src=twsrc%5Etfw" data-url="https://future-architect.github.io/coding-standards/documents/forSQL/SQL%E3%82%B3%E3%83%BC%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0%E8%A6%8F%E7%B4%84%EF%BC%88PostgreSQL%EF%BC%89.html" data-show-count="false" class="twitter-share-button" data-v-f2a2eba4>
+      Tweet
+    </a> <div data-href="https://future-architect.github.io/coding-standards/documents/forSQL/SQL%E3%82%B3%E3%83%BC%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0%E8%A6%8F%E7%B4%84%EF%BC%88PostgreSQL%EF%BC%89.html" data-layout="button_count" data-action="like" data-size="small" data-show-faces="true" data-share="true" class="fb-like" data-v-f2a2eba4></div> <a href="http://b.hatena.ne.jp/entry/s/future-architect.github.io/coding-standards/documents/forSQL/SQL%E3%82%B3%E3%83%BC%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0%E8%A6%8F%E7%B4%84%EF%BC%88PostgreSQL%EF%BC%89.html" data-hatena-bookmark-layout="basic-label-counter" data-hatena-bookmark-lang="ja" title="このエントリーをはてなブックマークに追加" class="hatena-bookmark-button" data-v-f2a2eba4><img src="https://b.st-hatena.com/images/v4/public/entry-button/button-only@2x.png" alt="このエントリーをはてなブックマークに追加" width="20" height="20" style="border: none" data-v-f2a2eba4></a> <div href="https://github.com/future-architect/coding-standards" data-icon="octicon-star" data-show-count="true" aria-label="Star future-architect/coding-standards on GitHub" data-v-f2a2eba4>
+      Star
+    </div> <a href="https://getpocket.com/save" data-lang="en" data-save-url="https://future-architect.github.io/coding-standards/documents/forSQL/SQL%E3%82%B3%E3%83%BC%E3%83%87%E3%82%A3%E3%83%B3%E3%82%B0%E8%A6%8F%E7%B4%84%EF%BC%88PostgreSQL%EF%BC%89.html" data-pocket-count="horizontal" data-pocket-align="left" class="pocket-btn" data-v-f2a2eba4>Pocket</a></div> <h1 class="vuepress-page-title__title" data-v-f2a2eba4>
+    SQLコーディング規約（PostgreSQL）
+  </h1> <div class="vuepress-page-title__author" data-v-f2a2eba4>
+    Future Enterprise Coding Standards
+  </div></div> <p>本コーディング規約は、世の中のシステム開発プロジェクトのために無償で提供致します。<br>
+ただし、掲載内容および利用に際して発生した問題、それに伴う損害については、フューチャー株式会社は一切の責務を負わないものとします。<br>
+また、掲載している情報は予告なく変更することがございますので、あらかじめご了承下さい。</p> <h2 id="はじめに"><a href="#はじめに" class="header-anchor">#</a> はじめに</h2> <h3 id="前提条件"><a href="#前提条件" class="header-anchor">#</a> 前提条件</h3> <p>本書は、SQL コーディング規約についてまとめたものである。<br>
+今回 RDBMS として採用する PostgreSQL での SQL の使用を前提に記述している。</p> <h2 id="sql-コーティング規約-可読性・管理性"><a href="#sql-コーティング規約-可読性・管理性" class="header-anchor">#</a> SQL コーティング規約（可読性・管理性）</h2> <p>本章では可読性・管理性を高めることを目的としたコーディング規約について記載する。</p> <h3 id="書式全般"><a href="#書式全般" class="header-anchor">#</a> 書式全般</h3> <p>書式全般についてのコーディング規約を下記に示す。</p> <ul><li>1 行につき、1 文のみを記述する。</li> <li>SQL 中のインデントは、Java コーディング規約にあわせて半角スペースではなくタブ文字とする。</li> <li>ヘボン式ローマ字を使用する。</li> <li>外来語に関しては、原語の綴りを使用する。</li> <li>横は 80 文字を目安に改行する。</li> <li>定数を条件に用いる場合やインライン・ビューで取得したいデータなど開発者の意図はコメントにて記載する。</li></ul> <h3 id="予約語"><a href="#予約語" class="header-anchor">#</a> 予約語</h3> <p>予約語に対しては、小文字を使用する。(例 ： <code>select</code>、<code>insert</code>、<code>update</code>、<code>delete</code> 等)</p> <h3 id="予約語以外"><a href="#予約語以外" class="header-anchor">#</a> 予約語以外</h3> <p>予約語以外に対しても、予約語と同様に小文字を使用する。(例 ： オブジェクト名、カラム名 等)</p> <h3 id="短縮名称"><a href="#短縮名称" class="header-anchor">#</a> 短縮名称</h3> <p>SQL 中に記述するエイリアス名など単語の短縮について示す。</p> <ol><li><p>外来語に関しては、原語の短縮形を使用する。短縮形が存在しない場合には、母音を抜かして表記する。<br>
+例) corporation → corp / computer → cmptr</p></li> <li><p>ローマ字の短縮は、単語の区切れの頭文字、または母音を抜かした子音字等を利用する。<br>
+例) nichijo → nchj</p></li></ol> <ul><li>カラムには必ずテーブルエイリアスを付与する</li> <li>テーブルのエイリアスは必ず付与すること。<br>
+必要ない場合（単一テーブルへの SELECT 等）も必ず付与すること<br>
+また、テーブルのエイリアス名は同 SQL 文の中で重複しないように命名すること。<br>
+（副問い合わせで利用したエイリアス名をメインの SQL 中のエイリアス名に利用しない。など）</li></ul> <h3 id="文字コード"><a href="#文字コード" class="header-anchor">#</a> 文字コード</h3> <p>SQL ファイルの文字コード（エンコーディング）は Java ソースファイルと同じく『 Unicode UTF-8 』で保存する。</p> <h3 id="不要な空白文字-スペース-は除去する"><a href="#不要な空白文字-スペース-は除去する" class="header-anchor">#</a> 不要な空白文字（スペース）は除去する</h3> <p>不要な空白文字（スペース）は除去すること。</p> <h3 id="sql-文の整形"><a href="#sql-文の整形" class="header-anchor">#</a> SQL 文の整形</h3> <p>DML 文の節に対する予約語は左揃えにする。<br>
+項目ごとに改行を入れ、項目の前にはインデントを挿入する。カンマは項目の前へ記入する。<br>
+Java ソースファイルのようにファイルの先頭にコメント行を入れると DB 分析作業に支障があるため禁止とする。<br>
+よって SQL ファイルの先頭は必ず<code>select</code>、<code>update</code>、<code>insert</code>、<code>delete</code>の何れかになる。</p> <p>物理カラム名、テーブル名に対応する論理名を入れる場合、その後ろに単数行コメント（<code>--</code>）にて記述する。<br>
+SQL 内に挿入する単数行コメントは、<code>/*（半角スペース）コメント本文（半角スペース）*/</code> で行う。<br> <code>,</code>（カンマ）と<code>AND</code>については各行の先頭に記述する。（以下の例を参照のこと）<br>
+SQL フレームワークで実行する SQL の場合、SQL ステートメントの終わりを示す<code>;</code>（セミコロン）は記述しない。</p> <p>良い例：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">select</span>
+<span class="token comment">/*
+	処理名
+*/</span>
+	tbl1<span class="token punctuation">.</span>column1	<span class="token keyword">as</span>	column1	<span class="token comment">-- カラム1</span>
+<span class="token punctuation">,</span>	tbl1<span class="token punctuation">.</span>column2	<span class="token keyword">as</span>	column2	<span class="token comment">-- カラム2</span>
+<span class="token keyword">from</span>
+	table1	tbl1	<span class="token comment">-- テーブル1</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br></div></div><p>WHERE 句の<code>=</code>、<code>!=</code>、<code>is</code>（<code>is null</code>の<code>is</code>）の縦位置は揃える。</p> <p>良い例：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">where</span>
+	a<span class="token punctuation">.</span>ten_no	<span class="token operator">=</span>	b<span class="token punctuation">.</span>ten_no
+<span class="token operator">and</span>	a<span class="token punctuation">.</span>kamoku_cd	<span class="token operator">!=</span>	<span class="token string">'1'</span>
+<span class="token operator">and</span>	a<span class="token punctuation">.</span>anken_no	<span class="token operator">is</span>	<span class="token boolean">null</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><h4 id="select-文"><a href="#select-文" class="header-anchor">#</a> SELECT 文</h4> <p>良い例：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">select</span>
+	tbl1<span class="token punctuation">.</span>column1	<span class="token keyword">as</span>	column1	<span class="token comment">-- カラム1</span>
+<span class="token punctuation">,</span>	tbl1<span class="token punctuation">.</span>column2	<span class="token keyword">as</span>	column2	<span class="token comment">-- カラム2</span>
+<span class="token keyword">from</span>
+	table1	tbl1	<span class="token comment">-- テーブル1</span>
+<span class="token keyword">where</span>
+	tbl1<span class="token punctuation">.</span>column3	<span class="token operator">=</span>	<span class="token number">1</span>
+<span class="token keyword">order</span> <span class="token keyword">by</span>
+	tbl1<span class="token punctuation">.</span>column1
+<span class="token punctuation">,</span>	tbl1<span class="token punctuation">.</span>column2
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br></div></div><h4 id="insert-文"><a href="#insert-文" class="header-anchor">#</a> INSERT 文</h4> <p>良い例：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">insert</span>
+<span class="token keyword">into</span>
+	table1	<span class="token comment">-- テーブル1</span>
+<span class="token punctuation">(</span>
+	column1	<span class="token comment">-- カラム1</span>
+<span class="token punctuation">,</span>	column2	<span class="token comment">-- カラム2</span>
+<span class="token punctuation">,</span>	column3	<span class="token comment">-- カラム3</span>
+<span class="token punctuation">)</span> <span class="token keyword">values</span> <span class="token punctuation">(</span>
+	value1
+<span class="token punctuation">,</span>	value2
+<span class="token punctuation">,</span>	value3
+<span class="token punctuation">)</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br></div></div><h4 id="update-文"><a href="#update-文" class="header-anchor">#</a> UPDATE 文</h4> <p>良い例：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">update</span>
+	table1	tbl1	<span class="token comment">-- テーブル1</span>
+<span class="token keyword">set</span>
+	tbl1<span class="token punctuation">.</span>column2	<span class="token operator">=</span>	<span class="token number">100</span>	<span class="token comment">-- カラム2</span>
+<span class="token punctuation">,</span>	tbl1<span class="token punctuation">.</span>column3	<span class="token operator">=</span>	<span class="token number">100</span>	<span class="token comment">-- カラム3</span>
+<span class="token keyword">where</span>
+	tbl1<span class="token punctuation">.</span>column1	<span class="token operator">=</span>	<span class="token number">10</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div><h4 id="delete-文"><a href="#delete-文" class="header-anchor">#</a> DELETE 文</h4> <p>良い例：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">delete</span>
+<span class="token keyword">from</span>
+	table1	tbl1	<span class="token comment">-- テーブル1</span>
+<span class="token keyword">where</span>
+	tbl1<span class="token punctuation">.</span><span class="token keyword">value</span>	<span class="token operator">=</span>	<span class="token number">1</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br></div></div><h4 id="and-副問い合わせ"><a href="#and-副問い合わせ" class="header-anchor">#</a> AND（副問い合わせ）</h4> <p>良い例：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token operator">and</span>	xxx	<span class="token operator">=</span>	<span class="token punctuation">(</span>
+		<span class="token keyword">select</span>
+			tbl1<span class="token punctuation">.</span>column1
+		<span class="token punctuation">,</span>	tbl1<span class="token punctuation">.</span>column2
+		<span class="token keyword">from</span>
+			table1	tbl1
+	<span class="token punctuation">)</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div><h4 id="case-式"><a href="#case-式" class="header-anchor">#</a> CASE 式</h4> <p>CASE 式は下記のように記載すること。</p> <p>良い例：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">case</span>
+	<span class="token keyword">when</span>
+		xxx<span class="token punctuation">.</span>hoge	<span class="token operator">=</span>	yyy<span class="token punctuation">.</span>fuga
+	<span class="token operator">and</span>	xxx<span class="token punctuation">.</span>fuga	<span class="token operator">=</span>	yyy<span class="token punctuation">.</span>fuga
+	<span class="token keyword">then</span>
+		<span class="token number">1</span>
+	<span class="token keyword">else</span>
+		<span class="token number">0</span>
+<span class="token keyword">end</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br></div></div><p><code>case</code>、<code>when</code>、<code>then</code>、<code>else</code>の後に改行を挿入すること。<br> <code>case</code>の後、<code>end</code>の前までは 1 インデント挿入すること。</p> <h4 id="in-句"><a href="#in-句" class="header-anchor">#</a> IN 句</h4> <p>カンマの後にスペースを１文字入れる。</p> <h4 id="比較演算子"><a href="#比較演算子" class="header-anchor">#</a> 比較演算子</h4> <p>比較演算子の前後にタブ（またはスペース）を１文字入れる。</p> <h4 id="改行位置"><a href="#改行位置" class="header-anchor">#</a> 改行位置</h4> <p>select 句、order by 句、group by 句等は最初に出現するカラムとカラムの区切りのカンマ前に改行を入れること。<br>
+select の from 句の最初に出現するテーブルと結合テーブルの区切りのカンマ前に改行を入れること。<br>
+where 句の on 句の各条件文の（and や or の）前に改行を入れること。<br>
+命令句の後は、ヒント句が挿入できるように改行すること。</p> <p>良い例：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">select</span>
+	t1<span class="token punctuation">.</span>column1	<span class="token keyword">as</span>	column1
+<span class="token punctuation">,</span>	t2<span class="token punctuation">.</span>column2	<span class="token keyword">as</span>	column2
+<span class="token keyword">from</span>
+	table1	t1
+<span class="token punctuation">,</span>	table2	t2
+<span class="token keyword">where</span>
+	t1<span class="token punctuation">.</span>column3	<span class="token operator">=</span>	<span class="token number">1</span>
+<span class="token operator">and</span>	t1<span class="token punctuation">.</span>column4	<span class="token operator">=</span>	t2<span class="token punctuation">.</span>column4
+<span class="token keyword">order</span> <span class="token keyword">by</span>
+	t1<span class="token punctuation">.</span>column1
+<span class="token punctuation">,</span>	t2<span class="token punctuation">.</span>column2
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br></div></div><h4 id="with-句"><a href="#with-句" class="header-anchor">#</a> WITH 句</h4> <p>with の前後に改行を挿入すること<br>
+また、インデントは下記のように記述すること</p> <p>良い例：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token comment">-- カラムエイリアスあり</span>
+<span class="token keyword">with</span>
+    name1   <span class="token punctuation">(</span>
+        col_alias1  <span class="token comment">-- カラム１</span>
+    <span class="token punctuation">,</span>   col_alias2  <span class="token comment">-- カラム２</span>
+    <span class="token punctuation">)</span>   <span class="token keyword">as</span>  <span class="token punctuation">(</span>
+        <span class="token keyword">select</span>
+        ・・・
+    <span class="token punctuation">)</span>
+<span class="token punctuation">,</span>   name2   <span class="token punctuation">(</span>
+        col_alias1  <span class="token comment">-- カラム１</span>
+    <span class="token punctuation">,</span>   col_alias2  <span class="token comment">-- カラム２</span>
+    <span class="token punctuation">)</span>   <span class="token keyword">as</span>  <span class="token punctuation">(</span>
+        <span class="token keyword">select</span>
+        ・・・
+    <span class="token punctuation">)</span>
+
+<span class="token comment">-- カラムエイリアスなし</span>
+<span class="token keyword">with</span>
+    name1   <span class="token keyword">as</span>  <span class="token punctuation">(</span>
+        <span class="token keyword">select</span>
+        ・・・
+    <span class="token punctuation">)</span>
+<span class="token punctuation">,</span>   name2   <span class="token keyword">as</span>  <span class="token punctuation">(</span>
+        <span class="token keyword">select</span>
+        ・・・
+    <span class="token punctuation">)</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br></div></div><h4 id="limit-句-offset-句"><a href="#limit-句-offset-句" class="header-anchor">#</a> LIMIT 句 OFFSET 句</h4> <p>LIMIT、OFFSET の前に改行を挿入すること</p> <p>良い例：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">select</span>
+    tbl1<span class="token punctuation">.</span>column1    <span class="token keyword">as</span>  column1
+<span class="token keyword">from</span>
+    table1  tbl1
+<span class="token keyword">order</span> <span class="token keyword">by</span>
+    tbl1<span class="token punctuation">.</span>column2    <span class="token keyword">desc</span>
+<span class="token keyword">limit</span> <span class="token number">5</span>
+<span class="token keyword">offset</span> <span class="token number">5</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br></div></div><h4 id="hint-句"><a href="#hint-句" class="header-anchor">#</a> HINT 句</h4> <p>HINT 句は独立した行で記載すること<br>
+HINT 内容にはインデントを付けること</p> <p>良い例：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">select</span>
+<span class="token comment">/*+
+	ここにhintを記載
+*/</span>
+	tbl1<span class="token punctuation">.</span>column1	<span class="token keyword">as</span>	column1
+<span class="token keyword">from</span>
+	table1	tbl1
+<span class="token keyword">where</span>
+	tbl1<span class="token punctuation">.</span>column2	<span class="token operator">=</span>	<span class="token number">1</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br></div></div><h3 id="コメント"><a href="#コメント" class="header-anchor">#</a> コメント</h3> <ul><li><p>修正コメント</p> <p>（修正コメントが必要な場合、）<br>
+処理追加の際、追加行の 1 行目の前と最終行の次の行にコメントを入れる。単一行の場合は、同一行の最後にコメントをつける。</p> <p>良い例：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token comment">-- 2004/04/23 仕様変更管理番号 ADD(または、MOD、DEL) 変更者名 S ←　修正開始点コメント</span>
+<span class="token punctuation">(</span>追加処理<span class="token punctuation">)</span>
+<span class="token comment">-- 2004/04/23仕様変更管理番号 ADD(または、MOD、DEL) 変更者名 E ←　修正終了点コメント</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div></li> <li><p>単数行コメント</p> <p>SQL 内で使用する単数行コメント（カラムコメントなど）には、「 <code>--</code> 」を使用する。</p></li> <li><p>複数行コメント</p> <p>「 <code>/*</code> <code>*/</code> 」を使用する。下記に例を示す。<br>
+なお、前述で触れたとおり、SQL ファイルの先頭にコメントを記述することは禁止とする。</p> <p>良い例：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token comment">/**********************************************************************/</span>
+<span class="token comment">/*
+ * コメントを始めるスラッシュとアスタリスクは、それだけを１行に置く。
+ * それから、コメント・ブロック内の各行は縦にアスタリスクを置き
+ * コメントがあることを強調する。
+ * 最後に、アスタリスクとスラッシュは、それだけを１行に置く。
+ */</span>
+<span class="token comment">/**********************************************************************/</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br></div></div></li> <li><p>複数行コメントアウト</p> <p>複数行をコメントアウトする場合は、各行を「<code>--</code>」でコメントアウトする。<br>
+「 <code>/*</code> <code>*/</code> 」を使用すると、その中に「 <code>/*</code> <code>*/</code> 」が存在した場合、コメントアウトが途中で切れてしまう恐れがあるため、<br>
+使用しない。</p></li> <li><p>論理名の記載</p> <p><code>select</code>・<code>insert</code>・<code>update</code>・<code>merge</code>のカラム名記述箇所には単数行コメントでカラムの論理名を記載する。<br> <code>select</code>・<code>insert</code>・<code>update</code>・<code>delete</code>・<code>merge</code>のテーブル名記述箇所には単数行コメントでテーブルの論理名を記載する。<br>
+論理名は ERD 等で定義された論理名と必ず一致させること。</p></li></ul> <h3 id="型変換"><a href="#型変換" class="header-anchor">#</a> 型変換</h3> <p>代入や WHERE 句の条件設定などでデータ・タイプが異なる場合、明示的にタイプ変換を行う。（暗黙の型変換は使用しない）</p> <h3 id="比較演算子-2"><a href="#比較演算子-2" class="header-anchor">#</a> 比較演算子</h3> <p>「等しくない」を示す演算子は「<code>!=</code>」を利用する。「<code>&lt;&gt;</code>」も動作するが統一の観点から利用しない。</p> <h3 id="order-by-句"><a href="#order-by-句" class="header-anchor">#</a> ORDER BY 句</h3> <p><code>order by</code> 数字の構文は使用せずに、カラム名を記載する。</p> <h3 id="group-by-句"><a href="#group-by-句" class="header-anchor">#</a> GROUP BY 句</h3> <p><code>group by</code> 数字の構文は使用せずに、カラム名を記載する。</p> <p>集約関数を利用する場合は必ず記載すること。（省略可能であっても省略しない）</p> <h3 id="exists-句"><a href="#exists-句" class="header-anchor">#</a> EXISTS 句</h3> <p>EXISTS 句を記載する際、サブクエリになる SELECT 句の指定は定数「<code>1</code>」とする。<br>
+「<code>*</code>」（ワイルドカード）や「<code>'X'</code>」は統一の観点から利用しない。<br>
+また「<code>*</code>」（ワイルドカード）についてはパフォーマンスの観点からも禁止とする。</p> <p>良い例：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">where</span>
+	<span class="token keyword">exists</span><span class="token punctuation">(</span>
+		<span class="token keyword">select</span>
+			<span class="token number">1</span>
+		<span class="token keyword">from</span>
+			foo	f
+		<span class="token keyword">where</span>
+			f<span class="token punctuation">.</span>col1	<span class="token operator">=</span>	m<span class="token punctuation">.</span><span class="token keyword">key</span>
+	<span class="token punctuation">)</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br></div></div><h3 id="as-句"><a href="#as-句" class="header-anchor">#</a> AS 句</h3> <p>トップレベルの SELECT 句には必ず<code>as</code>句を記載し別名を付ける。<br>
+同一の名前であっても AS 句を付与する。<br>
+また、「<code>as</code>」は省略可能であるが、省略はしないこと。</p> <h3 id="where-句"><a href="#where-句" class="header-anchor">#</a> WHERE 句</h3> <ul><li><p>論理名の記載<br>
+WHERE 句でカラムと式を比較する際は左辺がカラムになるように記載すること。</p> <p>良い例：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">where</span>
+	tbl<span class="token punctuation">.</span>column1	<span class="token operator">=</span>	<span class="token number">1</span>
+<span class="token operator">and</span>	tbl<span class="token punctuation">.</span>amount2	<span class="token operator">&gt;</span>	tbl<span class="token punctuation">.</span>amount3	<span class="token operator">+</span>	tbl<span class="token punctuation">.</span>amount4
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div></li> <li><p>条件式の順序<br>
+原則として、WHERE 句で条件式を列挙する際、下記の順序を守ること。</p> <ol><li>テーブル単位にまとめて順番に記述する<br>
+この際、テーブルの順序は FROM 句に記述した順序に準ずること。</li> <li>1.のテーブル単位の中で絞り込み条件をまず記述し、その後結合条件を記述する。</li></ol> <p>良い例：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">from</span>
+	a_table	a	<span class="token comment">-- a_table</span>
+<span class="token punctuation">,</span>	b_table	b	<span class="token comment">-- b_table</span>
+<span class="token punctuation">,</span>	c_table	c	<span class="token comment">-- c_table</span>
+<span class="token keyword">where</span>
+<span class="token comment">-- a_tableの絞り込み</span>
+	a<span class="token punctuation">.</span>key1		<span class="token operator">=</span>	?
+<span class="token operator">and</span>	a<span class="token punctuation">.</span>key2		<span class="token operator">=</span>	?
+<span class="token comment">-- b_tableの絞り込み</span>
+<span class="token operator">and</span>	b<span class="token punctuation">.</span>key1		<span class="token operator">=</span>	?
+<span class="token operator">and</span>	b<span class="token punctuation">.</span>key2		<span class="token operator">=</span>	?
+<span class="token comment">-- b_tableの結合条件</span>
+<span class="token operator">and</span>	b<span class="token punctuation">.</span>col1		<span class="token operator">=</span>	a<span class="token punctuation">.</span>col1
+<span class="token comment">-- c_tableの絞り込み</span>
+<span class="token operator">and</span>	c<span class="token punctuation">.</span>key1		<span class="token operator">=</span>	?
+<span class="token operator">and</span>	c<span class="token punctuation">.</span>key2		<span class="token operator">=</span>	?
+<span class="token comment">-- c_tableの結合条件</span>
+<span class="token operator">and</span>	c<span class="token punctuation">.</span>col1		<span class="token operator">=</span>	a<span class="token punctuation">.</span>col1
+<span class="token operator">and</span>	c<span class="token punctuation">.</span>col2		<span class="token operator">=</span>	a<span class="token punctuation">.</span>col2
+<span class="token operator">and</span>	c<span class="token punctuation">.</span>col3		<span class="token operator">=</span>	b<span class="token punctuation">.</span>col3
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br></div></div></li></ul> <h3 id="count-文"><a href="#count-文" class="header-anchor">#</a> COUNT 文</h3> <p>レコード数を数える COUNT 文の記述は<code>count(*)</code>と記述する。<br> <code>count(1)</code>・<code>count('x')</code> ・<code>count(key1)</code>という記載は NG。</p> <h3 id="文字列リテラル"><a href="#文字列リテラル" class="header-anchor">#</a> 文字列リテラル</h3> <h4 id="エスケープシーケンス"><a href="#エスケープシーケンス" class="header-anchor">#</a> エスケープシーケンス</h4> <p>文字列リテラル中のシングルクォーテーションのエスケープは「 <code>''</code> 」とシングルクォーテーションを二つつなげた記述をする。<br>
+「 <code>\'</code> 」も同様の結果が得られるが円マーク（バックスラッシュ）によるエスケープは利用しない。<br>
+円マークをエスケープせざるを得ないときのみ円マークによるエスケープ利用して良いが、<br>
+円マークを文字列リテラルで表現する必要のある設計自体を避けること。</p> <p>※PostgreSQL は設定によって円マーク（バックスラッシュ）によるエスケープを無効にできます。（デフォルト無効）<br>
+円マークをエスケープするときは、自プロジェクトでどちらに設定されているか確認してください。</p> <p>良い例：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">update</span>
+    table_a
+<span class="token keyword">set</span>
+    text_data   <span class="token operator">=</span>   <span class="token string">'that''s right'</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><p>悪い例：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">update</span>
+    table_a
+<span class="token keyword">set</span>
+    text_data   <span class="token operator">=</span>   <span class="token string">'that\'s too bad'</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><h2 id="sql-コーディング規約-パフォーマンス性"><a href="#sql-コーディング規約-パフォーマンス性" class="header-anchor">#</a> SQL コーディング規約（パフォーマンス性）</h2> <p>本章ではパフォーマンス性を高めることを目的としたコーディング規約について記載する。</p> <h3 id="検索"><a href="#検索" class="header-anchor">#</a> 検索</h3> <p>検索処理におけるコーディング規約を下記に示す。</p> <ul><li><p>中間一致、後方一致検索はインデックスを利用できないため避ける</p></li> <li><p>検索条件で<code>=</code>（等号）を使用できる場合は必ず使用する</p> <p><code>a=1 or a=2</code>とする方が<code>a&gt;0 and a&lt;3</code>などと記述するのよりパフォーマンス上優位な場合が多い。<br>
+これは <code>a</code> にインデックスがある場合、<code>=</code>であれば、インデックスが有効に使われるためである。</p></li> <li><p>可能な限り検索条件にパーティションキーの値を指定する</p></li> <li><p>全列ワイルドカード「<code>*</code>」の使用はせず、カラム名を明記する</p></li> <li><p>インデックスによる検索を指定したい場合、下記の記載を行わない</p> <ul><li><p>インデックスカラムを含む演算に対して条件指定</p> <p>悪い例：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code>tbl1<span class="token punctuation">.</span>col1	<span class="token operator">+</span>	<span class="token number">1</span>	<span class="token operator">&gt;</span>	<span class="token number">100</span> <span class="token comment">/* NGパターン 右辺で演算してください */</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>良い例：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code>tbl1<span class="token punctuation">.</span>col1	<span class="token operator">&gt;</span>	<span class="token number">100</span>	<span class="token operator">-</span>	<span class="token number">1</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div></li> <li><p>インデックスカラムに関数を通した値に対して条件指定</p> <p>悪い例：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token comment">/* NGパターン 右辺に関数を通してください */</span>
+to_char<span class="token punctuation">(</span>tbl1<span class="token punctuation">.</span>col1<span class="token punctuation">,</span> <span class="token string">'YYYYMMDD'</span><span class="token punctuation">)</span>	<span class="token operator">&gt;</span>	<span class="token string">'20151231'</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div><p>良い例：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code>tbl1<span class="token punctuation">.</span>col1	<span class="token operator">&gt;=</span>	to_date<span class="token punctuation">(</span><span class="token string">'20160101'</span><span class="token punctuation">,</span> <span class="token string">'YYYYMMDD'</span><span class="token punctuation">)</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div></li> <li><p>インデックスカラムを<code>OR</code>で条件指定（禁止ではないが原則行わない）</p> <p>悪い例：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token punctuation">(</span>
+	<span class="token comment">/* NGパターンINDEXが利用されない場合があります。他の方法を検討してください */</span>
+		tbl1<span class="token punctuation">.</span>col1	<span class="token operator">=</span>	<span class="token number">1</span>
+	<span class="token operator">or</span>	tbl1<span class="token punctuation">.</span>col1	<span class="token operator">=</span>	<span class="token number">2</span>
+	<span class="token punctuation">)</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br></div></div></li></ul></li></ul> <h3 id="挿入"><a href="#挿入" class="header-anchor">#</a> 挿入</h3> <p>挿入処理におけるコーディング規約を下記に示す。</p> <ul><li>全列ワイルドカード「<code>*</code>」の使用はせず、カラム名を明記する。</li></ul> <h3 id="更新"><a href="#更新" class="header-anchor">#</a> 更新</h3> <p>更新処理におけるコーディング規約を下記に示す。</p> <ul><li>主キーの値の UPDATE は原則行わない。外部キーがあればエラーになる。<br>
+外部キーが無い場合でも、事実上、主キーの値を利用して、検索、更新する場合は、リンクが切れてしまう。</li> <li>パーティションキーの UPDATE は原則行わない。</li> <li>VIEW を使用するデータ更新は禁止。更新は実表に対して行う。</li></ul> <h3 id="削除"><a href="#削除" class="header-anchor">#</a> 削除</h3> <p>削除処理におけるコーディング規約を下記に示す。</p> <ul><li>大量件数（数百万件レベル）の delete 文発行は避ける。</li></ul> <h3 id="distinct-句"><a href="#distinct-句" class="header-anchor">#</a> DISTINCT 句</h3> <p>DISTINCT は、暗黙のソート処理が行われる可能性があるため性能劣化につながる。<br>
+EXISTS 句の使用・代替を検討すること。</p> <p>悪い例：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">select</span>
+    <span class="token keyword">distinct</span>
+    d<span class="token punctuation">.</span><span class="token keyword">no</span>    <span class="token keyword">as</span>  dept_no
+<span class="token punctuation">,</span>   d<span class="token punctuation">.</span>name  <span class="token keyword">as</span>  dept_name
+<span class="token keyword">from</span>
+    department  d
+<span class="token punctuation">,</span>   employee    e
+<span class="token keyword">where</span>
+    d<span class="token punctuation">.</span><span class="token keyword">no</span>    <span class="token operator">=</span>   e<span class="token punctuation">.</span>dept_no   <span class="token comment">-- 社員が一人以上属している部門を取得</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br></div></div><p>良い例：</p> <div class="language-sql line-numbers-mode"><pre class="language-sql"><code><span class="token keyword">select</span>
+    d<span class="token punctuation">.</span><span class="token keyword">no</span>    <span class="token keyword">as</span>  dept_no
+<span class="token punctuation">,</span>   d<span class="token punctuation">.</span>name  <span class="token keyword">as</span>  dept_name
+<span class="token keyword">from</span>
+    department  d
+<span class="token keyword">where</span>
+    <span class="token keyword">exists</span><span class="token punctuation">(</span>
+        <span class="token keyword">select</span>
+            <span class="token number">1</span>
+        <span class="token keyword">from</span>
+            employee    e
+        <span class="token keyword">where</span>
+            d<span class="token punctuation">.</span><span class="token keyword">no</span>    <span class="token operator">=</span>   e<span class="token punctuation">.</span>dept_no   <span class="token comment">-- 社員が一人以上属している部門を取得</span>
+    <span class="token punctuation">)</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br></div></div><h3 id="in-句-2"><a href="#in-句-2" class="header-anchor">#</a> IN 句</h3> <p>IN 句は最大 1000 個まで指定できるが、200 個程度でも ORA エラーが発生するケースがある。<br>
+また IN 句の少しだけ異なる SQL が大量に発行されると CPU 高騰やメモリ枯渇を招く。<br>
+従って 100 を超えるような長い IN 句は使用せず、一時表を利用して <code>in (select ・・・ from 一時表)</code>のように書き換える。</p> <h3 id="not-in-句"><a href="#not-in-句" class="header-anchor">#</a> NOT IN 句</h3> <p>原則<code>not in（select～）</code>は使用せずに、<code>not exists (select～)</code>を使用する。<br> <code>NOT IN</code>句は、内部的にソートマージの結合をすることでテーブルをフルスキャンする場合があるため、性能が悪化する可能性がある。</p> <h3 id="union-句"><a href="#union-句" class="header-anchor">#</a> UNION 句</h3> <p><code>union</code>は<code>distinct</code>処理が含まれパフォーマンス上問題があるため、<code>union all</code>を使用する。</p> <h3 id="select-for-update"><a href="#select-for-update" class="header-anchor">#</a> SELECT FOR UPDATE</h3> <ul><li><code>select for update</code>で複数行にロックをかける場合、同時実行されるとデットロックを起こす可能性があるため、１件のロックでない場合は<code>order by</code>を指定する。</li></ul> <h3 id="分析関数"><a href="#分析関数" class="header-anchor">#</a> 分析関数</h3> <p>分析関数の使用は可能だが、性能悪化を招く恐れがあるため、特性を知らない方は DBA に相談する。</p> <h3 id="インデックス"><a href="#インデックス" class="header-anchor">#</a> インデックス</h3> <p>インデックスの必要性については DBA で最終判断するため、必要とする場合は DBA へ相談する。</p> <h3 id="外部結合"><a href="#外部結合" class="header-anchor">#</a> 外部結合</h3> <p>外部結合する際、内部表（駆動表）はなるべく想定件数の少ない表にする。</p> <hr> <h2 id="license"><a href="#license" class="header-anchor">#</a> License</h2> <p><a href="https://creativecommons.org/licenses/by/4.0/deed.ja" target="_blank" rel="noopener noreferrer"><img src="https://licensebuttons.net/l/by/4.0/88x31.png" alt="CC-By-4.0"><span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></p></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/future-architect/coding-standards/edit/master/documents/forSQL/SQLコーディング規約（PostgreSQL）.md" target="_blank" rel="noopener noreferrer">Edit this page</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">2024/10/4 6:59:17</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/coding-standards/documents/forSQL/SQLコーディング規約（Oracle）.html" class="prev">
+        SQLコーディング規約（Oracle）
+      </a></span> <!----></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/coding-standards/assets/js/app.e260c5c1.js" defer></script><script src="/coding-standards/assets/js/2.897cdca7.js" defer></script><script src="/coding-standards/assets/js/1.5830e7b4.js" defer></script><script src="/coding-standards/assets/js/65.5ef196fb.js" defer></script><script src="/coding-standards/assets/js/19.8e148590.js" defer></script>
+  </body>
+</html>

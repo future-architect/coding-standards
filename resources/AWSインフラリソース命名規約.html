@@ -1,0 +1,1444 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang xml:lang>
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="フューチャー株式会社" />
+  <title>AWSインフラ命名規約</title>
+  <style>
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    span.underline{text-decoration: underline;}
+    div.column{display: inline-block; vertical-align: top; width: 50%;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+  <style type="text/css">body {
+font-family: Helvetica, arial, sans-serif;
+font-size: 14px;
+line-height: 1.6;
+padding-top: 10px;
+padding-bottom: 10px;
+background-color: white;
+padding: 30px;
+}
+body > *:first-child {
+margin-top: 0 !important;
+}
+body > *:last-child {
+margin-bottom: 0 !important;
+}
+body {
+margin-left: 300px;
+}
+#TOC {
+position: fixed;
+left: 0;
+top: 0;
+bottom: 0;
+overflow-y: auto;
+width: 300px;
+transition: width, font-size, opacity 300ms, 300ms, 300ms ease-in-out,
+ease-in-out, ease-in-out;
+padding-left: 1em;
+box-sizing: border-box;
+}
+#TOC ul {
+margin: 0 0 0 1em;
+padding: 0;
+}
+@media all and (max-width: 1000px) {
+body {
+margin-left: 0;
+}
+#TOC {
+overflow: hidden;
+width: 0;
+opacity: 0;
+}
+}
+@media print {
+body {
+margin-left: 0;
+}
+#TOC {
+display: none;
+}
+}
+@media print {
+.print-hidden {
+display: none;
+}
+}
+h1.title {
+font-size: 42px;
+border-bottom: 2px solid #cccccc;
+}
+@media print {
+h1.title {
+text-align: center;
+margin-top: 50%;
+page-break-before: auto;
+}
+}
+h2.author {
+font-size: 12px;
+border: none;
+color: initial;
+text-align: right;
+margin: 0;
+page-break-after: always;
+}
+h1 {
+page-break-before: always;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin: 20px 0 10px;
+padding: 0;
+font-weight: bold;
+-webkit-font-smoothing: antialiased;
+cursor: text;
+position: relative;
+page-break-after: avoid;
+}
+a {
+color: #4183c4;
+}
+h1 {
+font-size: 28px;
+color: black;
+}
+h2 {
+font-size: 24px;
+border-bottom: 1px solid #cccccc;
+color: black;
+}
+h3 {
+font-size: 18px;
+}
+h4 {
+font-size: 16px;
+}
+h5 {
+font-size: 14px;
+}
+h6 {
+color: #777777;
+font-size: 14px;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+li,
+table,
+pre {
+margin: 15px 0;
+}
+hr {
+border: none;
+border-bottom: 1px dashed #cccccc;
+}
+table {
+padding: 0;
+border-collapse: collapse;
+}
+table tr th {
+font-weight: bold;
+border: 1px solid #cccccc;
+text-align: left;
+padding: 6px 13px;
+}
+table tr td {
+border: 1px solid #cccccc;
+padding: 6px 13px;
+}
+table tr:nth-child(2n) {
+background-color: #f8f8f8;
+}
+table * {
+word-wrap: break-word;
+word-break: break-all;
+}
+pre {
+background-color: #f8f8f8;
+border: 1px solid #cccccc;
+font-size: 13px;
+line-height: 19px;
+overflow: auto;
+padding: 6px 10px;
+border-radius: 3px;
+}
+pre code {
+margin: 0;
+padding: 0;
+white-space: pre;
+border: none;
+background: transparent;
+}
+code,
+tt {
+margin: 0 2px;
+padding: 0 5px;
+white-space: nowrap;
+border: 1px solid #eaeaea;
+background-color: #f8f8f8;
+border-radius: 3px;
+}
+div.sourceCode {
+page-break-before: avoid;
+page-break-inside: avoid;
+}
+li * {
+margin: 0;
+}
+blockquote {
+border-left: 4px solid #dddddd;
+padding: 0 15px;
+color: #777777;
+}
+blockquote > :first-child {
+margin-top: 0;
+}
+blockquote > :last-child {
+margin-bottom: 0;
+}
+code.comment-code {
+display: block;
+white-space: pre;
+}
+table {
+overflow: auto;
+display: block;
+}
+@media screen and (max-width: 1300px) and (min-width: 1001px) {
+#TOC {
+font-size: 80%;
+width: 200px;
+}
+body {
+margin-left: 200px;
+}
+}
+@media screen and (max-width: 1100px) and (min-width: 1001px) {
+#TOC {
+font-size: 60%;
+width: 150px;
+}
+body {
+margin-left: 150px;
+}
+table tr td {
+font-size: 80%;
+padding: 3px 6px;
+}
+}
+@media all and (max-width: 1000px) {
+table tr td {
+font-size: 80%;
+padding: 3px 6px;
+}
+}
+@media all and (max-width: 800px) {
+table tr td {
+font-size: 70%;
+}
+}
+@media all and (max-width: 600px) {
+table tr td {
+font-size: 60%;
+}
+}
+</style>
+  <!--[if lt IE 9]>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv-printshiv.min.js"></script>
+  <![endif]-->
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">AWSインフラ命名規約</h1>
+<p class="author">フューチャー株式会社</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#awsインフラ命名規約"><span class="toc-section-number">1</span> AWSインフラ命名規約</a>
+<ul>
+<li><a href="#前提条件"><span class="toc-section-number">1.1</span> 前提条件</a></li>
+<li><a href="#名前の構成要素"><span class="toc-section-number">1.2</span> 名前の構成要素</a>
+<ul>
+<li><a href="#環境-env"><span class="toc-section-number">1.2.1</span> 環境 (<code>{env}</code>)</a></li>
+<li><a href="#役割-role"><span class="toc-section-number">1.2.2</span> 役割 (<code>{role}</code>)</a></li>
+<li><a href="#用途-usage"><span class="toc-section-number">1.2.3</span> 用途 (<code>{usage}</code>)</a></li>
+<li><a href="#リージョン-region"><span class="toc-section-number">1.2.4</span> リージョン (<code>{region}</code>)</a></li>
+<li><a href="#アベイラビリティゾーン-az"><span class="toc-section-number">1.2.5</span> アベイラビリティゾーン (<code>{az}</code>)</a></li>
+<li><a href="#アクセス修飾子-access"><span class="toc-section-number">1.2.6</span> アクセス修飾子 (<code>{access}</code>)</a></li>
+</ul></li>
+<li><a href="#全体ポリシー"><span class="toc-section-number">1.3</span> 全体ポリシー</a>
+<ul>
+<li><a href="#命名規約"><span class="toc-section-number">1.3.1</span> 命名規約</a></li>
+<li><a href="#利用可能な文字"><span class="toc-section-number">1.3.2</span> 利用可能な文字</a></li>
+<li><a href="#aws-サービス名を含めない"><span class="toc-section-number">1.3.3</span> AWS サービス名を含めない</a></li>
+<li><a href="#プロジェクト名を含めない"><span class="toc-section-number">1.3.4</span> プロジェクト名を含めない</a></li>
+<li><a href="#マルチクラウドを考慮しaws-識別子を追加するかどうか"><span class="toc-section-number">1.3.5</span> マルチクラウドを考慮し、aws 識別子を追加するかどうか</a></li>
+</ul></li>
+<li><a href="#サービス別の命名規約"><span class="toc-section-number">1.4</span> サービス別の命名規約</a>
+<ul>
+<li><a href="#vpc"><span class="toc-section-number">1.4.1</span> VPC</a></li>
+<li><a href="#api-gateway"><span class="toc-section-number">1.4.2</span> API Gateway</a></li>
+<li><a href="#ec2"><span class="toc-section-number">1.4.3</span> EC2</a></li>
+<li><a href="#lb"><span class="toc-section-number">1.4.4</span> LB</a></li>
+<li><a href="#ecs"><span class="toc-section-number">1.4.5</span> ECS</a></li>
+<li><a href="#lambda"><span class="toc-section-number">1.4.6</span> Lambda</a></li>
+<li><a href="#rdsaurora"><span class="toc-section-number">1.4.7</span> RDS/Aurora</a></li>
+<li><a href="#dynamodb"><span class="toc-section-number">1.4.8</span> DynamoDB</a></li>
+<li><a href="#s3-bucket"><span class="toc-section-number">1.4.9</span> S3 Bucket</a></li>
+<li><a href="#kinesis-data-streams"><span class="toc-section-number">1.4.10</span> Kinesis Data Streams</a></li>
+<li><a href="#sqs"><span class="toc-section-number">1.4.11</span> SQS</a></li>
+<li><a href="#event-bridge-rule"><span class="toc-section-number">1.4.12</span> Event Bridge Rule</a></li>
+<li><a href="#iam"><span class="toc-section-number">1.4.13</span> IAM</a></li>
+</ul></li>
+<li><a href="#タグの命名"><span class="toc-section-number">1.5</span> タグの命名</a>
+<ul>
+<li><a href="#タグキー"><span class="toc-section-number">1.5.1</span> タグキー</a></li>
+<li><a href="#タグ値"><span class="toc-section-number">1.5.2</span> タグ値</a></li>
+<li><a href="#タグポリシー"><span class="toc-section-number">1.5.3</span> タグポリシー</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#license"><span class="toc-section-number">2</span> License</a></li>
+</ul>
+</nav>
+<section id="awsインフラ命名規約" data-number="1">
+<h1 data-number="1"><span class="header-section-number">1</span> AWSインフラ命名規約</h1>
+<p>本コーディング規約は、世の中のシステム開発プロジェクトのために無償で提供致します。 ただし、掲載内容および利用に際して発生した問題、それに伴う損害については、フューチャー株式会社は一切の責務を負わないものとします。 また、掲載している情報は予告なく変更することがございますので、あらかじめご了承下さい。</p>
+<section id="前提条件" data-number="1.1">
+<h2 data-number="1.1"><span class="header-section-number">1.1</span> 前提条件</h2>
+<ul>
+<li>開発チームが 3 ～ 30 名程度で構築する規模での利用を想定している</li>
+<li>本規約をそのままプロジェクトに導入することを推奨する
+<ul>
+<li>そのままの導入ができない場合は、一部を抜粋、拡張して用いられることを想定している</li>
+</ul></li>
+<li>AWS の構成はマネージドサービスを活用するベストプラクティスに従うものとする
+<ul>
+<li>例えば、1 台の EC2 上で DB とアプリのように複数のサービスを稼働させるといった構成は考慮しない</li>
+</ul></li>
+<li>一部のリージョンでのみ利用可能な機能は想定していない
+<ul>
+<li>例えば、<a href="https://aws.amazon.com/jp/about-aws/global-infrastructure/localzones/">AWS Local Zones</a> は考慮しない</li>
+</ul></li>
+</ul>
+</section>
+<section id="名前の構成要素" data-number="1.2">
+<h2 data-number="1.2"><span class="header-section-number">1.2</span> 名前の構成要素</h2>
+<p>各リソースの名前に用いる要素を次の一覧に示す。</p>
+<table>
+<thead>
+<tr class="header">
+<th>Category</th>
+<th>Item</th>
+<th>Name</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Common</td>
+<td><code>{env}</code></td>
+<td>環境</td>
+<td>環境の区別</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>{product}</code></td>
+<td>製品名</td>
+<td>構築する製品名またはシステム名。稼働するマイクロサービス名もこれに当たる</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>{role}</code></td>
+<td>役割</td>
+<td>役割を示す。場合によっては具体的な製品名 postgres, jenkins などを指定する</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>{usage}</code></td>
+<td>用途</td>
+<td>利用目的やリソースの動作 (action) を示す。user_master, fileupload など識別したい値を指定する</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>{target}</code></td>
+<td>対象</td>
+<td>操作の対象。usage が複数の対象があり区別したいときに利用する。</td>
+</tr>
+<tr class="even">
+<td>Network</td>
+<td><code>{region}</code></td>
+<td>リージョン</td>
+<td><a href="https://docs.aws.amazon.com/ja_jp/general/latest/gr/rande.html">リージョンコード</a> の略称を用いる</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>{az}</code></td>
+<td>アベイラビリティーゾーン</td>
+<td>マルチ AZ 構成などで、明示的に AZ を意識する場合に用いる</td>
+</tr>
+<tr class="even">
+<td></td>
+<td><code>{access}</code></td>
+<td>アクセス修飾子</td>
+<td>access modifier. ネットワークでの public, private を区別したいときに利用する</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>{permission}</code></td>
+<td>権限</td>
+<td>allow または deny を指定する。Security Group での利用を想定</td>
+</tr>
+<tr class="even">
+<td>Organization</td>
+<td><code>{company}</code></td>
+<td>会社名</td>
+<td>会社の特定に利用。複数の会社による構築や、運用に複数社関わる場合などに必要となる</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td><code>{project}</code></td>
+<td>プロジェクト</td>
+<td>プロジェクト制でプロダクトを開発する際のプロジェクト名または、プロジェクトコード</td>
+</tr>
+</tbody>
+</table>
+<section id="環境-env" data-number="1.2.1">
+<h3 data-number="1.2.1"><span class="header-section-number">1.2.1</span> 環境 (<code>{env}</code>)</h3>
+<p>ソフトウェア開発では複数の環境を用意し、dev, stg, prod などの名前をつけて互いに完全に分離・区別する運用を行うことが多い。そういった環境分離のために AWS インフラは次のいずれか、もしくは組み合わせで設計される。</p>
+<ol type="1">
+<li>環境単位で AWS アカウントを作成する</li>
+<li>環境単位で AWS リージョンを分ける</li>
+<li>命名で分ける</li>
+</ol>
+<p>いずれの方法でも、 <strong>各リソース名に環境名を付与することを推奨</strong> する。冗長な命名となる場合もあるが、以下が理由である。</p>
+<ul>
+<li>同一 AWS アカウントかつ同一リージョン内には、同じ名前のリソースを作成できない</li>
+<li>AWS リソース名のみで環境を特定できるようにする事で、誤った環境のリソースを操作してしまうミスを低減する</li>
+<li>メンバー間の認識齟齬を無くし生産性を高める
+<ul>
+<li>チームメンバーなどの問い合わせやトラブルシュートの際に、リソース名のみでどの環境にあるか素早く判断できるようにする</li>
+<li>メンバーの役割によっては AWS アカウント構成を完全には理解できていない可能性がある</li>
+</ul></li>
+</ul>
+<section id="環境識別子" data-number="1.2.1.1">
+<h4 data-number="1.2.1.1"><span class="header-section-number">1.2.1.1</span> 環境識別子</h4>
+<p>主要な環境名と識別子 (Identifier) は以下である。AWS リソースの命名には識別子を用いる。</p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Identifier</th>
+<th>Memo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Production</td>
+<td>prod</td>
+<td>エンドユーザーが使う環境、本番運用環境</td>
+</tr>
+<tr class="even">
+<td>Staging</td>
+<td>stg</td>
+<td>本番と同じ構成でテストするための環境</td>
+</tr>
+<tr class="odd">
+<td>User Acceptance Test</td>
+<td>uat</td>
+<td>ユーザーがシステムのレビュー、または操作を学習するための環境</td>
+</tr>
+<tr class="even">
+<td>Performance Test</td>
+<td>perf</td>
+<td>性能検証を行うための環境</td>
+</tr>
+<tr class="odd">
+<td>Development</td>
+<td>dev</td>
+<td>開発チームが開発するための環境</td>
+</tr>
+<tr class="even">
+<td>Local</td>
+<td>local</td>
+<td>ローカル環境</td>
+</tr>
+</tbody>
+</table>
+<p>prod についてはよく用いる dev, stg と見間違えを防ぐため 4 文字にしている。</p>
+<p><a href="https://ja.wikipedia.org/wiki/%E5%B1%95%E9%96%8B%E7%92%B0%E5%A2%83">デプロイメント環境</a> の考え方では、User Acceptance Test 環境を単にテスト環境 (Test) 呼ぶが、テストという単語は汎用的であるため複数の環境にあてはまる。したがって容易に認識齟齬が生じるため本規約では非推奨とする。</p>
+<p>名前には必ず識別子を用いる。環境名をそのまま利用しない (例: <code>production-example-s3bucket</code> とは命名しない)。</p>
+<p>理由:</p>
+<ul>
+<li>AWS リソースによっては名前の文字数の制限が厳しい (例: ELB は最大 32 文字である)</li>
+<li>AWS コンソールや設計ドキュメントなどで一覧化した場合に見切れる可能性を減らして可読性を高める</li>
+<li>識別子に採用した単語は一般的に用いられている略称である</li>
+<li>その他の環境についても、環境識別子の数は通常そこまで多くならないず、またよく用いられるため、利用者にとっての認識負荷は少なく覚えるコストも低い</li>
+</ul>
+</section>
+<section id="同一目的の複数環境" data-number="1.2.1.2">
+<h4 data-number="1.2.1.2"><span class="header-section-number">1.2.1.2</span> 同一目的の複数環境</h4>
+<p>同一目的の環境が複数必要な場合は、識別子の末尾に連番をつける。</p>
+<p>例:</p>
+<ul>
+<li>dev1, dev2, dev3</li>
+<li>stg1, stg2</li>
+</ul>
+</section>
+</section>
+<section id="役割-role" data-number="1.2.2">
+<h3 data-number="1.2.2"><span class="header-section-number">1.2.2</span> 役割 (<code>{role}</code>)</h3>
+<p>アプリケーションを構成する要素には役割がある。それを AWS リソース名に含めることで、開発者の理解を助け、操作ミスを低減する。</p>
+<p>主要なロール名と識別子は以下である。</p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Identifier</th>
+<th>Memo</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Web Server</td>
+<td>web</td>
+<td>apache や nginx などの Web サーバとしての役割</td>
+</tr>
+<tr class="even">
+<td>Web Application</td>
+<td>app</td>
+<td>Web アプリケーションとしての役割</td>
+</tr>
+<tr class="odd">
+<td>Web API</td>
+<td>api</td>
+<td>HTTP(s) API を提供する</td>
+</tr>
+<tr class="even">
+<td>Job</td>
+<td>job</td>
+<td>時間やある特定のイベントをもとにバックグラウンドの処理（バッチ処理など）を行う</td>
+</tr>
+<tr class="odd">
+<td>I/F</td>
+<td>if</td>
+<td>ファイル入出力を行う</td>
+</tr>
+<tr class="even">
+<td>DB</td>
+<td>db</td>
+<td>データベース</td>
+</tr>
+<tr class="odd">
+<td>Cache</td>
+<td>cache</td>
+<td>キャッシュ</td>
+</tr>
+<tr class="even">
+<td>CI/CD</td>
+<td>ci</td>
+<td>CI/CD サーバ</td>
+</tr>
+</tbody>
+</table>
+<p>名前を一般化せず、プロダクト名をそのまま利用しても問題ない。例えば、Web アプリサーバに <code>tomcat</code>、CI/CD サーバに <code>jenkins</code> といった名称を使っても良い。</p>
+</section>
+<section id="用途-usage" data-number="1.2.3">
+<h3 data-number="1.2.3"><span class="header-section-number">1.2.3</span> 用途 (<code>{usage}</code>)</h3>
+<p>利用目的やリソースの動作 (action) を示す。user_master, fileupload といった形式や、認証(auth)や BFF（Backend For Frontend）など。</p>
+<p>役割 (<code>{role}</code>) と合わせてリソースが一意に特定できる名称を設定する。</p>
+</section>
+<section id="リージョン-region" data-number="1.2.4">
+<h3 data-number="1.2.4"><span class="header-section-number">1.2.4</span> リージョン (<code>{region}</code>)</h3>
+<p>マルチリージョン構成を取り、リージョンを意識する必要のある場合に利用する。<a href="https://docs.aws.amazon.com/ja_jp/general/latest/gr/rande.html">リージョンコード</a> そのものではなく略称を識別子として用いる。</p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Region Code</th>
+<th>Identifier</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>米国東部 (バージニア北部)</td>
+<td>us-east-1</td>
+<td>ue1</td>
+</tr>
+<tr class="even">
+<td>米国東部 (オハイオ)</td>
+<td>us-east-2</td>
+<td>ue2</td>
+</tr>
+<tr class="odd">
+<td>米国西部 (北カリフォルニア)</td>
+<td>us-west-1</td>
+<td>uw1</td>
+</tr>
+<tr class="even">
+<td>米国西部 (オレゴン)</td>
+<td>us-west-2</td>
+<td>uw2</td>
+</tr>
+<tr class="odd">
+<td>アジアパシフィック (東京)</td>
+<td>ap-northeast-1</td>
+<td>an1</td>
+</tr>
+<tr class="even">
+<td>アジアパシフィック (ソウル)</td>
+<td>ap-northeast-2</td>
+<td>an2</td>
+</tr>
+<tr class="odd">
+<td>アジアパシフィック (大阪)</td>
+<td>ap-northeast-3</td>
+<td>an3</td>
+</tr>
+<tr class="even">
+<td>アジアパシフィック (シンガポール)</td>
+<td>ap-southeast-1</td>
+<td>as1</td>
+</tr>
+</tbody>
+</table>
+<p>シングルリージョン構成または、リージョン間のリソースの関係が疎である場合はリージョン識別子を付与しない。</p>
+</section>
+<section id="アベイラビリティゾーン-az" data-number="1.2.5">
+<h3 data-number="1.2.5"><span class="header-section-number">1.2.5</span> アベイラビリティゾーン (<code>{az}</code>)</h3>
+<p>AZ 名にはリージョンコードを含めず、末尾のアルファベットだけとする。</p>
+<table>
+<thead>
+<tr class="header">
+<th>AZ ID</th>
+<th>Identifier</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>ap-northeast-1a</td>
+<td>a</td>
+</tr>
+<tr class="even">
+<td>ap-northeast-1c</td>
+<td>c</td>
+</tr>
+<tr class="odd">
+<td>ap-northeast-1d</td>
+<td>d</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>利用可能な文字: <code>[a-d]{1}</code></li>
+</ul>
+</section>
+<section id="アクセス修飾子-access" data-number="1.2.6">
+<h3 data-number="1.2.6"><span class="header-section-number">1.2.6</span> アクセス修飾子 (<code>{access}</code>)</h3>
+<p>VPC のサブネットは、パブリックサブネットの場合インターネットに直接アクセスできる。パブリックサブネットを区別したい場合はリソース名にアクセス修飾子を付与する。</p>
+<table>
+<thead>
+<tr class="header">
+<th>Name</th>
+<th>Identifier</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>パブリックサブネット</td>
+<td>public</td>
+</tr>
+<tr class="even">
+<td>プライベートサブネット</td>
+<td>private</td>
+</tr>
+</tbody>
+</table>
+</section>
+</section>
+<section id="全体ポリシー" data-number="1.3">
+<h2 data-number="1.3"><span class="header-section-number">1.3</span> 全体ポリシー</h2>
+<section id="命名規約" data-number="1.3.1">
+<h3 data-number="1.3.1"><span class="header-section-number">1.3.1</span> 命名規約</h3>
+<p>次のように各要素を使ってケバブケース (<code>kebab-case</code>) で命名する。パスカルケース (<code>PascalCase</code>) やスネークケース (<code>snake_case</code>) は利用しない。なお、サービス名自体にパスカルケースを用いることは許容する</p>
+<pre class="properties"><code># 命名規約の基本形
+{env}-{product}-{role}-{usage}</code></pre>
+<p>理由:</p>
+<ul>
+<li>ほぼ全ての AWS サービスではリソース名にハイフンを許容する。一方で、アンダースコアを許容しない WebACL のようなサービスがある</li>
+<li>環境名、サービス名などの単位で区切りを明確にできる</li>
+</ul>
+</section>
+<section id="利用可能な文字" data-number="1.3.2">
+<h3 data-number="1.3.2"><span class="header-section-number">1.3.2</span> 利用可能な文字</h3>
+<p>利用する文字は、半角英数字とハイフンに限定する。また、 <strong>小文字を推奨</strong> する。</p>
+<ul>
+<li>推奨: <code>[a-z0-9\-]+</code></li>
+</ul>
+<p>また、先頭文字には半角英字を用い (ハイフン、数値を先頭にしない)、ハイフンは 2 文字以上連続させないこととする。</p>
+</section>
+<section id="aws-サービス名を含めない" data-number="1.3.3">
+<h3 data-number="1.3.3"><span class="header-section-number">1.3.3</span> AWS サービス名を含めない</h3>
+<p>リソース名に AWS サービス名を含めない。</p>
+<p>良い例：</p>
+<pre class="properties"><code>stg-fuga-web-fileupload
+stg-fuga-web-fileupload</code></pre>
+<p>悪い例：</p>
+<pre class="properties"><code>stg-fuga-web-fileupload-s3
+stg-fuga-web-fileupload-bucket</code></pre>
+<p>理由:</p>
+<ul>
+<li>AWS コンソールで見たときにどの AWS サービスのリソースを見ているか自明である</li>
+<li><a href="https://www.terraform-best-practices.com/naming#resource-and-data-source-argument">Terraform の命名規則</a> にリソース名を繰り返さないという記載があり、整合性を持たせるため</li>
+</ul>
+<blockquote>
+<p><strong>Resource and data source arguments</strong> Do not repeat resource type in resource name (not partially, nor completely):</p>
+</blockquote>
+<p>ただし、VPC エンドポイントやセキュリティグループのように、どの AWS サービスの何で利用されているかを示す場合には利用することがある。</p>
+</section>
+<section id="プロジェクト名を含めない" data-number="1.3.4">
+<h3 data-number="1.3.4"><span class="header-section-number">1.3.4</span> プロジェクト名を含めない</h3>
+<p>プロジェクト制を取っている場合、その開発チームの持ち物であることを示すためプロジェクト名をリソース名に含めたくなるが非推奨である。</p>
+<p>理由:</p>
+<ul>
+<li>必ずしも開発しているプロダクトと、プロジェクトの粒度・ライフサイクルは一致しない</li>
+<li>プロジェクトが解散すると管理主管が曖昧になる</li>
+</ul>
+<p>プロジェクト名の替わりにプロダクト名を含めることとする。</p>
+</section>
+<section id="マルチクラウドを考慮しaws-識別子を追加するかどうか" data-number="1.3.5">
+<h3 data-number="1.3.5"><span class="header-section-number">1.3.5</span> マルチクラウドを考慮し、aws 識別子を追加するかどうか</h3>
+<p>AWS だけではなく、Azure や GCP などを組み合わせたマルチクラウド運用を行っている、あるいは行う予定がある場合を考慮し、リソース名に <code>aws</code> といったプレフィックス/サフィックスを付与する考えもある。</p>
+<p>本規約では、<code>aws</code> キーワードをリソース名に含めることは非推奨とする。</p>
+<p>理由:</p>
+<ul>
+<li>同一 product を異なるクラウドサービスで運用することは稀</li>
+<li>一部のサービス (例えば DWH のみ Google BigQuery を利用するようなケース) だけの使用であれば、<code>{usage}</code> で区別すれば十分である</li>
+</ul>
+</section>
+</section>
+<section id="サービス別の命名規約" data-number="1.4">
+<h2 data-number="1.4"><span class="header-section-number">1.4</span> サービス別の命名規約</h2>
+<p>サービスによって異なる命名規約と例を記載する。</p>
+<p>以下ではプロダクト名を <code>fuga</code> とした場合の例をあげる。</p>
+<section id="vpc" data-number="1.4.1">
+<h3 data-number="1.4.1"><span class="header-section-number">1.4.1</span> VPC</h3>
+<p>VPC に関わるリソースの命名について記載する。</p>
+<table>
+<colgroup>
+<col style="width: 12%"></col>
+<col style="width: 30%"></col>
+<col style="width: 15%"></col>
+<col style="width: 42%"></col>
+</colgroup>
+<thead>
+<tr class="header">
+<th>Resource Name</th>
+<th>Naming Convention</th>
+<th>Example</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>VPC</td>
+<td><code>{env}-{product}</code></td>
+<td>stg-fuga</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Subnet</td>
+<td><code>{env}-{product}-{access}-{az}</code></td>
+<td>stg-fuga-public-a</td>
+<td>AZ: どこのゾーンかを識別するため</td>
+</tr>
+<tr class="odd">
+<td>EIP</td>
+<td><code>{env}-{product}-{usage}</code></td>
+<td>stg-fuga-nat</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Route Table</td>
+<td><code>{env}-{product}-{access}</code></td>
+<td>stg-fuga-public</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Internet Gateway</td>
+<td><code>{env}-{product}</code></td>
+<td>stg-fuga</td>
+<td></td>
+</tr>
+<tr class="even">
+<td>NAT Gateway</td>
+<td><code>{env}-{product}</code></td>
+<td>stg-fuga</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Endpoint</td>
+<td><code>{env}-{product}-{aws_service}</code></td>
+<td>stg-fuga-s3</td>
+<td>様々なサービスが利用するため AWS サービス名を含めている</td>
+</tr>
+<tr class="even">
+<td>Security Group</td>
+<td><code>{env}-{product}-{aws_service}-{usage}</code></td>
+<td>stg-fuga-ec2-bastion</td>
+<td>様々なサービスが利用するため AWS サービス名を含めている</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="api-gateway" data-number="1.4.2">
+<h3 data-number="1.4.2"><span class="header-section-number">1.4.2</span> API Gateway</h3>
+<details>
+<p><summary>AWS上の命名制約</summary></p>
+<ul>
+<li>ドキュメントは確認できなかったら、リソース名は 1024 文字まで指定可能。システム上は一意である必要はない</li>
+</ul>
+</details>
+<p>API Gateway は <a href="#命名規約">全体ポリシーの命名規約</a> に則る。管理上、一意となるように命名する</p>
+<pre class="properties"><code># 命名規約の基本形
+{env}-{product}-{role}-{usage}-{access}
+
+# 例
+stg-fuga-web-portal-private
+stg-fuga-web-fileupload-public</code></pre>
+<ul>
+<li>API Gateway には複数の機能種別 (REST, HTTP) が存在するが、命名には含めない</li>
+<li>private/public を名前に含めることで、public は認証が入っているかなどをチェックできる</li>
+</ul>
+</section>
+<section id="ec2" data-number="1.4.3">
+<h3 data-number="1.4.3"><span class="header-section-number">1.4.3</span> EC2</h3>
+<p>インスタンス名の制限=タグの制限のため、名前は <a href="https://docs.aws.amazon.com/ja_jp/AWSEC2/latest/UserGuide/Using_Tags.html">Amazon EC2 リソースのタグ付け</a> に従う必要がある。</p>
+<pre class="properties"><code># 命名規約の基本形
+{env}-{product}-{role}
+
+# 例
+stg-fuga-web</code></pre>
+<p>オートスケーリング、オートヒーリング構成をする場合にどこの AZ に配置するかを意識させないため、リソース名に AZ は基本的に含めない。そのような構成をしないという方針は、アンチパターンのため構成を見直すべきと考える。</p>
+</section>
+<section id="lb" data-number="1.4.4">
+<h3 data-number="1.4.4"><span class="header-section-number">1.4.4</span> LB</h3>
+<details>
+<p><summary>AWS上の命名制約</summary></p>
+<ul>
+<li>最大文字数: 32</li>
+<li>英数字とハイフンが利用可能 (先頭、末尾にハイフン不可)</li>
+<li>ALB と NLB のセット内で一意である必要がある</li>
+<li>参考: <a href="https://docs.aws.amazon.com/ja_jp/elasticloadbalancing/latest/application/load-balancer-tags.html">Application Load Balancer にタグを付ける</a></li>
+</ul>
+</details>
+<p>LB には ALB/NLB/CLB などの種類があるが、いずれも以下の命名規約に従う。また、Internal LB に関しては、<code>{usage}</code> 部に含める。</p>
+<pre class="properties"><code># 命名規約
+{env}-{product}-{role}-{usage}-{access}
+
+# 例
+stg-fuga-web-api-public</code></pre>
+<p>ターゲットグループ名は、基本的には LB と同じである。</p>
+<p>ただし、Blue/Green デプロイを行う場合は、ターゲットグループ名をユニークにし、どちら (Blue/Green) に所属しているかをわかるようにする。</p>
+<pre class="properties"><code># Target group name (Blue/Green) の命名規約
+{env}-{product}-{role}-{usage}-{access}-blue
+
+# 例
+stg-fuga-web-public-blue</code></pre>
+</section>
+<section id="ecs" data-number="1.4.5">
+<h3 data-number="1.4.5"><span class="header-section-number">1.4.5</span> ECS</h3>
+<details>
+<p><summary>AWS上の命名制約</summary></p>
+<ul>
+<li>クラスター
+<ul>
+<li>最大文字数: 255</li>
+<li>利用可能文字種: <code>A-z</code>, <code>0-9</code>, <code>-</code>, <code>_</code></li>
+<li>その他制約: 先頭の文字は <code>A-z</code> のみ利用可能</li>
+</ul></li>
+<li>サービス、タスク定義
+<ul>
+<li>最大文字数: 255</li>
+<li>利用可能文字種: <code>A-z</code>, <code>0-9</code>, <code>-</code>, <code>_</code></li>
+</ul></li>
+</ul>
+</details>
+<p>ECS の命名規約は以下のとおりである</p>
+<pre class="properties"><code># クラスターの命名規約
+{env}-{product}
+
+# 例
+stg-fuga
+
+# サービスの命名規約
+{env}-{product}-{role}-{usage}
+
+# 例
+stg-fuga-api-auth
+stg-fuga-web-frontend
+
+# タスク定義の命名規約
+{env}-{product}-{role}-{usage}
+
+# 例
+stg-fuga-batch-import-address</code></pre>
+</section>
+<section id="lambda" data-number="1.4.6">
+<h3 data-number="1.4.6"><span class="header-section-number">1.4.6</span> Lambda</h3>
+<section id="lambda-function" data-number="1.4.6.1">
+<h4 data-number="1.4.6.1"><span class="header-section-number">1.4.6.1</span> Lambda Function</h4>
+<details>
+<p><summary>AWS上の命名制約</summary></p>
+<p><a href="https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/API_CreateFunction.html">CreateFunction</a> によると以下の制約である。</p>
+<ul>
+<li>1 ～ 64 文字</li>
+<li>利用可能文字: <code>[a-zA-Z0-9-_]+</code></li>
+</ul>
+</details>
+<p>Lambda は運用を経てリソース数が増えやすいサービスの一つである。そのため個別の機能名の前に <code>{role}</code> を含めてグルーピングしやすい名前にする。</p>
+<pre class="properties"><code># 命名規約
+{env}-{product}-{role}-{usage}
+
+# 例
+stg-fuga-import-userprofile
+stg-fuga-job-checkconsistency
+stg-fuga-report-successrate</code></pre>
+<p>もし、Scatter-Gather パターンを用いる場合は次のようにサフィックスに追加して区別する。</p>
+<pre class="properties"><code># 命名規約
+{env}-{product}-{role}-{usage}-scatter
+{env}-{product}-{role}-{usage}-segment
+{env}-{product}-{role}-{usage}-gather</code></pre>
+</section>
+<section id="lambda-layer" data-number="1.4.6.2">
+<h4 data-number="1.4.6.2"><span class="header-section-number">1.4.6.2</span> Lambda Layer</h4>
+<details>
+<p><summary>AWS上の命名制約</summary></p>
+<ul>
+<li>1 ～ 64 文字</li>
+<li>利用可能文字: <code>[a-zA-Z0-9-_]+</code></li>
+</ul>
+</details>
+<p>Lambda Layers は実行環境が重要であるため、 <code>{runtime}</code> で言語バージョンを指定する。</p>
+<pre class="properties"><code># 命名規約
+{env}-{product}-{runtime}-{usage}
+
+# 例
+stg-fuga-python310-auth
+stg-fuga-nodejs18-frontend</code></pre>
+</section>
+</section>
+<section id="rdsaurora" data-number="1.4.7">
+<h3 data-number="1.4.7"><span class="header-section-number">1.4.7</span> RDS/Aurora</h3>
+<details>
+<p><summary>AWS上の命名制約</summary></p>
+<p><a href="https://docs.aws.amazon.com/ja_jp/AmazonRDS/latest/UserGuide/CHAP_Limits.html#RDS_Limits.Constraints">Amazon RDS の命名に関する制約</a> によると以下の制約である。</p>
+<ul>
+<li>1 ～ 63 個の英数字またはハイフンを使用する必要があります</li>
+<li>1 字目は文字である必要があります</li>
+<li>文字列の最後にハイフンを使用したり、ハイフンを 2 つ続けて使用したりすることはできません</li>
+<li>1 つの AWS アカウント、1 つの AWS リージョンにつき、すべての DB インスタンスにおいて一意である必要があります</li>
+</ul>
+</details>
+<pre class="properties"><code># クラスターの命名規約
+{env}-{product}-{role}
+
+# 例
+stg-fuga-auth
+
+# インスタンスの命名規約
+{env}-{product}-{role}-{serial}
+
+# 例
+stg-fuga-auth-01
+
+# DBパラメータグループの命名規約
+{env}-{product}-{role}
+{env}-{product}
+
+# 手動スナップショットの命名規約
+{env}-{product}-{role}-{yyyy}-{mm}-{dd}</code></pre>
+<p>AZ は含めない。</p>
+<p>理由:</p>
+<ul>
+<li>RDS はマルチ AZ 構成をとることが推奨のため</li>
+<li>Aurora は自動でマルチ AZ 構成をとっているため</li>
+</ul>
+<p>DB パラメータグループは、role 単位での設定を推奨する。product を跨いでの設定は行わない。</p>
+<ul>
+<li>設定値の変更はパラメータグループを適用している全ての DB に変更が反映される。同じパラメータグループを複数の DB で共有し過ぎることにより意図しない DB にまで設定変更が反映されるリスクを避けるため</li>
+</ul>
+<p>クラスター/インスタンスに適用する IAM ロール</p>
+<ul>
+<li><a href="#iam-ロール">IAM ロール</a> を参照</li>
+</ul>
+<p>DB サブネット</p>
+<ul>
+<li><a href="#vpc">VPC</a> のサブネットを参照</li>
+</ul>
+</section>
+<section id="dynamodb" data-number="1.4.8">
+<h3 data-number="1.4.8"><span class="header-section-number">1.4.8</span> DynamoDB</h3>
+<details>
+<p><summary>AWS上の命名制約</summary></p>
+<p><a href="https://docs.aws.amazon.com/ja_jp/amazondynamodb/latest/developerguide/HowItWorks.NamingRulesDataTypes.html">Amazon DynamoDB でサポートされるデータ型と命名規則</a> によると以下の制約である。</p>
+<ul>
+<li>すべての名前は UTF-8 を使用してエンコードする必要があり、大文字と小文字が区別される</li>
+<li>3 ～ 255 文字</li>
+<li>利用可能な文字: <code>[a-zA-Z0-9_.-]+</code></li>
+</ul>
+</details>
+<p>DynamoDB のテーブル名には、環境、プロダクト名、用途を用いる。データは長く残り、かつ変更しにくいため会社名などの変化しやすい項目は含めない。</p>
+<pre class="properties"><code># DynamoDB の命名規約
+{env}-{product}-{usage}
+
+# 例
+stg-fuga-user
+stg-fuga-user-accesslog</code></pre>
+<p>なお、インデックス名は <code>idx-1</code>, <code>idx-2</code> のような連番での管理を推奨する。RDB とは異なりアカウント単位での一意性は不要なため、テーブル名は含めなくても良いため、 <code>idx_{テーブル名}_{連番}</code> としなくても良い。DynamoDB は 最大で 20 のグローバルセカンダリインデックス を持つことができるが、インデックスの数は最小限に抑えることが鉄則であるため、0 埋めしない。ただし、要件上どうしても多用が避けられないことが判明している場合は <code>idx-01</code>, <code>idx-02</code> と 0 埋めする。</p>
+</section>
+<section id="s3-bucket" data-number="1.4.9">
+<h3 data-number="1.4.9"><span class="header-section-number">1.4.9</span> S3 Bucket</h3>
+<details>
+<p><summary>AWS上の命名制約</summary></p>
+<p><a href="https://docs.aws.amazon.com/ja_jp/awscloudtrail/latest/userguide/cloudtrail-s3-bucket-naming-requirements.html">Amazon S3 バケットの命名要件</a> によると以下の制約である。</p>
+<ul>
+<li>1 ～ 63 文字</li>
+<li>半角英数字、ピリオド、ダッシュのみを使用可能</li>
+<li>バケット名の各ラベルは、小文字または数字で始まっている必要がある</li>
+<li>バケット名では、アンダースコア、末尾のダッシュ、連続するピリオド、隣接するピリオドとダッシュは使用できない</li>
+<li>バケット名を IP アドレス (198.51.100.24) として書式設定することはできない</li>
+</ul>
+</details>
+<p>S3 は非常に多くの用途で用いることがあるため、利用形態に応じて規則を変えて対応する。</p>
+<pre class="properties"><code># 通常の命名規約
+{env}-{product}-{use}
+
+# 例
+stg-fuga-fileupload
+
+# ログを保管するバケットの命名規約
+{env}-{product}-{service}-logs
+
+# 例
+stg-fuga-alb-logs
+
+# データ授受で利用する場合の命名規約
+{env}-{product}-{use}-{dest}-if
+
+# 例
+stg-fuga-userinfo-fis-if</code></pre>
+</section>
+<section id="kinesis-data-streams" data-number="1.4.10">
+<h3 data-number="1.4.10"><span class="header-section-number">1.4.10</span> Kinesis Data Streams</h3>
+<details>
+<p><summary>AWS上の命名制約</summary></p>
+<p><a href="https://docs.aws.amazon.com/kinesis/latest/APIReference/API_CreateStream.html#API_CreateStream_RequestSyntax">CreateStream</a> によると以下の制約である。</p>
+<ul>
+<li>異なる AWS アカウントであれば同名が許容</li>
+<li>異なるリージョンであれば同名が許容</li>
+<li>1 ～ 128 文字</li>
+<li><code>[a-zA-Z0-9_.-]+</code></li>
+</ul>
+</details>
+<p>IoT のセンシングを始めとしたイベントデータの場合は、次の命名規約を用いる。<code>{role}</code> には import や export など、どのような処理を行うかを規定する。</p>
+<p>設計によっては、データ種別 (スキーマ) 毎に分離することもあるため、デバイス名やセンサー名などの発生源の名前を持たせる。</p>
+<pre class="properties"><code># 命名規約
+{env}-{product}-{role}-{usage}-{schema}
+
+# 例
+stg-fuga-import-iotsensor-devicetype
+stg-fuga-import-iotsensor-toggle</code></pre>
+<p>ジョブキューとして用いる場合は、どのジョブを利用するかが重要であるため、呼び出し用であることが明確になるように命名する。</p>
+<pre class="properties"><code># 命名規約
+{env}-{product}-call-{呼び出したいジョブ名}
+
+# 例
+stg-fuga-call-job-arrival-check</code></pre>
+</section>
+<section id="sqs" data-number="1.4.11">
+<h3 data-number="1.4.11"><span class="header-section-number">1.4.11</span> SQS</h3>
+<details>
+<p><summary>AWS上の命名制約</summary></p>
+<p><a href="https://docs.aws.amazon.com/ja_jp/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-queue-message-identifiers.html">Amazon SQS キューとメッセージの識別子</a> によると以下の制約である。</p>
+<ul>
+<li>最大 80 文字</li>
+<li><code>[a-zA-Z0-9_-]</code></li>
+<li>FIFO キューの場合には <code>.fifo</code> のサフィックスで終わる必要がある</li>
+<li>1 つの AWS アカウント、1 つの AWS リージョンにつき一意である必要がある</li>
+</ul>
+</details>
+<p>1 つのキューに対し、複数のプロデューサー、コンシューマーを取りうるため、プロデューサー、コンシューマーを名前に含めることは推奨しない。</p>
+<pre class="properties"><code># 標準キューの命名規約
+{env}-{company}-{product}-{usage}
+
+# 例
+stg-future-fuga-processresult
+
+# FIFOキューの命名規約
+{env}-{company}-{product}-{usage}.fifo
+
+# 例
+stg-future-fuga-processresult.fifo</code></pre>
+</section>
+<section id="event-bridge-rule" data-number="1.4.12">
+<h3 data-number="1.4.12"><span class="header-section-number">1.4.12</span> Event Bridge Rule</h3>
+<details>
+<p><summary>AWS上の命名制約</summary></p>
+<ul>
+<li>最大 64 文字</li>
+<li>数字、小文字/大文字、 <code>.</code> (ピリオド)、 <code>-</code> (ハイフン)、 <code>_</code> (アンダーバー) が使用可能</li>
+<li>同じリージョン内および同じイベントバス上の別のルールと同じ名前を付けることは不可</li>
+</ul>
+</details>
+<pre class="properties"><code># 命名規約
+{env}-{product}-{usage}-{source}-{target}
+
+# 例
+stg-fuga-deploy-s3-codepipeline
+stg-fuga-archive-auth0-s3
+stg-fuga-polling-schedule-lambda</code></pre>
+<p>※スケジュールタイプのルールの場合は <code>{source}</code> に <code>schedule</code> と記載する。</p>
+</section>
+<section id="iam" data-number="1.4.13">
+<h3 data-number="1.4.13"><span class="header-section-number">1.4.13</span> IAM</h3>
+<p>IAM に関わるリソースの命名について記載する。IAM グループ、IAM ユーザー、IAM ロール、IAM ポリシーの 4 点について述べる。</p>
+<section id="iam-ユーザー" data-number="1.4.13.1">
+<h4 data-number="1.4.13.1"><span class="header-section-number">1.4.13.1</span> IAM ユーザー</h4>
+<p>IAM ユーザーについては、誰 (人またはシステム) が利用するのかを識別することを目的とする。同じユーザーを複数の人やシステムで使いまわすと、誰が操作したのかといった証跡を追えなくなってしまうため、個別に発行することを推奨する。 また、役割や権限といった情報は名前に含めない。そのような名前はユーザーに紐づけるロールが増えた際などに名前と役割や権限の実態が乖離してしまうためである。</p>
+<p>IAM ユーザー名については全体ポリシーから外れ、アンダースコア区切りを推奨する。</p>
+<p>理由:</p>
+<ul>
+<li>多くのサービスでユーザー名には慣習的にアンダースコアを用いることが多いため</li>
+</ul>
+<p>人が利用する IAM ユーザー：</p>
+<pre class="properties"><code># 命名規約
+{company}_{username}
+
+# 例
+future_taro_mirai</code></pre>
+<p>※AWS アカウントに関与する人が単一の会社に属する人だけである場合は <code>{company}_</code> を省略しても良い。</p>
+<p>システムが利用する IAM ユーザー：</p>
+<pre class="properties"><code># 命名規約
+{product}_{usage}
+
+# 例
+fuga_api
+fuga_auth0</code></pre>
+<p>AWS サービスに権限付与する場合は IAM ロールで付与することを想定している。システムが利用する IAM ユーザーは、別のクラウドや SaaS 等への権限付与に使うことを想定している。</p>
+<p><a href="#命名規約">全体ポリシーの命名規約</a> とは異なり、環境名 <code>{env}</code> を Prefix につけない理由は次である。</p>
+<ul>
+<li>ある AWS アカウントに対して、Switch Role などで別の環境にアクセスする際に混乱が生じる</li>
+<li>ブラウザのパスワード管理などのために ID 名を分けたいという考えもあるかもしれないが、パスワード管理アプリなどの利用を推奨する</li>
+</ul>
+</section>
+<section id="iam-グループ" data-number="1.4.13.2">
+<h4 data-number="1.4.13.2"><span class="header-section-number">1.4.13.2</span> IAM グループ</h4>
+<p>IAM グループに IAM ユーザーを追加することで複数ユーザーの権限を一括管理できる。IAM ユーザーは複数の IAM グループに追加可能だが、所属可能なグループ数は最大で 10 という制約があるため注意が必要である。</p>
+<p>この制約を踏まえ、各役職ごとに基本となるグループを作成し、基本グループで対応できない例外的な権限の付与を個別のグループで対応することを想定した命名としている。</p>
+<p>また、グループ数をむやみに増やさないためにグループ名に環境名 <code>{env}</code> はつけない。仮に <code>future-developer</code> というグループが dev 環境のみにアクセスできるといったような制御をする場合でも、グループ名には dev をつけず、dev 環境にアクセス可能なポリシーをグループにアタッチする方針としている。</p>
+<p>基本となるグループ:</p>
+<pre class="properties"><code># 命名規約
+{company}-{role}
+
+# 例
+future-developer
+future-maintainer</code></pre>
+<p>ここでの <code>{role}</code> はユーザーが担う役割を表す。</p>
+<p>個別のグループ:</p>
+<pre class="properties"><code># 命名規約
+{target}-{usage}
+
+# 例
+bastion-access</code></pre>
+<p>個別のグループは Session Manager で EC2 にアクセスするグループといった使い方を想定している。</p>
+<p>例外的に特定のユーザーにのみ権限を付与する、会社を超えて共通のグループを付与するといったユースケースも考えられる。</p>
+</section>
+<section id="iam-ロール" data-number="1.4.13.3">
+<h4 data-number="1.4.13.3"><span class="header-section-number">1.4.13.3</span> IAM ロール</h4>
+<p>IAM ロールは、AWS サービスに権限を付与する目的で利用する。IAM ロールに複数の IAM ポリシーをアタッチできるため、IAM ロールの命名では細かい権限を表現することは避け、IAM ロールを誰が使うのかを明確にすることを主目的とする。</p>
+<pre class="properties"><code># 命名規約
+{env}-{product}-{aws_service}-{usage}
+
+# 例
+stg-fuga-ec2-bastion
+stg-fuga-lambda-api</code></pre>
+<p>※場合によっては <code>{usage}</code> 部に詳細情報を追加しても良い</p>
+</section>
+<section id="iam-ポリシー" data-number="1.4.13.4">
+<h4 data-number="1.4.13.4"><span class="header-section-number">1.4.13.4</span> IAM ポリシー</h4>
+<p>IAM ポリシーの命名に入る前に、ポリシーの設計方針について記載する。 ここでは、ポリシー設計方針の代表例として、以下の 2 パターンについて説明する。</p>
+<ul>
+<li>細かく設定し再利用するパターン</li>
+<li>特定のリソースに付与するポリシーを書き出すパターン</li>
+</ul>
+<p>それぞれの設計方針にはメリット・デメリットがあり開発規模などで使い分けが想定されるため、それぞれの場合の命名方法について記載する。</p>
+<p>細かく設定する場合:</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">{</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a>  <span class="dt">&quot;Version&quot;</span><span class="fu">:</span> <span class="st">&quot;2012-10-17&quot;</span><span class="fu">,</span></span>
+<span id="cb24-3"><a href="#cb24-3"></a>  <span class="dt">&quot;Statement&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb24-4"><a href="#cb24-4"></a>    <span class="fu">{</span></span>
+<span id="cb24-5"><a href="#cb24-5"></a>      <span class="dt">&quot;Action&quot;</span><span class="fu">:</span> <span class="st">&quot;s3:*&quot;</span><span class="fu">,</span></span>
+<span id="cb24-6"><a href="#cb24-6"></a>      <span class="dt">&quot;Effect&quot;</span><span class="fu">:</span> <span class="st">&quot;Allow&quot;</span><span class="fu">,</span></span>
+<span id="cb24-7"><a href="#cb24-7"></a>      <span class="dt">&quot;Resource&quot;</span><span class="fu">:</span> <span class="st">&quot;*&quot;</span></span>
+<span id="cb24-8"><a href="#cb24-8"></a>    <span class="fu">}</span></span>
+<span id="cb24-9"><a href="#cb24-9"></a>  <span class="ot">]</span></span>
+<span id="cb24-10"><a href="#cb24-10"></a><span class="fu">}</span></span></code></pre></div>
+<pre class="properties"><code># 命名規約
+{env}-{product}-{permission}-{aws_service}-{usage}
+
+# 例
+stg-fuga-allow-s3-full
+stg-fuga-allow-ses-send</code></pre>
+<p>特定のリソースに付与するポリシーを書き出す場合:</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode json"><code class="sourceCode json"><span id="cb26-1"><a href="#cb26-1"></a><span class="fu">{</span></span>
+<span id="cb26-2"><a href="#cb26-2"></a>  <span class="dt">&quot;Version&quot;</span><span class="fu">:</span> <span class="st">&quot;2012-10-17&quot;</span><span class="fu">,</span></span>
+<span id="cb26-3"><a href="#cb26-3"></a>  <span class="dt">&quot;Statement&quot;</span><span class="fu">:</span> <span class="ot">[</span></span>
+<span id="cb26-4"><a href="#cb26-4"></a>    <span class="fu">{</span></span>
+<span id="cb26-5"><a href="#cb26-5"></a>      <span class="dt">&quot;Action&quot;</span><span class="fu">:</span> <span class="st">&quot;s3:*&quot;</span><span class="fu">,</span></span>
+<span id="cb26-6"><a href="#cb26-6"></a>      <span class="dt">&quot;Effect&quot;</span><span class="fu">:</span> <span class="st">&quot;Allow&quot;</span><span class="fu">,</span></span>
+<span id="cb26-7"><a href="#cb26-7"></a>      <span class="dt">&quot;Resource&quot;</span><span class="fu">:</span> <span class="st">&quot;*&quot;</span></span>
+<span id="cb26-8"><a href="#cb26-8"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb26-9"><a href="#cb26-9"></a>    <span class="fu">{</span></span>
+<span id="cb26-10"><a href="#cb26-10"></a>      <span class="dt">&quot;Action&quot;</span><span class="fu">:</span> <span class="ot">[</span><span class="st">&quot;ses:SendEmail&quot;</span><span class="ot">,</span> <span class="st">&quot;ses:SendRawEmail&quot;</span><span class="ot">]</span><span class="fu">,</span></span>
+<span id="cb26-11"><a href="#cb26-11"></a>      <span class="dt">&quot;Effect&quot;</span><span class="fu">:</span> <span class="st">&quot;Allow&quot;</span><span class="fu">,</span></span>
+<span id="cb26-12"><a href="#cb26-12"></a>      <span class="dt">&quot;Resource&quot;</span><span class="fu">:</span> <span class="st">&quot;*&quot;</span></span>
+<span id="cb26-13"><a href="#cb26-13"></a>    <span class="fu">}</span><span class="ot">,</span></span>
+<span id="cb26-14"><a href="#cb26-14"></a>    <span class="fu">{</span></span>
+<span id="cb26-15"><a href="#cb26-15"></a>      <span class="dt">&quot;Action&quot;</span><span class="fu">:</span> <span class="st">&quot;sqs:*&quot;</span><span class="fu">,</span></span>
+<span id="cb26-16"><a href="#cb26-16"></a>      <span class="dt">&quot;Effect&quot;</span><span class="fu">:</span> <span class="st">&quot;Allow&quot;</span><span class="fu">,</span></span>
+<span id="cb26-17"><a href="#cb26-17"></a>      <span class="dt">&quot;Resource&quot;</span><span class="fu">:</span> <span class="st">&quot;*&quot;</span></span>
+<span id="cb26-18"><a href="#cb26-18"></a>    <span class="fu">}</span></span>
+<span id="cb26-19"><a href="#cb26-19"></a>  <span class="ot">]</span></span>
+<span id="cb26-20"><a href="#cb26-20"></a><span class="fu">}</span></span></code></pre></div>
+<pre class="properties"><code># 命名規約
+{env}-{product}-{aws_service}-{usage}
+
+# 例
+stg-fuga-ec2-bastion
+stg-fuga-iam-group-future-develop</code></pre>
+<p>IAM グループ用のポリシーを作成する例では、company を含めた <code>future-develop</code> といった名前を <code>{usage}</code> としている。</p>
+<p>この場合は命名粒度が IAM ロールと等しくなるため、命名規約も同じ方針にしている。</p>
+<p>予め用意されているポリシーの名前は <code>PascalCase</code> 形式であるが (例: AmazonS3FullAccess)、ユーザーが作成したことを明確にするため <code>snake_case</code> で命名する。</p>
+</section>
+</section>
+</section>
+<section id="タグの命名" data-number="1.5">
+<h2 data-number="1.5"><span class="header-section-number">1.5</span> タグの命名</h2>
+<details>
+<p><summary>AWS上の命名制約</summary></p>
+<p><a href="https://docs.aws.amazon.com/mediaconnect/latest/ug/tagging-restrictions.html">Tag naming and usage conventions</a> によれば以下の制約である。</p>
+<ul>
+<li>最大 50 個のタグを設定できる</li>
+<li>タグキーは一意でなければならない</li>
+<li>タグキーは最長 128 Unicode 文字、タグ値は最長 256 Unicode 文字</li>
+<li>使用可能文字
+<ul>
+<li>UTF-8 で表現できる文字、数字、スペース、<code>.</code> <code>:</code> <code>+</code> <code>=</code> <code>@</code> <code>_</code> <code>/</code> <code>-</code></li>
+</ul></li>
+<li>タグのキーと値では大文字と小文字が区別されます</li>
+<li>タグに <code>aws:</code> プレフィックスは禁止</li>
+</ul>
+</details>
+<p><a href="https://docs.aws.amazon.com/ja_jp/general/latest/gr/aws_tagging.html#tag-best-practices">AWS リソースのタグ付け</a> によれば、タグ付けのベストプラクティスは以下である。</p>
+<ul>
+<li>個人情報 (PII) などの機密情報や秘匿性の高い情報をタグに設定しない</li>
+<li>すべてのリソースタイプに一貫して適用する</li>
+<li>リソースアクセスコントロールの管理、コスト追跡、オートメーション、整理など、複数の目的に対応したタグガイドラインを考慮する</li>
+<li>自動化ツールを使用してリソースタグを管理する</li>
+<li>タグは、多めに使用する</li>
+<li>将来の変更の影響を考慮する</li>
+<li>AWS Organizations のタグポリシーを利用することで、組織が採用するタグ付け標準を自動的に適用する</li>
+</ul>
+<p>より詳しいタグ付けのベストプラクティスも存在するが、本紙の範囲を超えるため紹介のみに留める。 <a href="https://docs.aws.amazon.com/whitepapers/latest/tagging-best-practices/tagging-best-practices.html">https://docs.aws.amazon.com/whitepapers/latest/tagging-best-practices/tagging-best-practices.html</a></p>
+<section id="タグキー" data-number="1.5.1">
+<h3 data-number="1.5.1"><span class="header-section-number">1.5.1</span> タグキー</h3>
+<ul>
+<li>使用する文字は英数字に限定する。基本的には <strong>パスカルケース (PascalCase)</strong> 形式を推奨する
+<ul>
+<li>リソース作成時に自動生成される <code>Name</code> タグと平仄を合わせるため</li>
+</ul></li>
+<li>以下の観点でタグを使い分ける
+<ul>
+<li>リソース整理</li>
+<li>コスト管理
+<ul>
+<li>AWS Billing にてコスト配分タグの設定が必要</li>
+</ul></li>
+<li>オートメーション
+<ul>
+<li>EC2 の自動起動停止の管理など</li>
+</ul></li>
+<li>アクセス制御
+<ul>
+<li>タグ値を利用した IAM ポリシーのアクセス制御など</li>
+</ul></li>
+</ul></li>
+</ul>
+<p>主要なタグ項目</p>
+<table>
+<thead>
+<tr class="header">
+<th>Category</th>
+<th>Tag Key</th>
+<th>Required</th>
+<th>Note</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Common</td>
+<td>Env</td>
+<td>✅</td>
+<td>環境識別子</td>
+</tr>
+<tr class="even">
+<td></td>
+<td>System</td>
+<td>✅</td>
+<td>システム名</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Name</td>
+<td>✅</td>
+<td>リソースの識別子として機能名などを設定</td>
+</tr>
+<tr class="even">
+<td>費用按分</td>
+<td>Owner</td>
+<td>✅</td>
+<td>リソースの管理主管部署。費用の負担先を想定</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>Project</td>
+<td>✅</td>
+<td>開発担当チーム。どのチームがどれくらい利用したかをトレースするために設定</td>
+</tr>
+<tr class="even">
+<td>ツールで利用</td>
+<td>StartAt</td>
+<td></td>
+<td>起動時刻。自動化ツールなどで必要があれば設定</td>
+</tr>
+<tr class="odd">
+<td></td>
+<td>EndAt</td>
+<td></td>
+<td>停止時刻</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="タグ値" data-number="1.5.2">
+<h3 data-number="1.5.2"><span class="header-section-number">1.5.2</span> タグ値</h3>
+<ul>
+<li>各タグキーごとに原則、タグ値の元となる命名規約に従う</li>
+<li>元となる命名規約がない場合、以下を推奨する
+<ul>
+<li>リソースの命名規約に従う</li>
+<li>頭文字のみの略語の場合は大文字のみ</li>
+</ul></li>
+<li>値の取りうるパターンが決まっている場合には、タグポリシーで値を設定する</li>
+</ul>
+</section>
+<section id="タグポリシー" data-number="1.5.3">
+<h3 data-number="1.5.3"><span class="header-section-number">1.5.3</span> タグポリシー</h3>
+<p>AWS Organizations を利用している場合、タグの標準化を促進するタグポリシーの設定が可能となる。 タグポリシーにより実現できることは以下。</p>
+<ul>
+<li>タグキーの大文字小文字の組み合わせを強制する
+<ul>
+<li>例: <code>Name</code> を指定した場合、 <code>name</code>, <code>NAME</code>, <code>nAME</code> などはタグキーとして設定できなくなる</li>
+</ul></li>
+<li>任意のタグキーに対して、設定可能なタグ値を指定する
+<ul>
+<li><code>Env</code> など、予め取りうるタグ値のパターンが決まっている場合に利用</li>
+</ul></li>
+<li>タグポリシーを適用するリソースタイプを指定</li>
+</ul>
+<hr />
+</section>
+</section>
+</section>
+<section id="license" data-number="2">
+<h1 data-number="2"><span class="header-section-number">2</span> License</h1>
+<p><a href="https://creativecommons.org/licenses/by/4.0/deed.ja"><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFgAAAAfCAMAAABUFvrSAAAAAXNSR0IB2cksfwAAAARnQU1BAACxjnz7UZMAAAAgY0hSTQAAeiUAAICDAAD5/wAAgOkAAHUwAADqYAAAOpgAABdvkl/FRgAAAW5QTFRFAAAAAAAA////////////7+/v39/f1tXV09bS0tXS0tXR0dTR0dTQ0NTQ0NPPz9PPztLOztHNzdHNzdHMz8/PzdDMzNDMzNDLzM/Ly8/Ly8/Ky87Kys3Jyc3Jyc3IyMzIyMzHx8vHxsrGxsrFxcnFxcnExMnExMjDw8jDxMfDw8fCwsfCwcXAwMXAwMW/wMS/v8S+v8O+vsO+vsK9vcK9vcK8v7+/vMG8vMG7vMC8u8C7u8C6ur+6ur+5ub65ub64uL23t7y2tru1tbq0tLqztLmzs7iysrixsrexsbewsbawsLavsLWvr7Wur7SusLOvrrStrrOtr7KvrbOsrLKrr6+vq7Gqn6OenqCdn5+flpmWk5iTkZSRkZORj4+PiYyJhIaEhIWEgoWCgICAfX98fH98eXx5cHJvcHBwYGBgXV5dUFFQUFBQQ0RDQEBAPj8+NTY1MjMxMDAwKSkpKCkoICAgGxsbEBAQDg4ODQ4N2y3MbAAAAAR0Uk5T/wAKDnDBpeYAAALVSURBVHjatZX9V9JgFMdvNQh1Tme2zU1othSl5WsQZoqIrxmmqaUpqS2JKczibfLfd5+hHCYybB6/B859ftg+5+57Xx54Ag+iR/hPxGPRSXVYkf2SwHGC2C8rQXUiOhdPLK992tze3vn6/wKLOxseCykBkWXoNp+vrYNh+wJKaDQ8S8jJze0dl2TkvgkOSCx9kqsAqpI7prtFeUh9i+SV9eRWY8rpAqAKaWdwDLkyz6TKUFP5kOECg2p4Lr60ut6Q8kERwMhkDIDigRM4OhaUOfocT6auRSKabuLxfORZYGg0GltAM26k/O0Ssl4K5c3C5YEDeDI0wBOuqXmoqvYRXRzh5NDEzHwCU7aDi6DjMwDkQSg6gFVFYpCb91I1efKYMyMqahhT/rhh8yIN2adVMCoL6ebg4RdsCrmYrp182B0Ijs/EF1eTW/XgAtRl4IVCc7Ai0mUweymbPCaU6T5FfRdLrNi9AINC6QA6iQY0B8s9JwCanUvsg2NWDk3Nohd2cIZCAYrEjAPY35UDE42IZA1Dq4Yf+IoJOaafeLG0tuEOLNEV0BEIRMauFXTysZUOcXD0/fziWtKdFUI7AKaYh5I3UtrPY3vslvYtL9oERY1iwyG4oXgALYvH+wAiFGX5XAvWF/i4l41gbDfKod3cgu0DksEBuYsVnt6ShlaQ0GCF00g7F++qaleBZFOhpcbiEXIRIK9n8q2WkL/rHEyq1m67hhWoErabPzj+odpubtam3JNCL24fkNdTcwvLZPLcLPpX1kh7HUbaJRiX0N5tSyjFBoYncPDIEnIFhlOJOUNy3RryWmtT+gn31G+hs37RezQT4A/Nn8K99YvrPLtxNdHPv0MzVeeDHFqTBWav/jJNMXxzLlBXP+oubkgsnbq+/g9pVnLy4Xptwl3094vY00W3+3ztNMP2fb4AB9mMaK2Lo2lJ4HlBmj4iWLcZP7wePwz20T8rQcP0CuFIbQAAAABJRU5ErkJggg==" alt="CC-By-4.0" /></a></p>
+</section>
+</body>
+</html>
