@@ -26,8 +26,8 @@
 
 起動パラメータ:
 
-| Name | Value | Memo |
-| --- | --- | --- |
+| Name      | Value                   | Memo   |
+|-----------|-------------------------|--------|
 | userState | {"user_id":"<user_id>"} | ログイン状態 |
 
 初期表示イベント:
@@ -36,8 +36,8 @@
 
 利用API:
 
-| ID  |  URL | Parameter |
-| --- | --- | -- |
+| ID      | URL                       | Parameter                    |
+|---------|---------------------------|------------------------------|
 | API-005 | GET /profile/{trainee_id} | trainee_id=userState.user_id |
 
 画面表示制御:
@@ -49,14 +49,14 @@
 
 利用API:
 
-| ID  |  URL | Parameter |
-| --- | --- | -- |
-| API-013 | GET /bookings/{trainee_id} | trainee_id=userState.user_id |
+| ID     | URL                        | Parameter                    |
+|--------|----------------------------|------------------------------|
+| API013 | GET /bookings/{trainee_id} | trainee_id=userState.user_id |
 
 画面表示制御:
 
 - 起動条件
-  - API-016が有効な場合
+  - API016が有効な場合
 - HTTPステータスが200以外
   - メッセージID（MSG_BIZ_111）表示
 
@@ -76,8 +76,8 @@ UIM02 を起動。
 
 利用API:
 
-| ID  |  URL | Parameter |
-| --- | --- | -- |
+| ID      | URL                              | Parameter       |
+|---------|----------------------------------|-----------------|
 | API-016 | PUT /booking/{booking_id}/status | 選択されたトレーニング予約ID |
 
 画面表示制御:
@@ -91,8 +91,8 @@ UIM02 を起動。
 
 利用API:
 
-| ID  |  URL | Parameter |
-| --- | --- | -- |
+| ID      | URL                        | Parameter                    |
+|---------|----------------------------|------------------------------|
 | API-012 | GET /bookings/{trainee_id} | trainee_id=userState.user_id |
 
 画面表示制御:
