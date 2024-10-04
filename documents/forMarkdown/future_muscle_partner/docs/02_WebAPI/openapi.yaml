@@ -154,7 +154,7 @@ paths:
     get:
       tags:
         - profile
-      summary: API026 トレーニースケジュール取得
+      summary: API026 トレーニーzスケジュール取得
       operationId: getTraineeSchedule
       responses:
         '200':

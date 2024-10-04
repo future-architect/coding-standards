@@ -1,6 +1,6 @@
 # 画面
 
-* Figma URL: xxx
+* Figma URL: <準備中>
 
 ## 標準画面
 
