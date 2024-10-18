@@ -79,12 +79,11 @@ docs
 
 ## システム構成図
 
-図は基本的に変更差分がGitと相性が良い、PlantUML（またはMermaid.js）で作成すること。
+図は基本的に変更差分がGitと相性が良い、PlantUML（またはMermaid.js）で作成すること。PlantUMLの場合、テーマは `toy` を指定すること。
 
 ```plantuml
-
 @startuml
-!include https://raw.githubusercontent.com/future-architect/puml-themes/master/themes/puml-theme-mars.puml
+!theme toy
 
 participant Participant as Foo
 note over Foo: Event
@@ -151,7 +150,7 @@ API 定義書は `openapi.yaml` で記載すること。
 
 ### プログラム設計書（Web API）
 
-Web APIについても、プログラム設計書と同様に機能ID単位で作成する。
+Web APIについても、プログラム設計書（バッチ、非同期タスクなど）と同様に機能ID単位で作成する。
 
 ただし、Web APIにおいては `openapi.yaml` と重複する部分で自明な内容（例えば、リクエストパラメータの定義や、レスポンス項目）については、重複するため記載を省略する。
 
