@@ -9,7 +9,7 @@
     "watch": "vuepress dev . --debug --no-cache",
     "copy": "npm-run-all copy:*",
     "copy:git": "cp -r documents/forGitBranch/img docs/documents/forGitBranch/img",
-    "copy:markdown": "cp -r documents/forMarkdnwo/docs/future_muscle_partner_abstract.png docs/documents/forMarkdown/docs/future_muscle_partner_abstract.png",
+    "copy:markdown": "cp -r documents/forMarkdown/docs/future_muscle_partner_abstract.png docs/documents/forMarkdown/docs/future_muscle_partner_abstract.png",
     "build": "vuepress build .",
     "format": "prettier . --write",
     "pandoc": "npm-run-all pandoc:*",
