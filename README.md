@@ -20,6 +20,7 @@ footer: ©2015 - 2024 Future Enterprise Coding Standards - Future Corporation
 | 3   | [AWS インフラリソース命名規約](./documents/forAWSResource/)        | <page-info   href="https://future-architect.github.io/coding-standards/documents/forAWSResource/AWSインフラリソース命名規約.html"></page-info>        |
 | 4   | [OpenAPI Specification 規約](./documents/forOpenAPISpecification/) | <page-info   href="https://future-architect.github.io/coding-standards/documents/forOpenAPISpecification/OpenAPI_Specification規約.html"></page-info> |
 | 5   | [Gitブランチフロー規約](./documents/forGitBranch/) | <page-info   href="https://future-architect.github.io/coding-standards/documents/forGitBranch/git_branch_standards.html"></page-info> |
+| 6   | [Markdown設計ドキュメント規約](./documents/forMarkdown/) | <page-info   href="https://future-architect.github.io/coding-standards/documents/forMarkdown/markdown_design_document.html"></page-info> |
 
 ---
 
