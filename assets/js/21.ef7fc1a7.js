@@ -1,0 +1,1 @@
+(window.webpackJsonp=window.webpackJsonp||[]).push([[21],{323:function(t,n,e){},339:function(t,n,e){"use strict";e(323)},355:function(t,n,e){"use strict";e.r(n);var o={components:{Layout:e(344).default}},s=(e(339),e(18)),u=Object(s.a)(o,(function(){return(0,this._self._c)("Layout",{staticClass:"home-with-img"})}),[],!1,null,"60ee96e2",null);n.default=u.exports}}]);
