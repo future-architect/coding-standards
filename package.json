@@ -7,7 +7,9 @@
     "install": "npm install --global mermaid-filter",
     "lint": "eslint . .vuepress --ext .js,.vue",
     "watch": "vuepress dev . --debug --no-cache",
-    "copy": "cp -r documents/forGitBranch/img docs/documents/forGitBranch/img",
+    "copy": "npm-run-all copy:*",
+    "copy:git": "cp -r documents/forGitBranch/img docs/documents/forGitBranch/img",
+    "copy:markdown": "cp -r documents/forMarkdnwo/docs/future_muscle_partner_abstract.png docs/documents/forMarkdown/docs/future_muscle_partner_abstract.png",
     "build": "vuepress build .",
     "format": "prettier . --write",
     "pandoc": "npm-run-all pandoc:*",
@@ -20,7 +22,9 @@
     "pandoc:swagger-html": "pandoc ./documents/forOpenAPISpecification/OpenAPI_Specification_2.0.md -s --self-contained --number-sections --toc -t html5 -F mermaid-filter.cmd -c ./documents/common/pandoc_styles/css/style.css -o ./documents/forOpenAPISpecification/OpenAPI_Specification_2.0規約.html",
     "pandoc:swagger-word": "pandoc ./documents/forOpenAPISpecification/OpenAPI_Specification_2.0.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -F mermaid-filter.cmd -s -o ./documents/forOpenAPISpecification/OpenAPI_Specification_2.0規約.docx",
     "pandoc:gitbranch-html": "pandoc ./documents/forGitBranch/git_branch_standards.md -s --self-contained --number-sections --toc -t html5 -F mermaid-filter.cmd -c ./documents/common/pandoc_styles/css/style.css -o ./documents/forGitBranch/Gitブランチフロー.html",
-    "pandoc:gitbranch-word": "pandoc ./documents/forGitBranch/git_branch_standards.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -F mermaid-filter.cmd -s -o ./documents/forGitBranch/Gitブランチフロー.docx"
+    "pandoc:gitbranch-word": "pandoc ./documents/forGitBranch/git_branch_standards.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -F mermaid-filter.cmd -s -o ./documents/forGitBranch/Gitブランチフロー.docx",
+    "pandoc:markdown-html": "pandoc ./documents/forMarkdown/README.md -s --self-contained --number-sections --toc -t html5 -F mermaid-filter.cmd -c ./documents/common/pandoc_styles/css/style.css -o ./documents/forMarkdown/Markdown設計ドキュメント規約.html",
+    "pandoc:markdown-word": "pandoc ./documents/forMarkdown/README.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -F mermaid-filter.cmd -s -o ./documents/forMarkdown/Markdown設計ドキュメント規約.docx"
   },
   "repository": {
     "type": "git  ",
