@@ -37,6 +37,10 @@ const links = {
     "/documents/forGitBranch/commit_message_rule.html",
     "/documents/forGitBranch/vscode_git_ope.html",
   ],
+  "/documents/forSlack/": [
+    "/documents/forSlack/",
+    "/documents/forSlack/slack_usage_guidelines.html",
+  ],
 };
 console.log(links);
 
@@ -150,7 +154,20 @@ module.exports = {
               },
               {
                 text: "Gitブランチフロー規約",
-                link: "/documents/forGitBranch/Gitブランチフロー規約.html",
+                link: "/documents/forGitBranch/git_branch_standards.html",
+              },
+            ],
+          },
+          {
+            text: "Slack利用ガイドライン",
+            items: [
+              {
+                text: "Home",
+                link: "/documents/forSlack/",
+              },
+              {
+                text: "Home",
+                link: "/documents/forSlack/slack_usage_guidelines.html",
               },
             ],
           },
