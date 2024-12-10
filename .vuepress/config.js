@@ -166,7 +166,7 @@ module.exports = {
                 link: "/documents/forSlack/",
               },
               {
-                text: "Home",
+                text: "Slack利用ガイドライン",
                 link: "/documents/forSlack/slack_usage_guidelines.html",
               },
             ],
