@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>開発ブランチに機能ブランチの変更を取り込む方法 | Future Enterprise Coding Standards</title>
+    <meta name="generator" content="VuePress 1.9.10">
+    
+    <meta name="description" content="フューチャー株式会社が作成するエンタープライズ領域に特化したコーディング規約">
+    
+    <link rel="preload" href="/coding-standards/assets/css/0.styles.db85de84.css" as="style"><link rel="preload" href="/coding-standards/assets/js/app.9ff10da9.js" as="script"><link rel="preload" href="/coding-standards/assets/js/2.108759e8.js" as="script"><link rel="preload" href="/coding-standards/assets/js/1.6a5e51e7.js" as="script"><link rel="preload" href="/coding-standards/assets/js/33.8b94803b.js" as="script"><link rel="prefetch" href="/coding-standards/assets/js/10.2e571cbf.js"><link rel="prefetch" href="/coding-standards/assets/js/11.e78f0846.js"><link rel="prefetch" href="/coding-standards/assets/js/12.b32a5f06.js"><link rel="prefetch" href="/coding-standards/assets/js/13.4f454c95.js"><link rel="prefetch" href="/coding-standards/assets/js/14.6c1dfd1c.js"><link rel="prefetch" href="/coding-standards/assets/js/15.1ab45c10.js"><link rel="prefetch" href="/coding-standards/assets/js/16.d78bedd6.js"><link rel="prefetch" href="/coding-standards/assets/js/17.3de12e59.js"><link rel="prefetch" href="/coding-standards/assets/js/18.7ce83871.js"><link rel="prefetch" href="/coding-standards/assets/js/19.fc8525b0.js"><link rel="prefetch" href="/coding-standards/assets/js/20.c5e488a8.js"><link rel="prefetch" href="/coding-standards/assets/js/21.414b30a9.js"><link rel="prefetch" href="/coding-standards/assets/js/22.71986117.js"><link rel="prefetch" href="/coding-standards/assets/js/23.f0d22204.js"><link rel="prefetch" href="/coding-standards/assets/js/24.0130c623.js"><link rel="prefetch" href="/coding-standards/assets/js/25.1a54eaed.js"><link rel="prefetch" href="/coding-standards/assets/js/26.3d300aa3.js"><link rel="prefetch" href="/coding-standards/assets/js/27.6395b22f.js"><link rel="prefetch" href="/coding-standards/assets/js/28.5315c5df.js"><link rel="prefetch" href="/coding-standards/assets/js/29.a515c7f5.js"><link rel="prefetch" href="/coding-standards/assets/js/3.23793ee0.js"><link rel="prefetch" href="/coding-standards/assets/js/30.82ccd547.js"><link rel="prefetch" href="/coding-standards/assets/js/31.76120aaa.js"><link rel="prefetch" href="/coding-standards/assets/js/32.cb4e1773.js"><link rel="prefetch" href="/coding-standards/assets/js/34.9ae82bd5.js"><link rel="prefetch" href="/coding-standards/assets/js/35.56945155.js"><link rel="prefetch" href="/coding-standards/assets/js/36.af9bb385.js"><link rel="prefetch" href="/coding-standards/assets/js/37.b2bc2a91.js"><link rel="prefetch" href="/coding-standards/assets/js/38.3584f737.js"><link rel="prefetch" href="/coding-standards/assets/js/39.7a274bd4.js"><link rel="prefetch" href="/coding-standards/assets/js/4.6085c585.js"><link rel="prefetch" href="/coding-standards/assets/js/40.2d1ab734.js"><link rel="prefetch" href="/coding-standards/assets/js/41.f812b030.js"><link rel="prefetch" href="/coding-standards/assets/js/42.4da55943.js"><link rel="prefetch" href="/coding-standards/assets/js/43.44159e06.js"><link rel="prefetch" href="/coding-standards/assets/js/44.cacb1b36.js"><link rel="prefetch" href="/coding-standards/assets/js/45.cc89f1b2.js"><link rel="prefetch" href="/coding-standards/assets/js/46.070fd981.js"><link rel="prefetch" href="/coding-standards/assets/js/47.5301413f.js"><link rel="prefetch" href="/coding-standards/assets/js/48.bf032a41.js"><link rel="prefetch" href="/coding-standards/assets/js/49.99ea2536.js"><link rel="prefetch" href="/coding-standards/assets/js/5.112fdf9b.js"><link rel="prefetch" href="/coding-standards/assets/js/50.2dcef3c6.js"><link rel="prefetch" href="/coding-standards/assets/js/51.50a8d61d.js"><link rel="prefetch" href="/coding-standards/assets/js/52.d02d4874.js"><link rel="prefetch" href="/coding-standards/assets/js/53.cef37639.js"><link rel="prefetch" href="/coding-standards/assets/js/54.e1efe696.js"><link rel="prefetch" href="/coding-standards/assets/js/55.a07b42be.js"><link rel="prefetch" href="/coding-standards/assets/js/56.b1e90b33.js"><link rel="prefetch" href="/coding-standards/assets/js/57.312493ad.js"><link rel="prefetch" href="/coding-standards/assets/js/58.655d6417.js"><link rel="prefetch" href="/coding-standards/assets/js/59.0f539a5d.js"><link rel="prefetch" href="/coding-standards/assets/js/6.ddb4ef71.js"><link rel="prefetch" href="/coding-standards/assets/js/60.c5364e14.js"><link rel="prefetch" href="/coding-standards/assets/js/61.697a65ae.js"><link rel="prefetch" href="/coding-standards/assets/js/62.013058f9.js"><link rel="prefetch" href="/coding-standards/assets/js/63.bda739c3.js"><link rel="prefetch" href="/coding-standards/assets/js/64.7e1ecf99.js"><link rel="prefetch" href="/coding-standards/assets/js/65.6bf6684b.js"><link rel="prefetch" href="/coding-standards/assets/js/66.6cab6692.js"><link rel="prefetch" href="/coding-standards/assets/js/67.872145f7.js"><link rel="prefetch" href="/coding-standards/assets/js/68.f22d6acf.js"><link rel="prefetch" href="/coding-standards/assets/js/7.bb31139b.js"><link rel="prefetch" href="/coding-standards/assets/js/vendors~docsearch.12181bb4.js">
+    <link rel="stylesheet" href="/coding-standards/assets/css/0.styles.db85de84.css">
+  </head>
+  <body>
+    <div id="app" data-server-rendered="true"><div class="theme-container"><header class="navbar"><div class="sidebar-button"><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" role="img" viewBox="0 0 448 512" class="icon"><path fill="currentColor" d="M436 124H12c-6.627 0-12-5.373-12-12V80c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12zm0 160H12c-6.627 0-12-5.373-12-12v-32c0-6.627 5.373-12 12-12h424c6.627 0 12 5.373 12 12v32c0 6.627-5.373 12-12 12z"></path></svg></div> <a href="/coding-standards/" class="home-link router-link-active"><img src="/coding-standards/images/logo.svg" alt="Future Enterprise Coding Standards" class="logo"> <span class="site-name can-hide">Future Enterprise Coding Standards</span></a> <div class="links"><div class="search-box"><input aria-label="Search" autocomplete="off" spellcheck="false" value=""> <!----></div> <nav class="nav-links can-hide"><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Java" class="dropdown-title"><span class="title">Java</span> <span class="arrow down"></span></button> <button type="button" aria-label="Java" class="mobile-dropdown-title"><span class="title">Java</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forJava/" class="nav-link">
+  Home
+</a></li><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forJava/Javaコーディング規約.html" class="nav-link">
+  For Java17
+</a></li><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forJava/Javaコーディング規約_for_11.html" class="nav-link">
+  For Java11
+</a></li><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forJava/Javaコーディング規約_for_8.html" class="nav-link">
+  For Java8
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="SQL" class="dropdown-title"><span class="title">SQL</span> <span class="arrow down"></span></button> <button type="button" aria-label="SQL" class="mobile-dropdown-title"><span class="title">SQL</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forSQL/" class="nav-link">
+  Home
+</a></li><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forSQL/SQLコーディング規約（Oracle）.html" class="nav-link">
+  For Oracle
+</a></li><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html" class="nav-link">
+  For PostgreSQL
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Others" class="dropdown-title"><span class="title">Others</span> <span class="arrow down"></span></button> <button type="button" aria-label="Others" class="mobile-dropdown-title"><span class="title">Others</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          AWS インフラリソース
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/coding-standards/documents/forAWSResource/" class="nav-link">
+  Home
+</a></li><li class="dropdown-subitem"><a href="/coding-standards/documents/forAWSResource/AWSインフラリソース命名規約.html" class="nav-link">
+  AWSインフラ命名規約
+</a></li></ul></li><li class="dropdown-item"><h4>
+          OpenAPI Specification規約
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/coding-standards/documents/forOpenAPISpecification/" class="nav-link">
+  Home
+</a></li><li class="dropdown-subitem"><a href="/coding-standards/documents/forOpenAPISpecification/OpenAPI_Specification_2.0.html" class="nav-link">
+  For OAS 2.0（Swagger 2.0）
+</a></li><li class="dropdown-subitem"><a href="/coding-standards/documents/forOpenAPISpecification/OpenAPI_Specification_3.0.3.html" class="nav-link">
+  For OAS 3.0.3
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Gitブランチフロー規約
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/coding-standards/documents/forGitBranch/" class="nav-link router-link-active">
+  Home
+</a></li><li class="dropdown-subitem"><a href="/coding-standards/documents/forGitBranch/git_branch_standards.html" class="nav-link">
+  Gitブランチフロー規約
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Markdown設計ドキュメント規約
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/coding-standards/documents/forMarkdown/" class="nav-link">
+  Home
+</a></li><li class="dropdown-subitem"><a href="/coding-standards/documents/forGitBranch/future_muscle_partner/" class="nav-link">
+  サンプルプロジェクト
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Slack利用ガイドライン
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/coding-standards/documents/forSlack/" class="nav-link">
+  Home
+</a></li><li class="dropdown-subitem"><a href="/coding-standards/documents/forSlack/slack_usage_guidelines.html" class="nav-link">
+  Slack利用ガイドライン
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="About Us" class="dropdown-title"><span class="title">About Us</span> <span class="arrow down"></span></button> <button type="button" aria-label="About Us" class="mobile-dropdown-title"><span class="title">About Us</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://www.future.co.jp/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  フューチャー株式会社
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://future-architect.github.io/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Blog
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://qiita.com/organizations/future" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Qiita
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://twitter.com/future_techblog" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Twitter
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.facebook.com/future.saiyo/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Facebook
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="mailto:techblog@future.co.jp" class="nav-link external">
+  Email &lt;techblog@future.co.jp&gt;
+  <!----></a></li></ul></div></div> <a href="https://github.com/future-architect/coding-standards" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav></div></header> <div class="sidebar-mask"></div> <aside class="sidebar"><nav class="nav-links"><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Java" class="dropdown-title"><span class="title">Java</span> <span class="arrow down"></span></button> <button type="button" aria-label="Java" class="mobile-dropdown-title"><span class="title">Java</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forJava/" class="nav-link">
+  Home
+</a></li><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forJava/Javaコーディング規約.html" class="nav-link">
+  For Java17
+</a></li><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forJava/Javaコーディング規約_for_11.html" class="nav-link">
+  For Java11
+</a></li><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forJava/Javaコーディング規約_for_8.html" class="nav-link">
+  For Java8
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="SQL" class="dropdown-title"><span class="title">SQL</span> <span class="arrow down"></span></button> <button type="button" aria-label="SQL" class="mobile-dropdown-title"><span class="title">SQL</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forSQL/" class="nav-link">
+  Home
+</a></li><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forSQL/SQLコーディング規約（Oracle）.html" class="nav-link">
+  For Oracle
+</a></li><li class="dropdown-item"><!----> <a href="/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.html" class="nav-link">
+  For PostgreSQL
+</a></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="Others" class="dropdown-title"><span class="title">Others</span> <span class="arrow down"></span></button> <button type="button" aria-label="Others" class="mobile-dropdown-title"><span class="title">Others</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><h4>
+          AWS インフラリソース
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/coding-standards/documents/forAWSResource/" class="nav-link">
+  Home
+</a></li><li class="dropdown-subitem"><a href="/coding-standards/documents/forAWSResource/AWSインフラリソース命名規約.html" class="nav-link">
+  AWSインフラ命名規約
+</a></li></ul></li><li class="dropdown-item"><h4>
+          OpenAPI Specification規約
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/coding-standards/documents/forOpenAPISpecification/" class="nav-link">
+  Home
+</a></li><li class="dropdown-subitem"><a href="/coding-standards/documents/forOpenAPISpecification/OpenAPI_Specification_2.0.html" class="nav-link">
+  For OAS 2.0（Swagger 2.0）
+</a></li><li class="dropdown-subitem"><a href="/coding-standards/documents/forOpenAPISpecification/OpenAPI_Specification_3.0.3.html" class="nav-link">
+  For OAS 3.0.3
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Gitブランチフロー規約
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/coding-standards/documents/forGitBranch/" class="nav-link router-link-active">
+  Home
+</a></li><li class="dropdown-subitem"><a href="/coding-standards/documents/forGitBranch/git_branch_standards.html" class="nav-link">
+  Gitブランチフロー規約
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Markdown設計ドキュメント規約
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/coding-standards/documents/forMarkdown/" class="nav-link">
+  Home
+</a></li><li class="dropdown-subitem"><a href="/coding-standards/documents/forGitBranch/future_muscle_partner/" class="nav-link">
+  サンプルプロジェクト
+</a></li></ul></li><li class="dropdown-item"><h4>
+          Slack利用ガイドライン
+        </h4> <ul class="dropdown-subitem-wrapper"><li class="dropdown-subitem"><a href="/coding-standards/documents/forSlack/" class="nav-link">
+  Home
+</a></li><li class="dropdown-subitem"><a href="/coding-standards/documents/forSlack/slack_usage_guidelines.html" class="nav-link">
+  Slack利用ガイドライン
+</a></li></ul></li></ul></div></div><div class="nav-item"><div class="dropdown-wrapper"><button type="button" aria-label="About Us" class="dropdown-title"><span class="title">About Us</span> <span class="arrow down"></span></button> <button type="button" aria-label="About Us" class="mobile-dropdown-title"><span class="title">About Us</span> <span class="arrow right"></span></button> <ul class="nav-dropdown" style="display:none;"><li class="dropdown-item"><!----> <a href="https://www.future.co.jp/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  フューチャー株式会社
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://future-architect.github.io/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Blog
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://qiita.com/organizations/future" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Qiita
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://twitter.com/future_techblog" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Twitter
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="https://www.facebook.com/future.saiyo/" target="_blank" rel="noopener noreferrer" class="nav-link external">
+  Facebook
+  <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></li><li class="dropdown-item"><!----> <a href="mailto:techblog@future.co.jp" class="nav-link external">
+  Email &lt;techblog@future.co.jp&gt;
+  <!----></a></li></ul></div></div> <a href="https://github.com/future-architect/coding-standards" target="_blank" rel="noopener noreferrer" class="repo-link">
+    GitHub
+    <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></a></nav>  <ul class="sidebar-links"><li><a href="/coding-standards/documents/forGitBranch/" aria-current="page" class="sidebar-link">Home</a></li><li><a href="/coding-standards/documents/forGitBranch/git_branch_standards.html" class="sidebar-link">Gitブランチフロー規約</a></li><li><a href="/coding-standards/documents/forGitBranch/merge_develop_to_feature.html" class="sidebar-link">機能ブランチに開発ブランチの変更を取り込む方法</a></li><li><a href="/coding-standards/documents/forGitBranch/merge_feature_to_develop.html" aria-current="page" class="active sidebar-link">開発ブランチに機能ブランチの変更を取り込む方法</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/coding-standards/documents/forGitBranch/merge_feature_to_develop.html#開発ブランチに機能ブランチの変更を取り込む方法" class="sidebar-link">開発ブランチに機能ブランチの変更を取り込む方法</a><ul class="sidebar-sub-headers"><li class="sidebar-sub-header"><a href="/coding-standards/documents/forGitBranch/merge_feature_to_develop.html#githubの場合" class="sidebar-link">GitHubの場合</a></li><li class="sidebar-sub-header"><a href="/coding-standards/documents/forGitBranch/merge_feature_to_develop.html#gitlabを利用するの手順" class="sidebar-link">GitLabを利用するの手順</a></li></ul></li></ul></li><li><a href="/coding-standards/documents/forGitBranch/commit_message_rule.html" class="sidebar-link">コミットメッセージ規約</a></li><li><a href="/coding-standards/documents/forGitBranch/vscode_git_ope.html" class="sidebar-link">VSCode上でのGit操作</a></li></ul> </aside> <main class="page"> <div class="theme-default-content content__default"><h2 id="開発ブランチに機能ブランチの変更を取り込む方法"><a href="#開発ブランチに機能ブランチの変更を取り込む方法" class="header-anchor">#</a> 開発ブランチに機能ブランチの変更を取り込む方法</h2> <h3 id="githubの場合"><a href="#githubの場合" class="header-anchor">#</a> GitHubの場合</h3> <p>プルリクエストを経由して、開発が完了した機能ブランチをメインの開発ブランチに取り込むためには、GitHub（GitLab）上でプルリクエスト（マージリクエスト）を経由する運用を前提とする。</p> <p>GitHubを利用する場合、開発ブランチに機能ブランチの変更を取り込む方法は3種類ある。</p> <ol><li>スカッシュ マージ（Create a merge commit）</li> <li>リベース（Rebase and merge）</li> <li>スカッシュマージ（Squash and merge）</li></ol> <h4 id="_1-マージコミット"><a href="#_1-マージコミット" class="header-anchor">#</a> 1. マージコミット</h4> <p>動作としては <code>git merge --no-ff</code> コマンドを使用して、機能ブランチの変更を取り込む形になる。<br>
+この方法を選択した場合は、下記のとおり、メインの開発ブランチにマージコミットが作成される。</p> <p><img src="img/merge_strategy_feature_to_develop_merge_commit.drawio.png" alt="Merge Commit"></p> <h4 id="_2-リベース"><a href="#_2-リベース" class="header-anchor">#</a> 2. リベース</h4> <p>動作としては機能ブランチを最新の開発ブランチにリベースした後に、<code>git merge --ff</code> コマンドを使用して、機能ブランチの変更を取り込む形になる。<br>
+この方法を選択した場合は、下記のとおり、メインの開発ブランチにマージコミットは作成されず、履歴が一直線になる。</p> <p><img src="img/merge_strategy_feature_to_develop_rebase_and_merge.drawio.png" alt="Rebase and Merge"></p> <h4 id="_3-スカッシュマージ"><a href="#_3-スカッシュマージ" class="header-anchor">#</a> 3. スカッシュマージ</h4> <p>動作としては <code>git merge --squash</code> コマンドを使用して、機能ブランチの変更を取り込む形になる。<br>
+この方法では、機能ブランチで行った変更YとZを1つにまとめたコミットがメインの開発ブランチに作成されます。</p> <p><img src="img/merge_strategy_feature_to_develop_squash_and_merge.drawio.png" alt="Squash and Merge"></p> <h3 id="gitlabを利用するの手順"><a href="#gitlabを利用するの手順" class="header-anchor">#</a> GitLabを利用するの手順</h3> <p>開発ブランチに機能ブランチの変更を取り込む方法は3種類ある。<br>
+ただし、マージリクエスト上のオプションによってコミット履歴が変わるため、別途記載する。</p> <ol><li>Merge commit</li> <li>Merge commit with semi-linear history</li> <li>Fast-forward merge</li></ol> <h4 id="_1-merge-commit"><a href="#_1-merge-commit" class="header-anchor">#</a> 1. Merge commit</h4> <p>動作としては、GitHubにおける <code>Create a merge commit</code> と同様のマージ方法になる。<br>
+ただし、マージリクエスト上で <code>Squash commits</code> を選択してマージした場合、<code>squash commit</code> と <code>merge commit</code> の2つのコミットが作成されるため注意する。</p> <p><img src="img/merge_strategy_feature_to_develop_squash_and_merge_gitlab.drawio.png" alt="Merge commit with squash commits"></p> <div class="language-bash line-numbers-mode"><pre class="language-bash"><code><span class="token comment"># マージ方法で Merge commit を選択して、マージリクエスト上で Squash commits オプションを選択してマージした場合</span>
+<span class="token function">git</span> checkout <span class="token variable"><span class="token variable">`</span><span class="token function">git</span> merge-base feature/A develop<span class="token variable">`</span></span>
+<span class="token function">git</span> merge <span class="token parameter variable">--squash</span> feature/A
+<span class="token assign-left variable">SOURCE_SHA</span><span class="token operator">=</span><span class="token variable"><span class="token variable">`</span><span class="token function">git</span> rev-parse HEAD<span class="token variable">`</span></span>
+<span class="token function">git</span> checkout develop
+<span class="token function">git</span> merge --no-ff <span class="token variable">$SOURCE_SHA</span>
+</code></pre> <div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div><h4 id="_2-merge-commit-with-semi-linear-history"><a href="#_2-merge-commit-with-semi-linear-history" class="header-anchor">#</a> 2. Merge commit with semi-linear history</h4> <p>動作としては、前述の <code>Merge commit</code> と同じコマンドを使用して、機能ブランチの変更を取り込む形になる。<br>
+この方法を選択した場合は、ソースブランチがターゲットブランチより古い場合はリベースしないとマージできない。</p> <h4 id="_3-fast-forward-merge"><a href="#_3-fast-forward-merge" class="header-anchor">#</a> 3. Fast-forward merge</h4> <p>動作としては、GitHubにおける <code>Rebase and merge</code> と同様のマージ方法になる。<br>
+ただし、マージリクエスト上で <code>Squash commits</code> を選択してマージした場合、GitHubにおける <code>Squash and merge</code> と同様のマージ方法になる。</p></div> <footer class="page-edit"><div class="edit-link"><a href="https://github.com/future-architect/coding-standards/edit/master/documents/forGitBranch/merge_feature_to_develop.md" target="_blank" rel="noopener noreferrer">Edit this page</a> <span><svg xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false" x="0px" y="0px" viewBox="0 0 100 100" width="15" height="15" class="icon outbound"><path fill="currentColor" d="M18.8,85.1h56l0,0c2.2,0,4-1.8,4-4v-32h-8v28h-48v-48h28v-8h-32l0,0c-2.2,0-4,1.8-4,4v56C14.8,83.3,16.6,85.1,18.8,85.1z"></path> <polygon fill="currentColor" points="45.7,48.7 51.3,54.3 77.2,28.5 77.2,37.2 85.2,37.2 85.2,14.9 62.8,14.9 62.8,22.9 71.5,22.9"></polygon></svg> <span class="sr-only">(opens new window)</span></span></div> <div class="last-updated"><span class="prefix">Last Updated:</span> <span class="time">2024/12/11 7:27:24</span></div></footer> <div class="page-nav"><p class="inner"><span class="prev">
+      ←
+      <a href="/coding-standards/documents/forGitBranch/merge_develop_to_feature.html" class="prev">
+        機能ブランチに開発ブランチの変更を取り込む方法
+      </a></span> <span class="next"><a href="/coding-standards/documents/forGitBranch/commit_message_rule.html">
+        コミットメッセージ規約
+      </a>
+      →
+    </span></p></div> </main></div><div class="global-ui"></div></div>
+    <script src="/coding-standards/assets/js/app.9ff10da9.js" defer></script><script src="/coding-standards/assets/js/2.108759e8.js" defer></script><script src="/coding-standards/assets/js/1.6a5e51e7.js" defer></script><script src="/coding-standards/assets/js/33.8b94803b.js" defer></script>
+  </body>
+</html>
