@@ -159,6 +159,19 @@ module.exports = {
             ],
           },
           {
+            text: "Markdown設計ドキュメント規約",
+            items: [
+              {
+                text: "Home",
+                link: "/documents/forMarkdown/",
+              },
+              {
+                text: "サンプルプロジェクト",
+                link: "/documents/forGitBranch/future_muscle_partner/",
+              },
+            ],
+          },
+          {
             text: "Slack利用ガイドライン",
             items: [
               {
