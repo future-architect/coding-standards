@@ -497,6 +497,14 @@ git config --global alias.br branch
 - `fetch.prune`: リモートリポジトリで削除されたブランチを削除する
 :::
 
+## git-secrets
+
+[git-secrets](https://github.com/awslabs/git-secrets)を用いることで、ユーザーパスワードや AWS アクセスキーなどの機密情報が含まれる可能性のあるコードなどをGit リポジトリに追加されないようにできる。
+
+本規約の推奨は以下。
+
+- チームメンバー全員にgit-secretsを導入する
+
 ## GitHub推奨設定
 
 業務利用でのチーム開発を想定しており、リポジトリは以下の条件を満たす前提とする。
