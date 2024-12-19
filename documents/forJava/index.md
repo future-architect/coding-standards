@@ -10,7 +10,7 @@ hero:
     alt: Logo
   actions:
     - theme: brand
-      text: Javaコーディング規約 (for Java17)
+      text: Javaコーディング規約
       link: ./Javaコーディング規約.md
 ---
 
@@ -20,7 +20,7 @@ hero:
 
 Java17 向けのコーディング規約は[こちら](./Javaコーディング規約.md)です。
 
-# For Lower Versions
+# For Old Versions
 
 - Java11 向けのコーディング規約は[こちら](./Javaコーディング規約_for_11.md)です。
 - Java8 向けのコーディング規約は[こちら](./Javaコーディング規約_for_8.md)です。
