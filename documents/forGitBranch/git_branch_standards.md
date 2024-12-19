@@ -7,7 +7,7 @@ meta:
     content: Git
 ---
 
-# Gitブランチフロー規約
+<page-title/>
 
 本コーディング規約は、世の中のシステム開発プロジェクトのために無償で提供致します。
 
@@ -43,14 +43,14 @@ meta:
 
 本規約で想定する、ブランチの種類とその役割を説明する。
 
-| ブランチ名称    | 役割                | ライフサイクル | 派生元ブランチ          | 命名規則                                              | 直プッシュ |
-|-----------|-------------------|---------|------------------|---------------------------------------------------|---------|
-| `main`    | プロダクション環境との同期 | 永続的     | -                | `main` 固定                                         | ❌️       |
-| `feature` | 特定機能の追加/変更        | 短命      | `main`／`develop` | `feature/${チケット番号}`: 詳細は[featureブランチ](#featureブランチ) を参照          | ✅️※1       |
-| `develop` | 開発の大元             | 永続的     | `main`           | `develop` 固定。複数必要な場合は `develop2` と連番にする         | ❌️       |
-| `release` | リリース作業用途          | 短命      | `develop`        | `release/${yyyymmdd}` や `release/${リリースバージョン}` など | ❌️       |
-| `hotfix`  | mainブランチに対する即時修正  | 短命      | `main`           | `hotfix/${チケット番号}`: featureブランチに準じる                 | ✅️       |
-| `topic`   | 複数人での機能開発用途       | 短命      | `feature`        | `topic/${チケット番号}`: featureブランチに準じる                  | ✅️       |
+| ブランチ名称 | 役割                         | ライフサイクル | 派生元ブランチ    | 命名規則                                                                    | 直プッシュ |
+| ------------ | ---------------------------- | -------------- | ----------------- | --------------------------------------------------------------------------- | ---------- |
+| `main`       | プロダクション環境との同期   | 永続的         | -                 | `main` 固定                                                                 | ❌️          |
+| `feature`    | 特定機能の追加/変更          | 短命           | `main`／`develop` | `feature/${チケット番号}`: 詳細は[featureブランチ](#featureブランチ) を参照 | ✅️※1        |
+| `develop`    | 開発の大元                   | 永続的         | `main`            | `develop` 固定。複数必要な場合は `develop2` と連番にする                    | ❌️          |
+| `release`    | リリース作業用途             | 短命           | `develop`         | `release/${yyyymmdd}` や `release/${リリースバージョン}` など               | ❌️          |
+| `hotfix`     | mainブランチに対する即時修正 | 短命           | `main`            | `hotfix/${チケット番号}`: featureブランチに準じる                           | ✅️          |
+| `topic`      | 複数人での機能開発用途       | 短命           | `feature`         | `topic/${チケット番号}`: featureブランチに準じる                            | ✅️          |
 
 ※1: topicブランチを利用する場合は、派生させたfeatureブランチへの直プッシュはNGとなる
 
@@ -136,10 +136,10 @@ featureブランチで実現する機能を複数人で開発する場合に使�
 
 本規約で推奨するブランチ戦略は次の2パターンであり、これをベースとして選択する。
 
-| 名称               | 利用ブランチ                                                                  | デフォルトブランチ | リリース作業ブランチ    | 備考                                                    |
-|------------------|-------------------------------------------------------------------------|-----------|-----------|--------------------------------------------------------|
-| Lite GitLab Flow<br>※1 | `main`<br>`develop`<br>`feature`<br>`topic`<br> `hotfix`                | `develop` | `develop` | ・GitLab Flowからreleaseブランチを除いたパターン<br>・リリース作業時にdevelopマージを止められる場合に利用する                         |
-| GitLab Flow      | `main`<br>`develop`<br>`release` <br>`feature`<br>`topic` <br> `hotfix`<br>※2 | `develop` | `release` | ・リリース作業と開発作業が並行して行う必要があるか、<br>断面を指定して複数テスト環境にデプロイしたい場合に利用する |
+| 名称                   | 利用ブランチ                                                                  | デフォルトブランチ | リリース作業ブランチ | 備考                                                                                                               |
+| ---------------------- | ----------------------------------------------------------------------------- | ------------------ | -------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Lite GitLab Flow<br>※1 | `main`<br>`develop`<br>`feature`<br>`topic`<br> `hotfix`                      | `develop`          | `develop`            | ・GitLab Flowからreleaseブランチを除いたパターン<br>・リリース作業時にdevelopマージを止められる場合に利用する      |
+| GitLab Flow            | `main`<br>`develop`<br>`release` <br>`feature`<br>`topic` <br> `hotfix`<br>※2 | `develop`          | `release`            | ・リリース作業と開発作業が並行して行う必要があるか、<br>断面を指定して複数テスト環境にデプロイしたい場合に利用する |
 
 - ※1: 特定の呼称はないためLite GitLab FLowと命名する
 - ※2: 本規約では、本来のGitLab Flowの呼称である `production`を`main`、`pre production`を`release`に言い換えている
@@ -148,10 +148,10 @@ featureブランチで実現する機能を複数人で開発する場合に使�
 
 各ブランチ戦略ごとに、デプロイメント環境に対応するブランチを整理する。プロダクション環境リリース前には、mainブランチでタグを打つこととする。
 
-| 名称               | 開発環境    | ステージング環境 | プロダクション環境 | 備考                                                                                                                                     |
-|------------------|---------|----------|-----------|----------------------------------------------------------------------------------------------------------------------------------------|
-| Lite GitLab Flow | develop | develop  | main      | ・開発環境へはdevelopマージをトリガーにCI/CDでデプロイを推奨する<br>・開発環境へのデプロイ漏れを防ぐため定期的にCI/CDでdevelop断面をリリースすることを推奨する<br>・動作確認など理由がある場合はfeatureブランチから直接開発環境へのデプロイも許容する<br>・ステージング環境は日次など定期的なCI/CDによるデプロイを推奨する |
-| GitLab Flow      | develop | release  | main      | ・開発環境へはdevelopマージをトリガーにCI/CDでデプロイを推奨する<br>・検証期間が長引きそうな場合は、PRレビュー承認後にfeatureブランチから開発環境へのデプロイを許容する                                       |
+| 名称             | 開発環境 | ステージング環境 | プロダクション環境 | 備考                                                                                                                                                                                                                                                                                                                       |
+| ---------------- | -------- | ---------------- | ------------------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Lite GitLab Flow | develop  | develop          | main               | ・開発環境へはdevelopマージをトリガーにCI/CDでデプロイを推奨する<br>・開発環境へのデプロイ漏れを防ぐため定期的にCI/CDでdevelop断面をリリースすることを推奨する<br>・動作確認など理由がある場合はfeatureブランチから直接開発環境へのデプロイも許容する<br>・ステージング環境は日次など定期的なCI/CDによるデプロイを推奨する |
+| GitLab Flow      | develop  | release          | main               | ・開発環境へはdevelopマージをトリガーにCI/CDでデプロイを推奨する<br>・検証期間が長引きそうな場合は、PRレビュー承認後にfeatureブランチから開発環境へのデプロイを許容する                                                                                                                                                    |
 
 # ブランチ戦略の拡張
 
@@ -253,10 +253,10 @@ featureブランチでの作業中に、developブランチが更新された場
 - b.行単位の紐づけ（該当行の変更なし）: レビューコメントが付けられた行とは別の変更を行い、強制プッシュしたときにレビューコメントの紐づけが残るかどうか。GitHubではFile chagedタブで確認
 - c.行単位の紐づけ（該当行の変更あり）: レビューコメントで付けられた行を修正し、強制プッシュ時の挙動。レビュー対応をしたとみなしレビューコメントのひも付きは解除されているべきである。GitHubではFile chagedタブで確認
 
-| サービス        | a.履歴保持 | b.行単位の紐づけ（該当行の変更なし） | c.行単位の紐づけ（該当行の変更あり） |
-|----------------|--------------|---------------------------------|---------------------------------|
-| GitHub         | 残る           | 残る                              | 消える                              |
-| GitLab         | 残る           | 残る                              | 消える                              |
+| サービス | a.履歴保持 | b.行単位の紐づけ（該当行の変更なし） | c.行単位の紐づけ（該当行の変更あり） |
+| -------- | ---------- | ------------------------------------ | ------------------------------------ |
+| GitHub   | 残る       | 残る                                 | 消える                               |
+| GitLab   | 残る       | 残る                                 | 消える                               |
 
 :::
 
@@ -515,21 +515,21 @@ git config --global alias.br branch
 
 ### General
 
-| Category      | Item | Value | Memo |
-| ------------- | ---- | ----- | ---- |
-| General       | Require contributors to sign off on web-based commits | チェックなし | 著作権・ライセンス承諾の場合に用いるが、業務アプリ開発では不要 |
-|               | Default branch | develop |  |
-| Pull Requests | Allow merge commits  | ✅️ | main <- developなどのマージ時に必要 |
-|               | Allow squash merging  | ✅️ | develop <- feature はSquash mergeを推奨 |
-|               | Allow rebase merging  | -   | 利用しないため、チェックを外す |
-|               | Allow suggest updating pull request branches | ✅️  | Pull Request作成後、ベースブランチが更新された場合、ソースブランチの更新を提案してくれる |
-|               | Automatically delete head branches | ✅️  | マージ後にfeature branchを削除するため有効にする |
-| Pushes        | Limit how many branches and tags can be updated in a single push | 5  | git push origin –mirrorで誤ってリモートブランチを破壊しないようにする。推奨値の5を設定する |
+| Category      | Item                                                             | Value        | Memo                                                                                       |
+| ------------- | ---------------------------------------------------------------- | ------------ | ------------------------------------------------------------------------------------------ |
+| General       | Require contributors to sign off on web-based commits            | チェックなし | 著作権・ライセンス承諾の場合に用いるが、業務アプリ開発では不要                             |
+|               | Default branch                                                   | develop      |                                                                                            |
+| Pull Requests | Allow merge commits                                              | ✅️            | main <- developなどのマージ時に必要                                                        |
+|               | Allow squash merging                                             | ✅️            | develop <- feature はSquash mergeを推奨                                                    |
+|               | Allow rebase merging                                             | -            | 利用しないため、チェックを外す                                                             |
+|               | Allow suggest updating pull request branches                     | ✅️            | Pull Request作成後、ベースブランチが更新された場合、ソースブランチの更新を提案してくれる   |
+|               | Automatically delete head branches                               | ✅️            | マージ後にfeature branchを削除するため有効にする                                           |
+| Pushes        | Limit how many branches and tags can be updated in a single push | 5            | git push origin –mirrorで誤ってリモートブランチを破壊しないようにする。推奨値の5を設定する |
 
 ### Access
 
-| Category                 | Item | Value | Memo |
-| ------------------------ | ---- | ----- | ---- |
+| Category                | Item          | Value      | Memo  |
+| ----------------------- | ------------- | ---------- | ----- |
 | Collaborators and teams | Choose a role | 任意の権限 | ※後述 |
 
 - 各ロールの権限については、公式ドキュメントを参照
@@ -545,18 +545,18 @@ git config --global alias.br branch
 
 Branch protection rules にdevelop, mainなど永続的なブランチに保護設定を追加する。
 
-| Category      | Item | Value | Memo |
-| ------------- | ---- | ----- | ---- |
-| Protect matching branches | Require a pull request before merging | ✅️ | プルリクエストを必須とする |
-|                           | Require approvals | ✅️ | レビューを必須とする |
-|                           | Required number of approvals before merging | 1 | 最低1名以上の承認を必須とする |
-|                           | Dismiss stale pull request approvals when new commits are pushed | - | レビュー承認後のPushで再承認を必要とするかだが、レビュー運用上に支障となることも多く、チェックを外す |
-|                           | Require status checks to pass before merging | ✅️ | CIの成功を条件とする |
-|                           | Require branches to be up to date before merging | 任意 | CIパイプラインのワークフロー名を指定 |
-|                           | Require conversation resolution before merging | ✅️ | レビューコメントがすべて解決していることを条件とする |
-|                           | Require signed commits | ✅️ | 署名付きコミットを必須化し、セキュアな設定にする |
-|                           | Require linear history | ✅️/- | mainブランチの場合はOFFとするが、developの場合はSquash mergeを求めるため有効にする |
-|                           | Do not allow bypassing the above settings | ✅️ | パイパスを許容しない |
+| Category                  | Item                                                             | Value | Memo                                                                                                 |
+| ------------------------- | ---------------------------------------------------------------- | ----- | ---------------------------------------------------------------------------------------------------- |
+| Protect matching branches | Require a pull request before merging                            | ✅️     | プルリクエストを必須とする                                                                           |
+|                           | Require approvals                                                | ✅️     | レビューを必須とする                                                                                 |
+|                           | Required number of approvals before merging                      | 1     | 最低1名以上の承認を必須とする                                                                        |
+|                           | Dismiss stale pull request approvals when new commits are pushed | -     | レビュー承認後のPushで再承認を必要とするかだが、レビュー運用上に支障となることも多く、チェックを外す |
+|                           | Require status checks to pass before merging                     | ✅️     | CIの成功を条件とする                                                                                 |
+|                           | Require branches to be up to date before merging                 | 任意  | CIパイプラインのワークフロー名を指定                                                                 |
+|                           | Require conversation resolution before merging                   | ✅️     | レビューコメントがすべて解決していることを条件とする                                                 |
+|                           | Require signed commits                                           | ✅️     | 署名付きコミットを必須化し、セキュアな設定にする                                                     |
+|                           | Require linear history                                           | ✅️/-   | mainブランチの場合はOFFとするが、developの場合はSquash mergeを求めるため有効にする                   |
+|                           | Do not allow bypassing the above settings                        | ✅️     | パイパスを許容しない                                                                                 |
 
 developブランチに対し「require linear history」を選択することを推奨することで、「Create a merge commit」が選択できないようにする。
 
@@ -566,24 +566,24 @@ developブランチに対し「require linear history」を選択することを
 
 #### Tags
 
-| Category      | Item | Value | Memo |
-| ------------- | ---- | ----- | ---- |
-|  | Protect tags | v[0-9]+.[0-9]+.[0-9] | セマンティックバージョニングに則ったタグのみ、削除を防ぐ |
+| Category | Item         | Value                | Memo                                                     |
+| -------- | ------------ | -------------------- | -------------------------------------------------------- |
+|          | Protect tags | v[0-9]+.[0-9]+.[0-9] | セマンティックバージョニングに則ったタグのみ、削除を防ぐ |
 
 #### GitHub Actions
 
-| Category      | Item | Value | Memo |
-| ------------- | ---- | ----- | ---- |
-| Actions permissions | Allow asset-taskforce, and select non-asset-taskforce, actions and reusable workflows > Allow actions created by GitHub | ✅️ |  |
-|                     | Allow asset-taskforce, and select non-asset-taskforce, actions and reusable workflows > Allow actions Marketplace verified creators | ✅️ |  |
+| Category            | Item                                                                                                                                | Value | Memo |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ----- | ---- |
+| Actions permissions | Allow asset-taskforce, and select non-asset-taskforce, actions and reusable workflows > Allow actions created by GitHub             | ✅️     |      |
+|                     | Allow asset-taskforce, and select non-asset-taskforce, actions and reusable workflows > Allow actions Marketplace verified creators | ✅️     |      |
 
 #### Code security and analysis
 
-| Category      | Item | Value | Memo |
-| ------------- | ---- | ----- | ---- |
-| Dependabot | Dependabot alerts | ✅️ | 依存パッケージのアップデートを検知するため |
-|            | Dependabot security updates | ✅️ |  |
-|            | Dependabot version updates | ✅️ |  |
+| Category   | Item                        | Value | Memo                                       |
+| ---------- | --------------------------- | ----- | ------------------------------------------ |
+| Dependabot | Dependabot alerts           | ✅️     | 依存パッケージのアップデートを検知するため |
+|            | Dependabot security updates | ✅️     |                                            |
+|            | Dependabot version updates  | ✅️     |                                            |
 
 ## GitLab推奨設定
 
@@ -597,11 +597,11 @@ developブランチに対し「require linear history」を選択することを
 
 チーム開発において開発環境がWindows/Macなど複数存在することは少なくなく、また、Gitリポジトリ上の改行コードは統一した方が余計な差分が生じず扱いやすくなる。このときよく用いるのが、 `core.autocrlf` という設定である。
 
-| 名称 | 設定値 | チェックアウト時の挙動 | コミット時の挙動 |
-| -- | -- | --- | -- |
-| core.autocrlf | true | 改行コードをCRLFに変換 | 改行コードをLFに変換 |
-|               | input | 何もしない | 改行コードをLFに変換 |
-|               | false | 何もしない | 何もしない |
+| 名称          | 設定値 | チェックアウト時の挙動 | コミット時の挙動     |
+| ------------- | ------ | ---------------------- | -------------------- |
+| core.autocrlf | true   | 改行コードをCRLFに変換 | 改行コードをLFに変換 |
+|               | input  | 何もしない             | 改行コードをLFに変換 |
+|               | false  | 何もしない             | 何もしない           |
 
 特にWindowsでの開発者の作業ミスを防ぐため、 `git config --global core.autocrlf input` のような設定を行うチームも多い。
 

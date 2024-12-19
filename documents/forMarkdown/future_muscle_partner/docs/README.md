@@ -15,23 +15,23 @@ docs
 
 ## 設計書
 
-- [01_画面](01_画面)
-- [02_WebAPI](02_WebAPI)
-- [03_データ](03_データ)
+- [01_画面](./01_画面/index.md)
+- [02_WebAPI](./02_WebAPI/index.md)
+- [03_データ](./03_データ/index.md)
 
 ## コード体系
 
 機能IDのコード体系は以下に従う。
 
-| 種別  | 種別         | 例           | 備考                   |
-|-----|------------|-------------|----------------------|
-| UIS | 通常画面       | UIS01、UIS02 | UI Standard から       |
-| UIM | モーダル画面     | UIM01、UIM02 | UI Mordal から         |
-| API | Web API    | API01、API02 |                      |
-| IFS | システムI/F 送信 | IFS01、IFS02 | InterFace Send から    |
-| IFR | システムI/F 受信 | IFR01、IFR02 | InterFace Receive から |
-| BAT | バッチ        | BAT01、BAT02 | BATch から             |
-| RPT | 帳票         | RPT01、RPT02 | RePorT から            |
+| 種別 | 種別             | 例           | 備考                   |
+| ---- | ---------------- | ------------ | ---------------------- |
+| UIS  | 通常画面         | UIS01、UIS02 | UI Standard から       |
+| UIM  | モーダル画面     | UIM01、UIM02 | UI Mordal から         |
+| API  | Web API          | API01、API02 |                        |
+| IFS  | システムI/F 送信 | IFS01、IFS02 | InterFace Send から    |
+| IFR  | システムI/F 受信 | IFR01、IFR02 | InterFace Receive から |
+| BAT  | バッチ           | BAT01、BAT02 | BATch から             |
+| RPT  | 帳票             | RPT01、RPT02 | RePorT から            |
 
 コード体系について補足:
 

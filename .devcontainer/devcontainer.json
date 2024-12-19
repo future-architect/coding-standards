@@ -11,7 +11,7 @@
   // Set *default* container specific settings.json values on container create.
   "settings": {
     "eslint.validate": ["javascript", "javascriptreact", "vue"],
-    "eslint.workingDirectories": ["./", "./.vuepress"],
+    "eslint.workingDirectories": ["./", "./.vitepress"],
     "editor.codeActionsOnSave": {
       "source.fixAll.eslint": true
     }
