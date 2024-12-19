@@ -122,7 +122,16 @@ export default defineConfig({
       lang: "ja",
     },
   },
-  head: [["link", { rel: "icon", href: `/coding-standards/logo.png` }]],
+  head: [
+    [
+      "link",
+      {
+        rel: "icon",
+        href: `/coding-standards/images/logo-system.svg`,
+        type: "image/svg+xml",
+      },
+    ],
+  ],
   srcExclude: ["./README.md"],
   base: "/coding-standards/",
   themeConfig: {
