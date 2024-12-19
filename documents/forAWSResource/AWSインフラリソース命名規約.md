@@ -2,9 +2,10 @@
 sidebarDepth: 4
 title: AWSインフラ命名規約
 author: フューチャー株式会社
-meta:
-  - name: keywords
-    content: AWS,命名規約,コーディング規約
+head:
+  - - meta
+    - name: keywords
+      content: AWS,命名規約,コーディング規約
 ---
 
 <page-title/>

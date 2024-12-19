@@ -2,9 +2,10 @@
 sidebarDepth: 4
 title: Gitブランチフロー規約
 author: フューチャー株式会社
-meta:
-  - name: keywords
-    content: Git
+head:
+  - - meta
+    - name: keywords
+      content: Git
 ---
 
 <page-title/>

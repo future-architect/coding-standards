@@ -2,9 +2,10 @@
 sidebarDepth: 4
 title: Javaコーディング規約 for Java11
 author: Future Enterprise Coding Standards
-meta:
-  - name: keywords
-    content: Javaコーディング規約,Java11,コーディング規約,Java,Java9
+head:
+  - - meta
+    - name: keywords
+      content: Javaコーディング規約,Java11,コーディング規約,Java,Java9
 ---
 
 <page-title/>

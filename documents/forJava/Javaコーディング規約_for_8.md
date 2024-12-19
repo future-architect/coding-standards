@@ -2,9 +2,10 @@
 sidebarDepth: 4
 title: Javaコーディング規約 for Java8
 author: Future Enterprise Coding Standards
-meta:
-  - name: keywords
-    content: Javaコーディング規約,Java8,コーディング規約,Java
+head:
+  - - meta
+    - name: keywords
+      content: Javaコーディング規約,Java8,コーディング規約,Java
 ---
 
 <page-title/>

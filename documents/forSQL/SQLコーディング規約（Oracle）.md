@@ -2,9 +2,10 @@
 sidebarDepth: 4
 title: SQLコーディング規約（Oracle）
 author: Future Enterprise Coding Standards
-meta:
-  - name: keywords
-    content: SQLコーディング規約,Oracle,コーディング規約,SQL
+head:
+  - - meta
+    - name: keywords
+      content: SQLコーディング規約,Oracle,コーディング規約,SQL
 ---
 
 <page-title/>
