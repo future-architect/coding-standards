@@ -2,10 +2,10 @@
 layout: home
 title: Future Enterprise Coding Standards
 hero:
-  name:  Future Enterprise Coding Standards
+  name: Future Enterprise Coding Standards
   # text: ''
   tagline: フューチャー株式会社が作成するエンタープライズ領域に特化したコーディング規約
-  actions: 
+  actions:
     - theme: brand
       text: Javaコーディング規約
       link: ./documents/forJava/

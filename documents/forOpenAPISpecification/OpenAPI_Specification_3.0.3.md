@@ -24,7 +24,7 @@ Web API の設計自体はこの規約の範囲外であるが、[API 設計標�
 
 ::: warning 有志で作成したドキュメントである
 
-* フューチャーアーキテクトには多様なプロジェクトが存在し、それぞれの状況に合わせた開発手法が採用されている。本規約はフューチャーアーキテクトの全ての部署／プロジェクトで利用されているわけではなく、有志が観点を持ち寄って新たに整理したものである。相容れない部分があればその領域を書き換えて利用することを想定している  
+- フューチャーアーキテクトには多様なプロジェクトが存在し、それぞれの状況に合わせた開発手法が採用されている。本規約はフューチャーアーキテクトの全ての部署／プロジェクトで利用されているわけではなく、有志が観点を持ち寄って新たに整理したものである。相容れない部分があればその領域を書き換えて利用することを想定している
 
 :::
 
@@ -40,16 +40,16 @@ OpenAPI ドキュメントを構成する要素はオブジェクトと呼ばれ
 
 各オブジェクトの詳細については[公式ドキュメント](https://spec.openapis.org/oas/v3.0.3#openapi-object)を参照されたい。
 
-| フィールド名 | 必須  | 説明                                                        |
-| ------------ | :---: | ----------------------------------------------------------- |
-| openapi      |   ○   | OpenAPI ドキュメントが使用する OpenAPI 仕様のバージョン番号 |
-| info         |   ○   | API に関するメタデータ                                      |
-| servers      |       | API サーバへの接続情報                                      |
-| paths        |   ○   | API の利用可能なパスと操作方法                              |
-| components   |       | 複数の API における共通の定義                               |
-| security     |       | API 全体で利用可能なセキュリティ（認証）機構                |
-| tags         |       | 各種 API をグルーピングするためのタグ                       |
-| externalDocs |       | 追加の外部ドキュメント                                      |
+| フィールド名 | 必須 | 説明                                                        |
+| ------------ | :--: | ----------------------------------------------------------- |
+| openapi      |  ○   | OpenAPI ドキュメントが使用する OpenAPI 仕様のバージョン番号 |
+| info         |  ○   | API に関するメタデータ                                      |
+| servers      |      | API サーバへの接続情報                                      |
+| paths        |  ○   | API の利用可能なパスと操作方法                              |
+| components   |      | 複数の API における共通の定義                               |
+| security     |      | API 全体で利用可能なセキュリティ（認証）機構                |
+| tags         |      | 各種 API をグルーピングするためのタグ                       |
+| externalDocs |      | 追加の外部ドキュメント                                      |
 
 # 要素規約
 
@@ -79,14 +79,14 @@ openapi: 3.0
 
 `title`, `description`, `version` を必須項目とする。
 
-| フィールド名   | 必須  | 記載内容                         |
-| -------------- | :---: | -------------------------------- |
-| title          |   ○   | Web API の総称                   |
-| description    |   ○   | Web API の簡単な説明             |
-| version        |   ○   | OpenAPI ドキュメントのバージョン |
-| termsOfService |       | 利用規約の URL                   |
-| contact        |       | 連絡先情報                       |
-| license        |       | ライセンス情報                   |
+| フィールド名   | 必須 | 記載内容                         |
+| -------------- | :--: | -------------------------------- |
+| title          |  ○   | Web API の総称                   |
+| description    |  ○   | Web API の簡単な説明             |
+| version        |  ○   | OpenAPI ドキュメントのバージョン |
+| termsOfService |      | 利用規約の URL                   |
+| contact        |      | 連絡先情報                       |
+| license        |      | ライセンス情報                   |
 
 ### info > title
 
@@ -112,6 +112,7 @@ Web API が提供する機能の概要・想定する利用者やユースケー
 アプリケーションのバージョン（git tag やリリースで管理するようなバージョン）とは別である。
 
 - `major.minor` 形式を推奨する
+
   - `0.1` 固定で開発を進め、サービスのリリース時に `1.0` とし、その後の項目やオプション、パスの追加ごとにマイナーバージョンをインクリメントしていく
 
   良い例：
@@ -135,7 +136,7 @@ Web API が提供する機能の概要・想定する利用者やユースケー
 Web API を提供するサーバの情報を記載する。
 
 - `url`, `description` を必須項目とする
-- ステージ（local, develop, staging など）が複数ある場合は各ステージ分の情報を記載する。 
+- ステージ（local, develop, staging など）が複数ある場合は各ステージ分の情報を記載する。
 - SSKDs 向けの Web API 開発においては本番環境の URL を不用意に公開したくないケースが多く、記載は避けるべきである
 
 良い例：
@@ -195,8 +196,7 @@ API の利用可能なエンドポイントと操作方法を記載する。
   ```yaml
   paths:
     /product-owners:
-      get:
-        ...
+      get: ...
   ```
 
   悪い例：
@@ -204,8 +204,7 @@ API の利用可能なエンドポイントと操作方法を記載する。
   ```yaml
   paths:
     /productOwners:
-      get:
-        ...
+      get: ...
   ```
 
 - HTTP メソッドは `GET`, `POST`, `PUT`, `PATCH`, `DELETE` の順に定義する
@@ -230,20 +229,20 @@ API の利用可能なエンドポイントと操作方法を記載する。
 
 - HTTP メソッドの配下に定義されるオペレーションオブジェクトは、下記の項目を必須項目とする
 
-| フィールド名 | 必須  | 記載内容                                 |
-| ------------ | :---: | ---------------------------------------- |
-| tags         |   ○   | API の論理的なグループ                   |
-| summary      |   ○   | API の操作概要                           |
-| description  |   ○   | API の振る舞いの詳細や注意点             |
-| externalDocs |       | API に関する追加の文書                   |
-| operationId  |   ○   | API の利用可能なエンドポイントと操作方法 |
-| parameters   |       | API のリクエストパラメータ               |
-| requestBody  |       | API のリクエストボディ                   |
-| responses    |   ○   | API のレスポンス                         |
-| callbacks    |       |                                          |
-| deprecated   |       | API が非推奨であることの宣言             |
-| security     |       | API のセキュリティ機構                   |
-| servers      |       | API に対応する代替サーバ                 |
+| フィールド名 | 必須 | 記載内容                                 |
+| ------------ | :--: | ---------------------------------------- |
+| tags         |  ○   | API の論理的なグループ                   |
+| summary      |  ○   | API の操作概要                           |
+| description  |  ○   | API の振る舞いの詳細や注意点             |
+| externalDocs |      | API に関する追加の文書                   |
+| operationId  |  ○   | API の利用可能なエンドポイントと操作方法 |
+| parameters   |      | API のリクエストパラメータ               |
+| requestBody  |      | API のリクエストボディ                   |
+| responses    |  ○   | API のレスポンス                         |
+| callbacks    |      |                                          |
+| deprecated   |      | API が非推奨であることの宣言             |
+| security     |      | API のセキュリティ機構                   |
+| servers      |      | API に対応する代替サーバ                 |
 
 ### paths > {path} > {method} > tags
 
@@ -315,7 +314,7 @@ API の操作概要を記載する。
   paths:
     /users:
       get:
-        summary: API-001 ユーザ一覧取得 
+        summary: API-001 ユーザ一覧取得
   ```
 
 ### paths > {path} > {method} > description
@@ -324,20 +323,21 @@ API の振る舞いの詳細や注意点を記載する。
 
 別途参照させるべき設計書があるのであれば、設計書へのリンクを記載しても良い。
 
-  良い例：
+良い例：
 
-  ```yaml
-  paths:
-    /users:
-      get:
-        description: [API詳細設計書（API-001）](https://example.com/API-001.md)
-  ```
+```yaml
+paths:
+  /users:
+    get:
+      description: [API詳細設計書（API-001）](https://example.com/API-001.md)
+```
 
 ### paths > {path} > {method} > operationId
 
 API を識別するための一意な文字列を記載する。
 
 - HTTP メソッドと URL パスの組み合わせをキャメルケースで表現する
+
   - キャメルケースの書式は、[OpenAPI 3.0ガイドのPaths and Operations](https://swagger.io/docs/specification/paths-and-operations/#:~:text=role%3Dvalue-,operationId,-operationId%20is%20an)でも利用されているため、一般的である
 
   良い例：
@@ -533,11 +533,10 @@ API のレスポンスを記載する。
     /products:
       post:
         responses:
-          '200':
+          "200":
             description: 200 OK
             content:
-              application/json:
-                ...
+              application/json: ...
   ```
 
   悪い例：
@@ -547,17 +546,16 @@ API のレスポンスを記載する。
     /products:
       post:
         responses:
-          '200':
+          "200":
             # コンポーネント化したレスポンスオブジェクトを参照
-            $ref: '#/components/responses/RespPostProductsBody'
+            $ref: "#/components/responses/RespPostProductsBody"
 
   components:
     responses:
       RespPostProductsBody:
         description: 200 OK
         content:
-          application/json:
-            ...
+          application/json: ...
   ```
 
 - 異常系（`4xx`, `5xx`）のレスポンスは個別に定義するのではなく、事前に `components` オブジェクトとして定義を行い `$ref` で参照する
@@ -569,17 +567,16 @@ API のレスポンスを記載する。
     /products:
       post:
         responses:
-          '400':
+          "400":
             # コンポーネント化したレスポンスオブジェクトを参照
-            $ref: '#/components/responses/BadRequest'
+            $ref: "#/components/responses/BadRequest"
 
   components:
     responses:
       BadRequest:
         description: 400 Bad Request
         content:
-          application/json:
-            ...
+          application/json: ...
   ```
 
   悪い例：
@@ -589,12 +586,11 @@ API のレスポンスを記載する。
     /products:
       post:
         responses:
-          '400':
+          "400":
             # レスポンスオブジェクトを個別に定義
             description: 400 Bad Request
             content:
-              application/json:
-                ...
+              application/json: ...
   ```
 
 ### paths > {path} > {method} > security
@@ -654,16 +650,14 @@ components:
     # 共通で使用するリソースを表すオブジェクト
     Product:
       type: object
-      properties:
-        ...
+      properties: ...
     User:
       type: object
       properties:
     # 共通で使用するエラーを表すオブジェクト
     ProblemDetailError:
       type: object
-      properties:
-        ...
+      properties: ...
 ```
 
 ### components > responses
@@ -785,7 +779,7 @@ paths:
   post:
     /products:
       parameters:
-        - $ref: '#/components/parameters/HeaderContentType'
+        - $ref: "#/components/parameters/HeaderContentType"
 
 components:
   parameters:
@@ -810,7 +804,7 @@ paths:
   get:
     /products:
       parameters:
-        - $ref: '#/components/parameters/CookieCSRFToken'
+        - $ref: "#/components/parameters/CookieCSRFToken"
 
 components:
   parameters:
@@ -843,7 +837,7 @@ paths:
         "200":
           headers:
             XCacheInfo:
-              $ref: '#/components/headers/XCacheInfo'
+              $ref: "#/components/headers/XCacheInfo"
 
 components:
   headers:
@@ -867,7 +861,7 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      description: 'Bearer トークン認証'
+      description: "Bearer トークン認証"
 ```
 
 ### components > links
@@ -1199,6 +1193,7 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
 2. テストツールとして [stoplightio/prism](https://github.com/stoplightio/prism)を使用する場合、テストケースごとにデータファイルを作成して、`examples` にファイルパスを指定する。
 
 注意点:
+
 - OpenAPI 仕様上、`$ref` は[利用できる箇所が限定されている](https://swagger.io/docs/specification/using-ref/#allowed-places)ことに注意する
   - 例えば[Path](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#path-item-object)は `$ref` が利用可能だが、[Operation](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#operation-object)（HTTPメソッドの粒度）では利用不可である
 
@@ -1234,7 +1229,7 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
         type: http
         scheme: bearer
         bearerFormat: JWT
-        description: 'Authenthicaiton with bearer token'
+        description: "Authenthicaiton with bearer token"
   ```
 
   ```sh
@@ -1286,33 +1281,33 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
         content:
           application/json:
             schema:
-                type: object
-                properties:
-                  pet_detail:
-                    type: object
-                    properties:
-                      breeder:
-                        type: string
-                      date_of_birth:
-                        type: string
-                        format: date
-                      pedigree:
-                        type: object
-                        properties:
-                          registration_no:
-                            type: integer
-                            format: int64
-                          date_of_registration:
-                            type: string
-                            format: date
-                          pedigree_image:
-                            type: string
-                        required:
-                          - registration_no
-                          - date_of_registration
-                          - pedigree_image
-                required:
-                  - pet_detail
+              type: object
+              properties:
+                pet_detail:
+                  type: object
+                  properties:
+                    breeder:
+                      type: string
+                    date_of_birth:
+                      type: string
+                      format: date
+                    pedigree:
+                      type: object
+                      properties:
+                        registration_no:
+                          type: integer
+                          format: int64
+                        date_of_registration:
+                          type: string
+                          format: date
+                        pedigree_image:
+                          type: string
+                      required:
+                        - registration_no
+                        - date_of_registration
+                        - pedigree_image
+              required:
+                - pet_detail
             examples:
               TestCase003:
                 $ref: "../examples/pets_pet_id_get/test_case_003.yaml"
@@ -1326,11 +1321,10 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
 
 - OpenAPI の使用用途により、分割ファイルを1つのファイルにまとめる必要がある場合には、例えば[Redocly CLI](https://redocly.com/redocly-cli)を使用して以下コマンドを実行する
 - まとめたファイルは、以下のようになる（例: openapi.gen.yaml）。
-  
+
   ```bash
   redocly bundle openapi.yaml --output openapi.gen.yaml
   ```
-
 
   <details>
   <summary>openapi.gen.yamlを見る</summary>
@@ -1366,7 +1360,7 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
               format: int32
             required: false
         responses:
-          '200':
+          "200":
             description: A paged array of pets
             headers:
               x-next:
@@ -1416,13 +1410,13 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
                           - sex
                 examples:
                   TestCase001:
-                    $ref: '#/components/examples/test_case_001'
+                    $ref: "#/components/examples/test_case_001"
                   TestCase002:
-                    $ref: '#/components/examples/test_case_002'
-          '404':
-            $ref: '#/components/responses/NotFound'
-          '500':
-            $ref: '#/components/responses/InternalServerError'
+                    $ref: "#/components/examples/test_case_002"
+          "404":
+            $ref: "#/components/responses/NotFound"
+          "500":
+            $ref: "#/components/responses/InternalServerError"
       post:
         summary: Register a pet
         description: Reginster basic information of new pet.
@@ -1472,10 +1466,10 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
                   - pet
               examples:
                 TestCase004:
-                  $ref: '#/components/examples/test_case_004'
+                  $ref: "#/components/examples/test_case_004"
           required: true
         responses:
-          '200':
+          "200":
             description: OK
             content:
               application/json:
@@ -1512,10 +1506,10 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
                     - category
                     - age
                     - sex
-          '404':
-            $ref: '#/components/responses/NotFound'
-          '500':
-            $ref: '#/components/responses/InternalServerError'
+          "404":
+            $ref: "#/components/responses/NotFound"
+          "500":
+            $ref: "#/components/responses/InternalServerError"
     /pets/{pet_id}:
       get:
         summary: Get details of a pet
@@ -1531,7 +1525,7 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
               type: string
             required: true
         responses:
-          '200':
+          "200":
             description: Expected response to a valid request
             content:
               application/json:
@@ -1565,11 +1559,11 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
                     - pet_detail
                 examples:
                   TestCase003:
-                    $ref: '#/components/examples/test_case_003'
-          '404':
-            $ref: '#/components/responses/NotFound'
-          '500':
-            $ref: '#/components/responses/InternalServerError'
+                    $ref: "#/components/examples/test_case_003"
+          "404":
+            $ref: "#/components/responses/NotFound"
+          "500":
+            $ref: "#/components/responses/InternalServerError"
   components:
     securitySchemes:
       Bearer:
@@ -1631,10 +1625,10 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
         value:
           pet_detail:
             breeder: BreederName
-            date_of_birth: '2023-10-31'
+            date_of_birth: "2023-10-31"
             pedigree:
               registration_no: 11111111
-              date_of_registration: '2023-10-31'
+              date_of_registration: "2023-10-31"
               pedigree_image: 9j2wBDAA...8QAPxAAAQQABAMGBAYDAAEDAg
     schemas:
       ProblemDetailError:
@@ -1654,13 +1648,13 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProblemDetailError'
+              $ref: "#/components/schemas/ProblemDetailError"
       InternalServerError:
         description: Internal Server Error
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ProblemDetailError'
+              $ref: "#/components/schemas/ProblemDetailError"
   ```
 
   </details>

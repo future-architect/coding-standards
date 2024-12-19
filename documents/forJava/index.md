@@ -3,7 +3,7 @@ sidebarDepth: 4
 author: フューチャー株式会社
 layout: home
 hero:
-  name:  Javaコーディング規約
+  name: Javaコーディング規約
   tagline: Future Enterprise Coding Standards for Java
   image:
     src: /images/JBee.png

@@ -16,7 +16,7 @@ const repoUrl = pkg.repository.url
 /** @type {import("vitepress").DefaultTheme.Sidebar} */
 const links = {
   "/documents/forJava/": [
-    { text: "Home", link: "/documents/forJava/" },
+    { text: "Introduction", link: "/documents/forJava/" },
     {
       text: "Javaコーディング規約",
       link: "/documents/forJava/Javaコーディング規約.html",
@@ -31,7 +31,7 @@ const links = {
     },
   ],
   "/documents/forSQL/": [
-    { text: "Home", link: "/documents/forSQL/" },
+    { text: "Introduction", link: "/documents/forSQL/" },
     {
       text: "SQLコーディング規約（PostgreSQL）",
       link: "/documents/forSQL/SQLコーディング規約（PostgreSQL）.html",
@@ -42,14 +42,14 @@ const links = {
     },
   ],
   "/documents/forAWSResource/": [
-    { text: "Home", link: "/documents/forAWSResource/" },
+    { text: "Introduction", link: "/documents/forAWSResource/" },
     {
       text: "AWSインフラ命名規約",
       link: "/documents/forAWSResource/AWSインフラリソース命名規約.html",
     },
   ],
   "/documents/forOpenAPISpecification/": [
-    { text: "Home", link: "/documents/forOpenAPISpecification/" },
+    { text: "Introduction", link: "/documents/forOpenAPISpecification/" },
     {
       text: "OpenAPI Specification 2.0規約",
       link: "/documents/forOpenAPISpecification/OpenAPI_Specification_2.0.html",
@@ -60,7 +60,7 @@ const links = {
     },
   ],
   "/documents/forGitBranch/": [
-    { text: "Home", link: "/documents/forGitBranch/" },
+    { text: "Introduction", link: "/documents/forGitBranch/" },
     {
       text: "Gitブランチフロー規約",
       link: "/documents/forGitBranch/git_branch_standards.html",
@@ -83,7 +83,7 @@ const links = {
     },
   ],
   "/documents/forSlack/": [
-    { text: "Home", link: "/documents/forSlack/" },
+    { text: "Introduction", link: "/documents/forSlack/" },
     {
       text: "Slack利用ガイドライン",
       link: "/documents/forSlack/slack_usage_guidelines.html",
@@ -152,7 +152,7 @@ export default defineConfig({
         text: "Java",
         items: [
           {
-            text: "Home",
+            text: "Introduction",
             link: "/documents/forJava/",
           },
           {
@@ -173,7 +173,7 @@ export default defineConfig({
         text: "SQL",
         items: [
           {
-            text: "Home",
+            text: "Introduction",
             link: "/documents/forSQL/",
           },
           {
@@ -193,7 +193,7 @@ export default defineConfig({
             text: "AWS インフラリソース",
             items: [
               {
-                text: "Home",
+                text: "Introduction",
                 link: "/documents/forAWSResource/",
               },
               {
@@ -206,7 +206,7 @@ export default defineConfig({
             text: "OpenAPI Specification規約",
             items: [
               {
-                text: "Home",
+                text: "Introduction",
                 link: "/documents/forOpenAPISpecification/",
               },
               {
@@ -223,7 +223,7 @@ export default defineConfig({
             text: "Gitブランチフロー規約",
             items: [
               {
-                text: "Home",
+                text: "Introduction",
                 link: "/documents/forGitBranch/",
               },
               {
@@ -236,7 +236,7 @@ export default defineConfig({
             text: "Markdown設計ドキュメント規約",
             items: [
               {
-                text: "Home",
+                text: "Introduction",
                 link: "/documents/forMarkdown/",
               },
               {
@@ -249,7 +249,7 @@ export default defineConfig({
             text: "Slack利用ガイドライン",
             items: [
               {
-                text: "Home",
+                text: "Introduction",
                 link: "/documents/forSlack/",
               },
               {
