@@ -2,9 +2,10 @@
 sidebarDepth: 4
 title: OpenAPI Specification 3.0.3規約
 author: フューチャー株式会社
-meta:
-  - name: keywords
-    content: OpenAPI,命名規約,コーディング規約
+head:
+  - - meta
+    - name: keywords
+      content: OpenAPI,命名規約,コーディング規約
 ---
 
 <page-title/>
@@ -39,16 +40,16 @@ OpenAPI ドキュメントを構成する要素はオブジェクトと呼ばれ
 
 各オブジェクトの詳細については[公式ドキュメント](https://spec.openapis.org/oas/v3.0.3#openapi-object)を参照されたい。
 
-| フィールド名 | 必須 | 説明                                                        |
-| ------------ | :--: | ----------------------------------------------------------- |
-| openapi      |  ○   | OpenAPI ドキュメントが使用する OpenAPI 仕様のバージョン番号 |
-| info         |  ○   | API に関するメタデータ                                      |
-| servers      |      | API サーバへの接続情報                                      |
-| paths        |  ○   | API の利用可能なパスと操作方法                              |
-| components   |      | 複数の API における共通の定義                               |
-| security     |      | API 全体で利用可能なセキュリティ（認証）機構                |
-| tags         |      | 各種 API をグルーピングするためのタグ                       |
-| externalDocs |      | 追加の外部ドキュメント                                      |
+| フィールド名 | 必須  | 説明                                                        |
+| ------------ | :---: | ----------------------------------------------------------- |
+| openapi      |   ○   | OpenAPI ドキュメントが使用する OpenAPI 仕様のバージョン番号 |
+| info         |   ○   | API に関するメタデータ                                      |
+| servers      |       | API サーバへの接続情報                                      |
+| paths        |   ○   | API の利用可能なパスと操作方法                              |
+| components   |       | 複数の API における共通の定義                               |
+| security     |       | API 全体で利用可能なセキュリティ（認証）機構                |
+| tags         |       | 各種 API をグルーピングするためのタグ                       |
+| externalDocs |       | 追加の外部ドキュメント                                      |
 
 # 要素規約
 
@@ -78,14 +79,14 @@ openapi: 3.0
 
 `title`, `description`, `version` を必須項目とする。
 
-| フィールド名   | 必須 | 記載内容                         |
-| -------------- | :--: | -------------------------------- |
-| title          |  ○   | Web API の総称                   |
-| description    |  ○   | Web API の簡単な説明             |
-| version        |  ○   | OpenAPI ドキュメントのバージョン |
-| termsOfService |      | 利用規約の URL                   |
-| contact        |      | 連絡先情報                       |
-| license        |      | ライセンス情報                   |
+| フィールド名   | 必須  | 記載内容                         |
+| -------------- | :---: | -------------------------------- |
+| title          |   ○   | Web API の総称                   |
+| description    |   ○   | Web API の簡単な説明             |
+| version        |   ○   | OpenAPI ドキュメントのバージョン |
+| termsOfService |       | 利用規約の URL                   |
+| contact        |       | 連絡先情報                       |
+| license        |       | ライセンス情報                   |
 
 ### info > title
 
@@ -229,20 +230,20 @@ API の利用可能なエンドポイントと操作方法を記載する。
 
 - HTTP メソッドの配下に定義されるオペレーションオブジェクトは、下記の項目を必須項目とする
 
-| フィールド名       | 必須  | 記載内容                   |
-|--------------| :--: |------------------------|
-| tags         | ○   | API の論理的なグループ          |
-| summary      | ○   | API の操作概要              |
-| description  | ○   | API の振る舞いの詳細や注意点       |
-| externalDocs |     | API に関する追加の文書          |
-| operationId  | ○   | API の利用可能なエンドポイントと操作方法 |
-| parameters   |     | API のリクエストパラメータ        |
-| requestBody  |     | API のリクエストボディ          |
-| responses    | ○   | API のレスポンス             |
-| callbacks    |     |                        |
-| deprecated   |     | API が非推奨であることの宣言       |
-| security     |     | API のセキュリティ機構          |
-| servers      |     | API に対応する代替サーバ         |
+| フィールド名 | 必須  | 記載内容                                 |
+| ------------ | :---: | ---------------------------------------- |
+| tags         |   ○   | API の論理的なグループ                   |
+| summary      |   ○   | API の操作概要                           |
+| description  |   ○   | API の振る舞いの詳細や注意点             |
+| externalDocs |       | API に関する追加の文書                   |
+| operationId  |   ○   | API の利用可能なエンドポイントと操作方法 |
+| parameters   |       | API のリクエストパラメータ               |
+| requestBody  |       | API のリクエストボディ                   |
+| responses    |   ○   | API のレスポンス                         |
+| callbacks    |       |                                          |
+| deprecated   |       | API が非推奨であることの宣言             |
+| security     |       | API のセキュリティ機構                   |
+| servers      |       | API に対応する代替サーバ                 |
 
 ### paths > {path} > {method} > tags
 
@@ -618,17 +619,17 @@ API の認証方式を記載する。
 
 API 定義で利用する共通のデータモデルを定義する。定義方針は下記の通りである。
 
-| フィールド名          | 方針                                             |
-|-----------------|------------------------------------------------|
+| フィールド名    | 方針                                                                                   |
+| --------------- | -------------------------------------------------------------------------------------- |
 | schemas         | API 共通的なリソース（例. ユーザや商品など）やエラー等のドメインオブジェクトを定義する |
-| responses       | API 共通的なレスポンス（例. 異常系（`4xx`, `5xx`）のレスポンス）を定義する |
-| parameters      | API 共通的なリクエストパラメータ（HTTP ヘッダやクエリパラメータ等）を定義する    |
-| examples        | 原則何も定義しない                                      |
-| requestBodies   | 原則何も定義せず、リクエストボディは API 個別に定義する                 |
-| headers         | API 共通的なレスポンスヘッダを定義する                          |
-| securitySchemes | 標準で用いる API 認証のスキームを定義する                        |
-| links           | 原則何も定義しない                                      |
-| callbacks       | 原則何も定義しない                                      |
+| responses       | API 共通的なレスポンス（例. 異常系（`4xx`, `5xx`）のレスポンス）を定義する             |
+| parameters      | API 共通的なリクエストパラメータ（HTTP ヘッダやクエリパラメータ等）を定義する          |
+| examples        | 原則何も定義しない                                                                     |
+| requestBodies   | 原則何も定義せず、リクエストボディは API 個別に定義する                                |
+| headers         | API 共通的なレスポンスヘッダを定義する                                                 |
+| securitySchemes | 標準で用いる API 認証のスキームを定義する                                              |
+| links           | 原則何も定義しない                                                                     |
+| callbacks       | 原則何も定義しない                                                                     |
 
 ※ リクエストボディやレスポンスボディにおいてオブジェクトがネストする場合、 API 固有のオブジェクトであっても `schemas` に定義する。
 これは、定義するオブジェクトの `properties` 配下に更に `type: object` が定義される場合に、生成ツールによってはうまく型が生成されないためである。

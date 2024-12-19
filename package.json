@@ -4,13 +4,13 @@
   "description": "Future Enterprise Coding Standards",
   "main": "index.js",
   "scripts": {
+    "watch": "vitepress dev . --open",
+    "build": "vitepress build .",
     "install": "npm install --global mermaid-filter",
-    "lint": "eslint . .vuepress --ext .js,.vue",
-    "watch": "vuepress dev . --debug --no-cache",
+    "lint": "eslint . .vitepress --ext .js,.vue",
     "copy": "npm-run-all copy:*",
     "copy:git": "cp -r documents/forGitBranch/img docs/documents/forGitBranch/img",
     "copy:markdown": "cp -r documents/forMarkdown/future_muscle_partner/docs/future_muscle_partner_abstract.png docs/documents/forMarkdown/future_muscle_partner/docs/future_muscle_partner_abstract.png",
-    "build": "vuepress build .",
     "format": "prettier . --write",
     "pandoc": "npm-run-all pandoc:*",
     "pandoc:java-html": "pandoc ./documents/forJava/Javaコーディング規約.md -s --self-contained --number-sections --toc -t html5 -c ./documents/common/pandoc_styles/css/style.css -o ./documents/forJava/Javaコーディング規約.html",
@@ -43,17 +43,18 @@
   "devDependencies": {
     "eslint": "^8.0.0",
     "eslint-config-prettier": "^8.3.0",
-    "eslint-config-standard": "^16.0.0",
+    "eslint-config-standard": "^17.1.0",
     "eslint-plugin-import": "^2.16.0",
     "eslint-plugin-node": "^11.0.0",
     "eslint-plugin-promise": "^6.0.0",
     "eslint-plugin-standard": "^4.0.0",
     "eslint-plugin-vue": "^9.0.0",
+    "markdown-it-footnote": "^4.0.0",
     "markdown-it-task-lists": "^2.1.1",
     "npm-run-all": "^4.1.5",
-    "prettier": "^2.4.0",
-    "vue-github-button": "^1.0.7",
-    "vuepress": "^1.2.0",
-    "vuepress-plugin-mermaidjs": "^1.9.1"
+    "prettier": "^3.4.2",
+    "vitepress": "^1.5.0",
+    "vitepress-plugin-mermaid": "^2.0.17",
+    "vue-github-button": "^3.1.3"
   }
 }

@@ -25,8 +25,14 @@ body {
   bottom: 0;
   overflow-y: auto;
   width: 300px;
-  transition: width, font-size, opacity 300ms, 300ms, 300ms ease-in-out,
-    ease-in-out, ease-in-out;
+  transition:
+    width,
+    font-size,
+    opacity 300ms,
+    300ms,
+    300ms ease-in-out,
+    ease-in-out,
+    ease-in-out;
   padding-left: 1em;
   box-sizing: border-box;
 }

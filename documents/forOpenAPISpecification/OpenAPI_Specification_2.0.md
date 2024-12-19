@@ -2,9 +2,10 @@
 sidebarDepth: 4
 title: OpenAPI Specification 2.0規約
 author: フューチャー株式会社
-meta:
-  - name: keywords
-    content: OpenAPI,Swagger,命名規約,コーディング規約
+head:
+  - - meta
+    - name: keywords
+      content: OpenAPI,Swagger,命名規約,コーディング規約
 ---
 
 <page-title/>
@@ -132,14 +133,14 @@ definitions:
 info オブジェクトには Web API に関するメタデータを記載する。
 `title`, `description`, `version` を必須項目とする。
 
-| フィールド名   | 必須 | 記載内容                         |
-| -------------- | :--: | -------------------------------- |
-| title          |  ○   | Web API の総称                   |
-| description    |  ○   | Web API の簡単な説明             |
-| version        |  ○   | OpenAPI ドキュメントのバージョン |
-| termsOfService |      | 利用規約の URL                   |
-| contact        |      | 連絡先情報                       |
-| license        |      | ライセンス情報                   |
+| フィールド名   | 必須  | 記載内容                         |
+| -------------- | :---: | -------------------------------- |
+| title          |   ○   | Web API の総称                   |
+| description    |   ○   | Web API の簡単な説明             |
+| version        |   ○   | OpenAPI ドキュメントのバージョン |
+| termsOfService |       | 利用規約の URL                   |
+| contact        |       | 連絡先情報                       |
+| license        |       | ライセンス情報                   |
 
 ### title
 

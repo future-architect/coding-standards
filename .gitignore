@@ -6,3 +6,5 @@ node_modules
 
 # WSL
 *:Zone.Identifier
+
+/.vitepress/cache
