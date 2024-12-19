@@ -22,7 +22,7 @@ get:
           schema:
             type: string
       content:
-        application/json:    
+        application/json:
           schema:
             type: object
             properties:

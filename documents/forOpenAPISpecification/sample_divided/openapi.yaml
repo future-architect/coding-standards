@@ -21,4 +21,4 @@ components:
       type: http
       scheme: bearer
       bearerFormat: JWT
-      description: 'Authenthicaiton with bearer token'
+      description: "Authenthicaiton with bearer token"

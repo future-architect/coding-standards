@@ -27,7 +27,7 @@ paths:
             format: int32
           required: false
       responses:
-        '200':
+        "200":
           description: A paged array of pets
           headers:
             x-next:
@@ -77,13 +77,13 @@ paths:
                         - sex
               examples:
                 TestCase001:
-                  $ref: '#/components/examples/test_case_001'
+                  $ref: "#/components/examples/test_case_001"
                 TestCase002:
-                  $ref: '#/components/examples/test_case_002'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                  $ref: "#/components/examples/test_case_002"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
     post:
       summary: Register a pet
       description: Reginster basic information of new pet.
@@ -133,10 +133,10 @@ paths:
                 - pet
             examples:
               TestCase004:
-                $ref: '#/components/examples/test_case_004'
+                $ref: "#/components/examples/test_case_004"
         required: true
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -173,10 +173,10 @@ paths:
                   - category
                   - age
                   - sex
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
   /pets/{pet_id}:
     get:
       summary: Get details of a pet
@@ -192,7 +192,7 @@ paths:
             type: string
           required: true
       responses:
-        '200':
+        "200":
           description: Expected response to a valid request
           content:
             application/json:
@@ -226,11 +226,11 @@ paths:
                   - pet_detail
               examples:
                 TestCase003:
-                  $ref: '#/components/examples/test_case_003'
-        '404':
-          $ref: '#/components/responses/NotFound'
-        '500':
-          $ref: '#/components/responses/InternalServerError'
+                  $ref: "#/components/examples/test_case_003"
+        "404":
+          $ref: "#/components/responses/NotFound"
+        "500":
+          $ref: "#/components/responses/InternalServerError"
 components:
   securitySchemes:
     Bearer:
@@ -292,10 +292,10 @@ components:
       value:
         pet_detail:
           breeder: BreederName
-          date_of_birth: '2023-10-31'
+          date_of_birth: "2023-10-31"
           pedigree:
             registration_no: 11111111
-            date_of_registration: '2023-10-31'
+            date_of_registration: "2023-10-31"
             pedigree_image: 9j2wBDAA...8QAPxAAAQQABAMGBAYDAAEDAg
   schemas:
     ProblemDetailError:
@@ -315,10 +315,10 @@ components:
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ProblemDetailError'
+            $ref: "#/components/schemas/ProblemDetailError"
     InternalServerError:
       description: Internal Server Error
       content:
         application/json:
           schema:
-            $ref: '#/components/schemas/ProblemDetailError'
+            $ref: "#/components/schemas/ProblemDetailError"

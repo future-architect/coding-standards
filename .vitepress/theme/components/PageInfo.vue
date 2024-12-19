@@ -60,7 +60,7 @@ export default {
     },
   },
   mounted() {
-    if(import.meta.env.SSR) return;
+    if (import.meta.env.SSR) return;
     loadScript();
   },
 };
