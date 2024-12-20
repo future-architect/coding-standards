@@ -32,7 +32,7 @@ Java17 向けのコーディング規約は[こちら](./Javaコーディング�
 
 - for Latest
   - [Markdown](https://github.com/future-architect/coding-standards/blob/master/documents/forJava/Javaコーディング規約.md)
-  - [HTML](https://github.com/future-architect/coding-standards/blob/gh-pages/resources/Javaコーディング規約.html)
+  - [HTML(Single File)](https://github.com/future-architect/coding-standards/blob/gh-pages/resources/Javaコーディング規約.html) （[ブラウザで見る](https://future-architect.github.io/coding-standards/resources/Javaコーディング規約.html)）
   - [Word](https://github.com/future-architect/coding-standards/raw/gh-pages/resources/Javaコーディング規約.docx)
 - for Java11
   - [Markdown](https://github.com/future-architect/coding-standards/blob/master/documents/forJava/Javaコーディング規約_for_11.md)

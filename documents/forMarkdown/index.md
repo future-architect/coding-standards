@@ -194,7 +194,7 @@ I/F 定義書は、システム間の連携について定義と、その受信/
 (これらのファイルは[Pandoc]を利用して作成しています。)
 
 - [Markdown](https://github.com/future-architect/coding-standards/blob/master/documents/forMarkdown/xxx.md)
-- [HTML](https://github.com/future-architect/coding-standards/blob/gh-pages/resources/xxx.html)
+- [HTML(Single File)](https://github.com/future-architect/coding-standards/blob/gh-pages/resources/xxx.html) （[ブラウザで見る](https://future-architect.github.io/coding-standards/resources/xxx.html)）
 - [Word](https://github.com/future-architect/coding-standards/raw/gh-pages/resources/xxx.docx)
 
 [pandoc]: https://pandoc.org/

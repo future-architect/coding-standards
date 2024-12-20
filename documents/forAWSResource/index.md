@@ -18,7 +18,7 @@ hero:
 次のリンクから単一ファイルで作成されたコーディング規約を取得できます。
 
 - [Markdown](https://github.com/future-architect/coding-standards/blob/master/documents/forAWSResource/AWSインフラリソース命名規約.md)
-- [HTML](https://github.com/future-architect/coding-standards/blob/gh-pages/resources/AWSインフラリソース命名規約.html)
+- [HTML(Single File)](https://github.com/future-architect/coding-standards/blob/gh-pages/resources/AWSインフラリソース命名規約.html) （[ブラウザで見る](https://future-architect.github.io/coding-standards/resources/AWSインフラリソース命名規約.html)）
 - [Word](https://github.com/future-architect/coding-standards/raw/gh-pages/resources/AWSインフラリソース命名規約.docx)
 
 ファイルは[Pandoc]を利用して作成しています。

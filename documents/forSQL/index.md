@@ -30,11 +30,11 @@ hero:
 
 - for PostgreSQL
   - [Markdown](https://github.com/future-architect/coding-standards/blob/master/documents/forSQL/SQLコーディング規約（PostgreSQL）.md)
-  - [HTML](https://github.com/future-architect/coding-standards/blob/gh-pages/resources/SQLコーディング規約（PostgreSQL）.html)
+  - [HTML(Single File)](https://github.com/future-architect/coding-standards/blob/gh-pages/resources/SQLコーディング規約（PostgreSQL）.html) （[ブラウザで見る](https://future-architect.github.io/coding-standards/resources/SQLコーディング規約（PostgreSQL）.html)）
   - [Word](https://github.com/future-architect/coding-standards/raw/gh-pages/resources/SQLコーディング規約（PostgreSQL）.docx)
 - for Oracle
   - [Markdown](https://github.com/future-architect/coding-standards/blob/master/documents/forSQL/SQLコーディング規約（Oracle）.md)
-  - [HTML](https://github.com/future-architect/coding-standards/blob/gh-pages/resources/SQLコーディング規約（Oracle）.html)
+  - [HTML(Single File)](https://github.com/future-architect/coding-standards/blob/gh-pages/resources/SQLコーディング規約（Oracle）.html) （[ブラウザで見る](https://future-architect.github.io/coding-standards/resources/SQLコーディング規約（Oracle）.html)）
   - [Word](https://github.com/future-architect/coding-standards/raw/gh-pages/resources/SQLコーディング規約（Oracle）.docx)
 
 [pandoc]: https://pandoc.org/
