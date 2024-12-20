@@ -20,7 +20,7 @@
       />
       <a
         :href="
-          'http://b.hatena.ne.jp/entry/s/future-architect.github.io/coding-standards' +
+          'http://b.hatena.ne.jp/entry/s/future-architect.github.io' +
           $page.path
         "
         class="hatena-bookmark-button"
@@ -92,9 +92,7 @@ export default {
       };
     },
     pageUrl() {
-      return (
-        "https://future-architect.github.io/coding-standards" + this.$page.path
-      );
+      return "https://future-architect.github.io" + this.$page.path;
     },
   },
   mounted() {
