@@ -186,12 +186,12 @@ export default defineConfig({
             link: "/documents/forSQL/",
           },
           {
-            text: "For Oracle",
-            link: "/documents/forSQL/SQLコーディング規約（Oracle）.html",
-          },
-          {
             text: "For PostgreSQL",
             link: "/documents/forSQL/SQLコーディング規約（PostgreSQL）.html",
+          },
+          {
+            text: "For Oracle",
+            link: "/documents/forSQL/SQLコーディング規約（Oracle）.html",
           },
         ],
       },

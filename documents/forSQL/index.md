@@ -3,7 +3,7 @@ sidebarDepth: 4
 author: フューチャー株式会社
 layout: home
 hero:
-  name: SQLコーディング規約
+  name: SQL<wbr>コーディング規約
   tagline: Future Enterprise Coding Standards for SQL
   actions:
     - theme: brand

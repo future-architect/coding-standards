@@ -3,7 +3,7 @@ sidebarDepth: 4
 author: フューチャー株式会社
 layout: home
 hero:
-  name: '<span style="white-space: nowrap">OpenAPI Specification規約</span>'
+  name: "OpenAPI <wbr>Specification<wbr>規約"
   tagline: Future Enterprise Naming Convention Standards for OpenAPI Specification
   actions:
     - theme: brand

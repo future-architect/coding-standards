@@ -3,7 +3,7 @@ sidebarDepth: 4
 author: フューチャー株式会社
 layout: home
 hero:
-  name: Gitブランチフロー規約
+  name: Git<wbr>ブランチフロー規約
   tagline: Future Enterprise Standards for Git branch flow
   actions:
     - theme: brand

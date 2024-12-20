@@ -3,7 +3,7 @@ sidebarDepth: 4
 author: フューチャー株式会社
 layout: home
 hero:
-  name: AWSインフラ命名規約
+  name: AWS<wbr>インフラ命名規約
   tagline: Future Enterprise Naming Convention Standards for AWS infrastructure resource
   actions:
     - theme: brand

@@ -3,7 +3,7 @@ sidebarDepth: 4
 author: フューチャー株式会社
 layout: home
 hero:
-  name: '<span style="white-space: nowrap">Slack利用<wbr>ガイドライン</span>'
+  name: "Slack<wbr>利用ガイドライン"
   tagline: Slack Usage Guidelines
   actions:
     - theme: brand

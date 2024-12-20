@@ -20,6 +20,19 @@
   opacity: 0.1;
 }
 
+/* タイトルが長いので調整 */
+@media (min-width: 960px) {
+  .VPNavBarTitle .title {
+    font-size: 14px;
+    line-height: 18px;
+  }
+}
+
+/* ヒーローページタイトルの改行は<wbr>で調整するのでnowrapにする */
+.VPHero .main > .name {
+  white-space: nowrap;
+}
+
 /* メインコンテンツの幅を広げます。最大1920pxまでを許可します。 */
 #app .VPDoc.has-aside .content-container {
   max-width: 1280px;

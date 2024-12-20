@@ -3,7 +3,7 @@ sidebarDepth: 4
 author: フューチャー株式会社
 layout: home
 hero:
-  name: '<span style="white-space: nowrap">Markdown<wbr>設計ドキュメント規約</span>'
+  name: "Markdown<wbr>設計ドキュメント<wbr>規約"
   tagline: Future Enterprise Markdown Design Document Standards
 ---
 
