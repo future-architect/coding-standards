@@ -2,9 +2,9 @@
 layout: home
 title: Future Enterprise Coding Standards
 hero:
-  name: Future Enterprise Coding Standards
+  name: Future Enterprise <wbr>Coding Standards
   # text: ''
-  tagline: フューチャー株式会社が作成するエンタープライズ領域に特化したコーディング規約
+  tagline: '<span style="white-space: nowrap">フューチャー株式会社が作成する<wbr>エンタープライズ領域に特化した<wbr>コーディング規約</span>'
   actions:
     - theme: brand
       text: Javaコーディング規約
