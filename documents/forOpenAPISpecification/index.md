@@ -59,3 +59,8 @@ OAS は次のように複数のバージョンが存在します。
 - [Word](https://github.com/future-architect/coding-standards/raw/gh-pages/resources/OpenAPI_Specification_2.0.docx)
 
 [pandoc]: https://pandoc.org/
+
+# Articles
+
+- 2024.07.02 [OpenAPI Specification v3.0.3のコーディング規約を公開しました](https://future-architect.github.io/articles/20240702a/)
+- 2023.07.25 [フューチャーのSwagger（OpenAPI 2.0）規約の紹介](https://future-architect.github.io/articles/20230725a/)

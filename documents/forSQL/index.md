@@ -38,3 +38,7 @@ hero:
   - [Word](https://github.com/future-architect/coding-standards/raw/gh-pages/resources/SQLコーディング規約（Oracle）.docx)
 
 [pandoc]: https://pandoc.org/
+
+# Articles
+
+- 2023.11.20 [新しいSQLフォーマッターであるuroboroSQL-fmtをリリースしました](https://future-architect.github.io/articles/20231120a/)

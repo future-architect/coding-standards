@@ -40,3 +40,8 @@ Java17 向けのコーディング規約は[こちら](./Javaコーディング�
   - [Markdown](https://github.com/future-architect/coding-standards/blob/master/documents/forJava/Javaコーディング規約_for_8.md)
 
 [pandoc]: https://pandoc.org/
+
+# Articles
+
+- 2021.10.07 [Java17対応版！Javaコーディング規約の紹介](https://future-architect.github.io/articles/20211007a/)
+- 2016.09.02 [システム屋さんがうれしいJava8対応のコーディング規約を公開します！！](https://future-architect.github.io/articles/20160902/)
