@@ -27,6 +27,41 @@
     line-height: 18px;
   }
 }
+@media (max-width: 768px) {
+  .VPNavBar .title {
+    max-width: calc(100vw - 120px);
+    font-size: 14px;
+    line-height: 18px;
+  }
+}
+@media (min-width: 768px) {
+  .VPNavBarMenu.menu {
+    display: none;
+  }
+  .VPNavBarHamburger.hamburger {
+    display: flex;
+  }
+  .VPNavBarExtra.extra {
+    display: none;
+  }
+  .VPNav .VPNavScreen {
+    display: block;
+  }
+}
+@media (min-width: 940px) {
+  .VPNavBarMenu.menu {
+    display: flex;
+  }
+  .VPNavBarHamburger.hamburger {
+    display: none;
+  }
+  .VPNavBarExtra.extra {
+    display: block;
+  }
+  .VPNav .VPNavScreen {
+    display: none;
+  }
+}
 
 /* ヒーローページタイトルの改行は<wbr>で調整するのでnowrapにする */
 .VPHero .main > .name {
