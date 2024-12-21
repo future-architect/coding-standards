@@ -28,7 +28,6 @@
 | 3   | [AWS インフラリソース命名規約](./documents/forAWSResource/)        |
 | 4   | [OpenAPI Specification 規約](./documents/forOpenAPISpecification/) |
 | 5   | [Gitブランチフロー規約](./documents/forGitBranch/)                 |
-| 6   | [Markdown設計ドキュメント規約](./documents/forMarkdown/)           |
 
 ---
 

@@ -19,8 +19,8 @@ hero:
       text: OpenAPI Specification 規約
       link: ./documents/forOpenAPISpecification
     - theme: alt
-      text: Markdown設計ドキュメント規約
-      link: ./documents/forMarkdown
+      text: Gitブランチフロー規約
+      link: ./documents/forGitBranch/
 features:
   - title: Readability
     details: ソースコードの可読性を高く保つことで、保守性・拡張性の高いソフトウェアを作ることができます。 しかし、可読性の指標は複数あり、デベロッパーごとに判断がブレ、それぞれのスタイルで記述すると、ソフトウェア全体で見たときの可読性が下がってしまいます。 本コーディング規約は、コーディング時の判断のブレを防ぎます。
@@ -32,12 +32,6 @@ features:
 
 [![GitHub last commit](https://img.shields.io/github/last-commit/future-architect/coding-standards.svg)](https://github.com/future-architect/coding-standards)
 [![GitHub stars](https://img.shields.io/github/stars/future-architect/coding-standards.svg?style=social&label=Stars&logo=github)](https://github.com/future-architect/coding-standards/stargazers)
-
----
-
-> 他の開発言語のコーディング規約も順次作成中です
-
----
 
 # License
 

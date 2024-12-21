@@ -158,46 +158,46 @@ export default defineConfig({
     },
     nav: [
       {
-        text: "Java",
+        text: "Standards",
         items: [
           {
-            text: "Introduction",
-            link: "/documents/forJava/",
+            text: "Java",
+            items: [
+              {
+                text: "Introduction",
+                link: "/documents/forJava/",
+              },
+              {
+                text: "For Java17",
+                link: "/documents/forJava/Javaコーディング規約.html",
+              },
+              {
+                text: "For Java11",
+                link: "/documents/forJava/Javaコーディング規約_for_11.html",
+              },
+              {
+                text: "For Java8",
+                link: "/documents/forJava/Javaコーディング規約_for_8.html",
+              },
+            ],
           },
           {
-            text: "For Java17",
-            link: "/documents/forJava/Javaコーディング規約.html",
+            text: "SQL",
+            items: [
+              {
+                text: "Introduction",
+                link: "/documents/forSQL/",
+              },
+              {
+                text: "For PostgreSQL",
+                link: "/documents/forSQL/SQLコーディング規約（PostgreSQL）.html",
+              },
+              {
+                text: "For Oracle",
+                link: "/documents/forSQL/SQLコーディング規約（Oracle）.html",
+              },
+            ],
           },
-          {
-            text: "For Java11",
-            link: "/documents/forJava/Javaコーディング規約_for_11.html",
-          },
-          {
-            text: "For Java8",
-            link: "/documents/forJava/Javaコーディング規約_for_8.html",
-          },
-        ],
-      },
-      {
-        text: "SQL",
-        items: [
-          {
-            text: "Introduction",
-            link: "/documents/forSQL/",
-          },
-          {
-            text: "For PostgreSQL",
-            link: "/documents/forSQL/SQLコーディング規約（PostgreSQL）.html",
-          },
-          {
-            text: "For Oracle",
-            link: "/documents/forSQL/SQLコーディング規約（Oracle）.html",
-          },
-        ],
-      },
-      {
-        text: "Others",
-        items: [
           {
             text: "AWS インフラリソース",
             items: [
