@@ -141,8 +141,7 @@ export default defineConfig({
       dark: "/images/logo-dark.svg",
     },
     footer: {
-      copyright:
-        "©2015 - 2024 Future Enterprise Coding Standards - Future Corporation",
+      copyright: `©2015 - ${new Date().getFullYear()} Future Enterprise Coding Standards - Future Corporation`,
     },
     search: {
       provider: "local",
@@ -168,15 +167,15 @@ export default defineConfig({
                 link: "/documents/forJava/",
               },
               {
-                text: "For Java17",
+                text: "Javaコーディング規約",
                 link: "/documents/forJava/Javaコーディング規約.html",
               },
               {
-                text: "For Java11",
+                text: "Javaコーディング規約 for Java11",
                 link: "/documents/forJava/Javaコーディング規約_for_11.html",
               },
               {
-                text: "For Java8",
+                text: "Javaコーディング規約 for Java8",
                 link: "/documents/forJava/Javaコーディング規約_for_8.html",
               },
             ],
@@ -189,11 +188,11 @@ export default defineConfig({
                 link: "/documents/forSQL/",
               },
               {
-                text: "For PostgreSQL",
+                text: "SQLコーディング規約（PostgreSQL）",
                 link: "/documents/forSQL/SQLコーディング規約（PostgreSQL）.html",
               },
               {
-                text: "For Oracle",
+                text: "SQLコーディング規約（Oracle）",
                 link: "/documents/forSQL/SQLコーディング規約（Oracle）.html",
               },
             ],
@@ -212,24 +211,24 @@ export default defineConfig({
             ],
           },
           {
-            text: "OpenAPI Specification規約",
+            text: "OpenAPI Specification",
             items: [
               {
                 text: "Introduction",
                 link: "/documents/forOpenAPISpecification/",
               },
               {
-                text: "For OAS 2.0（Swagger 2.0）",
+                text: "OpenAPI Specification 2.0規約（Swagger 2.0）",
                 link: "/documents/forOpenAPISpecification/OpenAPI_Specification_2.0.html",
               },
               {
-                text: "For OAS 3.0.3",
+                text: "OpenAPI Specification 3.0.3規約",
                 link: "/documents/forOpenAPISpecification/OpenAPI_Specification_3.0.3.html",
               },
             ],
           },
           {
-            text: "Gitブランチフロー規約",
+            text: "Git",
             items: [
               {
                 text: "Introduction",
@@ -243,19 +242,10 @@ export default defineConfig({
           },
           {
             text: "Markdown設計ドキュメント規約",
-            items: [
-              {
-                text: "Introduction",
-                link: "/documents/forMarkdown/",
-              },
-              {
-                text: "サンプルプロジェクト",
-                link: "/documents/forMarkdown/future_muscle_partner/",
-              },
-            ],
+            link: "/documents/forMarkdown/",
           },
           {
-            text: "Slack利用ガイドライン",
+            text: "Slack",
             items: [
               {
                 text: "Introduction",
