@@ -3,6 +3,10 @@ name: 👔 Format
 on:
   workflow_dispatch: null
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   format:
     runs-on: ubuntu-latest
@@ -16,16 +20,9 @@ jobs:
         run: npm i -f
       - name: Format
         run: npm run format
-      - name: Commit
-        run: |
-          git config --local user.email "github-actions[bot]@users.noreply.github.com"
-          git config --local user.name "github-actions[bot]"
-
-          git add .
-          if [ -z "$(git status --porcelain)" ]; then
-            echo "no formatting changed"
-            exit 0
-          fi
-          git commit -m "chore: format"
-          git push
-          echo "pushed formatting changes https://github.com/$GITHUB_REPOSITORY/commit/$(git rev-parse HEAD)"
+      - uses: peter-evans/create-pull-request@v7
+        with:
+          commit-message: Format
+          branch: format
+          branch-suffix: timestamp
+          title: Format
