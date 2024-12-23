@@ -33,6 +33,6 @@ features:
 [![GitHub last commit](https://img.shields.io/github/last-commit/future-architect/coding-standards.svg)](https://github.com/future-architect/coding-standards)
 [![GitHub stars](https://img.shields.io/github/stars/future-architect/coding-standards.svg?style=social&label=Stars&logo=github)](https://github.com/future-architect/coding-standards/stargazers)
 
-# License
+## License
 
 [![CC-By-4.0](https://licensebuttons.net/l/by/4.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/deed.ja)

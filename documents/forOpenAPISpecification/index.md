@@ -16,7 +16,7 @@ hero:
 
 OpenAPI Specification（OAS）の規約を、設計・開発・テスト・可読性・保守性・ツールによるコード生成や静的解析の観点からまとめています。
 
-# 対応するバージョンについて
+## 対応するバージョンについて
 
 OpenAPI Specification（OAS）の規約を設計、開発、テスト、可読性、保守性、ツールによるコード生成や静的解析の観点からまとめています。
 
@@ -42,14 +42,14 @@ OAS は次のように複数のバージョンが存在します。
 
 [https://openapi.tools/](https://openapi.tools/)
 
-# OpenAPI Specification Standards
+## OpenAPI Specification Standards
 
 | Version | コーディング規約                                             |
 | ------- | ------------------------------------------------------------ |
 | 3.0.3   | [OAS 3.0.3 規約](./OpenAPI_Specification_3.0.3.md)           |
 | 2.0     | [OAS 2.0（Swagger 2.0）規約](./OpenAPI_Specification_2.0.md) |
 
-# Resources
+## Resources
 
 次のリンクから単一ファイルで作成されたコーディング規約を取得できます。
 (これらのファイルは[Pandoc]を利用して作成しています。)
@@ -60,7 +60,7 @@ OAS は次のように複数のバージョンが存在します。
 
 [pandoc]: https://pandoc.org/
 
-# Articles
+## Articles
 
 - 2024.07.02 [OpenAPI Specification v3.0.3のコーディング規約を公開しました](https://future-architect.github.io/articles/20240702a/)
 - 2023.07.25 [フューチャーのSwagger（OpenAPI 2.0）規約の紹介](https://future-architect.github.io/articles/20230725a/)

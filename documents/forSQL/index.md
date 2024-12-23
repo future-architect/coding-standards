@@ -20,10 +20,10 @@ hero:
 
 次の SQL コーディング規約が利用できます。
 
-- PostgreSQL 向けのコーディング規約は[こちら](./SQLコーディング規約（PostgreSQL）.md)です。
-- Oracle 向けのコーディング規約は[こちら](./SQLコーディング規約（Oracle）.md)です。
+- [SQLコーディング規約（PostgreSQL）](./SQLコーディング規約（PostgreSQL）.md) ... PostgreSQL 向けのコーディング規約
+- [SQLコーディング規約（Oracle）](./SQLコーディング規約（Oracle）.md) ... Oracle 向けのコーディング規約
 
-# Resources
+## Resources
 
 次のリンクから単一ファイルで作成されたコーディング規約を取得できます。\
 (これらのファイルは[Pandoc]を利用して作成しています。)
@@ -39,6 +39,6 @@ hero:
 
 [pandoc]: https://pandoc.org/
 
-# Articles
+## Articles
 
 - 2023.11.20 [新しいSQLフォーマッターであるuroboroSQL-fmtをリリースしました](https://future-architect.github.io/articles/20231120a/)
