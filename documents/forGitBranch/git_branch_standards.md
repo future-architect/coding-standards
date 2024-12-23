@@ -290,7 +290,7 @@ Terraformはplanが成功しても、applyが失敗することは多々あり�
    - PR -> CI（planを含む） -> レビュー -> developマージ -> apply(CI)
 2. Approve後にapply
    - PR -> CI（planを含む） -> レビュー -> apply -> developマージ -> apply(CI)
-3. CI以前にapply
+3. レビュー依頼前にapply
    - apply -> PR -> CI(plan含む) -> レビュー -> developマージ -> apply(CI)
 
 それぞれの特徴を下表にまとめる。
