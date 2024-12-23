@@ -32,9 +32,14 @@ pandoc ./OpenAPI_Specification_2.0.md --toc --reference-doc=${STYLE_DOCX_PATH} -
 # Git
 cd ${ROOT_DIR}/documents/forGitBranch
 
-pandoc ./git_branch_standards.md -s --self-contained --number-sections --toc -t html5 -c ../.${CSS_PATH} -o ${RESOURCES_DIR}/Gitブランチフロー規約.html
+pandoc ./git_branch_standards.md -s --self-contained --number-sections --toc -t html5 -c ${CSS_PATH} -o ${RESOURCES_DIR}/Gitブランチフロー規約.html
 pandoc ./git_branch_standards.md --toc --reference-doc=${STYLE_DOCX_PATH} -s -o ${RESOURCES_DIR}/Gitブランチフロー規約.docx
 
+# Markdown
+cd ${ROOT_DIR}/documents/forMarkdown
+
+pandoc ./markdown_design_document.md -s --self-contained --number-sections --toc -t html5 -c ${CSS_PATH} -o ${RESOURCES_DIR}/Markdown設計ドキュメント規約.html
+pandoc ./markdown_design_document.md --toc --reference-doc=${STYLE_DOCX_PATH} -s -o ${RESOURCES_DIR}/Markdown設計ドキュメント規約.docx
 
 # Slack
 cd ${ROOT_DIR}/documents/forSlack
