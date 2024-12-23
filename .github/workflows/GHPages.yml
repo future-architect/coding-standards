@@ -52,16 +52,6 @@ jobs:
       - uses: docker://pandoc/latex:2.9
         with:
           args: "pandoc ./documents/forSlack/slack_usage_guidelines.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./public/resources/Slack利用ガイドライン.docx"
-
-
-      - uses: docker://pandoc/latex:2.9
-        with:
-          args: "pandoc ./documents/forMarkdown/slack_usage_guidelines.md -s --self-contained --number-sections --toc -t html5 -c ./documents/common/pandoc_styles/css/style.css -o ./public/resources/Slack利用ガイドライン.html"
-      - uses: docker://pandoc/latex:2.9
-        with:
-          args: "pandoc ./documents/forMarkdown/slack_usage_guidelines.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./public/resources/Slack利用ガイドライン.docx"
-
-
       - name: Install Packages
         run: |
           npm i -f
