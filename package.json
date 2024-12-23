@@ -6,7 +6,6 @@
   "scripts": {
     "watch": "vitepress dev . --open",
     "build": "vitepress build .",
-    "install": "npm install --global mermaid-filter",
     "lint": "npm run lint:format && npm run lint:js",
     "lint:js": "eslint . .vitepress",
     "lint:format": "prettier . --list-different",
