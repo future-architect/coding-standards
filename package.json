@@ -10,9 +10,6 @@
     "lint": "npm run lint:format && npm run lint:js",
     "lint:js": "eslint . .vitepress",
     "lint:format": "prettier . --list-different",
-    "copy": "npm-run-all copy:*",
-    "copy:git": "cp -r documents/forGitBranch/img docs/documents/forGitBranch/img",
-    "copy:markdown": "cp -r documents/forMarkdown/future_muscle_partner/docs/future_muscle_partner_abstract.png docs/documents/forMarkdown/future_muscle_partner/docs/future_muscle_partner_abstract.png",
     "format": "prettier . --write"
   },
   "repository": {

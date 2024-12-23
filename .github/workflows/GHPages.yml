@@ -20,7 +20,6 @@ jobs:
       - name: Build all
         run: |
           npm run build
-          npm run copy
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v4
         with:
