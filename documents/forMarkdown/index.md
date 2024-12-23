@@ -11,7 +11,7 @@ hero:
       link: ./markdown_design_document.md
 ---
 
-# Markdon設計ドキュメント規約
+# Markdown設計ドキュメント規約
 
 Markdown ベースの設計ドキュメントの規約をまとめる。
 
@@ -26,7 +26,3 @@ Markdown ベースの設計ドキュメントの規約をまとめる。
 ファイルは[Pandoc]を利用して作成しています。
 
 [pandoc]: https://pandoc.org/
-
-# Articles
-
-- 2024.12.14 [Gitブランチフロー規約の紹介](https://future-architect.github.io/articles/20241214a/)
