@@ -65,22 +65,6 @@ const links = {
       text: "Gitブランチフロー規約",
       link: "/documents/forGitBranch/git_branch_standards.html",
     },
-    {
-      text: "機能ブランチに開発ブランチの変更を取り込む方法",
-      link: "/documents/forGitBranch/merge_develop_to_feature.html",
-    },
-    {
-      text: "開発ブランチに機能ブランチの変更を取り込む方法",
-      link: "/documents/forGitBranch/merge_feature_to_develop.html",
-    },
-    {
-      text: "コミットメッセージ規約",
-      link: "/documents/forGitBranch/commit_message_rule.html",
-    },
-    {
-      text: "VSCode上でのGit操作",
-      link: "/documents/forGitBranch/vscode_git_ope.html",
-    },
   ],
   "/documents/forSlack/": [
     { text: "Introduction", link: "/documents/forSlack/" },
