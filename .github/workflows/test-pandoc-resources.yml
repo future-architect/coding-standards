@@ -44,7 +44,7 @@ jobs:
       - uses: docker://pandoc/latex:2.9
         with:
           args: "pandoc ./documents/forOpenAPISpecification/OpenAPI_Specification_2.0.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./public/resources/OpenAPI_Specification_2.0.docx"
-      - name: Archive code coverage results
+      - name: Archive resources
         uses: actions/upload-artifact@v4
         with:
           name: pandoc_resources
