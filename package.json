@@ -27,7 +27,7 @@
     "pandoc:gitbranch-word": "pandoc ./documents/forGitBranch/git_branch_standards.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -F mermaid-filter.cmd -s -o ./documents/forGitBranch/Gitブランチフロー.docx",
     "pandoc:markdown-html": "pandoc ./documents/forMarkdown/README.md -s --self-contained --number-sections --toc -t html5 -F mermaid-filter.cmd -c ./documents/common/pandoc_styles/css/style.css -o ./documents/forMarkdown/Markdown設計ドキュメント規約.html",
     "pandoc:markdown-word": "pandoc ./documents/forMarkdown/README.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -F mermaid-filter.cmd -s -o ./documents/forMarkdown/Markdown設計ドキュメント規約.docx",
-    "pandoc:slack-html": "pandoc ./documents/forSlack/README.md -s --self-contained --number-sections --toc -t html5 -F mermaid-filter.cmd -c ./documents/common/pandoc_styles/css/style.css -o ./documents/forSlack/slack_usage_guidelines.html"
+    "pandoc:slack-html": "pandoc ./documents/forSlack/README.md -s --self-contained --number-sections --toc -t html5 -F mermaid-filter.cmd -c ./documents/common/pandoc_styles/css/style.css -o ./documents/forSlack/Slack利用ガイドライン.html"
   },
   "repository": {
     "type": "git  ",
