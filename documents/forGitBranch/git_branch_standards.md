@@ -224,9 +224,16 @@ featureブランチで実現する機能を複数人で開発する場合に使�
 
 featureブランチでの作業中に、developブランチが更新された場合、品質保証の観点でdevelopブランチの変更をfeatureブランチに取り込んだ上で、テストなどの検証作業を行う必要がある。
 
-[developブランチの変更をfeatureブランチに取り込む方法](merge_develop_to_feature.md)に記載した2つの方法のうち、「リベース」による方法を推奨する。
+developブランチの変更をfeatureブランチに取り込む方法には、下表の2つの方法が存在する。
 
-![リベース](img/merge_strategy_develop_to_feature_rebase.drawio.png)
+機能ブランチに対して開発ブランチの変更を取り込む方法は「マージ」「リベース」2つの方法が考えられる。
+
+| 1. マージコミット                                                   | 2. リベース                                                                                                                             |
+| ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| ![マージ](img/merge_strategy_develop_to_feature_merge.drawio.png)   | ![リベース](img/merge_strategy_develop_to_feature_rebase.drawio.png)                                                                    |
+| `get fetch & git merge`（≒ `git pull`）。マージコミットが作成される | `get fetch & git rebase`（≒ `git pull --rebase`）。最新の開発ブランチの先頭から新たにコミットを作りなされ、マージコミットは作成されない |
+
+本規約の推奨は「2. リベース」である。
 
 理由は次の通り。
 
@@ -314,11 +321,42 @@ Terraformはplanが成功しても、applyが失敗することは多々あり�
 
 ## 2. featureブランチからdevelopブランチへ変更を取り込む
 
-プルリクエスト（以下、PR）を経由して、開発が完了したfeatureブランチをメインのdevelopブランチに取り込むためには、GitHub（GitLab）上でPRを経由する運用を行うこと。
+プルリクエスト（以下、PR）を経由して、開発が完了したfeatureブランチをメインのdevelopブランチに取り込むためには、GitHub（GitLab）上でPRを経由する運用を行う。
 
-[developブランチにfeatureブランチの変更を取り込む方法](merge_feature_to_develop.md)に記載した3パターンのうち、「スカッシュマージ」による方法を推奨する。
+developブランチにfeatureブランチの変更を取り込む方法は下表のように3パターン存在する。
 
-![Squash and Merge](img/merge_strategy_feature_to_develop_squash_and_merge.drawio.png)
+|      | 1.マージコミット                                                               | 2.リベース                                                                             | 3.スカッシュマージ                                                                     |
+| ---- | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| 名称 | Create a merge commit                                                          | Rebase and merge                                                                       | Squash and merge                                                                       |
+| 流れ | ![Merge Commit](img/merge_strategy_feature_to_develop_merge_commit.drawio.png) | ![Rebase and Merge](img/merge_strategy_feature_to_develop_rebase_and_merge.drawio.png) | ![Squash and Merge](img/merge_strategy_feature_to_develop_squash_and_merge.drawio.png) |
+| 説明 | `git merge --no-ff` で変更を取り込む                                           | featureブランチを最新のdevelopブランチにリベースし、`git merge --ff` で変更を取り込む  | `git merge --squash` で変更を取り込む                                                  |
+| 特徴 | developブランチにマージコミットが作成される                                    | マージコミットは作成されず、履歴が一直線になる                                         | featureブランチで行った変更YとZを1つにまとめたコミットがdevelopブランチに作成される    |
+
+::: tip GitLabを利用する場合
+
+GitLabでも開発ブランチに機能ブランチの変更を取り込む方法は3種類ある。
+
+ただし、マージリクエスト上のオプションによってコミット履歴が変わる点が注意である。
+
+|      | 1. Merge commit                                                                                               | 2. Merge commit with semi-linear history                                         | 3. Fast-forward merge                                                                                                                |
+| ---- | ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| 流れ | ![Merge commit with squash commits](img/merge_strategy_feature_to_develop_squash_and_merge_gitlab.drawio.png) | 省略                                                                             | 省略                                                                                                                                 |
+| 説明 | GitHubにおける `Create a merge commit` と同様のマージ方法                                                     | `Merge commit` と同じコマンドを使用して、機能ブランチの変更を取り込む方法        | GitHubにおける `Rebase and merge` と同様のマージ方法                                                                                 |
+| 注意 | `Squash commits` を選択してマージした場合、`squash commit` と `merge commit` の2つのコミットが作成される      | ソースブランチがターゲットブランチより古い場合はリベースしないとマージできない。 | マージリクエスト上で `Squash commits` を選択してマージした場合、GitHubにおける `Squash and merge` と同様のマージ方法になる（※補足1） |
+
+（※補足1）マージ方法で Merge commit を選択して、マージリクエスト上で Squash commits オプションを選択してマージした場合は以下と同義である
+
+```bash
+git checkout `git merge-base feature/A develop`
+git merge --squash feature/A
+SOURCE_SHA=`git rev-parse HEAD`
+git checkout develop
+git merge --no-ff $SOURCE_SHA
+```
+
+:::
+
+本規約の推奨は、「スカッシュマージ」による方法である。
 
 理由は次の通り。
 
@@ -400,18 +438,6 @@ Terraformはplanが成功しても、applyが失敗することは多々あり�
 2の例を以下に図示する
 
 ![hotfixで追い抜き](img/release_overtaking_hotfix.drawio.png)
-
-# コミットメッセージ規則
-
-Gitのコミットメッセージは原則自由とする。理由は以下である。
-
-- 通常、作業はチケット管理システムを駆動に開発するため、情報が重複する
-- リリースノートの自動生成での扱いは、どちらかといえばラベルとPRのタイトルが重要
-- メンバーによっては粒度の小さいコミットを好む場合も多く、運用の徹底化を図る負荷が高い
-
-チーム規模や特性によっては、Gitのコミットメッセージをルール化する方ことにより、メリットがある場合は `Conventional Commits` をベースとした以下の規約を推奨する。
-
-- [コミットメッセージ規約](commit_message_rule.md)
 
 # ブランチ命名規則
 
@@ -501,32 +527,98 @@ PRに適切なラベルを設定し、 [自動生成リリースノート - GitH
 
 PRを後で探しやすくするための検索キーとしての位置づけと、リリースノート自動生成という観点でラベルを準備すること。
 
-# ローカルでのGit操作
+# コミットメッセージ規則
 
-## gitコマンド
+Gitのコミットメッセージは原則自由とする。理由は以下である。
 
-```sh
-# 変更作業
-git checkout -b <branchname>
-git add
-git commit -a
+- 通常、作業はチケット管理システムを駆動に開発するため、情報が重複する
+- リリースノートの自動生成での扱いは、どちらかといえばラベルとPRのタイトルが重要
+- メンバーによっては粒度の小さいコミットを好む場合も多く、運用の徹底化を図る負荷が高い
 
-# リモートブランチの変更を同期
-git pull origin develop
+チーム規模や特性によっては、Gitのコミットメッセージをルール化する方ことにより、メリットがある場合は `Conventional Commits` をベースとした以下の規約を推奨する。
 
-# コンフリクト対応
-git add <file1> <file2> ...
-git commit -a
+::: tip Conventional Commitsの勧め
+Gitのコミットメッセージにの書式についてルール化することで、コミットの目的がわかりやすくなる、履歴からのトラッキングの容易になる利点がある。
 
-# リモートブランチへプッシュ（pullした際にリベースしているため、オプションは必須である）
-git push origin HEAD --force-with-lease --force-if-includes
+本規約のコミットメッセージの書式としては、`Conventional Commits`をベースとした規約としている。
+
+以下の形式でコミットメッセージを記載することとする。
+
+```md
+<type>: <subject> <gitmoji>
 ```
 
-## VS Code
+コミットメッセージは
+type、subject、gitmojiの最大3つの要素から構成され、それぞれは後述する書式に従うものとする。
+この中でも、type、subjectについては必須とし、ほかの要素についてはプロジェクトの運用にしたがい任意とする。
 
-利用頻度が高いとされるGitクライアントである、VS Code上でのGit操作を紹介する。
+## type
 
-- [VSCode上でのGit操作](vscode_git_ope.md)
+typeについては必須の要素となり、以下のいずれかを選択するものとする。
+
+| type       | 説明                       |
+| ---------- | -------------------------- |
+| `feat`     | 新機能の追加               |
+| `fix`      | バグの修正                 |
+| `docs`     | ドキュメンテーションの更新 |
+| `refactor` | リファクタリング           |
+
+## subject
+
+subjectについては必須の要素となり、変更内容を簡潔に記載するものとする。
+issue idについては、PRから参照する運用を想定し、コミットメッセージの必須要素とはしないこととする。
+
+## gitmoji
+
+gitmojiについては任意の要素となり、変更内容を視認しやすい絵文字の使用を可能とする。
+
+変更内容と選択される絵文字の対応については厳密とせず、開発者が任意に選択するものとする。
+
+type(feat, fix, docs, refactorなど)に基づく、選択例を以下に示す。
+
+```txt
+ ==== Emojis ====
+ :ambulance:  🚑致命的なバグ修正(fix)
+ :bug:  🐛バグ修正(fix)
+ :+1: 👍機能改善・機能修正(fix)
+ :cop: 👮セキュリティ関連の修正(fix)
+ :art: 🎨レイアウト関連の修正(fix)
+ :green_heart: 💚テストやCIの修正・改善(fix)
+ :wrench: 🔧設定ファイルの修正(fix)
+ :building_construction: 🏗️アーキテクチャの変更(fix)
+ :tada: 🎉大きな機能追加(feat)
+ :sparkles: ✨部分的な機能追加(feat)
+ :up:   🆙依存パッケージ等のアップデート(feat)
+ :memo: 📝ドキュメント修正(docs)
+ :bulb: 💡ソースコードへのコメント追加や修正(docs)
+ :lipstick: 💄Lintエラーの修正やコードスタイルの修正(refactor)
+ :recycle: ♻️リファクタリング(refactor)
+ :fire: 🔥コードやファイルの削除(refactor)
+ :rocket: 🚀パフォーマンス改善(refactor)
+```
+
+## コミットメッセージ例
+
+上記のルールに従った、コミットメッセージのサンプルは以下のようなものとなる。
+以下のようなコミットをルールとすることで、変更内容を視覚的に把握しやすくなる利点がある。
+
+```txt
+feat: カレンダー機能の追加 🎉
+```
+
+```txt
+fix: メモリリークの修正 🚑
+```
+
+```txt
+docs: デプロイフローをドキュメント化 📝
+```
+
+```txt
+refactor: Lintエラーの修正 💄
+```
+
+:::
 
 # 推奨設定
 
@@ -730,3 +822,104 @@ GitHubでは `.github/PULL_REQUEST_TEMPLATE.md` に記載する。（GitLabで�
 - [ ] コードの変更に伴い、同期必要な設計ドキュメントを更新した
 - [ ] 今回のPRでは未対応の残課題があればIssueに起票した
 ```
+
+# ローカルでのGit操作
+
+## gitコマンド
+
+```sh
+# 変更作業
+git checkout -b <branchname>
+git add
+git commit -a
+
+# リモートブランチの変更を同期
+git pull origin develop
+
+# コンフリクト対応
+git add <file1> <file2> ...
+git commit -a
+
+# リモートブランチへプッシュ（pullした際にリベースしているため、オプションは必須である）
+git push origin HEAD --force-with-lease --force-if-includes
+```
+
+## VS Code
+
+利用頻度が高いとされるGitクライアントである、VS Code上でのGit操作を紹介する。
+
+::: tip VSCode上でのGit操作の紹介
+
+VSCode上でのGit操作は、サイドバーの "Source Control" から行うことができる。ほとんど全ての操作はコマンドパレットからも実行可能だが、説明は割愛する。
+
+### 推奨する拡張機能
+
+GUIでのGit操作にあたり、次の2つの拡張機能をインストールしておくと利便性が高い。業務上はほぼ必須と見て良い。
+
+- [GitLens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
+  - Gitに関する様々な機能を提供する拡張機能
+  - 詳細：: [VSCodeでGitLensを使う - フューチャー技術ブログ](https://future-architect.github.io/articles/）20240415a/)
+- [Git Graph](https://marketplace.visualstudio.com/items?itemName=mhutchie.git-graph)
+  - コミットグラフを表示する拡張機能
+  - GitLensにもコミットグラフはありますが、Pro（有料版）限定の提供のため、ここではこちらの拡張機能を使用する
+
+以降では、これらの拡張機能がインストールされていることを前提に説明を行う。
+
+### リポジトリのクローン (`git clone`)
+
+サイドバー > Explorer か Source Control > Clone Repository ボタンをクリックし、URLを入力すると、リポジトリをクローンできる。
+
+![Clone1](img/vscode_git_clone1.png) ![Clone2](img/vscode_git_clone2.png)
+
+### コミットグラフの表示
+
+SOURCE CONTROL パネル > 黒丸のグラフアイコン (View Git Graph (git log)) をクリックすると、コミットグラフを表示できる。
+
+白丸のグラフアイコン (Show Commit Graph) はGitLensのコミットグラフだが、冒頭の記述通り、Pro版でのみの提供となる。
+
+![Graph1](img/vscode_git_graph1.png) ![Graph2](img/vscode_git_graph2.png)
+
+### リモートのフェッチ／プル (`git fetch` / `git pull`)
+
+以下のいずれかの操作を実行すると、リモートリポジトリをフェッチできる。
+
+- SOURCE CONTROL パネル > 三点リーダーアイコン (More Actions...) をクリックし、 Fetch を選択
+- コミットグラフ > 雲アイコン (Fetch from Remote(s)) をクリック
+
+![Fetch1](img/vscode_git_fetch1.png)
+
+なお、フェッチ後に以下のようなダイアログが表示される場合があるが、 "Yes" を選択すると、自動で定期的にフェッチを行う。
+
+![Fetch2](img/vscode_git_fetch2.png)
+
+### ブランチの作成／チェックアウト (`git branch` / `git checkout`)
+
+以下のいずれかの操作を実行すると、ブランチを作成できる。
+
+- SOURCE CONTROL パネル > 三点リーダーアイコン (More Actions...) をクリックし、Branch > Create Branch... を選択
+  - 現在チェックアウトしているブランチから新規ブランチが作成されますが、Create Branch From... を選択すると、作成元のブランチを選択することができる
+  - 作成したブランチに自動的にチェックアウトする
+- コミットグラフ > 作成元コミットの行上で右クリックし、Create Branch... を選択
+  - "Check out" にチェックを入れると、作成したブランチにチェックアウトする
+
+![Branch1](img/vscode_git_branch1.png) ![Branch2](img/vscode_git_branch2.png)
+
+### ステージ／コミット／プッシュ (`git add` / `git commit` / `git push`)
+
+SOURCE CONTROL パネル > 変更ファイルの行 > +アイコン (Stage Changes) をクリックすると、対象ファイルをステージできる。（Changes > +アイコン (Stage All Changes) をクリックすると、すべての変更をステージする）
+
+![Stage](img/vscode_git_stage.png)
+
+必要な変更をステージ後、 SOURCE CONTROL パネル内でコミットメッセージを入力し、 Commit ボタンをクリックすると、コミットを作成できる。
+
+![Commit](img/vscode_git_commit.png)
+
+以下のいずれかの操作を実行すると、作成したコミットをリモートリポジトリにプッシュできる。
+
+- SOURCE CONTROL パネル > 三点リーダーアイコン (More Actions...) をクリックし、Push を選択
+- BRANCHES パネル > 対象ブランチの行 > 雲アイコン (Publish Branch) をクリック
+- コミットグラフ > 対象ブランチの上で右クリックし、Push Branch... を選択
+
+![push1](img/vscode_git_push1.png) ![push2](img/vscode_git_push2.png) ![push3](img/vscode_git_push3.png)
+
+:::
