@@ -1,0 +1,52 @@
+name: test-pandoc-resources
+
+on:
+  push:
+    branches:
+      - "*" # matches every branch that doesn't contain a '/'
+      - "*/*" # matches every branch containing a single '/'
+      - "**" # matches every branch
+      - "!master" # excludes master
+
+jobs:
+  build-docs-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+      - uses: docker://pandoc/latex:2.9
+        with:
+          args: "pandoc ./documents/forJava/Javaコーディング規約.md -s --self-contained --number-sections --toc -t html5 -c ./documents/common/pandoc_styles/css/style.css -o ./public/resources/Javaコーディング規約.html"
+      - uses: docker://pandoc/latex:2.9
+        with:
+          args: "pandoc ./documents/forJava/Javaコーディング規約.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./public/resources/Javaコーディング規約.docx"
+      - uses: docker://pandoc/latex:2.9
+        with:
+          args: "pandoc ./documents/forSQL/SQLコーディング規約（Oracle）.md -s --self-contained --number-sections --toc -t html5 -c ./documents/common/pandoc_styles/css/style.css -o ./public/resources/SQLコーディング規約（Oracle）.html"
+      - uses: docker://pandoc/latex:2.9
+        with:
+          args: "pandoc ./documents/forSQL/SQLコーディング規約（Oracle）.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./public/resources/SQLコーディング規約（Oracle）.docx"
+      - uses: docker://pandoc/latex:2.9
+        with:
+          args: "pandoc ./documents/forSQL/SQLコーディング規約（PostgreSQL）.md -s --self-contained --number-sections --toc -t html5 -c ./documents/common/pandoc_styles/css/style.css -o ./public/resources/SQLコーディング規約（PostgreSQL）.html"
+      - uses: docker://pandoc/latex:2.9
+        with:
+          args: "pandoc ./documents/forSQL/SQLコーディング規約（PostgreSQL）.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./public/resources/SQLコーディング規約（PostgreSQL）.docx"
+      - uses: docker://pandoc/latex:2.9
+        with:
+          args: "pandoc ./documents/forAWSResource/AWSインフラリソース命名規約.md -s --self-contained --number-sections --toc -t html5 -c ./documents/common/pandoc_styles/css/style.css -o ./public/resources/AWSインフラリソース命名規約.html"
+      - uses: docker://pandoc/latex:2.9
+        with:
+          args: "pandoc ./documents/forAWSResource/AWSインフラリソース命名規約.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./public/resources/AWSインフラリソース命名規約.docx"
+      - uses: docker://pandoc/latex:2.9
+        with:
+          args: "pandoc ./documents/forOpenAPISpecification/OpenAPI_Specification_2.0.md -s --self-contained --number-sections --toc -t html5 -c ./documents/common/pandoc_styles/css/style.css -o ./public/resources/OpenAPI_Specification_2.0.html"
+      - uses: docker://pandoc/latex:2.9
+        with:
+          args: "pandoc ./documents/forOpenAPISpecification/OpenAPI_Specification_2.0.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./public/resources/OpenAPI_Specification_2.0.docx"
+      - name: Archive resources
+        uses: actions/upload-artifact@v4
+        with:
+          name: pandoc_resources
+          path: ./public/resources/
+          retention-days: 1
