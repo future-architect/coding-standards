@@ -16,16 +16,16 @@ hero:
 
 一般的に行われているコーディング規約から、Stream API やラムダ式、最新の Java17 で追加された構文にも対応しています。
 
-# For Java17
+# Java Coding Standards
 
-Java17 向けのコーディング規約は[こちら](./Javaコーディング規約.md)です。
+- [Javaコーディング規約](./Javaコーディング規約.md) ... Java17+ 向けのコーディング規約
 
-# For Old Versions
+## Old Versions
 
-- Java11 向けのコーディング規約は[こちら](./Javaコーディング規約_for_11.md)です。
-- Java8 向けのコーディング規約は[こちら](./Javaコーディング規約_for_8.md)です。
+- [Javaコーディング規約 for Java11](./Javaコーディング規約_for_11.md) ... Java11 向けのコーディング規約
+- [Javaコーディング規約 for Java8](./Javaコーディング規約_for_8.md) ... Java8 向けのコーディング規約
 
-# Resources
+## Resources
 
 次のリンクから単一ファイルで作成されたコーディング規約を取得できます。\
 (これらのファイルは[Pandoc]を利用して作成しています。)
@@ -41,7 +41,7 @@ Java17 向けのコーディング規約は[こちら](./Javaコーディング�
 
 [pandoc]: https://pandoc.org/
 
-# Articles
+## Articles
 
 - 2021.10.07 [Java17対応版！Javaコーディング規約の紹介](https://future-architect.github.io/articles/20211007a/)
 - 2016.09.02 [システム屋さんがうれしいJava8対応のコーディング規約を公開します！！](https://future-architect.github.io/articles/20160902/)

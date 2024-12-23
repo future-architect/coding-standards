@@ -30,11 +30,11 @@ Web API 自体の設計については範囲外としますが、[API 設計標�
 
 :::
 
-## ファイルフォーマット
+# ファイルフォーマット
 
 [ファイルフォーマット規約](file_standards.md)に準じる。
 
-## 要素規約
+# 要素規約
 
 Swagger の基本構造は以下の、swagger・info・host・basePath・schemes・paths・definitions から構成される。
 
@@ -124,11 +124,11 @@ definitions:
         example: "2023-04-01T11:30:45.000Z"
 ```
 
-## swagger
+# swagger
 
 - `2.0` 固定とする
 
-## info
+# info
 
 info オブジェクトには Web API に関するメタデータを記載する。
 `title`, `description`, `version` を必須項目とする。
@@ -142,22 +142,22 @@ info オブジェクトには Web API に関するメタデータを記載する
 | contact        |      | 連絡先情報                       |
 | license        |      | ライセンス情報                   |
 
-### title
+## title
 
 WebAPI の総称を記載する。システム名やサービス名 + API のような命名とすることを推奨する。
 例. `X System API`
 
-### desctiption
+## desctiption
 
 Web API が提供する機能の概要・想定する利用者やユースケース・制約などを記載する。
 
-### version
+## version
 
 この API 仕様のドキュメントのバージョンを記載する。アプリケーションのバージョン（git tag やリリースで管理するようなバージョン）とは別である。
 
 本規約の推奨は `major.minor` 形式である。 `0.1 `固定で開発を進め、サービスのリリース時に `1.0` とし、その後の項目やオプション、パスの追加ごとに `1.1` などインクリメントしていく。もし他チームへのドキュメントの頻繁な共有が必要だれば、`1.0` のかわりに `2023.03.26` といった形式も許容する。
 
-## host
+# host
 
 OpenAPI 3 系と異なり、 **Swagger では複数のホストを指定できない**。そのため host には開発環境（local, develop, staging, production というステージ区別であれば、develop）で用いる IP、ポート番号を指定する。他チームに提供するサンドボックス環境を用意する場合は、そのエンドポイントを指定しても良い。localhost などのローカル開発への向き先変更は、ツール側で対応している事が多く上書き可能なため記載しない。API 定義書は予期せぬタイミングで他チームに展開する必要がしばしばあり、お試しで触っても良い環境があることを示すことで情報量を増やし、円滑なコミュニケーションを促進することを狙いとする。
 
@@ -173,7 +173,7 @@ host: localhost:8001
 host: prod.api.example.com:80
 ```
 
-## basePath
+# basePath
 
 作成する Swagger 定義の URL パスの全てで、共通するプレフィックスを持つ場合に指定する。Swagger の仕様上、先頭には `/` が必須であるため、以下のように定義する。
 
@@ -186,7 +186,7 @@ basePAth: /api/v2
 basePath: v2
 ```
 
-## schemes
+# schemes
 
 最終的に利用するスキーマのみを記載する。通常、HTTP 通信での Web API 提供は行わないと考えられるため、 `https` 固定で設定する。ローカル開発では `http` を指定することも多いが、ツールで生成されたコードのオプションで通常書き換えが可能なため、`http` の併記は許可しない。ただし、サーバサイドのマイクロサービス同士の通信で、VPC（プライベートセグメント）内であり、SSL 通信を本当に利用しない場合は `http` と記載する。
 
@@ -203,7 +203,7 @@ schemes:
 
 もし、WebSocket スキームを提供するサービスの定義である場合は、`wss` を（追加で）指定する。定義上は `https` 側との共存ができないため、ファイル定義を分けるようにする。
 
-## security, securityDefinitions
+# security, securityDefinitions
 
 Swagger では、次の認証タイプを記載できる（[詳細](https://swagger.io/docs/specification/2-0/authentication/)）。
 
@@ -231,7 +231,7 @@ paths:
         - OAuth2: []
 ```
 
-## produces
+# produces
 
 Web API が応答する際の MIME タイプを指定します。未指定の場合に、コード生成などツール側で予期しない動作をすることがあるため、固定で指定する。新規構築の Web API であれば `application/xml` は不要と通常は考えられるので、`application/json` を記載する。また、[RFC 7807 Problem Details for HTTP APIs](https://www.rfc-editor.org/rfc/rfc7807) では Content-Type に `application/problem+json` を設定するとあるが、一部のコード生成ツールにおいて、 `application/problem` と `application/problem+json` の使い分けが難しいため、併記を必須としない。OpenAPI Specification の 3 系ではステータスコードごとに Content-Type を指定できるため、3 系への移行も検討する。
 
@@ -264,7 +264,7 @@ paths:
             type: file
 ```
 
-## consumes
+# consumes
 
 Web API が要求を受け入れる際の MIME タイプを指定する。未指定の場合に、コード生成などツール側で予期しない動作をすることがあるため、固定で指定する。新規構築の Web API であれば `application/xml` は不要と通常は考えらえるので、`application/json` だけ記載する。
 
@@ -276,7 +276,7 @@ consumes:
   - application/json
 ```
 
-## tags
+# tags
 
 タグを用いて、API 操作をグループ化することができる。ドキュメントやツールにとって非常に重要であるため、 **必須** で指定する。
 
@@ -305,7 +305,7 @@ tags:
   - name: UserAccount
 ```
 
-## paths
+# paths
 
 `paths` 配下に個々の API エンドポイントを記載する。
 
@@ -320,7 +320,7 @@ Paths              # API定義全体
         └ Response # ステータスコードに応じたレスポンス
 ```
 
-### Paths > Path
+## Paths > Path
 
 記載順は以下のルールである。
 
@@ -356,7 +356,7 @@ paths:
       ...
 ```
 
-### Paths > Path > Operation
+## Paths > Path > Operation
 
 URL に紐づく HTTP メソッドで、1 つの操作を定義します。
 
@@ -389,7 +389,7 @@ URL に紐づく HTTP メソッドで、1 つの操作を定義します。
     responses: ...
 ```
 
-### Paths > Path > Parameter
+## Paths > Path > Parameter
 
 リクエストの定義を記載する。
 
@@ -476,7 +476,7 @@ URL に紐づく HTTP メソッドで、1 つの操作を定義します。
         ...
 ```
 
-### Paths > Path > Responses
+## Paths > Path > Responses
 
 レスポンスの定義を記載する。
 
@@ -543,7 +543,7 @@ URL に紐づく HTTP メソッドで、1 つの操作を定義します。
             $ref: "#/definitions/Error"
 ```
 
-## definitions
+# definitions
 
 - モデル名は、PascalCase で記載する
 - 種別が配列の場合、ネストして定義するのではなく、 `$ref` を活用する
@@ -683,17 +683,17 @@ definitions:
         example: user name is too long
 ```
 
-## バリデーションについて
+# バリデーションについて
 
 OpenAPI 定義を記載するにあたり、バリデーションをどこまで厳密に定義すべきかという議論はよく行いがちである。
 
 リクエストパラメータの各項目に対して、必須・型・桁・区分値・日付・正規表現のチェックが行える。レスポンスで用いるモデルについても同様に設定でき、`enum`, `pattern` 以外は API の利用者（クライアント）側の DB 設計などに必要な型桁情報を渡すのに有用であるため、できる限り詳しく指定する。
 
-### 必須
+## 必須
 
 必須パラメータのみ `required: true` を定義する
 
-### デフォルト値
+## デフォルト値
 
 パラメータにデフォルト値がある場合は`default` を定義する。
 
@@ -710,7 +710,7 @@ description: 検索結果の項目数上限（1~100が指定可能）
 
 【注意】API 公開後に、default 値を変更してはならない（API の互換性が崩れるため）。もし変更する場合は、API のバージョンを上げること。
 
-### 型・フォーマット
+## 型・フォーマット
 
 型（`type`）は `string(文字列)`, `number（数値）`, `integer（整数値）`, `boolean（真偽値）` `array（配列）`, `file（ファイル）` のうちどれか指定する.
 
@@ -732,7 +732,7 @@ description: 検索結果の項目数上限（1~100が指定可能）
   - `password`: Swagger UI で入力が隠される
   - その他、 `email`, `uuid` など Open API 仕様に存在しない任意のフォーマットを独自のドキュメント生成などのために記載しても良い
 
-### 桁
+## 桁
 
 データ型によって、利用できる桁を指定する項目が異なる。可能な限り設定する。
 
@@ -751,7 +751,7 @@ description: 検索結果の項目数上限（1~100が指定可能）
 
 【注意】API 公開後に、レスポンスの `maxLength` を以前より大きい値に変更してはならない。レスポンスの `maxLength` など API 利用者側システムの DB の ERD 定義のインプットになる事が多いため。もし行う場合は API のバージョンを上げることや、連携先に桁数変更の旨を調整するなどの考慮を行う。
 
-### 区分値
+## 区分値
 
 区分値の場合は `enum` 属性を利用し、`description`には区分値の論理名を記載する。
 
@@ -767,7 +767,7 @@ description: |
     9: 適用不能
 ```
 
-### 固定値
+## 固定値
 
 **固定値** の場合も enum を 1 つだけ指定して表現する。この場合もレスポンスで利用する場合は指定しない
 
@@ -778,7 +778,7 @@ enum: ["json"]
 description: ファイルレイアウト
 ```
 
-### その他（正規表現）
+## その他（正規表現）
 
 正規表現で表現できる文字列は`pattern`を利用して定義する。桁や区分値で代替できる場合は、`pattern` を用いない
 
@@ -792,7 +792,7 @@ remind_time:
   pattern: "^(2[0-3]|[01][0-9]):([0-5][0-9])$"
 ```
 
-## ファイルアップロード
+# ファイルアップロード
 
 Web API におけるファイルアップロードのよく利用される実装手段は、大きく分けて以下の 3 手法に分類できます
 
@@ -833,7 +833,7 @@ A->>B: ③ファイルアップロード完了(受付ID、キー、属性)
 
 上記どちらのケースも OpenAPI 定義としてはシンプルであるため、記述例は割愛する。
 
-## ファイルダウンロード
+# ファイルダウンロード
 
 ファイルアップロードと同様、オブジェクトストレージの Signed URL 経由を経由してのダウンロードさせる手法を推奨する。Web API としてはオブジェクトストレージにダウンロード用のファイルを書き込み、クライアントが取得するための Signed URL をレスポンスの JSON 項目に渡す方式である。
 
@@ -841,7 +841,7 @@ A->>B: ③ファイルアップロード完了(受付ID、キー、属性)
 
 どちらのケースも OpenAPI 定義としてはシンプルであるため、記述例は割愛する。
 
-## CORS
+# CORS
 
 CORS（Cross-Origin Resource Sharing）のために、options メソッドの追記は **原則不要** とする。
 
@@ -858,7 +858,7 @@ CORS（Cross-Origin Resource Sharing）のために、options メソッドの追
 
 [^1]: https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/enable-cors-for-resource-using-swagger-importer-tool.html
 
-## OpenTelemetry Traceparent HTTP Header
+# OpenTelemetry Traceparent HTTP Header
 
 OpenOpenTelemetry で用いるられる[traceparent](https://www.w3.org/TR/trace-context/) のリクエストヘッダーは OpenAPI で **原則不要** とする。
 
@@ -867,7 +867,7 @@ OpenOpenTelemetry で用いるられる[traceparent](https://www.w3.org/TR/trace
 - OpenTelemetry が定めるヘッダー類は、API 横断的に設定されるべきものであり、ミドルウェアやフレームワーク側などでの一律の制御を推奨するため
 - 記載することにより、OpenOpenTelemetry に対応していることを明記し開発者に周知できるメリットより、各アプリ開発者が生成されたコードで悩んだり、誤解されることを回避したいため
 
-## API のバージョン管理
+# API のバージョン管理
 
 Swagger 定義で以下の変更を行う場合は、利用するコード生成の動作によってはクライアントにとって互換性を失う破壊的変更であることがあるため、変更は調整の上で行うか、バージョンを上げることを考える。
 
@@ -883,7 +883,7 @@ Swagger 定義で以下の変更を行う場合は、利用するコード生成
   - 桁数を大きくする
   - デフォルト値を後から変更する
 
-## ファイル単位
+# ファイル単位
 
 TODO v3 の作成タイミングと合わせて追記する
 

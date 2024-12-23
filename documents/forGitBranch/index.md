@@ -27,6 +27,6 @@ hero:
 
 [pandoc]: https://pandoc.org/
 
-# Articles
+## Articles
 
 - 2024.12.14 [Gitブランチフロー規約の紹介](https://future-architect.github.io/articles/20241214a/)
