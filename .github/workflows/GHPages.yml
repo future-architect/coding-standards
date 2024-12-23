@@ -42,10 +42,10 @@ jobs:
           args: "pandoc ./documents/forOpenAPISpecification/OpenAPI_Specification_2.0.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./public/resources/OpenAPI_Specification_2.0.docx"
       - uses: docker://pandoc/latex:2.9
         with:
-          args: "pandoc ./documents/forGitBranch/git_branch_standards.md -s --self-contained --number-sections --toc -t html5 -c ./documents/common/pandoc_styles/css/style.css -o ./public/resources/Gitブランチフロー.html --resource-path ./documents/forGitBranch/img"
+          args: "pandoc ./documents/forGitBranch/git_branch_standards.md --resource-path ./documents/forGitBranch -s --self-contained --number-sections --toc -t html5 -c ../../documents/common/pandoc_styles/css/style.css -o ./public/resources/Gitブランチフロー.html"
       - uses: docker://pandoc/latex:2.9
         with:
-          args: "pandoc ./documents/forGitBranch/git_branch_standards.md --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./public/resources/Gitブランチフロー.docx --resource-path ./documents/forGitBranch/img"
+          args: "pandoc ./documents/forGitBranch/git_branch_standards.md --resource-path ./documents/forGitBranch --toc --reference-doc=./documents/common/pandoc_styles/スタイル.docx -s -o ./public/resources/Gitブランチフロー.docx"
       - uses: docker://pandoc/latex:2.9
         with:
           args: "pandoc ./documents/forSlack/slack_usage_guidelines.md -s --self-contained --number-sections --toc -t html5 -c ./documents/common/pandoc_styles/css/style.css -o ./public/resources/Slack利用ガイドライン.html"
