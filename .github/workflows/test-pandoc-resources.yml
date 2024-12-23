@@ -9,7 +9,7 @@ on:
       - "!master" # excludes master
 
 jobs:
-  build-docs-docs:
+  build-docs-with-pandoc:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
