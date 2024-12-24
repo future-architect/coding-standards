@@ -54,8 +54,8 @@ OAS は次のように複数のバージョンが存在します。
 次のリンクから単一ファイルで作成されたコーディング規約を取得できます。
 (これらのファイルは[Pandoc]を利用して作成しています。)
 
-- [Markdown](https://github.com/future-architect/coding-standards/blob/master/documents/forOpenAPISpecification/OpenAPI_Specification_2.0.md)
-- [HTML(Single File)](https://github.com/future-architect/coding-standards/blob/gh-pages/resources/OpenAPI_Specification_2.0.html) （[ブラウザで見る](https://future-architect.github.io/coding-standards/resources/OpenAPI_Specification_3.0.3.html)）
+- [Markdown](https://github.com/future-architect/coding-standards/blob/master/documents/forOpenAPISpecification/OpenAPI_Specification_3.0.3.md)
+- [HTML(Single File)](https://github.com/future-architect/coding-standards/blob/gh-pages/resources/OpenAPI_Specification_3.0.3.html) （[ブラウザで見る](https://future-architect.github.io/coding-standards/resources/OpenAPI_Specification_3.0.3.html)）
 - [Word](https://github.com/future-architect/coding-standards/raw/gh-pages/resources/OpenAPI_Specification_3.0.3.docx)
 
 [pandoc]: https://pandoc.org/
