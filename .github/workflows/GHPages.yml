@@ -15,7 +15,7 @@ jobs:
           args: |
             sh -c "
               apk update \
-              && apk add --no-cache curl bash \
+              && apk add --no-cache curl bash python3 \
               && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash \
               && source ~/.nvm/nvm.sh \
               && nvm install --lts \
