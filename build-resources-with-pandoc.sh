@@ -1,5 +1,3 @@
-npm i -g mermaid-filter
-
 ROOT_DIR=`pwd`
 CSS_PATH="${ROOT_DIR}/documents/common/pandoc_styles/css/style.css"
 STYLE_DOCX_PATH="${ROOT_DIR}/documents/common/pandoc_styles/スタイル.docx"

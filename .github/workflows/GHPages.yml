@@ -10,6 +10,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
+      - name: Install mermaid-filter
+        run: |
+          npm i -g mermaid-filter
       - uses: docker://pandoc/latex:2.9
         with:
           args: |
