@@ -15,8 +15,7 @@ jobs:
           args: sh build-resources-with-pandoc.sh
       - name: Install Packages
         run: |
-          npm i -f
-          npm i --global mermaid-filter
+          npm i -fz
       - name: Build all
         run: |
           npm run build
