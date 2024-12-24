@@ -3,10 +3,10 @@ CSS_PATH="${ROOT_DIR}/documents/common/pandoc_styles/css/style.css"
 STYLE_DOCX_PATH="${ROOT_DIR}/documents/common/pandoc_styles/スタイル.docx"
 RESOURCES_DIR="${ROOT_DIR}/public/resources"
 
-sudo apt update
-sudo apt install -y nodejs npm
+apt update
+apt install -y nodejs npm
 npm config set puppeteer_skip_chromium_download true -g
-sudo npm install -g mermaid-filter
+npm install -g mermaid-filter
 
 # Java
 cd ${ROOT_DIR}/documents/forJava
