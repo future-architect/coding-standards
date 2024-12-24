@@ -1,5 +1,5 @@
 apk update
-apk add nodejs
+apk add --update nodejs npm
 node -v
 npm -v
 npm i -g mermaid-filter
