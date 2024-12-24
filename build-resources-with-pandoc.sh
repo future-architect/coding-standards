@@ -1,5 +1,8 @@
 apk update
 apk add nodejs
+node -v
+npm -v
+npm i -g mermaid-filter
 
 ROOT_DIR=`pwd`
 CSS_PATH="${ROOT_DIR}/documents/common/pandoc_styles/css/style.css"
@@ -29,8 +32,8 @@ pandoc ./AWSインフラリソース命名規約.md --toc --reference-doc=${STYL
 # OpenAPISpecification
 cd ${ROOT_DIR}/documents/forOpenAPISpecification
 
-pandoc ./OpenAPI_Specification_3.0.3.md -s --self-contained --number-sections --toc -t html5 -c ${CSS_PATH} --filter ${ROOT_DIR}/node_modules/mermaid-filter/index.js -o ${RESOURCES_DIR}/OpenAPI_Specification_3.0.3.html
-pandoc ./OpenAPI_Specification_3.0.3.md --toc --reference-doc=${STYLE_DOCX_PATH} -s --filter ${ROOT_DIR}/node_modules/mermaid-filter/index.js -o ${RESOURCES_DIR}/OpenAPI_Specification_3.0.3.docx
+pandoc ./OpenAPI_Specification_3.0.3.md -s --self-contained --number-sections --toc -t html5 -c ${CSS_PATH} --filter mermaid-filter -o ${RESOURCES_DIR}/OpenAPI_Specification_3.0.3.html
+pandoc ./OpenAPI_Specification_3.0.3.md --toc --reference-doc=${STYLE_DOCX_PATH} -s --filter mermaid-filter -o ${RESOURCES_DIR}/OpenAPI_Specification_3.0.3.docx
 
 # Git
 cd ${ROOT_DIR}/documents/forGitBranch
