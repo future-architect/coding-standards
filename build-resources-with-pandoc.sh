@@ -2,7 +2,7 @@ apk update
 apk add --update nodejs npm
 node -v
 npm -v
-npm i -g mermaid-filter
+npm i -g mermaid-filter@1.4.5
 
 ROOT_DIR=`pwd`
 CSS_PATH="${ROOT_DIR}/documents/common/pandoc_styles/css/style.css"
