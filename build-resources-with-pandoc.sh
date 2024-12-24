@@ -1,5 +1,5 @@
-sudo apt update
-sudo apt install -y nodejs npm
+apt update
+apt install -y nodejs npm
 
 ROOT_DIR=`pwd`
 CSS_PATH="${ROOT_DIR}/documents/common/pandoc_styles/css/style.css"
