@@ -4,6 +4,7 @@ apk add --update nodejs npm
 node -v
 npm -v
 export PUPPETEER_SKIP_DOWNLOAD='true'
+export MERMAID_FILTER_FORMAT='svg'
 npm i -g mermaid-filter@1.4.5
 
 ROOT_DIR=`pwd`
