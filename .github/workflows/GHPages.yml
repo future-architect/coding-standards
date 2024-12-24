@@ -16,6 +16,7 @@ jobs:
             sh -c "
               apk update \
               && apk add --no-cache nodejs npm \
+              && npm -v \
               && npm config set puppeteer_skip_chromium_download true -g \
               && npm install -g mermaid-filter \
               && sh build-resources-with-pandoc.sh
