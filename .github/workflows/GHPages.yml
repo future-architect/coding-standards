@@ -14,8 +14,8 @@ jobs:
         with:
           args: |
             sh -c "
-              apt-get update \
-              && apt-get install -y python3-pip \
+              apk update \
+              && apk add python3 py3-pip pandoc \
               && pip3 install mermaid-filter \
               && sh build-resources-with-pandoc.sh
             "
