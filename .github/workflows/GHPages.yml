@@ -10,15 +10,14 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-      - name: Set up Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y npm
-          npm install -g mermaid-filter
       - uses: docker://pandoc/latex:2.9
         with:
           args: |
-            sh build-resources-with-pandoc.sh
+            sh -c "
+              && apk add --no-cache nodejs npm \
+              && npm install -g mermaid-filter \
+              && sh build-resources-with-pandoc.sh
+            "
       - name: Install Packages
         run: |
           npm i -f
