@@ -15,10 +15,10 @@ jobs:
           args: |
             sh -c "
               apk update \
-              && apk add --no-cache nodejs npm \
-              && npm update -g npm \
-              && npm -v \
-              && npm config set puppeteer_skip_chromium_download true -g \
+              && apk add --no-cache curl bash \
+              && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash \
+              && source ~/.nvm/nvm.sh \
+              && nvm install --lts \
               && npm install -g mermaid-filter \
               && sh build-resources-with-pandoc.sh
             "
