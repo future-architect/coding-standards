@@ -10,15 +10,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-      - uses: docker://pandoc/latex:2.9
+      - uses: docker://pandoc/latex:3.6.0-ubuntu
         with:
           args: |
             sh -c "
-              apk update \
-              && apk add --no-cache curl bash python3 \
-              && curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash \
-              && source ~/.nvm/nvm.sh \
-              && nvm install --lts \
+              sudo apt update \
+              && sudo apt install -y nodejs npm \
               && npm install -g mermaid-filter \
               && sh build-resources-with-pandoc.sh
             "
