@@ -13,8 +13,8 @@ jobs:
       - name: Set up Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3-pip
-          pip3 install mermaid-filter
+          sudo apt-get install -y npm
+          npm install -g mermaid-filter
       - uses: docker://pandoc/latex:2.9
         with:
           args: |
