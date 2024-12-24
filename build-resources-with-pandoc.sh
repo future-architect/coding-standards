@@ -1,5 +1,5 @@
 apk update
-apk install nodejs
+apk add nodejs
 
 ROOT_DIR=`pwd`
 CSS_PATH="${ROOT_DIR}/documents/common/pandoc_styles/css/style.css"
