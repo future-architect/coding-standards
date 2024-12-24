@@ -12,11 +12,16 @@ jobs:
       - uses: actions/setup-node@v4
       - uses: docker://pandoc/latex:2.9
         with:
-          args: sh build-resources-with-pandoc.sh
+          args: |
+            sh -c "
+              apt-get update \
+              && apt-get install -y python3-pip \
+              && pip3 install mermaid-filter \
+              && sh build-resources-with-pandoc.sh
+            "
       - name: Install Packages
         run: |
           npm i -f
-          npm i --global mermaid-filter
       - name: Build all
         run: |
           npm run build
