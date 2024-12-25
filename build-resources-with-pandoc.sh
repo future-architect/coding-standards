@@ -33,8 +33,9 @@ pandoc ./AWSインフラリソース命名規約.md --toc --reference-doc=${STYL
 # OpenAPISpecification
 cd ${ROOT_DIR}/documents/forOpenAPISpecification
 
-pandoc ./OpenAPI_Specification_3.0.3.md -s --self-contained --number-sections --toc -t html5 -c ${CSS_PATH} -o ${RESOURCES_DIR}/OpenAPI_Specification_3.0.3.html
-pandoc ./OpenAPI_Specification_3.0.3.md --toc --reference-doc=${STYLE_DOCX_PATH} -s -o ${RESOURCES_DIR}/OpenAPI_Specification_3.0.3.docx
+# mermaid.jsのUML利用箇所があるため、mermaid-filterを追加
+pandoc ./OpenAPI_Specification_3.0.3.md -s --self-contained --number-sections --toc -t html5 -c ${CSS_PATH} --filter mermaid-filter -o ${RESOURCES_DIR}/OpenAPI_Specification_3.0.3.html
+pandoc ./OpenAPI_Specification_3.0.3.md --toc --reference-doc=${STYLE_DOCX_PATH} -s --filter mermaid-filter -o ${RESOURCES_DIR}/OpenAPI_Specification_3.0.3.docx
 
 # Git
 cd ${ROOT_DIR}/documents/forGitBranch
