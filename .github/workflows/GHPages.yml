@@ -10,10 +10,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
-      - uses: docker://pandoc/latex:2.9
+      - uses: docker://pandoc/latex:2.19
         with:
-          args: |
-            sh build-resources-with-pandoc.sh
+          entrypoint: "/bin/sh"
+          args: "./build-resources-with-pandoc.sh"
       - name: Install Packages
         run: |
           npm i -f
