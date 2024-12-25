@@ -198,11 +198,9 @@ OpenAPI ドキュメントを構成する要素はオブジェクトと呼ばれ
 | tags         |      | 各種 API をグルーピングするためのタグ                       |
 | externalDocs |      | 追加の外部ドキュメント                                      |
 
-# 要素規約
+続いて各構成要素ごとに具体的なコーディング規約を記載していく。
 
-先述した OpenAPI ドキュメントを構成する要素別に具体的なコーディング規約を記載する。
-
-## openapi
+# openapi
 
 OpenAPI ドキュメントが使用する OpenAPI 仕様のセマンティックバージョン番号を記載する。
 
@@ -220,7 +218,7 @@ openapi: 3.0.3
 openapi: 3.0
 ```
 
-## info
+# info
 
 `info`オブジェクトには Web API に関するメタデータを記載する。
 
@@ -235,7 +233,7 @@ openapi: 3.0
 | contact        |      | 連絡先情報                       |
 | license        |      | ライセンス情報                   |
 
-### info > title
+## info > title
 
 Web API の総称を記載する。
 
@@ -248,11 +246,11 @@ info:
   title: X System API
 ```
 
-### info > description
+## info > description
 
 Web API が提供する機能の概要・想定する利用者やユースケース・制約などを記載する。
 
-### info > version
+## info > version
 
 この API 仕様のドキュメントのバージョンを記載する。
 
@@ -278,7 +276,7 @@ Web API が提供する機能の概要・想定する利用者やユースケー
     version: 2023.03.26
   ```
 
-## servers
+# servers
 
 Web API を提供するサーバの情報を記載する。
 
@@ -306,7 +304,7 @@ servers:
     description: Production Server
 ```
 
-## paths
+# paths
 
 API の利用可能なエンドポイントと操作方法を記載する。
 
@@ -391,7 +389,7 @@ API の利用可能なエンドポイントと操作方法を記載する。
 | security     |      | API のセキュリティ機構                   |
 | servers      |      | API に対応する代替サーバ                 |
 
-### paths > {path} > {method} > tags
+## paths > {path} > {method} > tags
 
 API の論理的なグループを指定する。
 
@@ -449,7 +447,7 @@ API の論理的なグループを指定する。
         ...
   ```
 
-### paths > {path} > {method} > summary
+## paths > {path} > {method} > summary
 
 API の操作概要を記載する。
 
@@ -464,7 +462,7 @@ API の操作概要を記載する。
         summary: API-001 ユーザ一覧取得
   ```
 
-### paths > {path} > {method} > description
+## paths > {path} > {method} > description
 
 API の振る舞いの詳細や注意点を記載する。
 
@@ -479,7 +477,7 @@ paths:
       description: [API詳細設計書（API-001）](https://example.com/API-001.md)
 ```
 
-### paths > {path} > {method} > operationId
+## paths > {path} > {method} > operationId
 
 API を識別するための一意な文字列を記載する。
 
@@ -513,7 +511,7 @@ API を識別するための一意な文字列を記載する。
 
 - OpenAPI ドキュメントエディタとして広く使用される Stoplight が提供する[Linter](https://docs.stoplight.io/docs/spectral/674b27b261c3c-overview)の定義としては、ケバブケースが標準になっているため、Stoplight を使用する場合はケバブケースで表現しても良い
 
-### paths > {path} > {method} > parameters
+## paths > {path} > {method} > parameters
 
 API のリクエストパラメータを記載する。
 
@@ -595,7 +593,7 @@ API のリクエストパラメータを記載する。
             in: header
   ```
 
-### paths > {path} > {method} > requestBody
+## paths > {path} > {method} > requestBody
 
 API のリクエストボディを記載する。
 
@@ -664,7 +662,7 @@ API のリクエストボディを記載する。
           application/json:
   ```
 
-### paths > {path} > {method} > responses
+## paths > {path} > {method} > responses
 
 API のレスポンスを記載する。
 
@@ -740,7 +738,7 @@ API のレスポンスを記載する。
               application/json: ...
   ```
 
-### paths > {path} > {method} > security
+## paths > {path} > {method} > security
 
 API の認証方式を記載する。
 
@@ -758,7 +756,7 @@ API の認証方式を記載する。
         security: []
   ```
 
-## components
+# components
 
 API 定義で利用する共通のデータモデルを定義する。定義方針は下記の通りである。
 
@@ -778,7 +776,7 @@ API 定義で利用する共通のデータモデルを定義する。定義方�
 これは、定義するオブジェクトの `properties` 配下に更に `type: object` が定義される場合に、生成ツールによってはうまく型が生成されないためである。
 生成ツール上問題ないのであれば、API 固有のオブジェクトを `schemas` に定義する必要はない。
 
-### components　> schemas
+## components　> schemas
 
 API 共通的なリソースやエラー等のドメインオブジェクトを記載する。
 
@@ -807,7 +805,7 @@ components:
       properties: ...
 ```
 
-### components > responses
+## components > responses
 
 API 共通的なレスポンスを記載する。主に異常系（`4xx`, `5xx`）のレスポンスを定義する。
 
@@ -880,16 +878,16 @@ components:
             format: binary
 ```
 
-### components > parameters
+## components > parameters
 
 API 共通的なリクエストパラメータ（パスパラメータ、クエリパラメータ、ヘッダ, Cookie）を記載する。
 
-#### パスパラメータ
+### パスパラメータ
 
 - API 全体で利用されるパスパラメータが必要なケースが想定されないため、原則定義しない
   - 特定リソースの操作（例えば更新と削除）を行う際のリソース ID はパスパラメータとして再利用できるが、コンフリクトを避けるため原則共通化は行わない
 
-#### クエリパラメータ
+### クエリパラメータ
 
 - API 全体で利用可能な共通のクエリパラメータ（例: 検索数の limit, offset）を定義する
 - 命名はクエリパラメータ名に `Query` というプレフィックスを付与する形式を推奨する
@@ -914,7 +912,7 @@ components:
       description: 検索数上限
 ```
 
-#### ヘッダ
+### ヘッダ
 
 - API 全体で利用可能な共通のリクエストヘッダを定義する
 - 命名はヘッダ名に `Header` というプレフィックスを付与する形式を推奨する
@@ -938,7 +936,7 @@ components:
       required: true
 ```
 
-#### Cookie
+### Cookie
 
 - API 全体で利用可能な共通の Cookie（例: CSRF 用のトークン）を定義する
 - 命名は Cookie 名に `Cookie` というプレフィックスを付与する形式を推奨する
@@ -964,11 +962,11 @@ components:
       description: CSRFトークン
 ```
 
-### components > requestBodies
+## components > requestBodies
 
 原則何も定義せず、リクエストボディは API 個別に記載する。
 
-### components > headers
+## components > headers
 
 API 共通的なレスポンスヘッダを記載する。
 
@@ -994,7 +992,7 @@ components:
         type: string
 ```
 
-### components > securitySchemes
+## components > securitySchemes
 
 標準で用いる API 認証の定義を行う。
 
@@ -1011,7 +1009,7 @@ components:
       description: "Bearer トークン認証"
 ```
 
-### components > links
+## components > links
 
 [links](https://swagger.io/docs/specification/links/) は OpenAPI 3.0 の新機能の1つで、ある API レスポンスの値を用いて、別の API を呼び出す方法を明示できるセクションである。
 
@@ -1024,7 +1022,7 @@ components:
 - [OAS 3.0 Support Backlog](https://github.com/swagger-api/swagger-ui/issues/3641) にあるように、2023/12/15時点では Swagger-UI が対応していない
   - links を書いたと言って、API ドキュメントに影響しない
 
-### components > callbacks
+## components > callbacks
 
 [callbacks](https://swagger.io/docs/specification/callbacks/) は OpenAPI 3.0 の新機能の1つで、API サーバ側が指定されたコールバック URL を呼び出すという仕組みである。
 
@@ -1039,7 +1037,7 @@ components:
 
 コールバックのような仕組みを実現するには、別途キューイングのメッセージサービスの利用などを検討する。
 
-## security
+# security
 
 全 API に共通で適用されるセキュリティ設定を定義する。
 
@@ -1052,7 +1050,7 @@ security:
   - Bearer: []
 ```
 
-## tags
+# tags
 
 API を論理的にグループ化するためのタグを定義する。
 
@@ -1082,7 +1080,7 @@ tags:
     description: ユーザーアカウント
 ```
 
-## externalDocs
+# externalDocs
 
 参照情報としての URL を記載できる。
 
@@ -1103,9 +1101,9 @@ externalDocs:
   url: http://swagger.io
 ```
 
-# 設計上のポイント
+# ファイル操作
 
-OpenAPI ドキュメントを作成する上での設計上ポイントをいくつか記載する。
+OpenAPI ドキュメントを作成する上でのファイルのアップロード／ダウンロードについて設計上ポイントを記載する。
 
 ## ファイルアップロード
 
@@ -1156,7 +1154,7 @@ A->>B: ③ファイルアップロード完了(受付ID、キー、属性)
 
 どちらのケースも OpenAPI 定義としてはシンプルであるため、記述例は割愛する。
 
-## CORS
+# CORS
 
 CORS（Cross-Origin Resource Sharing）のために、options メソッドの追記は **原則不要** とする。
 
@@ -1173,7 +1171,7 @@ CORS（Cross-Origin Resource Sharing）のために、options メソッドの追
 
 [^1]: https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/enable-cors-for-resource-using-swagger-importer-tool.html
 
-## OpenTelemetry Traceparent HTTP Header
+# OpenTelemetry Traceparent HTTP Header
 
 OpenOpenTelemetry で用いるられる[traceparent](https://www.w3.org/TR/trace-context/) のリクエストヘッダは OpenAPI で **原則不要** とする。
 
@@ -1182,23 +1180,23 @@ OpenOpenTelemetry で用いるられる[traceparent](https://www.w3.org/TR/trace
 - OpenTelemetry が定めるヘッダ類は、API 横断的に設定されるべきものであり、ミドルウェアやフレームワーク側などでの一律の制御を推奨するため
 - 記載することにより、OpenOpenTelemetry に対応していることを明記し開発者に周知できるメリットより、各アプリ開発者が生成されたコードで悩んだり、誤解されることを回避したいため
 
-## 値が存在しないという状態の表現
+# 値が存在しないという状態の表現
 
 原則 `null` を用いず、パラメータのキー自体を含めないこと（`undefined`）による表現を行う。
 
 詳細は[フューチャー技術ブログ記事](https://future-architect.github.io/articles/20211028b/)を参照されたい
 
-## バリデーション
+# バリデーション
 
 パラメータのバリデーションをどこまで厳密に定義すべきかという議論はしばしば行われる。
 
 リクエストパラメータの各項目に対して、必須・型・桁・区分値・日付・正規表現のチェックが行える。レスポンスで用いるモデルについても同様に設定でき、`enum`, `pattern` 以外は API の利用者（クライアント）側の DB 設計などに必要な型桁情報を渡すのに有用であるため、できる限り詳しく指定する。
 
-### 必須
+## 必須
 
 必須パラメータのみ `required: true` を定義する
 
-### デフォルト値
+## デフォルト値
 
 パラメータにデフォルト値がある場合は`default` を定義する。
 
@@ -1215,7 +1213,7 @@ description: 検索結果の項目数上限（1~100が指定可能）
 
 【注意】API 公開後に、default 値を変更してはならない（API の互換性が崩れるため）。もし変更する場合は、API のバージョンを上げること。
 
-### 型・フォーマット
+## 型・フォーマット
 
 型（`type`）は `string(文字列)`, `number（数値）`, `integer（整数値）`, `boolean（真偽値）` `array（配列）` のうちどれか指定する。
 
@@ -1244,7 +1242,7 @@ type: string
 format: binary # binary file contents
 ```
 
-### 桁
+## 桁
 
 データ型によって、利用できる桁を指定する項目が異なる。可能な限り設定する。
 
@@ -1263,7 +1261,7 @@ format: binary # binary file contents
 
 【注意】API 公開後に、レスポンスの `maxLength` を以前より大きい値に変更してはならない。レスポンスの `maxLength` など API 利用者側システムの DB の ERD 定義のインプットになる事が多いため。もし行う場合は API のバージョンを上げることや、連携先に桁数変更の旨を調整するなどの考慮を行う。
 
-### 区分値
+## 区分値
 
 区分値の場合は `enum` 属性を利用し、`description`には区分値の論理名を記載する。
 
@@ -1298,7 +1296,7 @@ components:
       enum: ["0", "1", "2", "9"]
 ```
 
-### 固定値
+## 固定値
 
 **固定値** の場合も enum を 1 つだけ指定して表現する。この場合もレスポンスで利用する場合は指定しない
 
@@ -1309,7 +1307,7 @@ enum: ["json"]
 description: ファイルレイアウト
 ```
 
-### その他（正規表現）
+## その他（正規表現）
 
 正規表現で表現できる文字列は`pattern`を利用して定義する。桁や区分値で代替できる場合は、`pattern` を用いない
 
@@ -1323,7 +1321,7 @@ remind_time:
   pattern: "^(2[0-3]|[01][0-9]):([0-5][0-9])$"
 ```
 
-## ファイル分割
+# ファイル分割
 
 OpenAPI ドキュメントは単一のファイルで構成することも複数の分割されたファイルで構成することもできるが、**複数のファイルに分割する**ことを推奨する。
 
@@ -1332,7 +1330,7 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
 - API path ごとに担当者を分けて設計する場合などに、複数人による編集によって意図しないコンフリクトが発生することを防ぐ
 - ファイルの肥大化による、可読性の低下を防ぐ
 
-### 分割方法の選定
+## 分割方法の選定
 
 開発方針や OpenAPI の使用用途に合わせて、都合の良いファイルの分割方法を採用する。例えば、以下のような方法がある。
 
@@ -1344,7 +1342,7 @@ OpenAPI ドキュメントは単一のファイルで構成することも複数
 - OpenAPI 仕様上、`$ref` は[利用できる箇所が限定されている](https://swagger.io/docs/specification/using-ref/#allowed-places)ことに注意する
   - 例えば[Path](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#path-item-object)は `$ref` が利用可能だが、[Operation](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/3.0.3.md#operation-object)（HTTPメソッドの粒度）では利用不可である
 
-### サンプル説明
+## サンプル説明
 
 分割方法 1, 2 の両方に当てはまる場合のサンプルを用いて説明する。`openapi.yaml` とディレクトリ構成は下の通り。全量は [sample_divided](https://github.com/future-architect/coding-standards/tree/master/documents/forOpenAPISpecification/sample_divided)を参照すること。
 

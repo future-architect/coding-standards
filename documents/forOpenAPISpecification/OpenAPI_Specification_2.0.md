@@ -827,7 +827,7 @@ definitions:
         example: user name is too long
 ```
 
-# バリデーションについて
+# バリデーション
 
 OpenAPI 定義を記載するにあたり、バリデーションをどこまで厳密に定義すべきかという議論はよく行いがちである。
 
@@ -1029,7 +1029,7 @@ Swagger 定義で以下の変更を行う場合は、利用するコード生成
 
 # ファイル単位
 
-TODO v3 の作成タイミングと合わせて追記する
+[OpenAPI_Specification_3.0.3規約 > ファイル分割](https://future-architect.github.io/coding-standards/documents/forOpenAPISpecification/OpenAPI_Specification_3.0.3.html#%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E5%88%86%E5%89%B2)に準じる。
 
 # 推奨ツール
 
