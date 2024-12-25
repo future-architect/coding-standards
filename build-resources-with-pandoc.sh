@@ -8,7 +8,7 @@ RESOURCES_DIR="${ROOT_DIR}/public/resources"
 apk update
 apk add --no-cache nodejs npm chromium
 export puppeteer_skip_chromium_download=true
-export PUPPETEER_EXECUTABLE_PATH: '/usr/bin/google-chrome-stable'
+export PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium
 npm i -g mermaid-filter
 
 # Java
