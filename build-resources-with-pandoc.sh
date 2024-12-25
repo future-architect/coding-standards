@@ -6,8 +6,9 @@ RESOURCES_DIR="${ROOT_DIR}/public/resources"
 # Install pandoc mermaid-filter via npm
 # https://github.com/raghur/mermaid-filter?tab=readme-ov-file#installation-and-usage
 apk update
-apk add -y --no-cache nodejs npm
+apk add --no-cache nodejs npm chromium
 export puppeteer_skip_chromium_download=true
+export PUPPETEER_EXECUTABLE_PATH: '/usr/bin/google-chrome-stable'
 npm i -g mermaid-filter
 
 # Java
