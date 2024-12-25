@@ -13,6 +13,8 @@ jobs:
       # pandoc/latexのentrypointはpandocコマンドになっているため、usersディレクティブは使用不可
       - name: Pull pandoc/latex image
         run: docker pull pandoc/latex:3.6
+      - name: Add execute permission to script
+        run: chmod +x ./build-resources-with-pandoc.sh
       - name: Run pandoc/latex with custom entrypoint
         run: |
           docker run --entrypoint /bin/ash -v ${{ github.workspace }}:/workspace -w /workspace pandoc/latex:3.6 -c "./build-resources-with-pandoc.sh"
