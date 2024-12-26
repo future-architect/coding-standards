@@ -15,6 +15,19 @@
   );
 }
 
+/* HOMEだけ背景画像を使用する */
+.standards-home .VPHomeHero {
+  background-size: cover;
+  background-position: center;
+  background-image: url(../../public/images/background3.jpg);
+  background-color: #f0f0f0;
+  background-blend-mode: overlay;
+  margin-bottom: 16px;
+}
+.dark .standards-home .VPHomeHero {
+  background-color: #1b1b1f;
+}
+
 /* ヒーロー画像を透過させる */
 .image-src {
   opacity: 0.1;
