@@ -22,8 +22,11 @@ hero:
       text: Gitブランチフロー規約
       link: ./documents/forGitBranch/
     - theme: alt
-      text: Slack利用規約
+      text: Slack利用ガイドライン
       link: ./documents/forSlack/
+    - theme: alt
+      text: Markdown設計ドキュメント規約
+      link: ./documents/forMarkdown/
 features:
   - title: Readability
     details: ソースコードの可読性を高く保つことで、保守性・拡張性の高いソフトウェアを作ることができます。 しかし、可読性の指標は複数あり、デベロッパーごとに判断がブレ、それぞれのスタイルで記述すると、ソフトウェア全体で見たときの可読性が下がってしまいます。 本コーディング規約は、コーディング時の判断のブレを防ぎます。
