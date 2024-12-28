@@ -34,6 +34,7 @@ features:
     details: エンタープライズ領域では、社員・パートナーの方々を合わせて、数百人が同時に開発することも珍しくありません。 ちょっとした悩み、失敗も、人数が集まれば大変なコスト・リスクになります。 誰もが引っかかる落とし穴、悩みの種をあらかじめ排除します。
   - title: Performance
     details: 時に読みやすいソースコードはパフォーマンス劣化を招くことがあります。 しかし、常にパフォーマンスを優先したソースコードは人間の読めないソースコードになりがちです。 今、書こうとしているソースコードが、どの程度のパフォーマンスになるのか、指標を示すことで、ソフトウェア開発プロジェクトごとに最適なソースコードを選択することができます。
+pageClass: standards-home
 ---
 
 [![GitHub last commit](https://img.shields.io/github/last-commit/future-architect/coding-standards.svg)](https://github.com/future-architect/coding-standards)
@@ -42,3 +43,6 @@ features:
 ## License
 
 [![CC-By-4.0](https://licensebuttons.net/l/by/4.0/88x31.png)](https://creativecommons.org/licenses/by/4.0/deed.ja)
+
+<FutureStar kind="1"/>
+<FutureStar kind="2" />
