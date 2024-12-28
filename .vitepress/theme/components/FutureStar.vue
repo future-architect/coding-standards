@@ -21,6 +21,7 @@ const starPath = `path("M 0 ${starSize / 2} l ${starSize * lengthRate} -${starSi
 .future-star__container {
   position: fixed;
   width: calc(100vw + v-bind(starWidth * 2 + "px"));
+  min-width: calc(800px + v-bind(starWidth * 2 + "px"));
   bottom: calc(100vh - 160px); /* fallback */
   z-index: -1; /* fallback の場合にコンテンツの後ろに配置したいので-1 */
   position-anchor: --future-title;
