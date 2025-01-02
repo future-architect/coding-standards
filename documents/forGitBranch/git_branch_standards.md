@@ -627,7 +627,7 @@ refactor: Lintエラーの修正 💄
 
 # 推奨設定
 
-GitやGitHubb/GitLabの推奨設定をまとめる。本規約にあるGitブランチ運用は、以下の設定が行われている前提で説明している箇所がある。
+GitやGitHub/GitLabの推奨設定をまとめる。本規約にあるGitブランチ運用は、以下の設定が行われている前提で説明している箇所がある。
 
 ## git config推奨設定
 
@@ -688,92 +688,6 @@ git config --global alias.br branch
 
 実行時間が短いフォーマットであれば、git hooksで実行させると便利なことが多く（CIで違反に気づいて対応する手戻りが減るためである）、必要に応じて導入しても良い。
 :::
-
-## GitHub推奨設定
-
-業務利用でのチーム開発を想定しており、リポジトリは以下の条件を満たす前提とする。
-
-- プライベートリポジトリ
-- Organization配下に作成
-- Teamsプラン以上の有料契約（※プロテクトブランチの機能などを利用するために必要）
-
-### General
-
-| Category      | Item                                                             | Value        | Memo                                                                                       |
-| ------------- | ---------------------------------------------------------------- | ------------ | ------------------------------------------------------------------------------------------ |
-| General       | Require contributors to sign off on web-based commits            | チェックなし | 著作権・ライセンス承諾の場合に用いるが、業務アプリ開発では不要                             |
-|               | Default branch                                                   | develop      |                                                                                            |
-| Pull Requests | Allow merge commits                                              | ✅️          | main <- developなどのマージ時に必要                                                        |
-|               | Allow squash merging                                             | ✅️          | develop <- feature はSquash mergeを推奨                                                    |
-|               | Allow rebase merging                                             | -            | 利用しないため、チェックを外す                                                             |
-|               | Allow suggest updating pull request branches                     | ✅️          | Pull Request作成後、ベースブランチが更新された場合、ソースブランチの更新を提案してくれる   |
-|               | Automatically delete head branches                               | ✅️          | マージ後にfeature branchを削除するため有効にする                                           |
-| Pushes        | Limit how many branches and tags can be updated in a single push | 5            | git push origin –mirrorで誤ってリモートブランチを破壊しないようにする。推奨値の5を設定する |
-
-### Access
-
-| Category                | Item          | Value      | Memo  |
-| ----------------------- | ------------- | ---------- | ----- |
-| Collaborators and teams | Choose a role | 任意の権限 | ※後述 |
-
-- 各ロールの権限については、公式ドキュメントを参照
-- 通常、開発者には「Write」ロールを付与する
-- 開発を行わない、例えばスキーマファイルの参照のみ必要であれば、「Read」権限を、Issueの起票などのみ実施するマネージャーであれば「Triage」ロールを付与する
-- 「Maintain」権限は、付与しない
-- 「Admin」権限は、マネージャークラスに対して合計2~3名を付与し、属人化しないようにする
-  - 1名でも、4名以上でもNGとする
-
-### Code and automation
-
-#### Branches
-
-Branch protection rules にdevelop, mainなど永続的なブランチに保護設定を追加する。
-
-| Category                  | Item                                                             | Value | Memo                                                                                                 |
-| ------------------------- | ---------------------------------------------------------------- | ----- | ---------------------------------------------------------------------------------------------------- |
-| Protect matching branches | Require a pull request before merging                            | ✅️   | プルリクエストを必須とする                                                                           |
-|                           | Require approvals                                                | ✅️   | レビューを必須とする                                                                                 |
-|                           | Required number of approvals before merging                      | 1     | 最低1名以上の承認を必須とする                                                                        |
-|                           | Dismiss stale pull request approvals when new commits are pushed | -     | レビュー承認後のPushで再承認を必要とするかだが、レビュー運用上に支障となることも多く、チェックを外す |
-|                           | Require status checks to pass before merging                     | ✅️   | CIの成功を条件とする                                                                                 |
-|                           | Require branches to be up to date before merging                 | 任意  | CIパイプラインのワークフロー名を指定                                                                 |
-|                           | Require conversation resolution before merging                   | -     | レビューコメントがすべて解決していることを条件とする。チェックを外す                                 |
-|                           | Require signed commits                                           | ✅️   | 署名付きコミットを必須化し、セキュアな設定にする                                                     |
-|                           | Require linear history                                           | ✅️/- | mainブランチの場合はOFFとするが、developの場合はSquash mergeを求めるため有効にする                   |
-|                           | Do not allow bypassing the above settings                        | ✅️   | パイパスを許容しない                                                                                 |
-
-developブランチに対し「require linear history」を選択することを推奨することで、「Create a merge commit」が選択できないようにする。
-
-また、意図しない方法でのマージを避けるためにブランチごとにマージ戦略を設定しておき、想定外のマージ戦略が選択された時に警告色を表示するというサードパーティ製のChrome拡張[^1]も存在する。必要に応じて導入を検討する。
-
-[^1]: https://zenn.dev/daku10/articles/github-merge-guardian
-
-#### Tags
-
-| Category | Item         | Value                | Memo                                                     |
-| -------- | ------------ | -------------------- | -------------------------------------------------------- |
-|          | Protect tags | v[0-9]+.[0-9]+.[0-9] | セマンティックバージョニングに則ったタグのみ、削除を防ぐ |
-
-#### GitHub Actions
-
-| Category            | Item                                                                                                                                | Value | Memo |
-| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ----- | ---- |
-| Actions permissions | Allow asset-taskforce, and select non-asset-taskforce, actions and reusable workflows > Allow actions created by GitHub             | ✅️   |      |
-|                     | Allow asset-taskforce, and select non-asset-taskforce, actions and reusable workflows > Allow actions Marketplace verified creators | ✅️   |      |
-
-#### Code security and analysis
-
-| Category   | Item                        | Value | Memo                                       |
-| ---------- | --------------------------- | ----- | ------------------------------------------ |
-| Dependabot | Dependabot alerts           | ✅️   | 依存パッケージのアップデートを検知するため |
-|            | Dependabot security updates | ✅️   |                                            |
-|            | Dependabot version updates  | ✅️   |                                            |
-
-## GitLab推奨設定
-
-- GitHubの「Automatically delete head branches」
-  - マージリクエストから「Delete source branch」オプションを有効にすることが該当
-  - プロジェクトの設定で「Enable "Delete source branch" option by default」を選択しておくとデフォルトで有効になる
 
 ## .gitattribute
 
@@ -870,6 +784,92 @@ GitHubでは `.github/PULL_REQUEST_TEMPLATE.md` に記載する。（GitLabで�
 - [ ] 今回のPRでは未対応の残課題があればIssueに起票した
 ```
 
+## GitHub推奨設定
+
+業務利用でのチーム開発を想定しており、リポジトリは以下の条件を満たす前提とする。
+
+- プライベートリポジトリ
+- Organization配下に作成
+- Teamsプラン以上の有料契約（※プロテクトブランチの機能などを利用するために必要）
+
+### General
+
+| Category      | Item                                                             | Value        | Memo                                                                                       |
+| ------------- | ---------------------------------------------------------------- | ------------ | ------------------------------------------------------------------------------------------ |
+| General       | Require contributors to sign off on web-based commits            | チェックなし | 著作権・ライセンス承諾の場合に用いるが、業務アプリ開発では不要                             |
+|               | Default branch                                                   | develop      |                                                                                            |
+| Pull Requests | Allow merge commits                                              | ✅️          | main <- developなどのマージ時に必要                                                        |
+|               | Allow squash merging                                             | ✅️          | develop <- feature はSquash mergeを推奨                                                    |
+|               | Allow rebase merging                                             | -            | 利用しないため、チェックを外す                                                             |
+|               | Allow suggest updating pull request branches                     | ✅️          | Pull Request作成後、ベースブランチが更新された場合、ソースブランチの更新を提案してくれる   |
+|               | Automatically delete head branches                               | ✅️          | マージ後にfeature branchを削除するため有効にする                                           |
+| Pushes        | Limit how many branches and tags can be updated in a single push | 5            | git push origin –mirrorで誤ってリモートブランチを破壊しないようにする。推奨値の5を設定する |
+
+### Access
+
+| Category                | Item          | Value      | Memo  |
+| ----------------------- | ------------- | ---------- | ----- |
+| Collaborators and teams | Choose a role | 任意の権限 | ※後述 |
+
+- 各ロールの権限については、公式ドキュメントを参照
+- 通常、開発者には「Write」ロールを付与する
+- 開発を行わない、例えばスキーマファイルの参照のみ必要であれば、「Read」権限を、Issueの起票などのみ実施するマネージャーであれば「Triage」ロールを付与する
+- 「Maintain」権限は、付与しない
+- 「Admin」権限は、マネージャークラスに対して合計2~3名を付与し、属人化しないようにする
+  - 1名でも、4名以上でもNGとする
+
+### Code and automation
+
+#### Branches
+
+Branch protection rules にdevelop, mainなど永続的なブランチに保護設定を追加する。
+
+| Category                  | Item                                                             | Value | Memo                                                                                                 |
+| ------------------------- | ---------------------------------------------------------------- | ----- | ---------------------------------------------------------------------------------------------------- |
+| Protect matching branches | Require a pull request before merging                            | ✅️   | プルリクエストを必須とする                                                                           |
+|                           | Require approvals                                                | ✅️   | レビューを必須とする                                                                                 |
+|                           | Required number of approvals before merging                      | 1     | 最低1名以上の承認を必須とする                                                                        |
+|                           | Dismiss stale pull request approvals when new commits are pushed | -     | レビュー承認後のPushで再承認を必要とするかだが、レビュー運用上に支障となることも多く、チェックを外す |
+|                           | Require status checks to pass before merging                     | ✅️   | CIの成功を条件とする                                                                                 |
+|                           | Require branches to be up to date before merging                 | 任意  | CIパイプラインのワークフロー名を指定                                                                 |
+|                           | Require conversation resolution before merging                   | -     | レビューコメントがすべて解決していることを条件とする。チェックを外す                                 |
+|                           | Require signed commits                                           | ✅️   | 署名付きコミットを必須化し、セキュアな設定にする                                                     |
+|                           | Require linear history                                           | ✅️/- | mainブランチの場合はOFFとするが、developの場合はSquash mergeを求めるため有効にする                   |
+|                           | Do not allow bypassing the above settings                        | ✅️   | パイパスを許容しない                                                                                 |
+
+developブランチに対し「require linear history」を選択することを推奨することで、「Create a merge commit」が選択できないようにする。
+
+また、意図しない方法でのマージを避けるためにブランチごとにマージ戦略を設定しておき、想定外のマージ戦略が選択された時に警告色を表示するというサードパーティ製のChrome拡張[^1]も存在する。必要に応じて導入を検討する。
+
+[^1]: https://zenn.dev/daku10/articles/github-merge-guardian
+
+#### Tags
+
+| Category | Item         | Value                | Memo                                                     |
+| -------- | ------------ | -------------------- | -------------------------------------------------------- |
+|          | Protect tags | v[0-9]+.[0-9]+.[0-9] | セマンティックバージョニングに則ったタグのみ、削除を防ぐ |
+
+#### GitHub Actions
+
+| Category            | Item                                                                                                                                | Value | Memo |
+| ------------------- | ----------------------------------------------------------------------------------------------------------------------------------- | ----- | ---- |
+| Actions permissions | Allow asset-taskforce, and select non-asset-taskforce, actions and reusable workflows > Allow actions created by GitHub             | ✅️   |      |
+|                     | Allow asset-taskforce, and select non-asset-taskforce, actions and reusable workflows > Allow actions Marketplace verified creators | ✅️   |      |
+
+#### Code security and analysis
+
+| Category   | Item                        | Value | Memo                                       |
+| ---------- | --------------------------- | ----- | ------------------------------------------ |
+| Dependabot | Dependabot alerts           | ✅️   | 依存パッケージのアップデートを検知するため |
+|            | Dependabot security updates | ✅️   |                                            |
+|            | Dependabot version updates  | ✅️   |                                            |
+
+## GitLab推奨設定
+
+- GitHubの「Automatically delete head branches」
+  - マージリクエストから「Delete source branch」オプションを有効にすることが該当
+  - プロジェクトの設定で「Enable "Delete source branch" option by default」を選択しておくとデフォルトで有効になる
+
 # ローカルでのGit操作
 
 ## gitコマンド
@@ -914,26 +914,34 @@ GUIでのGit操作にあたり、次の2つの拡張機能をインストール�
 
 ### リポジトリのクローン (`git clone`)
 
-サイドバー > Explorer か Source Control > Clone Repository ボタンをクリックし、URLを入力すると、リポジトリをクローンできる。
+1. サイドバー > Explorer か Source Control > Clone Repository ボタンをクリック
+2. URLを入力すると、リポジトリをクローンできる
 
-![Clone1](img/vscode_git_clone1.png) ![Clone2](img/vscode_git_clone2.png)
+| 1                                    | 2                                    |
+| ------------------------------------ | ------------------------------------ |
+| ![Clone1](img/vscode_git_clone1.png) | ![Clone2](img/vscode_git_clone2.png) |
 
 ### コミットグラフの表示
 
-SOURCE CONTROL パネル > 黒丸のグラフアイコン (View Git Graph (git log)) をクリックすると、コミットグラフを表示できる。
+1. SOURCE CONTROL パネル > 黒丸のグラフアイコン (View Git Graph (git log)) をクリック
+2. コミットグラフが表示される
+
+| 1                                    | 2                                    |
+| ------------------------------------ | ------------------------------------ |
+| ![Graph1](img/vscode_git_graph1.png) | ![Graph2](img/vscode_git_graph2.png) |
 
 白丸のグラフアイコン (Show Commit Graph) はGitLensのコミットグラフだが、冒頭の記述通り、Pro版でのみの提供となる。
-
-![Graph1](img/vscode_git_graph1.png) ![Graph2](img/vscode_git_graph2.png)
 
 ### リモートのフェッチ／プル (`git fetch` / `git pull`)
 
 以下のいずれかの操作を実行すると、リモートリポジトリをフェッチできる。
 
-- SOURCE CONTROL パネル > 三点リーダーアイコン (More Actions...) をクリックし、 Fetch を選択
-- コミットグラフ > 雲アイコン (Fetch from Remote(s)) をクリック
+- (a) SOURCE CONTROL パネル > 三点リーダーアイコン (More Actions...) をクリックし、 Fetch を選択
+- (b) コミットグラフ > 雲アイコン (Fetch from Remote(s)) をクリック
 
-![Fetch1](img/vscode_git_fetch1.png)
+| a, bの手順両方を記載                 |
+| ------------------------------------ |
+| ![Fetch1](img/vscode_git_fetch1.png) |
 
 なお、フェッチ後に以下のようなダイアログが表示される場合があるが、 "Yes" を選択すると、自動で定期的にフェッチを行う。
 
@@ -943,30 +951,33 @@ SOURCE CONTROL パネル > 黒丸のグラフアイコン (View Git Graph (git l
 
 以下のいずれかの操作を実行すると、ブランチを作成できる。
 
-- SOURCE CONTROL パネル > 三点リーダーアイコン (More Actions...) をクリックし、Branch > Create Branch... を選択
+- (a) SOURCE CONTROL パネル > 三点リーダーアイコン (More Actions...) をクリックし、Branch > Create Branch... を選択
   - 現在チェックアウトしているブランチから新規ブランチが作成されますが、Create Branch From... を選択すると、作成元のブランチを選択することができる
   - 作成したブランチに自動的にチェックアウトする
-- コミットグラフ > 作成元コミットの行上で右クリックし、Create Branch... を選択
+- (b) コミットグラフ > 作成元コミットの行上で右クリックし、Create Branch... を選択
   - "Check out" にチェックを入れると、作成したブランチにチェックアウトする
 
-![Branch1](img/vscode_git_branch1.png) ![Branch2](img/vscode_git_branch2.png)
+| a                                      | b                                      |
+| -------------------------------------- | -------------------------------------- |
+| ![Branch1](img/vscode_git_branch1.png) | ![Branch2](img/vscode_git_branch2.png) |
 
 ### ステージ／コミット／プッシュ (`git add` / `git commit` / `git push`)
 
-SOURCE CONTROL パネル > 変更ファイルの行 > +アイコン (Stage Changes) をクリックすると、対象ファイルをステージできる。（Changes > +アイコン (Stage All Changes) をクリックすると、すべての変更をステージする）
+1. SOURCE CONTROL パネル > 変更ファイルの行 > +アイコン (Stage Changes) をクリックすると、対象ファイルをステージできる。（Changes > +アイコン (Stage All Changes) をクリックすると、すべての変更をステージする）
+2. 必要な変更をステージ後、 SOURCE CONTROL パネル内でコミットメッセージを入力し、 Commit ボタンをクリックすると、コミットを作成できる
 
-![Stage](img/vscode_git_stage.png)
+| 1                                  | 2                                    |
+| ---------------------------------- | ------------------------------------ |
+| ![Stage](img/vscode_git_stage.png) | ![Commit](img/vscode_git_commit.png) |
 
-必要な変更をステージ後、 SOURCE CONTROL パネル内でコミットメッセージを入力し、 Commit ボタンをクリックすると、コミットを作成できる。
+以下のa～cいずれかの操作を実行すると、作成したコミットをリモートリポジトリにプッシュできる。
 
-![Commit](img/vscode_git_commit.png)
+- (a) SOURCE CONTROL パネル > 三点リーダーアイコン (More Actions...) をクリックし、Push を選択
+- (b) BRANCHES パネル > 対象ブランチの行 > 雲アイコン (Publish Branch) をクリック
+- (c) コミットグラフ > 対象ブランチの上で右クリックし、Push Branch... を選択
 
-以下のいずれかの操作を実行すると、作成したコミットをリモートリポジトリにプッシュできる。
-
-- SOURCE CONTROL パネル > 三点リーダーアイコン (More Actions...) をクリックし、Push を選択
-- BRANCHES パネル > 対象ブランチの行 > 雲アイコン (Publish Branch) をクリック
-- コミットグラフ > 対象ブランチの上で右クリックし、Push Branch... を選択
-
-![push1](img/vscode_git_push1.png) ![push2](img/vscode_git_push2.png) ![push3](img/vscode_git_push3.png)
+| a                                  | b                                  | c                                  |
+| ---------------------------------- | ---------------------------------- | ---------------------------------- |
+| ![push1](img/vscode_git_push1.png) | ![push2](img/vscode_git_push2.png) | ![push3](img/vscode_git_push3.png) |
 
 :::
