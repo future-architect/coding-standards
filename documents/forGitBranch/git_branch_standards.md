@@ -770,9 +770,7 @@ developブランチに対し「require linear history」を選択することを
   - マージリクエストから「Delete source branch」オプションを有効にすることが該当
   - プロジェクトの設定で「Enable "Delete source branch" option by default」を選択しておくとデフォルトで有効になる
 
-## 設定ファイル
-
-### .gitattribute
+## .gitattribute
 
 チーム開発において開発環境がWindows/Macなど複数存在することは少なくなく、また、Gitリポジトリ上の改行コードは統一した方が余計な差分が生じず扱いやすくなる。このときよく用いるのが、 `core.autocrlf` という設定である。
 
@@ -794,13 +792,40 @@ developブランチに対し「require linear history」を選択することを
 
 通常、改行コードやインデントの設定は[EditorConfig](https://editorconfig.org/)で行うことが多く、 `.gitattributes` の設定とは重複する。しかし、環境構築ミスなど何らかのトラブルで動作しなかった場合に改行コードミスで特にジュニアクラスのメンバーが困る状況もゼロとは言えないため、本規約では `.gitattributes` も作成しておくことを推奨する。
 
-### .gitignore
+::: warning 特定のファイルのみCRLFでコミットしたい
+テスト目的であるファイルだけCRLFで読み込ませたいとする。さきほどの `.gitattributes` の設定ではチェックアウト時に強制的にLFに変換されてしまうため、CRLFのファイルのみ個別で改行コードを指定する必要がある。例えば、`testdata/eol`配下のCSVをCRLFで扱いたい場合は、以下となる。
+
+```sh .gitattributes
+* text=auto eol=lf
+
+# 個別で指定
+testdata/eol/*.csv text eol=crlf
+```
+
+前の行に書いた設定は、後ろの行に書いた設定によって上書きされるため、記載順は「全体に適用する原則」→「個別設定」となるように注意する。
+
+この指定がちゃんと効いているか確認する場合は、 `git check-attr` コマンドを用いると良い。以下のように eolがcrlfで設定されたことが分かる。
+
+```sh
+$ git check-attr -a testdata/eol/input1.csv
+testdata/eol/input1.cs: text: set
+testdata/eol/input1.cs: eol: crlf
+```
+
+参考:
+
+- [行終端を処理するようGitを設定する - GitHub Docs](https://docs.github.com/ja/get-started/getting-started-with-git/configuring-git-to-handle-line-endings)
+- [.gitattributesのeol=crlfは改行コードをCRLFに変換してチェックインするものではない - エンジニア的考察ブログ](https://chryfopp.hatenablog.com/entry/2013/04/13/113754)
+
+:::
+
+## .gitignore
 
 Gitで管理したくないファイル名のルールを定義する`.gitignore`ファイルも入れる。ウェブフロントエンドであれば新規プロジェクトを作成すると大抵作成されるのでそれを登録すれば良いが、もしない場合、あるいは複数の言語を使っている場合などは[GitHubが提供するテンプレート](https://github.com/github/gitignore)を元に作成すると良い。GlobalフォルダにはWindows/macOSのOS固有設定や、エディタ設定などもある。
 
 環境設定を`.env`で行うのが一般的になってきているが、`.env.local`、`.env.dev.local`といった`.local`がついたファイルはクレデンシャルなどの機微な情報を扱うファイルとして定着しているため、 `*.local`も追加すると良い。
 
-### 個人用のファイルをGit管理対象外とする
+## 個人用のファイルをGit管理対象外とする
 
 `.gitignore` を用いると、チームでGit対象外とするファイルを一律で設定できる。
 
@@ -815,7 +840,7 @@ Gitで管理したくないファイル名のルールを定義する`.gitignore
 
 - [個人的Gitおすすめtips 7選 #GitHub - Qiita](https://qiita.com/hichika/items/f3c980dd069df0f3a56e)
 
-### Pull Request / Merge Request テンプレート
+## Pull Request / Merge Request テンプレート
 
 GitHubやGitLabでは、プルリクエスト作成時のテンプレートを作ることができる。チームでプルリクエストで書いてほしいことを明示的にすることで、レビュー効率の向上や障害調査に役立てることができる。
 
