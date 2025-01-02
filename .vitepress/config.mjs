@@ -232,8 +232,17 @@ export default defineConfig({
             ],
           },
           {
-            text: "Markdown設計ドキュメント規約",
-            link: "/documents/forMarkdown/",
+            text: "Markdown",
+            items: [
+              {
+                text: "Introduction",
+                link: "/documents/forMarkdown/",
+              },
+              {
+                text: "Markdown設計ドキュメント規約",
+                link: "/documents/forMarkdown/markdown_design_document.html",
+              },
+            ],
           },
           {
             text: "Slack",
