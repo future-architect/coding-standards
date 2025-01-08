@@ -52,7 +52,6 @@ const starPath = `path("M 0 ${starSize / 2} l ${starSize * lengthRate} -${starSi
   animation-duration: 10s;
   animation-iteration-count: infinite;
   animation-timing-function: linear;
-  animation-timeline:;
 }
 .future-star--kind-2 .future-star {
   animation-delay: 250ms;
