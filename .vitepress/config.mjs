@@ -80,6 +80,14 @@ const links = {
       link: "/documents/forSlack/slack_usage_guidelines.html",
     },
   ],
+  "/documents/forCodeReview/": [
+    { text: "Introduction", link: "/documents/forCodeReview/" },
+    {
+      text: "Slack利用ガイドライン",
+      link: "/documents/forCodeReview/code_review.html",
+    },
+  ],
+
 };
 
 /**
