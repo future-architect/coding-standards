@@ -112,6 +112,7 @@ export default {
 
 <style scoped>
 .share-buttons {
+  color-scheme: initial; /* darkにすると透過されないのでリセットする */
   display: flex;
   justify-content: flex-end;
   flex-wrap: wrap;

@@ -68,6 +68,7 @@ export default {
 
 <style scoped>
 .page-info {
+  color-scheme: initial; /* darkにすると透過されないのでリセットする */
   display: inline-flex;
   align-items: flex-end;
 }
