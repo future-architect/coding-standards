@@ -100,7 +100,7 @@ fixtypo
 
 - リリース前の検証を開発と並行して実施する場合に利用する
 - releaseブランチではバグ修正、ドキュメント生成、その他のリリースに伴うタスクのみを実施する
-- masterブランチのマージコミットにリリースタグを打ち、mainブランチをdevelopブランチへマージ後、releaseブランチを削除する
+- mainブランチのマージコミットにリリースタグを打ち、mainブランチをdevelopブランチへマージ後、releaseブランチを削除する
 
 ![release branch](img/branch_strategy_release.drawio.png)
 
@@ -174,9 +174,9 @@ featureブランチで実現する機能を複数人で開発する場合に使�
 
 `develop2` 同期の注意点:
 
-- リベースすると `develop2` を元にfeatureブランチを作成して開発している開発者が混乱することになるため、マージコミットをお用いる
+- リベースすると `develop2` を元にfeatureブランチを作成して開発している開発者が混乱することになるため、マージコミットを用いる
 - 誤操作を避ける目的でcherry-pickは行わない
-- `devleop2` への同期は、 `develop` -> `main` ブランチに反映されるタイミングで同期を行う（これにより、品質保証済みの変更のみ取り入れることができる９
+- `devleop2` への同期は、 `develop` -> `main` ブランチに反映されるタイミングで同期を行う（これにより、品質保証済みの変更のみ取り入れることができる）
 
 ![release multi develop branch](img/branch_strategy_release_multi_develop.drawio.png)
 
