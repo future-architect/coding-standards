@@ -66,27 +66,6 @@ const links = {
       link: "/documents/forGitBranch/git_branch_standards.html",
     },
   ],
-  "/documents/forMarkdown/": [
-    { text: "Introduction", link: "/documents/forMarkdown/" },
-    {
-      text: "Markdown設計ドキュメント規約",
-      link: "/documents/forMarkdown/markdown_design_document.html",
-    },
-  ],
-  "/documents/forSlack/": [
-    { text: "Introduction", link: "/documents/forSlack/" },
-    {
-      text: "Slack利用ガイドライン",
-      link: "/documents/forSlack/slack_usage_guidelines.html",
-    },
-  ],
-  "/documents/forCodeReview/": [
-    { text: "Introduction", link: "/documents/forCodeReview/" },
-    {
-      text: "Slack利用ガイドライン",
-      link: "/documents/forCodeReview/code_review.html",
-    },
-  ],
 };
 
 /**
