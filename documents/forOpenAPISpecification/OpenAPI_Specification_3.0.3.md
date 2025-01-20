@@ -1078,9 +1078,7 @@ A->>B: ③ファイルアップロード完了(受付ID、キー、属性)
 
 ## ファイルダウンロード
 
-[Web API設計ガイドライン>ファイル連携>ファイルダウンロード](https://future-architect.github.io/arch-guidelines/documents/forWebAPI/web_api_guidelines.html#%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%BF%E3%82%99%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%88%E3%82%99) で推奨された、Signed URL 経由を経由した手法の場合、ダウンロード用の Signed URL をレスポンスの JSON 項目に渡すことになる。
-
-または、サムネイルやアイコン画像など、ファイル容量がごく小さい場合は Base64 にエンコードして JSON に埋め込んで渡すケースも考えられる。
+[Web API設計ガイドライン>ファイル連携>ファイルダウンロード](https://future-architect.github.io/arch-guidelines/documents/forWebAPI/web_api_guidelines.html#%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%BF%E3%82%99%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%88%E3%82%99) で推奨された方法は、Signed URL をレスポンスの JSON 項目に渡すか、ファイル容量がごく小さい場合に限り Base64 にエンコードして JSON に埋め込んで渡すかの2つである。
 
 どちらのケースも OpenAPI 定義としてはシンプルであるため、記述例は割愛する。
 
