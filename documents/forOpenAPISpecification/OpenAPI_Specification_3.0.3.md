@@ -1053,23 +1053,7 @@ OpenAPI ドキュメントを作成する上でのファイルのアップロー
 
 ## ファイルアップロード
 
-Web API におけるファイルアップロードのよく利用される実装手段は、大きく分けて以下の 3 手法に分類できる。
-
-1. ファイルのコンテンツを Base64 などにエンコードして、JSON の項目として設定し、リクエストボディで送る
-   - メリット: 通常の JSON を扱うのとほぼ変わらないため楽。サムネイルなど限定されたユースケースの場合に向く
-   - デメリット: 巨大なファイルを扱う場合などサーバリソース負荷が懸念。Base64 に変換する分 CPU 負荷は余計にかかる。ペイロードが膨れるためモバイルなどのクライアントでは帯域利用での懸念がある
-2. multipart/form-data ファイルを送信する
-   - メリット: ファイルを Base64 に変換するといった作業が不要
-   - デメリット: ブラウザ以外のクライアントにとって手間がかかる
-3. アップロード用に用いる、オブジェクトストレージの Signed URL を発行し、クライアントから直接ファイルをアップロードしてもらう
-   - 次の流れを想定（Signed URL を取得 -> ファイルアップロード -> ファイルに紐づかせるキーや属性情報などを登録）
-   - Amazon API Gateway を利用する場合は、2023 年 6 月時点で[ペイロード上限が 10MB](https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html)、[AWS Lambda でもペイロード制限がある](https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/gettingstarted-limits.html#api-requests)ため、許容するファイルサイズによってはこの手法一択となる
-   - メリット: オブジェクトストレージの可用性・信頼性を享受できる
-   - デメリット: アップロードするために複数の API エンドポイント呼び出しが必要なため、煩雑である
-   - 2023 年 6 月に AWS ブログでこの方式について解説した記事が出たので、詳細は参照ください
-     - [https://aws.amazon.com/jp/blogs/news/large-size-files-transferring-by-serverless-s3presignedurl-and-clientside-javascript/](https://aws.amazon.com/jp/blogs/news/large-size-files-transferring-by-serverless-s3presignedurl-and-clientside-javascript/)
-
-本規約でファイルアップロードについて上記の 3. Signed URL を推奨する。API 呼び出しとしては次のようなフローとする。
+[Web API設計ガイドライン>ファイル連携>ファイルアップロード](https://future-architect.github.io/arch-guidelines/documents/forWebAPI/web_api_guidelines.html#%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%A2%E3%83%83%E3%83%95%E3%82%9A%E3%83%AD%E3%83%BC%E3%83%88%E3%82%99) で推奨された「署名付きURL」を用いた手法を採用する場合、次のようなフローとする。
 
 ```mermaid
 sequenceDiagram
@@ -1094,9 +1078,9 @@ A->>B: ③ファイルアップロード完了(受付ID、キー、属性)
 
 ## ファイルダウンロード
 
-ファイルアップロードと同様、オブジェクトストレージの Signed URL 経由を経由してのダウンロードさせる手法を推奨する。Web API としてはオブジェクトストレージにダウンロード用のファイルを書き込み、クライアントが取得するための Signed URL をレスポンスの JSON 項目に渡す方式である。
+[Web API設計ガイドライン>ファイル連携>ファイルダウンロード](https://future-architect.github.io/arch-guidelines/documents/forWebAPI/web_api_guidelines.html#%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%BF%E3%82%99%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%88%E3%82%99) で推奨された、Signed URL 経由を経由した手法の場合、ダウンロード用の Signed URL をレスポンスの JSON 項目に渡すことになる。
 
-もし、サムネイルやアイコン画像など、ファイル容量がごく小さい場合は Base64 にエンコードして JSON に埋め込んで渡しても良い。線引をどこに設置するかは本規約で定義しない。
+または、サムネイルやアイコン画像など、ファイル容量がごく小さい場合は Base64 にエンコードして JSON に埋め込んで渡すケースも考えられる。
 
 どちらのケースも OpenAPI 定義としてはシンプルであるため、記述例は割愛する。
 
