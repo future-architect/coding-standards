@@ -44,67 +44,13 @@ head:
 
 ::: warning 有志で作成したドキュメントである
 
-- フューチャーアーキテクトには多様なプロジェクトが存在し、それぞれの状況に合わせた開発手法が採用されている。本規約はフューチャーアーキテクトの全ての部署／プロジェクトで利用されているわけではなく、有志が観点を持ち寄って新たに整理したものである。相容れない部分があればその領域を書き換えて利用することを想定している
+フューチャーアーキテクトには多様なプロジェクトが存在し、それぞれの状況に合わせた開発手法が採用されている。本規約はフューチャーアーキテクトの全ての部署／プロジェクトで利用されているわけではなく、有志が観点を持ち寄って新たに整理したものである。相容れない部分があればその領域を書き換えて利用することを想定している
 
 :::
 
 # API設計
 
-Web API の設計自体はこの規約の範囲外であるが、簡易的な方針を示す。必要に応じて参考にされたい。
-
-## HTTP メソッド
-
-実現したい操作により、以下のような使い分けを想定する。HEAD（リソースの存在チェック）、GET（参照）、POST（新規作成）、PUT（更新）、PATCH（一部更新）、DELETE（削除）。
-
-## HTTP ステータス
-
-[RFC 7231](https://tools.ietf.org/html/rfc7231#section-6)で定義されているレスポンスステータスコードを利用します。
-
-[RFC9205](https://datatracker.ietf.org/doc/html/rfc9205)（[日本語訳](https://tex2e.github.io/rfc-translater/html/rfc9205.html#section-4.6)）の方針に原則則る。ユースケース別に利用すべき HTTP ステータスコードを記載します。
-
-### 共通
-
-- バリデーションエラー：`400 Bad Request`
-- 業務エラー：`400 Bad Request`
-- 認証エラー：`401 Unauthorized`
-- 認可エラー：`403 Forbidden`
-- システムエラー：`500 Internal Server Error`
-
-### GET
-
-- 正常系：`200 OK`
-  - 検索系 API で結果 0 件の場合も、 `200 OK` を返すとする
-- パスキー検索系 API で対象リソースが存在しないエラー：`404 Not Found`
-
-### POST
-
-- 正常系（同期）：`201 Created`
-- 正常系（非同期）：`202 Accepted`
-- 一意制約違反エラー：`409 Conflict`
-- 親リソースが存在しないエラー：`404 Not Found`
-
-### PUT
-
-- 正常系（同期）：`200 OK`
-- 正常系（非同期）：`202 Accepted`
-- 対象リソースが存在しないエラー：`404 Not Found`
-
-### DELETE
-
-- 正常系：`204 No Content`
-  - もし、削除した項目の情報を応答する場合は `200 OK` とする
-- 対象リソースが存在しないエラー：`404 Not Found`
-
-## API バージョン管理
-
-- /v1, /v2 といったパスで表現する
-- 型名変更、必須パラメータの追加、レスポンスの桁数変更、などをするときはバージョンを上げることを検討する
-
-## パラメータの命名
-
-boolean 型である場合、 `[a-zA-Z0-9-_]+_flag` という命名は非推奨とする。
-
-`is_[a-zA-Z0-9-_]+` や `has_[a-zA-Z0-9-_]+` などの命名を代わりに検討する
+Web API の設計自体は、[Web API設計ガイドライン | Future Enterprise Arch Guidelines](https://future-architect.github.io/arch-guidelines/documents/forWebAPI/web_api_guidelines.html)を参考にすること。
 
 # YAMLファイルフォーマット
 
@@ -1107,23 +1053,7 @@ OpenAPI ドキュメントを作成する上でのファイルのアップロー
 
 ## ファイルアップロード
 
-Web API におけるファイルアップロードのよく利用される実装手段は、大きく分けて以下の 3 手法に分類できる。
-
-1. ファイルのコンテンツを Base64 などにエンコードして、JSON の項目として設定し、リクエストボディで送る
-   - メリット: 通常の JSON を扱うのとほぼ変わらないため楽。サムネイルなど限定されたユースケースの場合に向く
-   - デメリット: 巨大なファイルを扱う場合などサーバリソース負荷が懸念。Base64 に変換する分 CPU 負荷は余計にかかる。ペイロードが膨れるためモバイルなどのクライアントでは帯域利用での懸念がある
-2. multipart/form-data ファイルを送信する
-   - メリット: ファイルを Base64 に変換するといった作業が不要
-   - デメリット: ブラウザ以外のクライアントにとって手間がかかる
-3. アップロード用に用いる、オブジェクトストレージの Signed URL を発行し、クライアントから直接ファイルをアップロードしてもらう
-   - 次の流れを想定（Signed URL を取得 -> ファイルアップロード -> ファイルに紐づかせるキーや属性情報などを登録）
-   - Amazon API Gateway を利用する場合は、2023 年 6 月時点で[ペイロード上限が 10MB](https://docs.aws.amazon.com/apigateway/latest/developerguide/limits.html)、[AWS Lambda でもペイロード制限がある](https://docs.aws.amazon.com/ja_jp/lambda/latest/dg/gettingstarted-limits.html#api-requests)ため、許容するファイルサイズによってはこの手法一択となる
-   - メリット: オブジェクトストレージの可用性・信頼性を享受できる
-   - デメリット: アップロードするために複数の API エンドポイント呼び出しが必要なため、煩雑である
-   - 2023 年 6 月に AWS ブログでこの方式について解説した記事が出たので、詳細は参照ください
-     - [https://aws.amazon.com/jp/blogs/news/large-size-files-transferring-by-serverless-s3presignedurl-and-clientside-javascript/](https://aws.amazon.com/jp/blogs/news/large-size-files-transferring-by-serverless-s3presignedurl-and-clientside-javascript/)
-
-本規約でファイルアップロードについて上記の 3. Signed URL を推奨する。API 呼び出しとしては次のようなフローとする。
+[Web API設計ガイドライン>ファイル連携>ファイルアップロード](https://future-architect.github.io/arch-guidelines/documents/forWebAPI/web_api_guidelines.html#%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%A2%E3%83%83%E3%83%95%E3%82%9A%E3%83%AD%E3%83%BC%E3%83%88%E3%82%99) で推奨された「署名付きURL」を用いた手法を採用する場合、次のようなフローとする。
 
 ```mermaid
 sequenceDiagram
@@ -1148,9 +1078,7 @@ A->>B: ③ファイルアップロード完了(受付ID、キー、属性)
 
 ## ファイルダウンロード
 
-ファイルアップロードと同様、オブジェクトストレージの Signed URL 経由を経由してのダウンロードさせる手法を推奨する。Web API としてはオブジェクトストレージにダウンロード用のファイルを書き込み、クライアントが取得するための Signed URL をレスポンスの JSON 項目に渡す方式である。
-
-もし、サムネイルやアイコン画像など、ファイル容量がごく小さい場合は Base64 にエンコードして JSON に埋め込んで渡しても良い。線引をどこに設置するかは本規約で定義しない。
+[Web API設計ガイドライン>ファイル連携>ファイルダウンロード](https://future-architect.github.io/arch-guidelines/documents/forWebAPI/web_api_guidelines.html#%E3%83%95%E3%82%A1%E3%82%A4%E3%83%AB%E3%82%BF%E3%82%99%E3%82%A6%E3%83%B3%E3%83%AD%E3%83%BC%E3%83%88%E3%82%99) で推奨された方法は、Signed URL をレスポンスの JSON 項目に渡すか、ファイル容量がごく小さい場合に限り Base64 にエンコードして JSON に埋め込んで渡すかの2つである。
 
 どちらのケースも OpenAPI 定義としてはシンプルであるため、記述例は割愛する。
 
