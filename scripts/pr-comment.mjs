@@ -19,7 +19,7 @@ export async function postCustomForArchiveResources({ github, context, url }) {
 
   const body = `${botCommentIdentifier}
 
-## リソースの確認
+## Pandocで生成したリソースの確認
 
 <${url}>
 
