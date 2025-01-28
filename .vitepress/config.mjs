@@ -59,13 +59,6 @@ const links = {
       link: "/documents/forOpenAPISpecification/OpenAPI_Specification_3.0.3.html",
     },
   ],
-  "/documents/forGitBranch/": [
-    { text: "Introduction", link: "/documents/forGitBranch/" },
-    {
-      text: "Gitブランチフロー規約",
-      link: "/documents/forGitBranch/git_branch_standards.html",
-    },
-  ],
 };
 
 /**
@@ -201,19 +194,6 @@ export default defineConfig({
               {
                 text: "OpenAPI Specification 3.0.3規約",
                 link: "/documents/forOpenAPISpecification/OpenAPI_Specification_3.0.3.html",
-              },
-            ],
-          },
-          {
-            text: "Git",
-            items: [
-              {
-                text: "Introduction",
-                link: "/documents/forGitBranch/",
-              },
-              {
-                text: "Gitブランチフロー規約",
-                link: "/documents/forGitBranch/git_branch_standards.html",
               },
             ],
           },
