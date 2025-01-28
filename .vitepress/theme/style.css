@@ -13,7 +13,8 @@
     #fff 30%,
     #e5004f
   );
-  img {
+  /* 背景が透過である画像が、ダークモードで視認性が下がるための対応 */
+  .img-bg-transparent img {
     filter: invert(1);
   }
 }

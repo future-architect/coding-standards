@@ -70,7 +70,11 @@ Gitリポジトリを新規作成するとデフォルトで作成されるブ�
 - ひとつの変更に対してひとつのfeatureブランチを作成し、作業完了後に削除するため、開発中で最も使われる短命なブランチである
 - 基本的に1人の開発者のみが利用する
 
+<div class="img-bg-transparent">
+
 ![feature branch](img/branch_strategy_feature.drawio.png)
+
+</div>
 
 以下の命名に従う。
 
@@ -92,7 +96,11 @@ fixtypo
 
 開発の中心となるブランチである。
 
+<div class="img-bg-transparent">
+
 ![develop branch](img/branch_strategy_develop.drawio.png)
+
+</div>
 
 ## releaseブランチ
 
@@ -102,7 +110,11 @@ fixtypo
 - releaseブランチではバグ修正、ドキュメント生成、その他のリリースに伴うタスクのみを実施する
 - mainブランチのマージコミットにリリースタグを打ち、mainブランチをdevelopブランチへマージ後、releaseブランチを削除する
 
+<div class="img-bg-transparent">
+
 ![release branch](img/branch_strategy_release.drawio.png)
+
+</div>
 
 ## hotfixブランチ
 
@@ -111,7 +123,11 @@ fixtypo
 - 修正が完了するとmainとdevelopの両方(あるいは進行中のreleaseブランチ)にマージされる
 - main／developブランチがあると必要になる可能性がある。main／featureブランチのみの運用では必須ではない（管理上の目的でfeatureとhotfixを分けることはあり得る）
 
+<div class="img-bg-transparent">
+
 ![hotfix branch](img/branch_strategy_hotfix.drawio.png)
+
+</div>
 
 ## topicブランチ
 
@@ -120,7 +136,11 @@ featureブランチで実現する機能を複数人で開発する場合に使�
 - topicブランチが必要なケースでは、featureブランチへの直接プッシュを行ってはならない
 - GitHub Flowではfeatureブランチのことをtopicブランチと呼称する場合があるが、本規約ではfeatureブランチから派生するブランチをtopicブランチと定義する
 
+<div class="img-bg-transparent">
+
 ![topic branch](img/branch_strategy_topic.drawio.png)
+
+</div>
 
 # ブランチ戦略の選定
 
@@ -163,7 +183,11 @@ featureブランチで実現する機能を複数人で開発する場合に使�
 
 ## 1. developブランチを複数作成する場合
 
+<div class="img-bg-transparent">
+
 ![multi develop branch](img/branch_strategy_multi_develop.drawio.png)
+
+</div>
 
 日々のエンハンス開発と並行して、数カ月後に大型リリースを行いたい場合がある。このときは複数リリースバージョンを並行して開発するため、 `develop`、`develop2` といった複数のdevelopブランチを作る必要がある。
 
@@ -178,7 +202,11 @@ featureブランチで実現する機能を複数人で開発する場合に使�
 - 誤操作を避ける目的でcherry-pickは行わない
 - `devleop2` への同期は、 `develop` -> `main` ブランチに反映されるタイミングで同期を行う（これにより、品質保証済みの変更のみ取り入れることができる）
 
+<div class="img-bg-transparent">
+
 ![release multi develop branch](img/branch_strategy_release_multi_develop.drawio.png)
+
+</div>
 
 ### develop2のリリース手順
 
@@ -193,7 +221,11 @@ featureブランチで実現する機能を複数人で開発する場合に使�
 
 ## 2. 過去バージョンをサポートする場合
 
+<div class="img-bg-transparent">
+
 ![multi version branch](img/branch_strategy_multi_version.drawio.png)
+
+</div>
 
 （社内外の）ライブラリでインターフェースの大型改善や仕様変更を受けて、メジャーバージョンを1→2に上げることがる。この時に過去バージョンもサポートする必要があると、バージョン別にsupportブランチを作成する。
 
@@ -228,10 +260,10 @@ developブランチの変更をfeatureブランチに取り込む方法には、
 
 機能ブランチに対して開発ブランチの変更を取り込む方法は「マージ」「リベース」2つの方法が考えられる。
 
-| 1. マージコミット                                                   | 2. リベース                                                                                                                             |
-| ------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
-| ![マージ](img/merge_strategy_develop_to_feature_merge.drawio.png)   | ![リベース](img/merge_strategy_develop_to_feature_rebase.drawio.png)                                                                    |
-| `get fetch & git merge`（≒ `git pull`）。マージコミットが作成される | `get fetch & git rebase`（≒ `git pull --rebase`）。最新の開発ブランチの先頭から新たにコミットを作りなされ、マージコミットは作成されない |
+| 1. マージコミット                                                                                         | 2. リベース                                                                                                                             |
+| --------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------- |
+| <div class="img-bg-transparent"> ![マージ](img/merge_strategy_develop_to_feature_merge.drawio.png) </div> | <div class="img-bg-transparent"> ![リベース](img/merge_strategy_develop_to_feature_rebase.drawio.png) </div>                            |
+| `get fetch & git merge`（≒ `git pull`）。マージコミットが作成される                                       | `get fetch & git rebase`（≒ `git pull --rebase`）。最新の開発ブランチの先頭から新たにコミットを作りなされ、マージコミットは作成されない |
 
 本規約の推奨は「2. リベース」である。
 
@@ -325,12 +357,12 @@ Terraformはplanが成功しても、applyが失敗することは多々あり�
 
 developブランチにfeatureブランチの変更を取り込む方法は下表のように3パターン存在する。
 
-|      | 1.マージコミット                                                               | 2.リベース                                                                             | 3.スカッシュマージ                                                                     |
-| ---- | ------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| 名称 | Create a merge commit                                                          | Rebase and merge                                                                       | Squash and merge                                                                       |
-| 流れ | ![Merge Commit](img/merge_strategy_feature_to_develop_merge_commit.drawio.png) | ![Rebase and Merge](img/merge_strategy_feature_to_develop_rebase_and_merge.drawio.png) | ![Squash and Merge](img/merge_strategy_feature_to_develop_squash_and_merge.drawio.png) |
-| 説明 | `git merge --no-ff` で変更を取り込む                                           | featureブランチを最新のdevelopブランチにリベースし、`git merge --ff` で変更を取り込む  | `git merge --squash` で変更を取り込む                                                  |
-| 特徴 | developブランチにマージコミットが作成される                                    | マージコミットは作成されず、履歴が一直線になる                                         | featureブランチで行った変更YとZを1つにまとめたコミットがdevelopブランチに作成される    |
+|      | 1.マージコミット                                                                                                       | 2.リベース                                                                                                                     | 3.スカッシュマージ                                                                                                             |
+| ---- | ---------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------ |
+| 名称 | Create a merge commit                                                                                                  | Rebase and merge                                                                                                               | Squash and merge                                                                                                               |
+| 流れ | <div class="img-bg-transparent"> ![Merge Commit](img/merge_strategy_feature_to_develop_merge_commit.drawio.png) </div> | <div class="img-bg-transparent"> ![Rebase and Merge](img/merge_strategy_feature_to_develop_rebase_and_merge.drawio.png) </div> | <div class="img-bg-transparent"> ![Squash and Merge](img/merge_strategy_feature_to_develop_squash_and_merge.drawio.png) </div> |
+| 説明 | `git merge --no-ff` で変更を取り込む                                                                                   | featureブランチを最新のdevelopブランチにリベースし、`git merge --ff` で変更を取り込む                                          | `git merge --squash` で変更を取り込む                                                                                          |
+| 特徴 | developブランチにマージコミットが作成される                                                                            | マージコミットは作成されず、履歴が一直線になる                                                                                 | featureブランチで行った変更YとZを1つにまとめたコミットがdevelopブランチに作成される                                            |
 
 ::: tip GitLabを利用する場合
 
@@ -338,11 +370,11 @@ GitLabでも開発ブランチに機能ブランチの変更を取り込む方�
 
 ただし、マージリクエスト上のオプションによってコミット履歴が変わる点が注意である。
 
-|      | 1. Merge commit                                                                                               | 2. Merge commit with semi-linear history                                         | 3. Fast-forward merge                                                                                                                |
-| ---- | ------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
-| 流れ | ![Merge commit with squash commits](img/merge_strategy_feature_to_develop_squash_and_merge_gitlab.drawio.png) | 省略                                                                             | 省略                                                                                                                                 |
-| 説明 | GitHubにおける `Create a merge commit` と同様のマージ方法                                                     | `Merge commit` と同じコマンドを使用して、機能ブランチの変更を取り込む方法        | GitHubにおける `Rebase and merge` と同様のマージ方法                                                                                 |
-| 注意 | `Squash commits` を選択してマージした場合、`squash commit` と `merge commit` の2つのコミットが作成される      | ソースブランチがターゲットブランチより古い場合はリベースしないとマージできない。 | マージリクエスト上で `Squash commits` を選択してマージした場合、GitHubにおける `Squash and merge` と同様のマージ方法になる（※補足1） |
+|      | 1. Merge commit                                                                                                                                      | 2. Merge commit with semi-linear history                                         | 3. Fast-forward merge                                                                                                                |
+| ---- | ---------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------ |
+| 流れ | <div class="img-bg-transparent">![Merge commit with squash commits](img/merge_strategy_feature_to_develop_squash_and_merge_gitlab.drawio.png) </div> | 省略                                                                             | 省略                                                                                                                                 |
+| 説明 | GitHubにおける `Create a merge commit` と同様のマージ方法                                                                                            | `Merge commit` と同じコマンドを使用して、機能ブランチの変更を取り込む方法        | GitHubにおける `Rebase and merge` と同様のマージ方法                                                                                 |
+| 注意 | `Squash commits` を選択してマージした場合、`squash commit` と `merge commit` の2つのコミットが作成される                                             | ソースブランチがターゲットブランチより古い場合はリベースしないとマージできない。 | マージリクエスト上で `Squash commits` を選択してマージした場合、GitHubにおける `Squash and merge` と同様のマージ方法になる（※補足1） |
 
 （※補足1）マージ方法で Merge commit を選択して、マージリクエスト上で Squash commits オプションを選択してマージした場合は以下と同義である
 
@@ -418,7 +450,11 @@ git merge --no-ff $SOURCE_SHA
   - issue-312のリリースは業務上の合意が得られていない（エンドユーザ操作に影響があるため、事前告知した日時でリリースしたいなど）
   - issue-394は不具合修正であり業務上の優先度が高いため、なるべく早くリリースしたい
 
+<div class="img-bg-transparent">
+
 ![同一ファイルを複数](img/release_overtaking.drawio.png)
+
+</div>
 
 よく陥りがちな対策としては次の2点が考えられる。
 
@@ -437,7 +473,11 @@ git merge --no-ff $SOURCE_SHA
 
 2の例を以下に図示する
 
+<div class="img-bg-transparent">
+
 ![hotfixで追い抜き](img/release_overtaking_hotfix.drawio.png)
+
+</div>
 
 # ブランチ命名規則
 
