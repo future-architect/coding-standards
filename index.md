@@ -18,9 +18,6 @@ hero:
     - theme: alt
       text: OpenAPI Specification 規約
       link: ./documents/forOpenAPISpecification
-    - theme: alt
-      text: Gitブランチフロー規約
-      link: ./documents/forGitBranch/
 features:
   - title: Readability
     details: ソースコードの可読性を高く保つことで、保守性・拡張性の高いソフトウェアを作ることができます。 しかし、可読性の指標は複数あり、デベロッパーごとに判断がブレ、それぞれのスタイルで記述すると、ソフトウェア全体で見たときの可読性が下がってしまいます。 本コーディング規約は、コーディング時の判断のブレを防ぎます。
