@@ -73,7 +73,7 @@ function defineConfig(config) {
 }
 
 export default defineConfig({
-  title: "Future Enterprise Coding Standards",
+  title: "フューチャー株式会社",
   description:
     "フューチャー株式会社が作成するエンタープライズ領域に特化したコーディング規約",
   outDir: "docs",
