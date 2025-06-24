@@ -3,12 +3,14 @@ import "./style.css";
 import PageInfo from "./components/PageInfo.vue";
 import PageTitle from "./components/PageTitle.vue";
 import FutureStar from "./components/FutureStar.vue";
+import CustomLayout from "./components/CustomLayout.vue";
 
 /**
  * @typedef {import('vitepress').EnhanceAppContext} EnhanceAppContext
  */
 export default {
-  ...DefaultTheme,
+  extends: DefaultTheme,
+  Layout: CustomLayout,
   /**
    * @param {EnhanceAppContext} ctx context
    * @returns {void}
