@@ -108,7 +108,6 @@ description: "何かしらの説明"
     - account_type
     - register_at
   ```
-
   - YAML は項目定義がネストすることで縦長な定義になりやすい。情報密度を上げるために配列リテラルを推奨する
 
 ## 改行の表現
@@ -499,7 +498,6 @@ URL に紐づく HTTP メソッドで、1 つの操作を定義します。
 - `pattern`, `minLength`, `maxLength` などの条件について
   - [https://github.com/OAI/OpenAPI-Specification/blob/main/versions/2.0.md#fixed-fields-7](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/2.0.md#fixed-fields-7) を参考に、指定できる条件はなるべく細かく指定する
 - `schema`
-
   - リクエストボディは、`$ref` を用いて、`#/definitions` 配下に記載する。**$ref を用いない記載は許可しない。**
 
   ```yaml
@@ -524,7 +522,6 @@ URL に紐づく HTTP メソッドで、1 つの操作を定義します。
           type: string
           ...
   ```
-
   - モデル名は、 `{HTTPメソッド名}{物理名}` の PascalCase で記載する
     - 例: PutUserAccount、PostUserAccount, PatchUserAccount
 
@@ -638,7 +635,6 @@ URL に紐づく HTTP メソッドで、1 つの操作を定義します。
 - モデル名は、PascalCase で記載する
 - 種別が配列の場合、ネストして定義するのではなく、 `$ref` を活用する
 - もし、リソース名が単複同形で `type: array` と区別できない場合、 `List` を末尾に付けて区別する
-
   - そうではない場合は `s` を付けて表現する
 
   ```yml
