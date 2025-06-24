@@ -109,7 +109,6 @@ description: "何かしらの説明"
     - account_type
     - register_at
   ```
-
   - YAML は項目定義がネストすることで縦長な定義になりやすい。情報密度を上げるために配列リテラルを推奨する
 
 ## 改行の表現
@@ -203,7 +202,6 @@ Web API が提供する機能の概要・想定する利用者やユースケー
 アプリケーションのバージョン（git tag やリリースで管理するようなバージョン）とは別である。
 
 - `major.minor` 形式を推奨する
-
   - `0.1` 固定で開発を進め、サービスのリリース時に `1.0` とし、その後の項目やオプション、パスの追加ごとにマイナーバージョンをインクリメントしていく
 
   良い例：
@@ -428,7 +426,6 @@ paths:
 API を識別するための一意な文字列を記載する。
 
 - HTTP メソッドと URL パスの組み合わせをキャメルケースで表現する
-
   - キャメルケースの書式は、[OpenAPI 3.0ガイドのPaths and Operations](https://swagger.io/docs/specification/paths-and-operations/#:~:text=role%3Dvalue-,operationId,-operationId%20is%20an)でも利用されているため、一般的である
 
   良い例：
@@ -572,7 +569,6 @@ API のリクエストボディを記載する。
   ```
 
 - リクエストボディそのものは通常複数の API を跨いで再利用されるものではないため、原則 `components` オブジェクトとして共通化（コンポーネント化）を行わない
-
   - [openapi-generator](https://github.com/OpenAPITools/openapi-generator)を使用する場合は、コンポーネント化をせず、`title` を指定することで名称の指定が可能となる
   - [oapi-codegen](https://github.com/oapi-codegen/oapi-codegen)を使用する場合は、名称を指定するためにコンポーネント化が必要となるが、極力コンポーネント化せずデフォルトの名称を使用することを推奨する
 
@@ -613,7 +609,6 @@ API のリクエストボディを記載する。
 API のレスポンスを記載する。
 
 - 正常系（`2xx`）のレスポンスは通常複数の API を跨いで再利用されるものではないため、原則 `components` オブジェクトとして共通化（コンポーネント化）を行わない
-
   - [openapi-generator](https://github.com/OpenAPITools/openapi-generator)を使用する場合は、コンポーネント化をせず、`title` を指定することで名称の指定が可能となる
   - [oapi-codegen](https://github.com/oapi-codegen/oapi-codegen)を使用する場合は、レスポンスの構造体を出力するために `strict-server` オプションを `true` に指定する必要がある。名称を指定するためにコンポーネント化が必要となるが、極力コンポーネント化せずデフォルトの名称を使用することを推奨する
 
