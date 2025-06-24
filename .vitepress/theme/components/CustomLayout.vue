@@ -21,28 +21,40 @@ provide("toggle-appearance", async () => {
   const vw = innerWidth / 100;
   const vh = innerHeight / 100;
 
-  const clipPath = [
-    `polygon(0 0, ${100 * vw}px 0, ${100 * vw}px ${100 * vh}px, ${100 * vw}px ${100 * vh}px, ${100 * vw}px ${66 * vh}px, ${100 * vw}px ${66 * vh}px, ${100 * vw}px ${33 * vh}px, ${100 * vw}px ${33 * vh}px, ${100 * vw}px 0)`,
-    `polygon(0 0, ${100 * vw}px 0, ${100 * vw}px ${100 * vh}px, ${80 * vw}px ${100 * vh}px, ${80 * vw}px ${66 * vh}px, ${100 * vw}px ${66 * vh}px, ${100 * vw}px ${33 * vh}px, ${100 * vw}px ${33 * vh}px, ${100 * vw}px 0)`,
-    `polygon(0 0, ${100 * vw}px 0, ${100 * vw}px ${100 * vh}px, ${60 * vw}px ${100 * vh}px, ${60 * vw}px ${66 * vh}px, ${100 * vw}px ${66 * vh}px, ${100 * vw}px ${33 * vh}px, ${100 * vw}px ${33 * vh}px, ${100 * vw}px 0)`,
-    `polygon(0 0, ${100 * vw}px 0, ${100 * vw}px ${100 * vh}px, ${40 * vw}px ${100 * vh}px, ${40 * vw}px ${66 * vh}px, ${80 * vw}px ${66 * vh}px, ${80 * vw}px ${33 * vh}px, ${100 * vw}px ${33 * vh}px, ${100 * vw}px 0)`,
-    `polygon(0 0, ${100 * vw}px 0, ${100 * vw}px ${100 * vh}px, ${20 * vw}px ${100 * vh}px, ${20 * vw}px ${66 * vh}px, ${60 * vw}px ${66 * vh}px, ${60 * vw}px ${33 * vh}px, ${100 * vw}px ${33 * vh}px, ${100 * vw}px 0)`,
-    `polygon(0 0, ${100 * vw}px 0, ${100 * vw}px ${100 * vh}px, 0 ${100 * vh}px, 0 ${66 * vh}px, ${40 * vw}px ${66 * vh}px, ${40 * vw}px ${33 * vh}px, ${80 * vw}px ${33 * vh}px, ${80 * vw}px 0)`,
-    `polygon(0 0, ${100 * vw}px 0, ${100 * vw}px ${100 * vh}px, 0 ${100 * vh}px, 0 ${66 * vh}px, ${20 * vw}px ${66 * vh}px, ${20 * vw}px ${33 * vh}px, ${60 * vw}px ${33 * vh}px, ${60 * vw}px 0)`,
-    `polygon(0 0, ${100 * vw}px 0, ${100 * vw}px ${100 * vh}px, 0 ${100 * vh}px, 0 ${66 * vh}px, 0 ${66 * vh}px, 0 ${33 * vh}px, ${40 * vw}px ${33 * vh}px, ${40 * vw}px 0)`,
-    `polygon(0 0, ${100 * vw}px 0, ${100 * vw}px ${100 * vh}px, 0 ${100 * vh}px, 0 ${66 * vh}px, 0 ${66 * vh}px, 0 ${33 * vh}px, ${20 * vw}px ${33 * vh}px, ${20 * vw}px 0)`,
-    `polygon(0 0, ${100 * vw}px 0, ${100 * vw}px ${100 * vh}px, 0 ${100 * vh}px, 0 ${66 * vh}px, 0 ${66 * vh}px, 0 ${33 * vh}px, 0 ${33 * vh}px, 0 0)`,
-  ];
+  const maskImage =
+    `url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${200 * vw} ${100 * vh}">
+    <defs>
+      <filter id="blur">
+        <feGaussianBlur stdDeviation="30"/>
+      </filter>
+    </defs>
+    <polygon points="
+      ${90 * vw} 0 ${200 * vw},0 ${200 * vw},${100 * vh}
+      ${30 * vw},${100 * vh} ${30 * vw},${66 * vh}
+      ${60 * vw},${66 * vh} ${60 * vw},${33 * vh}
+      ${90 * vw},${33 * vh}
+    " fill="white" filter="url(%23blur)" />
+  </svg>')`.replace(/\s+/gu, " ");
 
   await document.startViewTransition(async () => {
     isDark.value = !isDark.value;
     await nextTick();
   }).ready;
 
+  const maskPosition = [
+    `${100 * vw}px -${5 * vh}px`,
+    `-${100 * vw}px -${5 * vh}px`,
+  ];
+  const maskSize = `${220 * vw}px ${110 * vh}px`;
+
   document.documentElement.animate(
-    { clipPath: isDark.value ? clipPath.reverse() : clipPath },
     {
-      duration: 500,
+      maskImage: [maskImage, maskImage],
+      maskPosition: isDark.value ? maskPosition.reverse() : maskPosition,
+      maskSize: [maskSize, maskSize],
+    },
+    {
+      duration: 300,
       easing: "ease-in",
       pseudoElement: `::view-transition-${isDark.value ? "old" : "new"}(root)`,
     },
@@ -59,6 +71,7 @@ provide("toggle-appearance", async () => {
 ::view-transition-new(root) {
   animation: none;
   mix-blend-mode: normal;
+  mask-repeat: no-repeat;
 }
 
 ::view-transition-old(root),
