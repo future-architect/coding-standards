@@ -15,17 +15,23 @@ provide("toggle-appearance", async () => {
     return;
   }
 
+  const innerWidth = window.innerWidth + 10;
+  const innerHeight = window.innerHeight + 10;
+
+  const vw = innerWidth / 100;
+  const vh = innerHeight / 100;
+
   const clipPath = [
-    `polygon(0 0, 100vw 0, 100vw 100vh, 100vw 100vh, 100vw 66vh, 100vw 66vh, 100vw 33vh, 100vw 33vh, 100vw 0)`,
-    `polygon(0 0, 100vw 0, 100vw 100vh, 80vw 100vh, 80vw 66vh, 100vw 66vh, 100vw 33vh, 100vw 33vh, 100vw 0)`,
-    `polygon(0 0, 100vw 0, 100vw 100vh, 60vw 100vh, 60vw 66vh, 100vw 66vh, 100vw 33vh, 100vw 33vh, 100vw 0)`,
-    `polygon(0 0, 100vw 0, 100vw 100vh, 40vw 100vh, 40vw 66vh, 80vw 66vh, 80vw 33vh, 100vw 33vh, 100vw 0)`,
-    `polygon(0 0, 100vw 0, 100vw 100vh, 20vw 100vh, 20vw 66vh, 60vw 66vh, 60vw 33vh, 100vw 33vh, 100vw 0)`,
-    `polygon(0 0, 100vw 0, 100vw 100vh, 0 100vh, 0 66vh, 40vw 66vh, 40vw 33vh, 80vw 33vh, 80vw 0)`,
-    `polygon(0 0, 100vw 0, 100vw 100vh, 0 100vh, 0 66vh, 20vw 66vh, 20vw 33vh, 60vw 33vh, 60vw 0)`,
-    `polygon(0 0, 100vw 0, 100vw 100vh, 0 100vh, 0 66vh, 0 66vh, 0 33vh, 40vw 33vh, 40vw 0)`,
-    `polygon(0 0, 100vw 0, 100vw 100vh, 0 100vh, 0 66vh, 0 66vh, 0 33vh, 20vw 33vh, 20vw 0)`,
-    `polygon(0 0, 100vw 0, 100vw 100vh, 0 100vh, 0 66vh, 0 66vh, 0 33vh, 0 33vh, 0 0)`,
+    `polygon(0 0, ${100 * vw}px 0, ${100 * vw}px ${100 * vh}px, ${100 * vw}px ${100 * vh}px, ${100 * vw}px ${66 * vh}px, ${100 * vw}px ${66 * vh}px, ${100 * vw}px ${33 * vh}px, ${100 * vw}px ${33 * vh}px, ${100 * vw}px 0)`,
+    `polygon(0 0, ${100 * vw}px 0, ${100 * vw}px ${100 * vh}px, ${80 * vw}px ${100 * vh}px, ${80 * vw}px ${66 * vh}px, ${100 * vw}px ${66 * vh}px, ${100 * vw}px ${33 * vh}px, ${100 * vw}px ${33 * vh}px, ${100 * vw}px 0)`,
+    `polygon(0 0, ${100 * vw}px 0, ${100 * vw}px ${100 * vh}px, ${60 * vw}px ${100 * vh}px, ${60 * vw}px ${66 * vh}px, ${100 * vw}px ${66 * vh}px, ${100 * vw}px ${33 * vh}px, ${100 * vw}px ${33 * vh}px, ${100 * vw}px 0)`,
+    `polygon(0 0, ${100 * vw}px 0, ${100 * vw}px ${100 * vh}px, ${40 * vw}px ${100 * vh}px, ${40 * vw}px ${66 * vh}px, ${80 * vw}px ${66 * vh}px, ${80 * vw}px ${33 * vh}px, ${100 * vw}px ${33 * vh}px, ${100 * vw}px 0)`,
+    `polygon(0 0, ${100 * vw}px 0, ${100 * vw}px ${100 * vh}px, ${20 * vw}px ${100 * vh}px, ${20 * vw}px ${66 * vh}px, ${60 * vw}px ${66 * vh}px, ${60 * vw}px ${33 * vh}px, ${100 * vw}px ${33 * vh}px, ${100 * vw}px 0)`,
+    `polygon(0 0, ${100 * vw}px 0, ${100 * vw}px ${100 * vh}px, 0 ${100 * vh}px, 0 ${66 * vh}px, ${40 * vw}px ${66 * vh}px, ${40 * vw}px ${33 * vh}px, ${80 * vw}px ${33 * vh}px, ${80 * vw}px 0)`,
+    `polygon(0 0, ${100 * vw}px 0, ${100 * vw}px ${100 * vh}px, 0 ${100 * vh}px, 0 ${66 * vh}px, ${20 * vw}px ${66 * vh}px, ${20 * vw}px ${33 * vh}px, ${60 * vw}px ${33 * vh}px, ${60 * vw}px 0)`,
+    `polygon(0 0, ${100 * vw}px 0, ${100 * vw}px ${100 * vh}px, 0 ${100 * vh}px, 0 ${66 * vh}px, 0 ${66 * vh}px, 0 ${33 * vh}px, ${40 * vw}px ${33 * vh}px, ${40 * vw}px 0)`,
+    `polygon(0 0, ${100 * vw}px 0, ${100 * vw}px ${100 * vh}px, 0 ${100 * vh}px, 0 ${66 * vh}px, 0 ${66 * vh}px, 0 ${33 * vh}px, ${20 * vw}px ${33 * vh}px, ${20 * vw}px 0)`,
+    `polygon(0 0, ${100 * vw}px 0, ${100 * vw}px ${100 * vh}px, 0 ${100 * vh}px, 0 ${66 * vh}px, 0 ${66 * vh}px, 0 ${33 * vh}px, 0 ${33 * vh}px, 0 0)`,
   ];
 
   await document.startViewTransition(async () => {
@@ -36,7 +42,7 @@ provide("toggle-appearance", async () => {
   document.documentElement.animate(
     { clipPath: isDark.value ? clipPath.reverse() : clipPath },
     {
-      duration: 300,
+      duration: 500,
       easing: "ease-in",
       pseudoElement: `::view-transition-${isDark.value ? "old" : "new"}(root)`,
     },
