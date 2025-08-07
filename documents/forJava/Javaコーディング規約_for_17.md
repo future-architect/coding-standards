@@ -5,7 +5,7 @@ author: Future Enterprise Coding Standards
 head:
   - - meta
     - name: keywords
-      content: Javaコーディング規約,Java21,コーディング規約,Java
+      content: Javaコーディング規約,Java17,コーディング規約,Java
 ---
 
 <page-title/>
@@ -520,7 +520,6 @@ head:
      ソースコード管理システム、バグトラッキングシステムで管理している内容はソースコードにコメントで記載する必要はない。
     - コメントアウトされたコード  
        ソースコード管理システムで管理されている
-- サンプルコードを記載する場合は、`{@snippet}`タグを利用する。
 
 ## インポート
 
@@ -1002,8 +1001,6 @@ head:
     (o instanceof String && ((String)o).isEmpty()) ||
     (o instanceof Collection && ((Collection)o).isEmpty());
   ```
-
-- パターンマッチングについては[switch文・式で使用する](#switchでのパターンマッチング)ことも可能。
 
 ## 制御構造
 
@@ -1539,42 +1536,6 @@ head:
   };
   ```
 
-## switchでのパターンマッチング
-
-- `instanceof`ではなく`switch`文や式に拡張されたパターンマッチングで記載する。  
-
-  良い例：
-
-  ```java
-  static String formatterPatternSwitch(Object obj) {
-      return switch (obj) {
-          case Integer i -> String.format("int %d", i);
-          case Long l    -> String.format("long %d", l);
-          case Double d  -> String.format("double %f", d);
-          case String s  -> String.format("String %s", s);
-          default        -> obj.toString();
-      };
-  }
-  ```
-
-  悪い例：
-
-  ```java
-  static String formatter(Object obj) {
-      String formatted = "unknown";
-      if (obj instanceof Integer i) {
-          formatted = String.format("int %d", i);
-      } else if (obj instanceof Long l) {
-          formatted = String.format("long %d", l);
-      } else if (obj instanceof Double d) {
-          formatted = String.format("double %f", d);
-      } else if (obj instanceof String s) {
-          formatted = String.format("String %s", s);
-      }
-      return formatted;
-  }
-  ```
-
 ## コレクション
 
 - Java2 以降のコレクションクラスを利用する  
@@ -1640,44 +1601,6 @@ head:
      `List.of()`で生成した`List`は、完全に不変（Immutable）な`List`で、  
      `Arrays.asList()`で生成した`List`は、サイズのみ不変で、`set`等による値の操作が可能な`List`です。  
      また、`set`を行った場合、`Arrays.asList()`に与えられた配列インスタンスにも影響します。
-
-## 順序を保持するコレクション
-
-- 要素の順序に関する操作（最初の要素や最後の要素へのアクセス、追加、削除、逆順処理など）には、`SequencedCollection`、`SequencedSet`、`SequencedMap` インターフェースで定義された**専用のメソッド**（`getFirst()`、`getLast()`、`addFirst()`、`addLast()`、`removeFirst()`、`removeLast()`、`reversed()`、`putFirst()`、`putLast()`、`firstEntry()`、`lastEntry()` ）の使用を推奨する。従来の記述と専用メソッドで性能面の違いはないので、どちらを使用するか各プロジェクトで揺れがないように統一する。
-
-  良い例：
-
-  ```java
-  import java.util.SequencedCollection;
-  import java.util.ArrayList;
-
-  SequencedCollection<String> items = new ArrayList<>();
-  items.addFirst("A");
-  items.addLast("B");
-  String firstItem = items.getFirst();
-  String lastItem = items.getLast();
-  SequencedCollection<String> reversedItems = items.reversed();
-  ```
-
-  悪い例：
-
-  ```java
-  import java.util.List;
-  import java.util.ArrayList;
-  import java.util.Collections;
-
-  List<String> items = new ArrayList<>();
-  items.add(0, "A");
-  items.add("B");
-  String firstItem = items.get(0);
-  String lastItem = items.get(items.size() - 1);
-  List<String> reversedItems = new ArrayList<>(items);
-  Collections.reverse(reversedItems);
-  ```
-
-  ※ `reversed()`で取得されるのは元のインスタンスの参照であるため、要素を変更すると元のインスタンスに反映されることに注意。
-
-- 大量の要素に対する先頭や末尾への頻繁な追加・削除操作は、`ArrayList` のような実装では要素のシフトが発生するため、パフォーマンスに影響を与える可能性があります。このような場合は、`LinkedList` や `ArrayDeque` など、**両端の操作が効率的な実装**を選択することを検討してください。
 
 ## ラムダ式・メソッド参照・コンストラクタ参照
 
@@ -2070,36 +1993,6 @@ head:
       }
   }
   ```
-
-## レコードパターン
-
-- データの分解と型チェックを同時に行えるレコードパターンは、コードの可読性と安全性を向上させるため、レコードを使用する場合はレコードパターンを用いて記述することを推奨する。
-
-  良い例：
-
-  ```java
-  static void execute(Object obj) {
-      if (obj instanceof Point(int x, int y)) {
-          System.out.println(x + y);
-      }
-  }
-  ```
-
-  悪い例：
-
-  ```java
-  if (obj instanceof Point p) {
-          int x = p.x();
-          int y = p.y();
-          System.out.println(x+y);
-      }
-  ```
-
-## シールクラス
-
-- 明確な方針で、利用する・利用しないを統一すること  
-  方針無く、`sealed`を利用するとコードの保守性や柔軟性が悪くなります。  
-  各プロジェクトで、`sealed`を利用しないか、`sealed`を利用しても良い箇所について方針を決めた上で使用するようにしてください。 (例：プロジェクト内で使用する共通機能ライブラリに限定して使用する。)
 
 ## テキストブロック
 
