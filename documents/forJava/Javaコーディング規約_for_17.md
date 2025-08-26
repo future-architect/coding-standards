@@ -5,7 +5,7 @@ author: Future Enterprise Coding Standards
 head:
   - - meta
     - name: keywords
-      content: Javaコーディング規約,Java21,コーディング規約,Java
+      content: Javaコーディング規約,Java17,コーディング規約,Java
 ---
 
 <page-title/>
@@ -520,30 +520,6 @@ head:
      ソースコード管理システム、バグトラッキングシステムで管理している内容はソースコードにコメントで記載する必要はない。
     - コメントアウトされたコード  
        ソースコード管理システムで管理されている
-- サンプルコードを記載する場合は、`{@snippet}`タグを利用する。
-
-  外部ファイルから引用する例：
-
-  ```java
-  /**
-   * ユーザー登録処理の例
-   * {@snippet file="UserRegistrationExample.java" region="registration"}
-   */
-  ```
-
-  インラインでサンプルコードを記載する例：
-
-  ```java
-  /**
-   * ユーザー登録処理の例
-   * {@snippet :
-   * User user = new User();
-   * user.setName("田中太郎");
-   * user.setEmail("tanaka@example.com");
-   * userRepository.save(user);
-   * }
-   */
-  ```
 
 ## インポート
 
@@ -1025,8 +1001,6 @@ head:
     (o instanceof String && ((String)o).isEmpty()) ||
     (o instanceof Collection && ((Collection)o).isEmpty());
   ```
-
-- パターンマッチングについては[switch文・式で使用する](#switchでのパターンマッチング)ことも可能。
 
 ## 制御構造
 
@@ -1544,8 +1518,8 @@ head:
   boolean off = false;
   switch (day) {
       case SUNDAY, SATURDAY:
-          off = true;
-          break;
+        off = true;
+        break;
   };
   ```
 
@@ -1557,45 +1531,9 @@ head:
   switch (day) {
       case SUNDAY:
       case SATURDAY:
-          off = true;
-          break;
+        off = true;
+        break;
   };
-  ```
-
-## switchでのパターンマッチング
-
-- `instanceof`ではなく`switch`文や式に拡張されたパターンマッチングで記載する。
-
-  良い例：
-
-  ```java
-  static String formatterPatternSwitch(Object obj) {
-      return switch (obj) {
-          case Integer i -> String.format("int %d", i);
-          case Long l    -> String.format("long %d", l);
-          case Double d  -> String.format("double %f", d);
-          case String s  -> String.format("String %s", s);
-          default        -> Objects.toString(obj);
-      };
-  }
-  ```
-
-  悪い例：
-
-  ```java
-  static String formatter(Object obj) {
-      String formatted = "unknown";
-      if (obj instanceof Integer i) {
-          formatted = String.format("int %d", i);
-      } else if (obj instanceof Long l) {
-          formatted = String.format("long %d", l);
-      } else if (obj instanceof Double d) {
-          formatted = String.format("double %f", d);
-      } else if (obj instanceof String s) {
-          formatted = String.format("String %s", s);
-      }
-      return formatted;
-  }
   ```
 
 ## コレクション
@@ -1663,44 +1601,6 @@ head:
      `List.of()`で生成した`List`は、完全に不変（Immutable）な`List`で、  
      `Arrays.asList()`で生成した`List`は、サイズのみ不変で、`set`等による値の操作が可能な`List`です。  
      また、`set`を行った場合、`Arrays.asList()`に与えられた配列インスタンスにも影響します。
-
-## 順序を保持するコレクション
-
-- 要素の順序に関する操作（最初の要素や最後の要素へのアクセス、追加、削除、逆順処理など）には、`SequencedCollection`、`SequencedSet`、`SequencedMap` インターフェースで定義された**専用のメソッド**（`getFirst()`、`getLast()`、`addFirst()`、`addLast()`、`removeFirst()`、`removeLast()`、`reversed()`、`putFirst()`、`putLast()`、`firstEntry()`、`lastEntry()` ）の使用を推奨する。従来の記述と専用メソッドで性能面の違いはないので、どちらを使用するか各プロジェクトで揺れがないように統一する。
-
-  良い例：
-
-  ```java
-  import java.util.SequencedCollection;
-  import java.util.ArrayList;
-
-  SequencedCollection<String> items = new ArrayList<>();
-  items.addFirst("A");
-  items.addLast("B");
-  String firstItem = items.getFirst();
-  String lastItem = items.getLast();
-  SequencedCollection<String> reversedItems = items.reversed();
-  ```
-
-  悪い例：
-
-  ```java
-  import java.util.List;
-  import java.util.ArrayList;
-  import java.util.Collections;
-
-  List<String> items = new ArrayList<>();
-  items.add(0, "A");
-  items.add("B");
-  String firstItem = items.get(0);
-  String lastItem = items.get(items.size() - 1);
-  List<String> reversedItems = new ArrayList<>(items);
-  Collections.reverse(reversedItems);
-  ```
-
-  ※ `reversed()`で取得されるのは元のインスタンスの参照であるため、要素を変更すると元のインスタンスに反映されることに注意。
-
-- 大量の要素に対する先頭や末尾への頻繁な追加・削除操作は、`ArrayList` のような実装では要素のシフトが発生するため、パフォーマンスに影響を与える可能性があります。このような場合は、`LinkedList` や `ArrayDeque` など、**両端の操作が効率的な実装**を選択することを検討してください。
 
 ## ラムダ式・メソッド参照・コンストラクタ参照
 
@@ -2093,50 +1993,6 @@ head:
       }
   }
   ```
-
-## レコードパターン
-
-- レコードパターンは、データの分解と型チェックを同時に行えるため、冗長なコードの削減、型安全性の向上、IDEによる補完やリファクタリング支援などのメリットがあります。  
-  これにより、コードの可読性・保守性・安全性が高まるため、レコードを使用する場合はレコードパターンを用いて記述することを推奨します。
-
-  良い例：
-
-  ```java
-  static void execute(Object obj) {
-      if (obj instanceof Point(int x, int y)) {
-          System.out.println(x + y);
-      }
-  }
-  ```
-
-  悪い例：
-
-  ```java
-  if (obj instanceof Point p) {
-          int x = p.x();
-          int y = p.y();
-          System.out.println(x+y);
-      }
-  ```
-
-## シールクラス
-
-- 明確な方針で、利用する・利用しないを統一すること  
-  方針無く、`sealed`を利用するとコードの保守性や柔軟性が悪くなります。  
-  各プロジェクトで、`sealed`を利用しないか、`sealed`を利用しても良い箇所について方針を決めた上で使用するようにしてください。
-
-  方針例：
-  - プロジェクト内で使用する共通機能ライブラリに限定して使用する
-  - 外部公開APIでは禁止し、内部ユーティリティやドメイン層のみ許可する
-  - サードパーティ連携部分では利用しない
-  - 全体で利用しない
-    など、用途や公開範囲に応じて具体的な方針を決めてください。
-
-  **【補足：シールクラス（sealed classes）とは】**  
-  Javaのsealedクラスは、継承できるサブクラスを明示的に制限する仕組みです。  
-  これにより、ドメインモデルの制約強化やパターンマッチングの網羅性チェックが可能となり、意図しない拡張や誤用を防ぐことができます。  
-  典型的な利用例としては、状態や種類が限定されるドメイン（例：イベント種別、計算式のノード型など）の表現や、パターンマッチング（switch文・式）で全ケースを網羅的に扱いたい場合などが挙げられます。  
-  メリットは安全性・可読性の向上ですが、柔軟な拡張が難しくなるデメリットもあるため、利用方針を明確に定めてください。
 
 ## テキストブロック
 
