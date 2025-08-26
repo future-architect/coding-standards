@@ -1,5 +1,5 @@
 {
-  "eslint.validate": ["javascript", "javascriptreact", "vue"],
+  "eslint.validate": ["javascript", "javascriptreact", "vue", "markdown"],
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },

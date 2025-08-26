@@ -496,7 +496,7 @@ URL に紐づく HTTP メソッドで、1 つの操作を定義します。
   - POST, PUT で用いるリクエストボディに対しては、 `required: true` を必ず指定する
     - リクエストボディ自体が未指定だった場合、各項目の `required: true` を指定していてもサーバサイドのチェックが有効に働かないことがあるため
 - `pattern`, `minLength`, `maxLength` などの条件について
-  - [https://github.com/OAI/OpenAPI-Specification/blob/main/versions/2.0.md#fixed-fields-7](https://github.com/OAI/OpenAPI-Specification/blob/main/versions/2.0.md#fixed-fields-7) を参考に、指定できる条件はなるべく細かく指定する
+  - <https://github.com/OAI/OpenAPI-Specification/blob/main/versions/2.0.md#fixed-fields-7> を参考に、指定できる条件はなるべく細かく指定する
 - `schema`
   - リクエストボディは、`$ref` を用いて、`#/definitions` 配下に記載する。**$ref を用いない記載は許可しない。**
 
@@ -924,7 +924,7 @@ CORS（Cross-Origin Resource Sharing）のために、options メソッドの追
 
 ただし、Amazon API Gateway のようなサービスを利用する場合は、options メソッドの記載が必須である場合は除く[^1]。
 
-[^1]: https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/enable-cors-for-resource-using-swagger-importer-tool.html
+[^1]: <https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/enable-cors-for-resource-using-swagger-importer-tool.html>
 
 # OpenTelemetry Traceparent HTTP Header
 

@@ -721,11 +721,15 @@ API 定義で利用する共通のデータモデルを定義する。定義方�
 
 API 共通的なリソースやエラー等のドメインオブジェクトを記載する。
 
+<!-- eslint-disable markdown/no-missing-link-fragments -->
+
 - 名称はアッパーキャメルケースで定義する
 - 名称は単数形で定義する
 - `type` に複数の型を定義しない
 - `type` に `null` は原則指定しない（`null` 値を用いる代わりに、キー自体を含めない）。空更新を行う場合は空文字を利用する
 - `allOf`, `anyOf`, `oneOf` は利用しない
+
+<!-- eslint-enable markdown/no-missing-link-fragments -->
 
 良い例：
 
@@ -1091,7 +1095,7 @@ CORS（Cross-Origin Resource Sharing）のために、options メソッドの追
 
 ただし、Amazon API Gateway のようなサービスを利用する場合は、options メソッドの記載が必須である場合は除く[^1]。
 
-[^1]: https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/enable-cors-for-resource-using-swagger-importer-tool.html
+[^1]: <https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/enable-cors-for-resource-using-swagger-importer-tool.html>
 
 # OpenTelemetry Traceparent HTTP Header
 
