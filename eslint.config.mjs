@@ -55,7 +55,7 @@ export default defineConfig([
           },
           timeout: 100_000,
           ignoreUrls: [
-            // TODO なぜか SocketError: other side closed となる。。。
+            // TODO なぜか Proxy環境で SocketError: other side closed となる。。。
             "http://www.oracle.com/technetwork/java/codeconvtoc-136057.html",
             // サイトは削除されているがドキュメントとしては残すリンク
             "https://www.acroquest.co.jp/webworkshop/javacordingrule/Acroquest_JavaCodingStandard_6_7.pdf",
