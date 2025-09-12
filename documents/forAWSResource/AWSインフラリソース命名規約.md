@@ -209,7 +209,7 @@ stg-fuga-web-fileupload-bucket
 理由:
 
 - AWS コンソールで見たときにどの AWS サービスのリソースを見ているか自明である
-- [Terraform の命名規則](https://www.terraform-best-practices.com/naming#resource-and-data-source-argument) にリソース名を繰り返さないという記載があり、整合性を持たせるため
+- [Terraform の命名規則](https://www.terraform-best-practices.com/naming#resource-and-data-source-arguments) にリソース名を繰り返さないという記載があり、整合性を持たせるため
 
 > **Resource and data source arguments**
 > Do not repeat resource type in resource name (not partially, nor completely):
@@ -815,7 +815,7 @@ IAM グループ用のポリシーを作成する例では、company を含め�
 - 将来の変更の影響を考慮する
 - AWS Organizations のタグポリシーを利用することで、組織が採用するタグ付け標準を自動的に適用する
 
-より詳しいタグ付けのベストプラクティスも存在するが、本紙の範囲を超えるため紹介のみに留める。 [https://docs.aws.amazon.com/whitepapers/latest/tagging-best-practices/tagging-best-practices.html](https://docs.aws.amazon.com/whitepapers/latest/tagging-best-practices/tagging-best-practices.html)
+より詳しいタグ付けのベストプラクティスも存在するが、本紙の範囲を超えるため紹介のみに留める。 <https://docs.aws.amazon.com/whitepapers/latest/tagging-best-practices/tagging-best-practices.html>
 
 ## タグキー
 

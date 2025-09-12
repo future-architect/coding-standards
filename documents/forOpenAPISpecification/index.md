@@ -40,7 +40,7 @@ OAS は次のように複数のバージョンが存在します。
 
 どのツールがどのバージョンに対応しているかは、以下のサイトを参考ください。
 
-[https://openapi.tools/](https://openapi.tools/)
+<https://openapi.tools/>
 
 ## OpenAPI Specification Standards
 

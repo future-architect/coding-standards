@@ -18,15 +18,15 @@ head:
 
 一般に利用・参照されている Java コーディング規約やガイドラインを以下に示す。本規約の作成においても、下記規約類を参照・抜粋している。
 
-| 規約                                                   | 著作者               | URL                                                                                                                                                                                                                     |
-| ------------------------------------------------------ | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Code Conventions for the Java Programming Language     | Sun Microsystems     | [http://www.oracle.com/technetwork/java/codeconvtoc-136057.html](http://www.oracle.com/technetwork/java/codeconvtoc-136057.html)                                                                                        |
-| Writing Robust Java Code                               | Scott W. Ambler      | [http://www.ambysoft.com/downloads/javaCodingStandards.pdf](http://www.ambysoft.com/downloads/javaCodingStandards.pdf)                                                                                                  |
-| オブジェクト倶楽部版 Java コーディング標準             | オブジェクト倶楽部   | [http://objectclub.jp/community/codingstandard/CodingStd.pdf](http://objectclub.jp/community/codingstandard/CodingStd.pdf)                                                                                              |
-| 電通国際情報際サービス版 Java コーディング規約 2004    | 電通国際情報サービス | [http://objectclub.jp/community/codingstandard/JavaCodingStandard2004.pdf](http://objectclub.jp/community/codingstandard/JavaCodingStandard2004.pdf)                                                                    |
-| JJGuideline （Java - J2EE Conventions and Guidelines） | Stephan.J & JCS Team | [http://www.fedict.belgium.be/sites/default/files/downloads/Java_J2EE_conventions_and_guidelines_EN.pdf](http://www.fedict.belgium.be/sites/default/files/downloads/Java_J2EE_conventions_and_guidelines_EN.pdf)        |
-| Google Java Style (非公式和訳)                         | Google               | [https://kazurof.github.io/GoogleJavaStyle-ja/](https://kazurof.github.io/GoogleJavaStyle-ja/)                                                                                                                          |
-| Acroquest Technology Java コーディング規約             | Acroquest Technology | [https://www.acroquest.co.jp/webworkshop/javacordingrule/Acroquest_JavaCodingStandard_6_7.pdf](https://www.acroquest.co.jp/webworkshop/javacordingrule/Acroquest_JavaCodingStandard_6_7.pdf)<br>※現在は削除されています |
+| 規約                                                   | 著作者               | URL                                                                                                                                 |
+| ------------------------------------------------------ | -------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| Code Conventions for the Java Programming Language     | Sun Microsystems     | <http://www.oracle.com/technetwork/java/codeconvtoc-136057.html>                                                                    |
+| Writing Robust Java Code                               | Scott W. Ambler      | <http://www.ambysoft.com/downloads/javaCodingStandards.pdf>                                                                         |
+| オブジェクト倶楽部版 Java コーディング標準             | オブジェクト倶楽部   | <http://objectclub.jp/community/codingstandard/CodingStd.pdf>                                                                       |
+| 電通国際情報際サービス版 Java コーディング規約 2004    | 電通国際情報サービス | <http://objectclub.jp/community/codingstandard/JavaCodingStandard2004.pdf>                                                          |
+| JJGuideline （Java - J2EE Conventions and Guidelines） | Stephan.J & JCS Team | <http://www.fedict.belgium.be/sites/default/files/downloads/Java_J2EE_conventions_and_guidelines_EN.pdf><br>※現在は削除されています |
+| Google Java Style (非公式和訳)                         | Google               | <https://kazurof.github.io/GoogleJavaStyle-ja/>                                                                                     |
+| Acroquest Technology Java コーディング規約             | Acroquest Technology | <https://www.acroquest.co.jp/webworkshop/javacordingrule/Acroquest_JavaCodingStandard_6_7.pdf><br>※現在は削除されています           |
 
 ※ Sun Microsystems の規約は Java 草創期から一応の標準という位置づけだったが、オブジェクト指向、及び、その開発環境の普及・発展によって、設計やコーディングにおいて、直接的に有用な知識や豊富な指針を含むような優れた規約や、ツールなどによる機械的な準拠チェックと連携する規約が普及してきている。
 
@@ -1378,7 +1378,7 @@ head:
 - case 句はなるべく一つの式での記述を推奨する  
    複雑な式や複雑なステートメントを記述しなければならない場合は、メソッドに分割することを検討してください。
 - switch 式は、コーディングミスによるフォールスルーを避けるため、常にアロー構文を使用する  
-   [https://docs.oracle.com/javase/jp/16/language/switch-expressions.html](https://docs.oracle.com/javase/jp/16/language/switch-expressions.html)からの引用：
+   <https://docs.oracle.com/javase/jp/16/language/switch-expressions.html>からの引用：
 
   > ノート:`case L ->`ラベルの使用をお薦めします。`case L:`ラベルの使用時は、`break`文または`yield`文の挿入を忘れがちです。これを忘れると、コード内で思いがけないフォール・スルーが発生する場合があります。
   > `case L ->`ラベルで、複数の文または式でないコード、あるいは`throw`文を指定するには、それらをブロック内に囲みます。`case`ラベルが生成する値を`yield`文で指定します。
@@ -1489,7 +1489,7 @@ head:
 - case 句はなるべく 1 行のステートメントでの記述を推奨する  
    複雑なステートメントを記述しなければならない場合は、メソッドに分割することを検討してください。
 - switch 文は、コーディングミスによるフォールスルーを避けるため、なるべくアロー構文を使用することを推奨する  
-   [https://docs.oracle.com/javase/jp/16/language/switch-expressions.html](https://docs.oracle.com/javase/jp/16/language/switch-expressions.html)からの引用：
+   <https://docs.oracle.com/javase/jp/16/language/switch-expressions.html>からの引用：
 
   > ノート:`case L ->`ラベルの使用をお薦めします。`case L:`ラベルの使用時は、`break`文または`yield`文の挿入を忘れがちです。これを忘れると、コード内で思いがけないフォール・スルーが発生する場合があります。
   > `case L ->`ラベルで、複数の文または式でないコード、あるいは`throw`文を指定するには、それらをブロック内に囲みます。`case`ラベルが生成する値を`yield`文で指定します。
@@ -1705,7 +1705,7 @@ head:
 ## ラムダ式・メソッド参照・コンストラクタ参照
 
 - ラムダ式が利用できる箇所はラムダ式を利用してよい  
-  [※パフォーマンスについても記載しているので参考にしてください](#ラムダ式・メソッド参照・コンストラクタ参照-2)
+  [※パフォーマンスについても記載しているので参考にしてください](#ラムダ式メソッド参照コンストラクタ参照-1)
 - ただし、メソッド参照・コンストラクタ参照が利用できる場合はメソッド参照・コンストラクタ参照を利用する
 
   良い例：
@@ -2499,7 +2499,7 @@ head:
    （Eclipse の TODO コメント形式を採用）  
    例）
 
-  ```
+  ```java
   //TODO：ワークフローの仕様決定待ち　関連チケット#12345
   ```
 
@@ -2509,8 +2509,8 @@ Java では 3 種類のコメントが使える。javadoc コメントは`/**`�
 
 | コメント種類                         | 使用方法                                                                                                                                                                                              | 例                                                                                                                                                                                               |
 | ------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| javadoc コメント<br>`/** comment */` | interface、class、メソッド、フィールドの直前に書く。コメントは javadoc によって処理され、外部ドキュメント(HTML)として生成される。（この形式以外のコメントはドキュメントとして出力されないことに注意） | <code class="comment-code">/\*_<br> _ 顧客（Customer）-<br> _ 顧客はわれわれがサービスまたは製品を売った人物<br> _ もしくは組織のいずれかである。<br> _ @author 開発太郎<br> _/</code>           |
-| C 風コメント<br>`/* comment */`      | 特定のコードを無効化したいが、後で使用するかもしれないので残しておくためにコメント化する時や、デバッグ時に一時的に無効化するときに使用する。                                                          | <code class="comment-code">/_ <br> このコードは J.T.Kirk によって 1997.12.9 に前述のコードと置き換えたためコメント化した。2 年間不要であるならば削除せよ。<br> ... (ソースコード) <br> _/</code> |
+| javadoc コメント<br>`/** comment */` | interface、class、メソッド、フィールドの直前に書く。コメントは javadoc によって処理され、外部ドキュメント(HTML)として生成される。（この形式以外のコメントはドキュメントとして出力されないことに注意） | <code class="comment-code">/\*\*<br> \* 顧客（Customer）-<br> \* 顧客はわれわれがサービスまたは製品を売った人物<br> \* もしくは組織のいずれかである。<br> \* @author 開発太郎<br> \*/</code>     |
+| C 風コメント<br>`/* comment */`      | 特定のコードを無効化したいが、後で使用するかもしれないので残しておくためにコメント化する時や、デバッグ時に一時的に無効化するときに使用する。                                                          | <code class="comment-code">/\*<br> このコードは J.T.Kirk によって 1997.12.9 に前述のコードと置き換えたためコメント化した。2 年間不要であるならば削除せよ。<br> ... (ソースコード) <br>\*/</code> |
 | 単一行コメント<br>`// comment`       | メソッド内にて、ビジネスロジック、コードの概要、一時変数の定義内容などを記述する。                                                                                                                    | <code class="comment-code">// 1995 年 2 月に開始された X 氏の寛大なキャンペーンで<br>// 定められた通り 1000$を超える請求には、全て 5%割引を<br>// 適用する。</code>                              |
 
 ※ ロジック中に、頻繁に C 風コメントでコメントを書くとまとめてコメントアウトする場合に不便なため、基本的にロジック中では単一行コメントを利用すること。
@@ -2567,7 +2567,7 @@ List の処理を行う際、拡張 for 文で処理する場合は Iterator イ
 小中規模の処理量であれば考慮するほどの性能差はありませんが、大量の処理が見込まれる場合は考慮が必要です。  
 また、Stream API は並列処理（スレッド処理）の機能をサポートしていますので、利用できる場合は並列処理も含めての検証が必要です。
 
-<a id="ラムダ式・メソッド参照・コンストラクタ参照-2"></a>
+<span id="ラムダ式メソッド参照コンストラクタ参照-1"></span>
 
 ## ラムダ式・メソッド参照・コンストラクタ参照
 

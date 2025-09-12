@@ -1091,7 +1091,7 @@ CORS（Cross-Origin Resource Sharing）のために、options メソッドの追
 
 ただし、Amazon API Gateway のようなサービスを利用する場合は、options メソッドの記載が必須である場合は除く[^1]。
 
-[^1]: https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/enable-cors-for-resource-using-swagger-importer-tool.html
+[^1]: <https://docs.aws.amazon.com/ja_jp/apigateway/latest/developerguide/enable-cors-for-resource-using-swagger-importer-tool.html>
 
 # OpenTelemetry Traceparent HTTP Header
 
