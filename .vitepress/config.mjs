@@ -22,6 +22,10 @@ const links = {
       link: "/documents/forJava/Javaコーディング規約.html",
     },
     {
+      text: "For Java17",
+      link: "/documents/forJava/Javaコーディング規約_for_17.html",
+    },
+    {
       text: "For Java11",
       link: "/documents/forJava/Javaコーディング規約_for_11.html",
     },
@@ -139,6 +143,10 @@ export default defineConfig({
               {
                 text: "Javaコーディング規約",
                 link: "/documents/forJava/Javaコーディング規約.html",
+              },
+              {
+                text: "Javaコーディング規約 for Java17",
+                link: "/documents/forJava/Javaコーディング規約_for_17.html",
               },
               {
                 text: "Javaコーディング規約 for Java11",
