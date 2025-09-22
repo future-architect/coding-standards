@@ -40,13 +40,11 @@ export default defineConfig([
     files: ["**/*.md", "*.md"],
     extends: [
       markdown.configs.recommended,
-      markdownPreferences.configs.recommended,
+      markdownPreferences.configs.standard,
       markdownLinks.configs.recommended,
     ],
     rules: {
       "markdown/no-multiple-h1": "off",
-      // TODO 修正が大きいので一旦無効化
-      "markdown-preferences/hard-linebreak-style": "off",
       "markdown-links/no-dead-urls": [
         "error",
         {
