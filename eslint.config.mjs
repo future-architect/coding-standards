@@ -40,13 +40,18 @@ export default defineConfig([
     files: ["**/*.md", "*.md"],
     extends: [
       markdown.configs.recommended,
-      markdownPreferences.configs.recommended,
+      markdownPreferences.configs.standard,
       markdownLinks.configs.recommended,
     ],
+    language: "markdown-preferences/extended-syntax",
     rules: {
       "markdown/no-multiple-h1": "off",
-      // TODO 修正が大きいので一旦無効化
-      "markdown-preferences/hard-linebreak-style": "off",
+      // Pandoc で変換したときに`:::`がそのまま出力されてしまうので、ちょっとでも不自然に見えないようにpaddingを入れる。
+      // （入れない場合 `:::`の後に文章が続いてしまうので流石に違和感がある。）
+      "markdown-preferences/padded-custom-containers": [
+        "error",
+        { padding: "always" },
+      ],
       "markdown-links/no-dead-urls": [
         "error",
         {

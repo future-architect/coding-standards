@@ -108,6 +108,7 @@ description: "何かしらの説明"
     - account_type
     - register_at
   ```
+
   - YAML は項目定義がネストすることで縦長な定義になりやすい。情報密度を上げるために配列リテラルを推奨する
 
 ## 改行の表現
@@ -297,8 +298,8 @@ schemes:
 Swagger では、次の認証タイプを記載できる（[詳細](https://swagger.io/docs/specification/2-0/authentication/)）。
 
 1. ベーシック認証
-1. API キー（リクエストヘッダ, クエリパラメータ）
-1. OAuth2
+2. API キー（リクエストヘッダ, クエリパラメータ）
+3. OAuth2
 
 もし、認証が必須であれば記載する。全ての Web API で未認証を受け入れる場合は記載しない。認証の要否が API ごとに異なる場合は、各 API 側で `security: []` と記載しして上書き定義する必要がある。
 
@@ -522,6 +523,7 @@ URL に紐づく HTTP メソッドで、1 つの操作を定義します。
           type: string
           ...
   ```
+
   - モデル名は、 `{HTTPメソッド名}{物理名}` の PascalCase で記載する
     - 例: PutUserAccount、PostUserAccount, PatchUserAccount
 
@@ -957,7 +959,7 @@ Swagger 定義で以下の変更を行う場合は、利用するコード生成
 
 # 推奨ツール
 
-[本当に使ってよかった OpenAPI (Swagger) ツール ](https://future-architect.github.io/articles/20191008/) にあるように、様々なツールで開発ができる。VS Code を用いる場合は以下のプラグインを推奨する。
+[本当に使ってよかった OpenAPI (Swagger) ツール](https://future-architect.github.io/articles/20191008/) にあるように、様々なツールで開発ができる。VS Code を用いる場合は以下のプラグインを推奨する。
 
 - [YAML](https://marketplace.visualstudio.com/items?itemName=redhat.vscode-yaml)
 - [Swagger Viewer](https://marketplace.visualstudio.com/items?itemName=Arjun.swagger-viewer)
