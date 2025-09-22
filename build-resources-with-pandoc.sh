@@ -58,11 +58,11 @@ pandoc ./SQLコーディング規約（PostgreSQL）.md --toc --reference-doc=${
 # AWSインフラリソース
 cd ${ROOT_DIR}/documents/forAWSResource
 
-pandoc --from=gfm+fenced_divs ./AWSインフラリソース命名規約.md -s --self-contained --number-sections --toc -t html5 -c ${CSS_PATH} -o ${RESOURCES_DIR}/AWSインフラリソース命名規約.html
-pandoc --from=gfm+fenced_divs ./AWSインフラリソース命名規約.md --toc --reference-doc=${STYLE_DOCX_PATH} -s -o ${RESOURCES_DIR}/AWSインフラリソース命名規約.docx
+pandoc ./AWSインフラリソース命名規約.md --f commonmark_x+fenced_divs -s --self-contained --number-sections --toc -t html5 -c ${CSS_PATH} -o ${RESOURCES_DIR}/AWSインフラリソース命名規約.html
+pandoc ./AWSインフラリソース命名規約.md --f commonmark_x+fenced_divs --toc --reference-doc=${STYLE_DOCX_PATH} -s -o ${RESOURCES_DIR}/AWSインフラリソース命名規約.docx
 
 # OpenAPISpecification
 cd ${ROOT_DIR}/documents/forOpenAPISpecification
 
-pandoc --from=gfm+fenced_divs ./OpenAPI_Specification_3.0.3.md -s --self-contained --number-sections --toc -t html5 -c ${CSS_PATH} --filter mermaid-filter -o ${RESOURCES_DIR}/OpenAPI_Specification_3.0.3.html
-pandoc --from=gfm+fenced_divs ./OpenAPI_Specification_3.0.3.md --toc --reference-doc=${STYLE_DOCX_PATH} -s --filter mermaid-filter -o ${RESOURCES_DIR}/OpenAPI_Specification_3.0.3.docx
+pandoc ./OpenAPI_Specification_3.0.3.md --f commonmark_x+fenced_divs -s --self-contained --number-sections --toc -t html5 -c ${CSS_PATH} --filter mermaid-filter -o ${RESOURCES_DIR}/OpenAPI_Specification_3.0.3.html
+pandoc ./OpenAPI_Specification_3.0.3.md --f commonmark_x+fenced_divs --toc --reference-doc=${STYLE_DOCX_PATH} -s --filter mermaid-filter -o ${RESOURCES_DIR}/OpenAPI_Specification_3.0.3.docx
