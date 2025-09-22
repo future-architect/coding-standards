@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
-      - uses: docker://pandoc/latex:2.19
+      - uses: docker://pandoc/latex:3.7
         with:
           entrypoint: "/bin/sh"
           args: "./build-resources-with-pandoc.sh"
