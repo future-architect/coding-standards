@@ -1399,16 +1399,117 @@ head:
 - `BigDecimal`を`String`変換する際は`toString()`ではなく`toPlainString()`を利用すること  
    `toString()`を利用した場合、指数表記になることがあります。
 
-## 日付
+## 日付と時刻 (java.timeパッケージ)
 
-- 日付の文字列のフォーマットには、`SimpleDateFormat`または`DateTimeFormatter`を使う  
-   良い例：
+- 日付や時刻の扱いは`java.time`パッケージのAPIを標準とする  
+  `java.util.Date`や`java.text.SimpleDateFormat`といった古いAPIは、スレッドセーフではなく、設計上の問題も多いため、**原則として使用を禁止**します。
+
+- 適切な日時クラスを選択する  
+
+  | 利用シーン                                                        | クラス                                                                   |
+  | ----------------------------------------------------------------- | ------------------------------------------------------------------------ |
+  | 日付のみ                                                          | `LocalDate`                                                              |
+  | 時刻のみ                                                          | `LocalTime`                                                              |
+  | 日付と時刻                                                        | `LocalDateTime`                                                          |
+  | タイムゾーンを考慮した日付と時刻                                  | `ZonedDateTime`                                                          |
+  | UTCからのオフセットを考慮した日付と時刻                           | `OffsetDateTime`                                                         |
+  | 特定の日付や時刻に依存しない期間（時間量）<br>例: 2時間30分       | `Duration`                                                               |
+  | 特定の日付や時刻に依存しない期間（日付ベース）<br>例: 1年2ヶ月3日 | `Period`                                                                 |
+  | タイムゾーン                                                      | 常に `ZoneId` を使用<br>`"Asia/Tokyo"`のような地域名で指定することを推奨 |
+
+- 現在の日時を取得する際は、常に`Clock`クラスを依存性注入（DI）して使用することを推奨する  
+
+  良い例:
 
   ```java
-  Date date = new Date();
-  SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-  String s = dateFormat.format(date);
+  // ClockをDIで受け取る
+  public class MyService {
+  private final Clock clock;
+
+  public MyService(Clock clock) {
+    this.clock = clock;
+  }
+
+  public void doSomething() {
+    LocalDateTime now = LocalDateTime.now(clock);
+    // ...
+  }
+  }
   ```
+
+  悪い例:
+
+  ```java
+  // デフォルトのシステム時刻に依存
+  LocalDateTime now = LocalDateTime.now();
+  ```
+
+- 日時のフォーマットとパースには、スレッドセーフな`DateTimeFormatter`を使用する
+
+  良い例:
+
+  ```java
+  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
+  LocalDateTime dateTime = LocalDateTime.parse("2024/10/26 13:45:00", formatter);
+  String formatted = dateTime.format(formatter);
+  ```
+
+- 日時の前後関係を比較する際は、`isAfter()`, `isBefore()`, `isEqual()`メソッドを使用する  
+  `<`や`>`などの比較演算子は使用不可
+
+  良い例:
+
+  ```java
+  if (dateTime1.isAfter(dateTime2)) {
+    // dateTime1がdateTime2より後の場合
+  }
+  ```
+
+- 日時の加算・減算には`plus()`, `minus()`メソッドを使用する  
+  エポック秒（ミリ秒）を直接加算・減算するような計算は、うるう年やサマータイムの考慮漏れに繋がるため使用しない
+
+- 期間の計算には`ChronoUnit`や`Duration`/`Period`クラスを使用する
+
+  良い例:
+
+  ```java
+  // 2週間後を計算
+  LocalDate twoWeeksLater = localDate.plus(2, ChronoUnit.WEEKS);
+  // 90分前を計算
+  LocalDateTime ninetyMinutesAgo = localDateTime.minusMinutes(90);
+  ```
+
+  悪い例:
+
+  ```java
+  long oneHourInMillis = 60 * 60 * 1000;
+  long nextHour = System.currentTimeMillis() + oneHourInMillis; // タイムゾーンやサマータイムの変更に対応できない
+  ```
+
+- `Duration`と`Period`を使い分ける  
+  ナノ秒単位の精度で**時間ベースの期間**（時、分、秒）を扱う場合は`Duration`を使用する。  
+  例：処理時間、タイムアウト設定、有効期限（24時間など）
+
+  **日付ベースの期間**（年、月、日）を扱う場合は`Period`を使用する。  
+  例：契約期間（3ヶ月）、年齢計算
+
+  `Instant`間の差を計算するには`Duration`を使用する。  
+  `Duration.between()`または`Instant.until()`を利用する。
+
+  良い例:
+
+  ```java
+  Instant start = Instant.now();
+  // ...処理
+  Instant end = Instant.now();
+  Duration duration = Duration.between(start, end);
+  System.out.println("処理時間: " + duration.toMillis() + "ミリ秒");
+  ```
+
+- `ZonedDateTime`と`OffsetDateTime`を使い分ける  
+  `ZonedDateTime`: 「東京時間」や「ニューヨーク時間」のように、**特定のタイムゾーンルール（サマータイムを含む）を考慮する必要がある場合**に使用する。ユーザーの地域に合わせた日時を表示する際などに適する。
+
+  `OffsetDateTime`: ログのタイムスタンプやAPI間のデータ交換など、**UTCからの固定オフセット（例: `+09:00`）のみで十分な場合**に使用する。オフセットはサマータイムのルールを保持しないため、将来の日時計算には不向きな場合がある。
 
 ## 三項演算子
 
