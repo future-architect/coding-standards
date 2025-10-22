@@ -22,6 +22,10 @@ const links = {
       link: "/documents/forJava/Javaコーディング規約.html",
     },
     {
+      text: "For Java21",
+      link: "/documents/forJava/Javaコーディング規約_for_21.html",
+    },
+    {
       text: "For Java17",
       link: "/documents/forJava/Javaコーディング規約_for_17.html",
     },
