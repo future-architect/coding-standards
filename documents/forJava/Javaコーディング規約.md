@@ -2683,6 +2683,30 @@ Java では 3 種類のコメントが使える。javadoc コメントは`/**`�
 
 ※ ロジック中に、頻繁に C 風コメントでコメントを書くとまとめてコメントアウトする場合に不便なため、基本的にロジック中では単一行コメントを利用すること。
 
+## 省略記法
+
+- クラス定義を省略した記法を利用する  
+  テストコードや小規模なユーティリティツールなど、本格的なアプリケーション開発以外では、クラス定義を省略したシンプルな記法を利用できる。これにより、`public static void main`といった定型句を省略可能。  
+  また、従来の`System.out`に代わり`java.lang.IO`クラスが提供する`println()`メソッドの利用を推奨するが、`println()`の利用自体はPJでのロガー利用方針に準拠する。
+
+  悪い例：
+
+  ```java
+  public class Hello {
+      public static void main(String[] args) {
+          System.out.println("Hello Java!");
+      }
+  }
+  ```
+
+  良い例：
+
+  ```java
+  void main() {
+      IO.println("Hello Java!");
+  }
+  ```
+
 # パフォーマンス
 
 パフォーマンスを考慮した Java のコーディングについて以下に示す。
