@@ -193,6 +193,27 @@ head:
   }
   ```
 
+- 利用しない変数にはアンダースコア `_` を使用する
+  パターンマッチング、ラムダ式の引数、catch句などで、構文上変数は必要だが実際には利用しない場合、意図を明確にするためにアンダースコア `_` (無名変数・無名パターン)を使用することを推奨する。
+
+  良い例：
+
+  ```java
+  for (String _ : new String[]{"A", "B", "C"}) {
+      // すべての要素もインデックスも無視して”要素の個数分だけ処理を繰り返す”事だけにフォーカスする
+  }
+
+  // anyOpt の内容”の有無”にのみ依存した値を返す
+  anyOpt.map(_ -> "foo").orElseGet(() -> "bar"); 
+
+  // パターンマッチングの利用しない変数
+  switch (obj) {
+      case String s -> System.out.println("String: " + s);
+      case Integer _ -> System.out.println("Ignored integer");
+      default -> System.out.println("Other type");
+  }
+  ```
+
 ## 変数全般
 
 - `boolean`変数は`true`/`false` の状態がわかるようにする
