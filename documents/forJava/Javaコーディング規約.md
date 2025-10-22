@@ -5,7 +5,7 @@ author: Future Enterprise Coding Standards
 head:
   - - meta
     - name: keywords
-      content: Javaコーディング規約,Java21,コーディング規約,Java
+      content: Javaコーディング規約,Java25,コーディング規約,Java
 ---
 
 <page-title/>
