@@ -587,6 +587,16 @@ head:
   import java.util.*;
   ```
 
+- モジュールインポート宣言を利用する  
+  `java.util`や`java.io`など、特定のモジュール（例：`java.base`）に属する多数のクラスを利用する場合、個別の`import`文の代わりに`import module java.base;`のようなモジュールインポート宣言の使用を推奨する。  
+  ただし、`java.desktop`モジュールをインポートした場合の`List`のように、クラス名が競合する可能性がある場合は、明示的なクラスインポートで解決すること。
+
+  良い例：
+
+  ```java
+  import module java.base;
+  ```
+
 ## コンストラクタ
 
 - public 宣言していないクラスには`public`権限のコンストラクタを作らない  
