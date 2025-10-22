@@ -208,9 +208,9 @@ head:
 
   // パターンマッチングの利用しない変数
   switch (obj) {
-      case String s -> System.out.println("String: " + s);
-      case Integer _ -> System.out.println("Ignored integer");
-      default -> System.out.println("Other type");
+      case String s -> IO.println("String: " + s);
+      case Integer _ -> IO.println("Ignored integer");
+      default -> IO.println("Other type");
   }
   ```
 
@@ -1284,7 +1284,7 @@ head:
   for (String s : array) {
       builder.append(s);
   }
-  System.out.println(builder.toString());
+  IO.println(builder.toString());
   ```
 
   悪い例：
@@ -1294,7 +1294,7 @@ head:
   for (String s : array) {
       string += s;
   }
-  System.out.println(string);
+  IO.println(string);
   ```
 
     <br>
@@ -1380,7 +1380,7 @@ head:
   BigDecimal a = new BigDecimal("1");
   BigDecimal b = new BigDecimal("1.0");
   if (a.compareTo(b) == 0) {
-      System.out.println("一致");
+      IO.println("一致");
   }
   ```
 
@@ -1391,7 +1391,7 @@ head:
   BigDecimal b = new BigDecimal("1.0");
 
   if (a.equals(b)) {
-      System.out.println("精度が違うためこの分岐には入らない");
+      IO.println("精度が違うためこの分岐には入らない");
   }
   ```
 
@@ -1503,7 +1503,7 @@ head:
   // ...処理
   Instant end = Instant.now();
   Duration duration = Duration.between(start, end);
-  System.out.println("処理時間: " + duration.toMillis() + "ミリ秒");
+  IO.println("処理時間: " + duration.toMillis() + "ミリ秒");
   ```
 
 - `ZonedDateTime`と`OffsetDateTime`を使い分ける  
@@ -2272,7 +2272,7 @@ head:
   ```java
   static void execute(Object obj) {
       if (obj instanceof Point(int x, int y)) {
-          System.out.println(x + y);
+          IO.println(x + y);
       }
   }
   ```
@@ -2283,7 +2283,7 @@ head:
   if (obj instanceof Point p) {
           int x = p.x();
           int y = p.y();
-          System.out.println(x+y);
+          IO.println(x+y);
       }
   ```
 
@@ -2427,7 +2427,7 @@ head:
           String message = \"""
                   テキストブロックです。
                   \""";
-          System.out.println(message);
+          IO.println(message);
           """;
   ```
 
@@ -2438,14 +2438,14 @@ head:
           String message = \"\"\"
                   テキストブロックです。
                   \"\"\";
-          System.out.println(message);
+          IO.println(message);
           """;
 
   String javaCode = """
           String message = ""\"
                   テキストブロックです。
                   ""\";
-          System.out.println(message);
+          IO.println(message);
           """;
   ```
 
