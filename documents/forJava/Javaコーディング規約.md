@@ -1364,6 +1364,11 @@ head:
       .collect(Collectors.joining("\n"));
   ```
 
+- 文字列をフォーマットするときは、`formatted()`メソッドの利用を推奨する  
+  `String.format`と`String#formatted`で性能・例外はほぼ同等であり、可読性の観点からロケールの指定が不要な多くのケースでメリットを享受できる。  
+  ロケールの指定が必要な場合は`String.format`を利用すること。  
+  新規コードでは`formatted()`の利用を基本方針とし、既存コードでの統一はPJで検討すること。
+
 ## 数値
 
 - 誤差の無い計算をするときは、`BigDecimal` クラスを使う  
