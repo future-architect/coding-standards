@@ -4,6 +4,11 @@ on:
   push:
     branches: [master]
 
+# Allow one concurrent deployment
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   deploy-docs:
     runs-on: ubuntu-latest
