@@ -4,12 +4,17 @@ on:
   push:
     branches: [master]
 
+# Allow one concurrent deployment
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   deploy-docs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@v6
       - uses: docker://pandoc/latex:2.19
         with:
           entrypoint: "/bin/sh"
