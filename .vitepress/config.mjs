@@ -1,6 +1,7 @@
 import { fileURLToPath } from "url";
 import { defineConfig as defineConfigBase } from "vitepress";
 import { withMermaid } from "vitepress-plugin-mermaid";
+import llmstxt from "vitepress-plugin-llms";
 import { Module } from "module";
 import markdownItTaskLists from "markdown-it-task-lists";
 import markdownItFootnote from "markdown-it-footnote";
@@ -106,7 +107,14 @@ export default defineConfig({
       },
     ],
   ],
-  srcExclude: ["./README.md"],
+  vite: {
+    plugins: [
+      llmstxt({
+        ignoreFiles: ["index.md", "documents/**/index.md"],
+      }),
+    ],
+  },
+  srcExclude: ["./README.md", "./docs/**/*.md"],
   base: "/coding-standards/",
   themeConfig: {
     siteTitle: "Future Enterprise <wbr>Coding Standards",
