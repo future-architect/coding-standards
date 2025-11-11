@@ -46,5 +46,6 @@ hero:
 
 ## Articles
 
+- 2025.09.12 [コーディング規約を Java 21 対応にアップデートしました](https://future-architect.github.io/articles/20250912a/)
 - 2021.10.07 [Java17対応版！Javaコーディング規約の紹介](https://future-architect.github.io/articles/20211007a/)
 - 2016.09.02 [システム屋さんがうれしいJava8対応のコーディング規約を公開します！！](https://future-architect.github.io/articles/20160902/)
