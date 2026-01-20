@@ -60,6 +60,8 @@ export default defineConfig([
             // サイトは削除されているがドキュメントとしては残すリンク
             "https://www.acroquest.co.jp/webworkshop/javacordingrule/Acroquest_JavaCodingStandard_6_7.pdf",
             "http://www.fedict.belgium.be/sites/default/files/downloads/Java_J2EE_conventions_and_guidelines_EN.pdf",
+            // デプロイ前の参照を無視するリンク
+            "https://github.com/future-architect/coding-standards/blob/master/documents/forJava/Javaコーディング規約_for_21.md",
           ],
         },
       ],

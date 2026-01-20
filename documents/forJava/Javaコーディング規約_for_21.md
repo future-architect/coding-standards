@@ -5,7 +5,7 @@ author: Future Enterprise Coding Standards
 head:
   - - meta
     - name: keywords
-      content: Javaコーディング規約,Java25,コーディング規約,Java
+      content: Javaコーディング規約,Java21,コーディング規約,Java
 ---
 
 <page-title/>
@@ -190,27 +190,6 @@ head:
 
   public double calc(double _value) {
       return this.value * _value;
-  }
-  ```
-
-- 利用しない変数にはアンダースコア `_` を使用する
-  パターンマッチング、ラムダ式の引数、catch句などで、構文上変数は必要だが実際には利用しない場合、意図を明確にするためにアンダースコア `_` (無名変数・無名パターン)を使用することを推奨する。
-
-  良い例：
-
-  ```java
-  for (String _ : new String[]{"A", "B", "C"}) {
-      // すべての要素もインデックスも無視して”要素の個数分だけ処理を繰り返す”事だけにフォーカスする
-  }
-
-  // anyOpt の内容”の有無”にのみ依存した値を返す
-  anyOpt.map(_ -> "foo").orElseGet(() -> "bar");
-
-  // パターンマッチングの利用しない変数
-  switch (obj) {
-      case String s -> IO.println("String: " + s);
-      case Integer _ -> IO.println("Ignored integer");
-      default -> IO.println("Other type");
   }
   ```
 
@@ -587,16 +566,6 @@ head:
   import java.util.*;
   ```
 
-- モジュールインポート宣言を利用する  
-  `java.util`や`java.io`など、特定のモジュール（例：`java.base`）に属する多数のクラスを利用する場合、個別の`import`文の代わりに`import module java.base;`のようなモジュールインポート宣言の使用を推奨する。  
-  ただし、`java.desktop`モジュールをインポートした場合の`List`のように、クラス名が競合する可能性がある場合は、明示的なクラスインポートで解決すること。
-
-  良い例：
-
-  ```java
-  import module java.base;
-  ```
-
 ## コンストラクタ
 
 - public 宣言していないクラスには`public`権限のコンストラクタを作らない  
@@ -956,35 +925,6 @@ head:
 - スーパークラスで private 宣言されているメソッドと同じ名前のメソッドをサブクラスで定義しない  
    スーパークラスにある private メソッドと同じ名前のメソッドをサブクラスで定義しないこと。private メソッドはオーバーライドされず全く別のメソッドとして扱われ、他の人の混乱を招き、バグにつながる恐れがある。
 
-- サブクラスのコンストラクタで`super()`呼び出し前の処理を利用する  
-  スーパークラスのコンストラクタに渡す引数の検証や構築が必要な場合、`super()`呼び出しの前にロジックを記述することを推奨する。  
-  これにより、従来行われていたprivateコンストラクタへの委譲などの迂回策を避け、より自然なコードを記述が可能。
-  ただし、`super()`呼び出しの前にインスタンスフィールドへアクセスするとコンパイルエラーになる点に注意すること。
-
-  悪い例：
-
-  ```java
-  class Bar extends Foo {
-    private Bar(List<String> l) {
-      super(l, l);
-    }
-    Bar() {
-      this(List.of("abc", "def"));
-    }
-  }
-  ```
-
-  良い例：
-
-  ```java
-  class Bar extends Foo {
-    Bar() {
-      var param = List.of("abc", "def"); // super() の前にロジックを記述
-      super(param, param);
-    }
-  }
-  ```
-
 ## インナークラス
 
 - 原則としてインナークラスは利用しない  
@@ -1284,7 +1224,7 @@ head:
   for (String s : array) {
       builder.append(s);
   }
-  IO.println(builder.toString());
+  System.out.println(builder.toString());
   ```
 
   悪い例：
@@ -1294,7 +1234,7 @@ head:
   for (String s : array) {
       string += s;
   }
-  IO.println(string);
+  System.out.println(string);
   ```
 
     <br>
@@ -1364,11 +1304,6 @@ head:
       .collect(Collectors.joining("\n"));
   ```
 
-- 文字列をフォーマットするときは、`formatted()`メソッドの利用を推奨する  
-  `String.format`と`String#formatted`で性能・例外はほぼ同等であり、可読性の観点からロケールの指定が不要な多くのケースでメリットを享受できる。  
-  ロケールの指定が必要な場合は`String.format`を利用すること。  
-  新規コードでは`formatted()`の利用を基本方針とし、既存コードでの統一はPJで検討すること。
-
 ## 数値
 
 - 誤差の無い計算をするときは、`BigDecimal` クラスを使う  
@@ -1380,7 +1315,7 @@ head:
   BigDecimal a = new BigDecimal("1");
   BigDecimal b = new BigDecimal("1.0");
   if (a.compareTo(b) == 0) {
-      IO.println("一致");
+      System.out.println("一致");
   }
   ```
 
@@ -1391,7 +1326,7 @@ head:
   BigDecimal b = new BigDecimal("1.0");
 
   if (a.equals(b)) {
-      IO.println("精度が違うためこの分岐には入らない");
+      System.out.println("精度が違うためこの分岐には入らない");
   }
   ```
 
@@ -1399,117 +1334,16 @@ head:
 - `BigDecimal`を`String`変換する際は`toString()`ではなく`toPlainString()`を利用すること  
    `toString()`を利用した場合、指数表記になることがあります。
 
-## 日付と時刻 (java.timeパッケージ)
+## 日付
 
-- 日付や時刻の扱いは`java.time`パッケージのAPIを標準とする  
-  `java.util.Date`や`java.text.SimpleDateFormat`といった古いAPIは、スレッドセーフではなく、設計上の問題も多いため、**原則として使用を禁止**します。
-
-- 適切な日時クラスを選択する
-
-  | 利用シーン                                                        | クラス                                                                   |
-  | ----------------------------------------------------------------- | ------------------------------------------------------------------------ |
-  | 日付のみ                                                          | `LocalDate`                                                              |
-  | 時刻のみ                                                          | `LocalTime`                                                              |
-  | 日付と時刻                                                        | `LocalDateTime`                                                          |
-  | タイムゾーンを考慮した日付と時刻                                  | `ZonedDateTime`                                                          |
-  | UTCからのオフセットを考慮した日付と時刻                           | `OffsetDateTime`                                                         |
-  | 特定の日付や時刻に依存しない期間（時間量）<br>例: 2時間30分       | `Duration`                                                               |
-  | 特定の日付や時刻に依存しない期間（日付ベース）<br>例: 1年2ヶ月3日 | `Period`                                                                 |
-  | タイムゾーン                                                      | 常に `ZoneId` を使用<br>`"Asia/Tokyo"`のような地域名で指定することを推奨 |
-
-- 現在の日時を取得する際は、常に`Clock`クラスを依存性注入（DI）して使用することを推奨する
-
-  良い例:
+- 日付の文字列のフォーマットには、`SimpleDateFormat`または`DateTimeFormatter`を使う  
+   良い例：
 
   ```java
-  // ClockをDIで受け取る
-  public class MyService {
-  private final Clock clock;
-
-  public MyService(Clock clock) {
-    this.clock = clock;
-  }
-
-  public void doSomething() {
-    LocalDateTime now = LocalDateTime.now(clock);
-    // ...
-  }
-  }
+  Date date = new Date();
+  SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+  String s = dateFormat.format(date);
   ```
-
-  悪い例:
-
-  ```java
-  // デフォルトのシステム時刻に依存
-  LocalDateTime now = LocalDateTime.now();
-  ```
-
-- 日時のフォーマットとパースには、スレッドセーフな`DateTimeFormatter`を使用する
-
-  良い例:
-
-  ```java
-  DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");
-  LocalDateTime dateTime = LocalDateTime.parse("2024/10/26 13:45:00", formatter);
-  String formatted = dateTime.format(formatter);
-  ```
-
-- 日時の前後関係を比較する際は、`isAfter()`, `isBefore()`, `isEqual()`メソッドを使用する  
-  `<`や`>`などの比較演算子は使用不可
-
-  良い例:
-
-  ```java
-  if (dateTime1.isAfter(dateTime2)) {
-    // dateTime1がdateTime2より後の場合
-  }
-  ```
-
-- 日時の加算・減算には`plus()`, `minus()`メソッドを使用する  
-  エポック秒（ミリ秒）を直接加算・減算するような計算は、うるう年やサマータイムの考慮漏れに繋がるため使用しない
-
-- 期間の計算には`ChronoUnit`や`Duration`/`Period`クラスを使用する
-
-  良い例:
-
-  ```java
-  // 2週間後を計算
-  LocalDate twoWeeksLater = localDate.plus(2, ChronoUnit.WEEKS);
-  // 90分前を計算
-  LocalDateTime ninetyMinutesAgo = localDateTime.minusMinutes(90);
-  ```
-
-  悪い例:
-
-  ```java
-  long oneHourInMillis = 60 * 60 * 1000;
-  long nextHour = System.currentTimeMillis() + oneHourInMillis; // タイムゾーンやサマータイムの変更に対応できない
-  ```
-
-- `Duration`と`Period`を使い分ける  
-  ナノ秒単位の精度で**時間ベースの期間**（時、分、秒）を扱う場合は`Duration`を使用する。  
-  例：処理時間、タイムアウト設定、有効期限（24時間など）
-
-  **日付ベースの期間**（年、月、日）を扱う場合は`Period`を使用する。  
-  例：契約期間（3ヶ月）、年齢計算
-
-  `Instant`間の差を計算するには`Duration`を使用する。  
-  `Duration.between()`または`Instant.until()`を利用する。
-
-  良い例:
-
-  ```java
-  Instant start = Instant.now();
-  // ...処理
-  Instant end = Instant.now();
-  Duration duration = Duration.between(start, end);
-  IO.println("処理時間: " + duration.toMillis() + "ミリ秒");
-  ```
-
-- `ZonedDateTime`と`OffsetDateTime`を使い分ける  
-  `ZonedDateTime`: 「東京時間」や「ニューヨーク時間」のように、**特定のタイムゾーンルール（サマータイムを含む）を考慮する必要がある場合**に使用する。ユーザーの地域に合わせた日時を表示する際などに適する。
-
-  `OffsetDateTime`: ログのタイムスタンプやAPI間のデータ交換など、**UTCからの固定オフセット（例: `+09:00`）のみで十分な場合**に使用する。オフセットはサマータイムのルールを保持しないため、将来の日時計算には不向きな場合がある。
 
 ## 三項演算子
 
@@ -2001,8 +1835,6 @@ head:
 - インデントは統合開発環境の提供するフォーマッタに合わせる
 - 中間処理の数は 3 つ（3 行）程度までを推奨する  
    中間処理の記述が多くなると可読性も悪くなり、デバッグも難しくなるため、3 行程度を目安にロジックを検討すること。
-- 順序を前提とした中間処理には`gather()`メソッドの利用を検討する  
-  移動平均の計算や、要素を重複させてグルーピングする（スライディングウィンドウ）など、順序や前の要素の状態に依存するステートフルな中間操作を行う場合は、`Gatherers`クラスの利用を検討する。
 - コメントは、原則として処理中には記載しない  
    難解になってしまった場合のみ処理中の記載を認める
 
@@ -2272,7 +2104,7 @@ head:
   ```java
   static void execute(Object obj) {
       if (obj instanceof Point(int x, int y)) {
-          IO.println(x + y);
+          System.out.println(x + y);
       }
   }
   ```
@@ -2283,7 +2115,7 @@ head:
   if (obj instanceof Point p) {
           int x = p.x();
           int y = p.y();
-          IO.println(x+y);
+          System.out.println(x+y);
       }
   ```
 
@@ -2427,7 +2259,7 @@ head:
           String message = \"""
                   テキストブロックです。
                   \""";
-          IO.println(message);
+          System.out.println(message);
           """;
   ```
 
@@ -2438,14 +2270,14 @@ head:
           String message = \"\"\"
                   テキストブロックです。
                   \"\"\";
-          IO.println(message);
+          System.out.println(message);
           """;
 
   String javaCode = """
           String message = ""\"
                   テキストブロックです。
                   ""\";
-          IO.println(message);
+          System.out.println(message);
           """;
   ```
 
@@ -2682,30 +2514,6 @@ Java では 3 種類のコメントが使える。javadoc コメントは`/**`�
 | 単一行コメント<br>`// comment`       | メソッド内にて、ビジネスロジック、コードの概要、一時変数の定義内容などを記述する。                                                                                                                    | <code class="comment-code">// 1995 年 2 月に開始された X 氏の寛大なキャンペーンで<br>// 定められた通り 1000$を超える請求には、全て 5%割引を<br>// 適用する。</code>                              |
 
 ※ ロジック中に、頻繁に C 風コメントでコメントを書くとまとめてコメントアウトする場合に不便なため、基本的にロジック中では単一行コメントを利用すること。
-
-## 省略記法
-
-- クラス定義を省略した記法を利用する  
-  テストコードや小規模なユーティリティツールなど、本格的なアプリケーション開発以外では、クラス定義を省略したシンプルな記法を利用できる。これにより、`public static void main`といった定型句を省略可能。  
-  また、従来の`System.out`に代わり`java.lang.IO`クラスが提供する`println()`メソッドの利用を推奨するが、`println()`の利用自体はPJでのロガー利用方針に準拠する。
-
-  悪い例：
-
-  ```java
-  public class Hello {
-      public static void main(String[] args) {
-          System.out.println("Hello Java!");
-      }
-  }
-  ```
-
-  良い例：
-
-  ```java
-  void main() {
-      IO.println("Hello Java!");
-  }
-  ```
 
 # パフォーマンス
 
