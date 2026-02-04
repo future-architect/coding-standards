@@ -25,7 +25,7 @@ jobs:
         run: npm i -f
       - name: Format
         run: npm run format
-      - uses: peter-evans/create-pull-request@v7
+      - uses: peter-evans/create-pull-request@v8
         with:
           commit-message: Format
           branch: format
