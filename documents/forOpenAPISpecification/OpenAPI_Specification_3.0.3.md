@@ -58,7 +58,7 @@ OpenAPI ドキュメントは JSON 形式、YAML 形式いずれかのフォー�
 
 ## ファイル名
 
-ファイルの拡張子は `yaml` とする。通常ファイル名は `openapi.yaml` を推奨する。
+ファイルの拡張子は `yaml` とする。通常ファイル名は `openapi.yaml` を推奨する（公式ドキュメントの推奨であり、GitLab上でSwagger UIのプレビューなどの機能も利用できるため）。
 
 もし、複数の定義を管理したい場合は `${service}_openapi.yaml` とする。
 
