@@ -27,9 +27,9 @@
   "devDependencies": {
     "@actions/github": "^9.0.0",
     "@eslint/eslintrc": "^3.2.0",
-    "@eslint/js": "^9.34.0",
+    "@eslint/js": "^10.0.0",
     "@eslint/markdown": "^7.2.0",
-    "eslint": "^9.34.0",
+    "eslint": "^10.0.0",
     "eslint-config-prettier": "^10.0.0",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-markdown-links": "^0.7.0",
