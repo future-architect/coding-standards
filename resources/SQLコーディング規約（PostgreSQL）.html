@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <meta name="author" content="Future Enterprise Coding Standards" />
+  <title>SQLコーディング規約（PostgreSQL）</title>
+  <style>
+
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+
+ul.task-list[class]{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+font-size: inherit;
+width: 0.8em;
+margin: 0 0.8em 0.2em -1.6em;
+vertical-align: middle;
+}
+.display.math{display: block; text-align: center; margin: 0.5rem auto;}
+
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+  <style type="text/css">body {
+font-family: Helvetica, arial, sans-serif;
+font-size: 14px;
+line-height: 1.6;
+padding-top: 10px;
+padding-bottom: 10px;
+background-color: white;
+padding: 30px;
+}
+body > *:first-child {
+margin-top: 0 !important;
+}
+body > *:last-child {
+margin-bottom: 0 !important;
+}
+body {
+margin-left: 300px;
+}
+#TOC {
+position: fixed;
+left: 0;
+top: 0;
+bottom: 0;
+overflow-y: auto;
+width: 300px;
+transition:
+width,
+font-size,
+opacity 300ms,
+300ms,
+300ms ease-in-out,
+ease-in-out,
+ease-in-out;
+padding-left: 1em;
+box-sizing: border-box;
+}
+#TOC ul {
+margin: 0 0 0 1em;
+padding: 0;
+}
+@media all and (max-width: 1000px) {
+body {
+margin-left: 0;
+}
+#TOC {
+overflow: hidden;
+width: 0;
+opacity: 0;
+}
+}
+@media print {
+body {
+margin-left: 0;
+}
+#TOC {
+display: none;
+}
+}
+@media print {
+.print-hidden {
+display: none;
+}
+}
+h1.title {
+font-size: 42px;
+border-bottom: 2px solid #cccccc;
+}
+@media print {
+h1.title {
+text-align: center;
+margin-top: 50%;
+page-break-before: auto;
+}
+}
+h2.author {
+font-size: 12px;
+border: none;
+color: initial;
+text-align: right;
+margin: 0;
+page-break-after: always;
+}
+h1 {
+page-break-before: always;
+}
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+margin: 20px 0 10px;
+padding: 0;
+font-weight: bold;
+-webkit-font-smoothing: antialiased;
+cursor: text;
+position: relative;
+page-break-after: avoid;
+}
+a {
+color: #4183c4;
+}
+h1 {
+font-size: 28px;
+color: black;
+}
+h2 {
+font-size: 24px;
+border-bottom: 1px solid #cccccc;
+color: black;
+}
+h3 {
+font-size: 18px;
+}
+h4 {
+font-size: 16px;
+}
+h5 {
+font-size: 14px;
+}
+h6 {
+color: #777777;
+font-size: 14px;
+}
+p,
+blockquote,
+ul,
+ol,
+dl,
+li,
+table,
+pre {
+margin: 15px 0;
+}
+hr {
+border: none;
+border-bottom: 1px dashed #cccccc;
+}
+table {
+padding: 0;
+border-collapse: collapse;
+}
+table tr th {
+font-weight: bold;
+border: 1px solid #cccccc;
+text-align: left;
+padding: 6px 13px;
+}
+table tr td {
+border: 1px solid #cccccc;
+padding: 6px 13px;
+}
+table tr:nth-child(2n) {
+background-color: #f8f8f8;
+}
+table * {
+word-wrap: break-word;
+word-break: break-all;
+}
+pre {
+background-color: #f8f8f8;
+border: 1px solid #cccccc;
+font-size: 13px;
+line-height: 19px;
+overflow: auto;
+padding: 6px 10px;
+border-radius: 3px;
+}
+pre code {
+margin: 0;
+padding: 0;
+white-space: pre;
+border: none;
+background: transparent;
+}
+code,
+tt {
+margin: 0 2px;
+padding: 0 5px;
+white-space: nowrap;
+border: 1px solid #eaeaea;
+background-color: #f8f8f8;
+border-radius: 3px;
+}
+div.sourceCode {
+page-break-before: avoid;
+page-break-inside: avoid;
+}
+li * {
+margin: 0;
+}
+blockquote {
+border-left: 4px solid #dddddd;
+padding: 0 15px;
+color: #777777;
+}
+blockquote > :first-child {
+margin-top: 0;
+}
+blockquote > :last-child {
+margin-bottom: 0;
+}
+code.comment-code {
+display: block;
+white-space: pre;
+}
+table {
+overflow: auto;
+display: block;
+}
+@media screen and (max-width: 1300px) and (min-width: 1001px) {
+#TOC {
+font-size: 80%;
+width: 200px;
+}
+body {
+margin-left: 200px;
+}
+}
+@media screen and (max-width: 1100px) and (min-width: 1001px) {
+#TOC {
+font-size: 60%;
+width: 150px;
+}
+body {
+margin-left: 150px;
+}
+table tr td {
+font-size: 80%;
+padding: 3px 6px;
+}
+}
+@media all and (max-width: 1000px) {
+table tr td {
+font-size: 80%;
+padding: 3px 6px;
+}
+}
+@media all and (max-width: 800px) {
+table tr td {
+font-size: 70%;
+}
+}
+@media all and (max-width: 600px) {
+table tr td {
+font-size: 60%;
+}
+}
+</style>
+</head>
+<body>
+<header id="title-block-header">
+<h1 class="title">SQLコーディング規約（PostgreSQL）</h1>
+<p class="author">Future Enterprise Coding Standards</p>
+</header>
+<nav id="TOC" role="doc-toc">
+<ul>
+<li><a href="#はじめに" id="toc-はじめに"><span class="toc-section-number">1</span> はじめに</a>
+<ul>
+<li><a href="#前提条件" id="toc-前提条件"><span class="toc-section-number">1.1</span> 前提条件</a></li>
+</ul></li>
+<li><a href="#sql-コーティング規約可読性管理性" id="toc-sql-コーティング規約可読性管理性"><span class="toc-section-number">2</span> SQL
+コーティング規約（可読性・管理性）</a>
+<ul>
+<li><a href="#書式全般" id="toc-書式全般"><span class="toc-section-number">2.1</span> 書式全般</a></li>
+<li><a href="#予約語" id="toc-予約語"><span class="toc-section-number">2.2</span> 予約語</a></li>
+<li><a href="#予約語以外" id="toc-予約語以外"><span class="toc-section-number">2.3</span> 予約語以外</a></li>
+<li><a href="#短縮名称" id="toc-短縮名称"><span class="toc-section-number">2.4</span> 短縮名称</a></li>
+<li><a href="#文字コード" id="toc-文字コード"><span class="toc-section-number">2.5</span> 文字コード</a></li>
+<li><a href="#不要な空白文字スペースは除去する" id="toc-不要な空白文字スペースは除去する"><span class="toc-section-number">2.6</span>
+不要な空白文字（スペース）は除去する</a></li>
+<li><a href="#sql-文の整形" id="toc-sql-文の整形"><span class="toc-section-number">2.7</span> SQL 文の整形</a>
+<ul>
+<li><a href="#select-文" id="toc-select-文"><span class="toc-section-number">2.7.1</span> SELECT 文</a></li>
+<li><a href="#insert-文" id="toc-insert-文"><span class="toc-section-number">2.7.2</span> INSERT 文</a></li>
+<li><a href="#update-文" id="toc-update-文"><span class="toc-section-number">2.7.3</span> UPDATE 文</a></li>
+<li><a href="#delete-文" id="toc-delete-文"><span class="toc-section-number">2.7.4</span> DELETE 文</a></li>
+<li><a href="#and副問い合わせ" id="toc-and副問い合わせ"><span class="toc-section-number">2.7.5</span> AND（副問い合わせ）</a></li>
+<li><a href="#case-式" id="toc-case-式"><span class="toc-section-number">2.7.6</span> CASE 式</a></li>
+<li><a href="#in-句" id="toc-in-句"><span class="toc-section-number">2.7.7</span> IN 句</a></li>
+<li><a href="#比較演算子" id="toc-比較演算子"><span class="toc-section-number">2.7.8</span> 比較演算子</a></li>
+<li><a href="#改行位置" id="toc-改行位置"><span class="toc-section-number">2.7.9</span> 改行位置</a></li>
+<li><a href="#with-句" id="toc-with-句"><span class="toc-section-number">2.7.10</span> WITH 句</a></li>
+<li><a href="#limit-句-offset-句" id="toc-limit-句-offset-句"><span class="toc-section-number">2.7.11</span> LIMIT 句 OFFSET 句</a></li>
+<li><a href="#hint-句" id="toc-hint-句"><span class="toc-section-number">2.7.12</span> HINT 句</a></li>
+</ul></li>
+<li><a href="#コメント" id="toc-コメント"><span class="toc-section-number">2.8</span> コメント</a></li>
+<li><a href="#型変換" id="toc-型変換"><span class="toc-section-number">2.9</span> 型変換</a></li>
+<li><a href="#比較演算子-1" id="toc-比較演算子-1"><span class="toc-section-number">2.10</span> 比較演算子</a></li>
+<li><a href="#order-by-句" id="toc-order-by-句"><span class="toc-section-number">2.11</span> ORDER BY 句</a></li>
+<li><a href="#group-by-句" id="toc-group-by-句"><span class="toc-section-number">2.12</span> GROUP BY 句</a></li>
+<li><a href="#exists-句" id="toc-exists-句"><span class="toc-section-number">2.13</span> EXISTS 句</a></li>
+<li><a href="#as-句" id="toc-as-句"><span class="toc-section-number">2.14</span> AS 句</a></li>
+<li><a href="#where-句" id="toc-where-句"><span class="toc-section-number">2.15</span> WHERE 句</a></li>
+<li><a href="#count-文" id="toc-count-文"><span class="toc-section-number">2.16</span> COUNT 文</a></li>
+<li><a href="#文字列リテラル" id="toc-文字列リテラル"><span class="toc-section-number">2.17</span> 文字列リテラル</a>
+<ul>
+<li><a href="#エスケープシーケンス" id="toc-エスケープシーケンス"><span class="toc-section-number">2.17.1</span> エスケープシーケンス</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#sql-コーディング規約パフォーマンス性" id="toc-sql-コーディング規約パフォーマンス性"><span class="toc-section-number">3</span> SQL
+コーディング規約（パフォーマンス性）</a>
+<ul>
+<li><a href="#検索" id="toc-検索"><span class="toc-section-number">3.1</span> 検索</a></li>
+<li><a href="#挿入" id="toc-挿入"><span class="toc-section-number">3.2</span> 挿入</a></li>
+<li><a href="#更新" id="toc-更新"><span class="toc-section-number">3.3</span> 更新</a></li>
+<li><a href="#削除" id="toc-削除"><span class="toc-section-number">3.4</span> 削除</a></li>
+<li><a href="#distinct-句" id="toc-distinct-句"><span class="toc-section-number">3.5</span> DISTINCT 句</a></li>
+<li><a href="#in-句-1" id="toc-in-句-1"><span class="toc-section-number">3.6</span> IN 句</a></li>
+<li><a href="#not-in-句" id="toc-not-in-句"><span class="toc-section-number">3.7</span> NOT IN 句</a></li>
+<li><a href="#union-句" id="toc-union-句"><span class="toc-section-number">3.8</span> UNION 句</a></li>
+<li><a href="#select-for-update" id="toc-select-for-update"><span class="toc-section-number">3.9</span> SELECT FOR UPDATE</a></li>
+<li><a href="#分析関数" id="toc-分析関数"><span class="toc-section-number">3.10</span> 分析関数</a></li>
+<li><a href="#インデックス" id="toc-インデックス"><span class="toc-section-number">3.11</span> インデックス</a></li>
+<li><a href="#外部結合" id="toc-外部結合"><span class="toc-section-number">3.12</span> 外部結合</a></li>
+</ul></li>
+<li><a href="#license" id="toc-license"><span class="toc-section-number">4</span> License</a></li>
+</ul>
+</nav>
+<p><page-title></page-title></p>
+<p>本コーディング規約は、世の中のシステム開発プロジェクトのために無償で提供致します。<br />
+ただし、掲載内容および利用に際して発生した問題、それに伴う損害については、フューチャー株式会社は一切の責務を負わないものとします。<br />
+また、掲載している情報は予告なく変更することがございますので、あらかじめご了承下さい。</p>
+<h1 data-number="1" id="はじめに"><span class="header-section-number">1</span> はじめに</h1>
+<h2 data-number="1.1" id="前提条件"><span class="header-section-number">1.1</span> 前提条件</h2>
+<p>本書は、SQL コーディング規約についてまとめたものである。<br />
+今回 RDBMS として採用する PostgreSQL での SQL
+の使用を前提に記述している。</p>
+<h1 data-number="2" id="sql-コーティング規約可読性管理性"><span class="header-section-number">2</span> SQL
+コーティング規約（可読性・管理性）</h1>
+<p>本章では可読性・管理性を高めることを目的としたコーディング規約について記載する。</p>
+<h2 data-number="2.1" id="書式全般"><span class="header-section-number">2.1</span> 書式全般</h2>
+<p>書式全般についてのコーディング規約を下記に示す。</p>
+<ul>
+<li>1 行につき、1 文のみを記述する。</li>
+<li>SQL 中のインデントは、Java
+コーディング規約にあわせて半角スペースではなくタブ文字とする。</li>
+<li>ヘボン式ローマ字を使用する。</li>
+<li>外来語に関しては、原語の綴りを使用する。</li>
+<li>横は 80 文字を目安に改行する。</li>
+<li>定数を条件に用いる場合やインライン・ビューで取得したいデータなど開発者の意図はコメントにて記載する。</li>
+</ul>
+<h2 data-number="2.2" id="予約語"><span class="header-section-number">2.2</span> 予約語</h2>
+<p>予約語に対しては、小文字を使用する。(例 ：
+<code>select</code>、<code>insert</code>、<code>update</code>、<code>delete</code>
+等)</p>
+<h2 data-number="2.3" id="予約語以外"><span class="header-section-number">2.3</span> 予約語以外</h2>
+<p>予約語以外に対しても、予約語と同様に小文字を使用する。(例 ：
+オブジェクト名、カラム名 等)</p>
+<h2 data-number="2.4" id="短縮名称"><span class="header-section-number">2.4</span> 短縮名称</h2>
+<p>SQL 中に記述するエイリアス名など単語の短縮について示す。</p>
+<ol type="1">
+<li><p>外来語に関しては、原語の短縮形を使用する。短縮形が存在しない場合には、母音を抜かして表記する。<br />
+例) corporation → corp / computer → cmptr</p></li>
+<li><p>ローマ字の短縮は、単語の区切れの頭文字、または母音を抜かした子音字等を利用する。<br />
+例) nichijo → nchj</p></li>
+</ol>
+<ul>
+<li>カラムには必ずテーブルエイリアスを付与する</li>
+<li>テーブルのエイリアスは必ず付与すること。<br />
+必要ない場合（単一テーブルへの SELECT 等）も必ず付与すること<br />
+また、テーブルのエイリアス名は同 SQL
+文の中で重複しないように命名すること。<br />
+（副問い合わせで利用したエイリアス名をメインの SQL
+中のエイリアス名に利用しない。など）</li>
+</ul>
+<h2 data-number="2.5" id="文字コード"><span class="header-section-number">2.5</span> 文字コード</h2>
+<p>SQL ファイルの文字コード（エンコーディング）は Java
+ソースファイルと同じく『 Unicode UTF-8 』で保存する。</p>
+<h2 data-number="2.6" id="不要な空白文字スペースは除去する"><span class="header-section-number">2.6</span>
+不要な空白文字（スペース）は除去する</h2>
+<p>不要な空白文字（スペース）は除去すること。</p>
+<h2 data-number="2.7" id="sql-文の整形"><span class="header-section-number">2.7</span> SQL 文の整形</h2>
+<p>DML 文の節に対する予約語は左揃えにする。<br />
+項目ごとに改行を入れ、項目の前にはインデントを挿入する。カンマは項目の前へ記入する。<br />
+Java ソースファイルのようにファイルの先頭にコメント行を入れると DB
+分析作業に支障があるため禁止とする。<br />
+よって SQL
+ファイルの先頭は必ず<code>select</code>、<code>update</code>、<code>insert</code>、<code>delete</code>の何れかになる。</p>
+<p>物理カラム名、テーブル名に対応する論理名を入れる場合、その後ろに単数行コメント（<code>--</code>）にて記述する。<br />
+SQL
+内に挿入する単数行コメントは、<code>/*（半角スペース）コメント本文（半角スペース）*/</code>
+で行う。<br />
+<code>,</code>（カンマ）と<code>AND</code>については各行の先頭に記述する。（以下の例を参照のこと）<br />
+SQL フレームワークで実行する SQL の場合、SQL
+ステートメントの終わりを示す<code>;</code>（セミコロン）は記述しない。</p>
+<p>良い例：</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">/*</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">    処理名</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">*/</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>    tbl1.column1    <span class="kw">as</span>  column1 <span class="co">-- カラム1</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>,   tbl1.column2    <span class="kw">as</span>  column2 <span class="co">-- カラム2</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>    table1  tbl1    <span class="co">-- テーブル1</span></span></code></pre></div>
+<p>WHERE
+句の<code>=</code>、<code>!=</code>、<code>is</code>（<code>is null</code>の<code>is</code>）の縦位置は揃える。</p>
+<p>良い例：</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    a.ten_no    <span class="op">=</span>   b.ten_no</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="kw">and</span> a.kamoku_cd <span class="op">!=</span>  <span class="st">&#39;1&#39;</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="kw">and</span> a.anken_no  <span class="kw">is</span>  <span class="kw">null</span></span></code></pre></div>
+<h3 data-number="2.7.1" id="select-文"><span class="header-section-number">2.7.1</span> SELECT 文</h3>
+<p>良い例：</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>    tbl1.column1    <span class="kw">as</span>  column1 <span class="co">-- カラム1</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>,   tbl1.column2    <span class="kw">as</span>  column2 <span class="co">-- カラム2</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    table1  tbl1    <span class="co">-- テーブル1</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    tbl1.column3    <span class="op">=</span>   <span class="dv">1</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a><span class="kw">order</span> <span class="kw">by</span></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>    tbl1.column1</span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>,   tbl1.column2</span></code></pre></div>
+<h3 data-number="2.7.2" id="insert-文"><span class="header-section-number">2.7.2</span> INSERT 文</h3>
+<p>良い例：</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">insert</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="kw">into</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>    table1  <span class="co">-- テーブル1</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>    column1 <span class="co">-- カラム1</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>,   column2 <span class="co">-- カラム2</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>,   column3 <span class="co">-- カラム3</span></span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a>) <span class="kw">values</span> (</span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>    value1</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>,   value2</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>,   value3</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>)</span></code></pre></div>
+<h3 data-number="2.7.3" id="update-文"><span class="header-section-number">2.7.3</span> UPDATE 文</h3>
+<p>良い例：</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="kw">update</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>    table1  tbl1    <span class="co">-- テーブル1</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="kw">set</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    tbl1.column2    <span class="op">=</span>   <span class="dv">100</span> <span class="co">-- カラム2</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>,   tbl1.column3    <span class="op">=</span>   <span class="dv">100</span> <span class="co">-- カラム3</span></span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    tbl1.column1    <span class="op">=</span>   <span class="dv">10</span></span></code></pre></div>
+<h3 data-number="2.7.4" id="delete-文"><span class="header-section-number">2.7.4</span> DELETE 文</h3>
+<p>良い例：</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">delete</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span></span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    table1  tbl1    <span class="co">-- テーブル1</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>    tbl1.<span class="fu">value</span>  <span class="op">=</span>   <span class="dv">1</span></span></code></pre></div>
+<h3 data-number="2.7.5" id="and副問い合わせ"><span class="header-section-number">2.7.5</span> AND（副問い合わせ）</h3>
+<p>良い例：</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="kw">and</span> xxx <span class="op">=</span>   (</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>        <span class="kw">select</span></span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>            tbl1.column1</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>        ,   tbl1.column2</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        <span class="kw">from</span></span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>            table1  tbl1</span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div>
+<h3 data-number="2.7.6" id="case-式"><span class="header-section-number">2.7.6</span> CASE 式</h3>
+<p>CASE 式は下記のように記載すること。</p>
+<p>良い例：</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="cf">case</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">when</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>        xxx.hoge    <span class="op">=</span>   yyy.fuga</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">and</span> xxx.fuga    <span class="op">=</span>   yyy.fuga</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">then</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>        <span class="dv">1</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a>        <span class="dv">0</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="cf">end</span></span></code></pre></div>
+<p><code>case</code>、<code>when</code>、<code>then</code>、<code>else</code>の後に改行を挿入すること。<br />
+<code>case</code>の後、<code>end</code>の前までは 1
+インデント挿入すること。</p>
+<h3 data-number="2.7.7" id="in-句"><span class="header-section-number">2.7.7</span> IN 句</h3>
+<p>カンマの後にスペースを１文字入れる。</p>
+<h3 data-number="2.7.8" id="比較演算子"><span class="header-section-number">2.7.8</span> 比較演算子</h3>
+<p>比較演算子の前後にタブ（またはスペース）を１文字入れる。</p>
+<h3 data-number="2.7.9" id="改行位置"><span class="header-section-number">2.7.9</span> 改行位置</h3>
+<p>select 句、order by 句、group by
+句等は最初に出現するカラムとカラムの区切りのカンマ前に改行を入れること。<br />
+select の from
+句の最初に出現するテーブルと結合テーブルの区切りのカンマ前に改行を入れること。<br />
+where 句の on 句の各条件文の（and や or の）前に改行を入れること。<br />
+命令句の後は、ヒント句が挿入できるように改行すること。</p>
+<p>良い例：</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>    t1.column1  <span class="kw">as</span>  column1</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>,   t2.column2  <span class="kw">as</span>  column2</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>    table1  t1</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>,   table2  t2</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    t1.column3  <span class="op">=</span>   <span class="dv">1</span></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="kw">and</span> t1.column4  <span class="op">=</span>   t2.column4</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="kw">order</span> <span class="kw">by</span></span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>    t1.column1</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>,   t2.column2</span></code></pre></div>
+<h3 data-number="2.7.10" id="with-句"><span class="header-section-number">2.7.10</span> WITH 句</h3>
+<p>with の前後に改行を挿入すること<br />
+また、インデントは下記のように記述すること</p>
+<p>良い例：</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- カラムエイリアスあり</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>    name1   (</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a>        col_alias1  <span class="co">-- カラム１</span></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>    ,   col_alias2  <span class="co">-- カラム２</span></span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>    )   <span class="kw">as</span>  (</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">select</span></span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>        ・・・</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>,   name2   (</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a>        col_alias1  <span class="co">-- カラム１</span></span>
+<span id="cb10-12"><a href="#cb10-12" aria-hidden="true" tabindex="-1"></a>    ,   col_alias2  <span class="co">-- カラム２</span></span>
+<span id="cb10-13"><a href="#cb10-13" aria-hidden="true" tabindex="-1"></a>    )   <span class="kw">as</span>  (</span>
+<span id="cb10-14"><a href="#cb10-14" aria-hidden="true" tabindex="-1"></a>        <span class="kw">select</span></span>
+<span id="cb10-15"><a href="#cb10-15" aria-hidden="true" tabindex="-1"></a>        ・・・</span>
+<span id="cb10-16"><a href="#cb10-16" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb10-17"><a href="#cb10-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-18"><a href="#cb10-18" aria-hidden="true" tabindex="-1"></a><span class="co">-- カラムエイリアスなし</span></span>
+<span id="cb10-19"><a href="#cb10-19" aria-hidden="true" tabindex="-1"></a><span class="kw">with</span></span>
+<span id="cb10-20"><a href="#cb10-20" aria-hidden="true" tabindex="-1"></a>    name1   <span class="kw">as</span>  (</span>
+<span id="cb10-21"><a href="#cb10-21" aria-hidden="true" tabindex="-1"></a>        <span class="kw">select</span></span>
+<span id="cb10-22"><a href="#cb10-22" aria-hidden="true" tabindex="-1"></a>        ・・・</span>
+<span id="cb10-23"><a href="#cb10-23" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb10-24"><a href="#cb10-24" aria-hidden="true" tabindex="-1"></a>,   name2   <span class="kw">as</span>  (</span>
+<span id="cb10-25"><a href="#cb10-25" aria-hidden="true" tabindex="-1"></a>        <span class="kw">select</span></span>
+<span id="cb10-26"><a href="#cb10-26" aria-hidden="true" tabindex="-1"></a>        ・・・</span>
+<span id="cb10-27"><a href="#cb10-27" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div>
+<h3 data-number="2.7.11" id="limit-句-offset-句"><span class="header-section-number">2.7.11</span> LIMIT 句 OFFSET 句</h3>
+<p>LIMIT、OFFSET の前に改行を挿入すること</p>
+<p>良い例：</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    tbl1.column1    <span class="kw">as</span>  column1</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>    table1  tbl1</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="kw">order</span> <span class="kw">by</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>    tbl1.column2    <span class="kw">desc</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="kw">limit</span> <span class="dv">5</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>offset <span class="dv">5</span></span></code></pre></div>
+<h3 data-number="2.7.12" id="hint-句"><span class="header-section-number">2.7.12</span> HINT 句</h3>
+<p>HINT 句は独立した行で記載すること<br />
+HINT 内容にはインデントを付けること</p>
+<p>良い例：</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="co">/*+</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="co">    ここにhintを記載</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">*/</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a>    tbl1.column1    <span class="kw">as</span>  column1</span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a>    table1  tbl1</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>    tbl1.column2    <span class="op">=</span>   <span class="dv">1</span></span></code></pre></div>
+<h2 data-number="2.8" id="コメント"><span class="header-section-number">2.8</span> コメント</h2>
+<ul>
+<li><p>修正コメント</p>
+<p>（修正コメントが必要な場合、）<br />
+処理追加の際、追加行の 1
+行目の前と最終行の次の行にコメントを入れる。単一行の場合は、同一行の最後にコメントをつける。</p>
+<p>良い例：</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co">-- 2004/04/23 仕様変更管理番号 ADD(または、MOD、DEL) 変更者名 S ←　修正開始点コメント</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>(追加処理)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="co">-- 2004/04/23仕様変更管理番号 ADD(または、MOD、DEL) 変更者名 E ←　修正終了点コメント</span></span></code></pre></div></li>
+<li><p>単数行コメント</p>
+<p>SQL 内で使用する単数行コメント（カラムコメントなど）には、「
+<code>--</code> 」を使用する。</p></li>
+<li><p>複数行コメント</p>
+<p>「 <code>/*</code> <code>*/</code>
+」を使用する。下記に例を示す。<br />
+なお、前述で触れたとおり、SQL
+ファイルの先頭にコメントを記述することは禁止とする。</p>
+<p>良い例：</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co">/**********************************************************************/</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co">/*</span></span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"> * コメントを始めるスラッシュとアスタリスクは、それだけを１行に置く。</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="co"> * それから、コメント・ブロック内の各行は縦にアスタリスクを置き</span></span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"> * コメントがあることを強調する。</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"> * 最後に、アスタリスクとスラッシュは、それだけを１行に置く。</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="co"> */</span></span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a><span class="co">/**********************************************************************/</span></span></code></pre></div></li>
+<li><p>複数行コメントアウト</p>
+<p>複数行をコメントアウトする場合は、各行を「<code>--</code>」でコメントアウトする。<br />
+「 <code>/*</code> <code>*/</code> 」を使用すると、その中に「
+<code>/*</code> <code>*/</code>
+」が存在した場合、コメントアウトが途中で切れてしまう恐れがあるため、<br />
+使用しない。</p></li>
+<li><p>論理名の記載</p>
+<p><code>select</code>・<code>insert</code>・<code>update</code>・<code>merge</code>のカラム名記述箇所には単数行コメントでカラムの論理名を記載する。<br />
+<code>select</code>・<code>insert</code>・<code>update</code>・<code>delete</code>・<code>merge</code>のテーブル名記述箇所には単数行コメントでテーブルの論理名を記載する。<br />
+論理名は ERD 等で定義された論理名と必ず一致させること。</p></li>
+</ul>
+<h2 data-number="2.9" id="型変換"><span class="header-section-number">2.9</span> 型変換</h2>
+<p>代入や WHERE
+句の条件設定などでデータ・タイプが異なる場合、明示的にタイプ変換を行う。（暗黙の型変換は使用しない）</p>
+<h2 data-number="2.10" id="比較演算子-1"><span class="header-section-number">2.10</span> 比較演算子</h2>
+<p>「等しくない」を示す演算子は「<code>!=</code>」を利用する。「<code>&lt;&gt;</code>」も動作するが統一の観点から利用しない。</p>
+<h2 data-number="2.11" id="order-by-句"><span class="header-section-number">2.11</span> ORDER BY 句</h2>
+<p><code>order by</code>
+数字の構文は使用せずに、カラム名を記載する。</p>
+<h2 data-number="2.12" id="group-by-句"><span class="header-section-number">2.12</span> GROUP BY 句</h2>
+<p><code>group by</code>
+数字の構文は使用せずに、カラム名を記載する。</p>
+<p>集約関数を利用する場合は必ず記載すること。（省略可能であっても省略しない）</p>
+<h2 data-number="2.13" id="exists-句"><span class="header-section-number">2.13</span> EXISTS 句</h2>
+<p>EXISTS 句を記載する際、サブクエリになる SELECT
+句の指定は定数「<code>1</code>」とする。<br />
+「<code>*</code>」（ワイルドカード）や「<code>&#39;X&#39;</code>」は統一の観点から利用しない。<br />
+また「<code>*</code>」（ワイルドカード）についてはパフォーマンスの観点からも禁止とする。</p>
+<p>良い例：</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">exists</span>(</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>        <span class="kw">select</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>            <span class="dv">1</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a>        <span class="kw">from</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>            foo f</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>        <span class="kw">where</span></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a>            f.col1  <span class="op">=</span>   m.<span class="kw">key</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div>
+<h2 data-number="2.14" id="as-句"><span class="header-section-number">2.14</span> AS 句</h2>
+<p>トップレベルの SELECT
+句には必ず<code>as</code>句を記載し別名を付ける。<br />
+同一の名前であっても AS 句を付与する。<br />
+また、「<code>as</code>」は省略可能であるが、省略はしないこと。</p>
+<h2 data-number="2.15" id="where-句"><span class="header-section-number">2.15</span> WHERE 句</h2>
+<ul>
+<li><p>論理名の記載<br />
+WHERE
+句でカラムと式を比較する際は左辺がカラムになるように記載すること。</p>
+<p>良い例：</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  tbl.column1 <span class="op">=</span>   <span class="dv">1</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="kw">and</span>   tbl.amount2 <span class="op">&gt;</span>   tbl.amount3 <span class="op">+</span>   tbl.amount4</span></code></pre></div></li>
+<li><p>条件式の順序<br />
+原則として、WHERE 句で条件式を列挙する際、下記の順序を守ること。</p>
+<ol type="1">
+<li>テーブル単位にまとめて順番に記述する<br />
+この際、テーブルの順序は FROM 句に記述した順序に準ずること。</li>
+<li>1.のテーブル単位の中で絞り込み条件をまず記述し、その後結合条件を記述する。</li>
+</ol>
+<p>良い例：</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  a_table a   <span class="co">-- a_table</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>, b_table b   <span class="co">-- b_table</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>, c_table c   <span class="co">-- c_table</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="co">-- a_tableの絞り込み</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>  a.key1      <span class="op">=</span>   ?</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="kw">and</span>   a.key2      <span class="op">=</span>   ?</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="co">-- b_tableの絞り込み</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="kw">and</span>   b.key1      <span class="op">=</span>   ?</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a><span class="kw">and</span>   b.key2      <span class="op">=</span>   ?</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a><span class="co">-- b_tableの結合条件</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a><span class="kw">and</span>   b.col1      <span class="op">=</span>   a.col1</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a><span class="co">-- c_tableの絞り込み</span></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="kw">and</span>   c.key1      <span class="op">=</span>   ?</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a><span class="kw">and</span>   c.key2      <span class="op">=</span>   ?</span>
+<span id="cb17-17"><a href="#cb17-17" aria-hidden="true" tabindex="-1"></a><span class="co">-- c_tableの結合条件</span></span>
+<span id="cb17-18"><a href="#cb17-18" aria-hidden="true" tabindex="-1"></a><span class="kw">and</span>   c.col1      <span class="op">=</span>   a.col1</span>
+<span id="cb17-19"><a href="#cb17-19" aria-hidden="true" tabindex="-1"></a><span class="kw">and</span>   c.col2      <span class="op">=</span>   a.col2</span>
+<span id="cb17-20"><a href="#cb17-20" aria-hidden="true" tabindex="-1"></a><span class="kw">and</span>   c.col3      <span class="op">=</span>   b.col3</span></code></pre></div></li>
+</ul>
+<h2 data-number="2.16" id="count-文"><span class="header-section-number">2.16</span> COUNT 文</h2>
+<p>レコード数を数える COUNT
+文の記述は<code>count(*)</code>と記述する。<br />
+<code>count(1)</code>・<code>count(&#39;x&#39;)</code>
+・<code>count(key1)</code>という記載は NG。</p>
+<h2 data-number="2.17" id="文字列リテラル"><span class="header-section-number">2.17</span> 文字列リテラル</h2>
+<h3 data-number="2.17.1" id="エスケープシーケンス"><span class="header-section-number">2.17.1</span> エスケープシーケンス</h3>
+<p>文字列リテラル中のシングルクォーテーションのエスケープは「
+<code>&#39;&#39;</code>
+」とシングルクォーテーションを二つつなげた記述をする。<br />
+「 <code>\&#39;</code>
+」も同様の結果が得られるが円マーク（バックスラッシュ）によるエスケープは利用しない。<br />
+円マークをエスケープせざるを得ないときのみ円マークによるエスケープ利用して良いが、<br />
+円マークを文字列リテラルで表現する必要のある設計自体を避けること。</p>
+<p>※PostgreSQL
+は設定によって円マーク（バックスラッシュ）によるエスケープを無効にできます。（デフォルト無効）<br />
+円マークをエスケープするときは、自プロジェクトでどちらに設定されているか確認してください。</p>
+<p>良い例：</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="kw">update</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>    table_a</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="kw">set</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>    text_data   <span class="op">=</span>   <span class="st">&#39;that</span><span class="ch">&#39;&#39;</span><span class="st">s right&#39;</span></span></code></pre></div>
+<p>悪い例：</p>
+<div class="sourceCode" id="cb19"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="kw">update</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    table_a</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="kw">set</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>    text_data   <span class="op">=</span>   <span class="st">&#39;that\&#39;</span>s too bad<span class="st">&#39;</span></span></code></pre></div>
+<h1 data-number="3" id="sql-コーディング規約パフォーマンス性"><span class="header-section-number">3</span> SQL
+コーディング規約（パフォーマンス性）</h1>
+<p>本章ではパフォーマンス性を高めることを目的としたコーディング規約について記載する。</p>
+<h2 data-number="3.1" id="検索"><span class="header-section-number">3.1</span> 検索</h2>
+<p>検索処理におけるコーディング規約を下記に示す。</p>
+<ul>
+<li><p>中間一致、後方一致検索はインデックスを利用できないため避ける</p></li>
+<li><p>検索条件で<code>=</code>（等号）を使用できる場合は必ず使用する</p>
+<p><code>a=1 or a=2</code>とする方が<code>a&gt;0 and a&lt;3</code>などと記述するのよりパフォーマンス上優位な場合が多い。<br />
+これは <code>a</code>
+にインデックスがある場合、<code>=</code>であれば、インデックスが有効に使われるためである。</p></li>
+<li><p>可能な限り検索条件にパーティションキーの値を指定する</p></li>
+<li><p>全列ワイルドカード「<code>*</code>」の使用はせず、カラム名を明記する</p></li>
+<li><p>インデックスによる検索を指定したい場合、下記の記載を行わない</p>
+<ul>
+<li><p>インデックスカラムを含む演算に対して条件指定</p>
+<p>悪い例：</p>
+<div class="sourceCode" id="cb20"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>tbl1.col1   <span class="op">+</span>   <span class="dv">1</span>   <span class="op">&gt;</span>   <span class="dv">100</span> <span class="co">/* NGパターン 右辺で演算してください */</span></span></code></pre></div>
+<p>良い例：</p>
+<div class="sourceCode" id="cb21"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>tbl1.col1   <span class="op">&gt;</span>   <span class="dv">100</span> <span class="op">-</span>   <span class="dv">1</span></span></code></pre></div></li>
+<li><p>インデックスカラムに関数を通した値に対して条件指定</p>
+<p>悪い例：</p>
+<div class="sourceCode" id="cb22"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co">/* NGパターン 右辺に関数を通してください */</span></span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">to_char</span>(tbl1.col1, <span class="st">&#39;YYYYMMDD&#39;</span>)  <span class="op">&gt;</span>   <span class="st">&#39;20151231&#39;</span></span></code></pre></div>
+<p>良い例：</p>
+<div class="sourceCode" id="cb23"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>tbl1.col1   <span class="op">&gt;=</span>  <span class="fu">to_date</span>(<span class="st">&#39;20160101&#39;</span>, <span class="st">&#39;YYYYMMDD&#39;</span>)</span></code></pre></div></li>
+<li><p>インデックスカラムを<code>OR</code>で条件指定（禁止ではないが原則行わない）</p>
+<p>悪い例：</p>
+<div class="sourceCode" id="cb24"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>(</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>    <span class="co">/* NGパターンINDEXが利用されない場合があります。他の方法を検討してください */</span></span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>        tbl1.col1   <span class="op">=</span>   <span class="dv">1</span></span>
+<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>    <span class="kw">or</span>  tbl1.col1   <span class="op">=</span>   <span class="dv">2</span></span>
+<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div></li>
+</ul></li>
+</ul>
+<h2 data-number="3.2" id="挿入"><span class="header-section-number">3.2</span> 挿入</h2>
+<p>挿入処理におけるコーディング規約を下記に示す。</p>
+<ul>
+<li>全列ワイルドカード「<code>*</code>」の使用はせず、カラム名を明記する。</li>
+</ul>
+<h2 data-number="3.3" id="更新"><span class="header-section-number">3.3</span> 更新</h2>
+<p>更新処理におけるコーディング規約を下記に示す。</p>
+<ul>
+<li>主キーの値の UPDATE
+は原則行わない。外部キーがあればエラーになる。<br />
+外部キーが無い場合でも、事実上、主キーの値を利用して、検索、更新する場合は、リンクが切れてしまう。</li>
+<li>パーティションキーの UPDATE は原則行わない。</li>
+<li>VIEW を使用するデータ更新は禁止。更新は実表に対して行う。</li>
+</ul>
+<h2 data-number="3.4" id="削除"><span class="header-section-number">3.4</span> 削除</h2>
+<p>削除処理におけるコーディング規約を下記に示す。</p>
+<ul>
+<li>大量件数（数百万件レベル）の delete 文発行は避ける。</li>
+</ul>
+<h2 data-number="3.5" id="distinct-句"><span class="header-section-number">3.5</span> DISTINCT 句</h2>
+<p>DISTINCT
+は、暗黙のソート処理が行われる可能性があるため性能劣化につながる。<br />
+EXISTS 句の使用・代替を検討すること。</p>
+<p>悪い例：</p>
+<div class="sourceCode" id="cb25"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>    <span class="kw">distinct</span></span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>    d.<span class="kw">no</span>    <span class="kw">as</span>  dept_no</span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a>,   d.name  <span class="kw">as</span>  dept_name</span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span></span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a>    department  d</span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>,   employee    e</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a>    d.<span class="kw">no</span>    <span class="op">=</span>   e.dept_no   <span class="co">-- 社員が一人以上属している部門を取得</span></span></code></pre></div>
+<p>良い例：</p>
+<div class="sourceCode" id="cb26"><pre class="sourceCode sql"><code class="sourceCode sql"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="kw">select</span></span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>    d.<span class="kw">no</span>    <span class="kw">as</span>  dept_no</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>,   d.name  <span class="kw">as</span>  dept_name</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="kw">from</span></span>
+<span id="cb26-5"><a href="#cb26-5" aria-hidden="true" tabindex="-1"></a>    department  d</span>
+<span id="cb26-6"><a href="#cb26-6" aria-hidden="true" tabindex="-1"></a><span class="kw">where</span></span>
+<span id="cb26-7"><a href="#cb26-7" aria-hidden="true" tabindex="-1"></a>    <span class="kw">exists</span>(</span>
+<span id="cb26-8"><a href="#cb26-8" aria-hidden="true" tabindex="-1"></a>        <span class="kw">select</span></span>
+<span id="cb26-9"><a href="#cb26-9" aria-hidden="true" tabindex="-1"></a>            <span class="dv">1</span></span>
+<span id="cb26-10"><a href="#cb26-10" aria-hidden="true" tabindex="-1"></a>        <span class="kw">from</span></span>
+<span id="cb26-11"><a href="#cb26-11" aria-hidden="true" tabindex="-1"></a>            employee    e</span>
+<span id="cb26-12"><a href="#cb26-12" aria-hidden="true" tabindex="-1"></a>        <span class="kw">where</span></span>
+<span id="cb26-13"><a href="#cb26-13" aria-hidden="true" tabindex="-1"></a>            d.<span class="kw">no</span>    <span class="op">=</span>   e.dept_no   <span class="co">-- 社員が一人以上属している部門を取得</span></span>
+<span id="cb26-14"><a href="#cb26-14" aria-hidden="true" tabindex="-1"></a>    )</span></code></pre></div>
+<h2 data-number="3.6" id="in-句-1"><span class="header-section-number">3.6</span> IN 句</h2>
+<p>IN 句は最大 1000 個まで指定できるが、200 個程度でも ORA
+エラーが発生するケースがある。<br />
+また IN 句の少しだけ異なる SQL が大量に発行されると CPU
+高騰やメモリ枯渇を招く。<br />
+従って 100 を超えるような長い IN 句は使用せず、一時表を利用して
+<code>in (select ・・・ from 一時表)</code>のように書き換える。</p>
+<h2 data-number="3.7" id="not-in-句"><span class="header-section-number">3.7</span> NOT IN 句</h2>
+<p>原則<code>not in（select～）</code>は使用せずに、<code>not exists (select～)</code>を使用する。<br />
+<code>NOT IN</code>句は、内部的にソートマージの結合をすることでテーブルをフルスキャンする場合があるため、性能が悪化する可能性がある。</p>
+<h2 data-number="3.8" id="union-句"><span class="header-section-number">3.8</span> UNION 句</h2>
+<p><code>union</code>は<code>distinct</code>処理が含まれパフォーマンス上問題があるため、<code>union all</code>を使用する。</p>
+<h2 data-number="3.9" id="select-for-update"><span class="header-section-number">3.9</span> SELECT FOR UPDATE</h2>
+<ul>
+<li><code>select for update</code>で複数行にロックをかける場合、同時実行されるとデットロックを起こす可能性があるため、１件のロックでない場合は<code>order by</code>を指定する。</li>
+</ul>
+<h2 data-number="3.10" id="分析関数"><span class="header-section-number">3.10</span> 分析関数</h2>
+<p>分析関数の使用は可能だが、性能悪化を招く恐れがあるため、特性を知らない方は
+DBA に相談する。</p>
+<h2 data-number="3.11" id="インデックス"><span class="header-section-number">3.11</span> インデックス</h2>
+<p>インデックスの必要性については DBA
+で最終判断するため、必要とする場合は DBA へ相談する。</p>
+<h2 data-number="3.12" id="外部結合"><span class="header-section-number">3.12</span> 外部結合</h2>
+<p>外部結合する際、内部表（駆動表）はなるべく想定件数の少ない表にする。</p>
+<hr />
+<h1 data-number="4" id="license"><span class="header-section-number">4</span> License</h1>
+<p><a href="https://creativecommons.org/licenses/by/4.0/deed.ja"><img role="img" aria-label="CC-By-4.0" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFgAAAAfCAMAAABUFvrSAAAAAXNSR0IB2cksfwAAAARnQU1BAACxjnz7UZMAAAAgY0hSTQAAeiUAAICDAAD5/wAAgOkAAHUwAADqYAAAOpgAABdvkl/FRgAAAW5QTFRFAAAAAAAA////////////7+/v39/f1tXV09bS0tXS0tXR0dTR0dTQ0NTQ0NPPz9PPztLOztHNzdHNzdHMz8/PzdDMzNDMzNDLzM/Ly8/Ly8/Ky87Kys3Jyc3Jyc3IyMzIyMzHx8vHxsrGxsrFxcnFxcnExMnExMjDw8jDxMfDw8fCwsfCwcXAwMXAwMW/wMS/v8S+v8O+vsO+vsK9vcK9vcK8v7+/vMG8vMG7vMC8u8C7u8C6ur+6ur+5ub65ub64uL23t7y2tru1tbq0tLqztLmzs7iysrixsrexsbewsbawsLavsLWvr7Wur7SusLOvrrStrrOtr7KvrbOsrLKrr6+vq7Gqn6OenqCdn5+flpmWk5iTkZSRkZORj4+PiYyJhIaEhIWEgoWCgICAfX98fH98eXx5cHJvcHBwYGBgXV5dUFFQUFBQQ0RDQEBAPj8+NTY1MjMxMDAwKSkpKCkoICAgGxsbEBAQDg4ODQ4N2y3MbAAAAAR0Uk5T/wAKDnDBpeYAAALVSURBVHjatZX9V9JgFMdvNQh1Tme2zU1othSl5WsQZoqIrxmmqaUpqS2JKczibfLfd5+hHCYybB6/B859ftg+5+57Xx54Ag+iR/hPxGPRSXVYkf2SwHGC2C8rQXUiOhdPLK992tze3vn6/wKLOxseCykBkWXoNp+vrYNh+wJKaDQ8S8jJze0dl2TkvgkOSCx9kqsAqpI7prtFeUh9i+SV9eRWY8rpAqAKaWdwDLkyz6TKUFP5kOECg2p4Lr60ut6Q8kERwMhkDIDigRM4OhaUOfocT6auRSKabuLxfORZYGg0GltAM26k/O0Ssl4K5c3C5YEDeDI0wBOuqXmoqvYRXRzh5NDEzHwCU7aDi6DjMwDkQSg6gFVFYpCb91I1efKYMyMqahhT/rhh8yIN2adVMCoL6ebg4RdsCrmYrp182B0Ijs/EF1eTW/XgAtRl4IVCc7Ai0mUweymbPCaU6T5FfRdLrNi9AINC6QA6iQY0B8s9JwCanUvsg2NWDk3Nohd2cIZCAYrEjAPY35UDE42IZA1Dq4Yf+IoJOaafeLG0tuEOLNEV0BEIRMauFXTysZUOcXD0/fziWtKdFUI7AKaYh5I3UtrPY3vslvYtL9oERY1iwyG4oXgALYvH+wAiFGX5XAvWF/i4l41gbDfKod3cgu0DksEBuYsVnt6ShlaQ0GCF00g7F++qaleBZFOhpcbiEXIRIK9n8q2WkL/rHEyq1m67hhWoErabPzj+odpubtam3JNCL24fkNdTcwvLZPLcLPpX1kh7HUbaJRiX0N5tSyjFBoYncPDIEnIFhlOJOUNy3RryWmtT+gn31G+hs37RezQT4A/Nn8K99YvrPLtxNdHPv0MzVeeDHFqTBWav/jJNMXxzLlBXP+oubkgsnbq+/g9pVnLy4Xptwl3094vY00W3+3ztNMP2fb4AB9mMaK2Lo2lJ4HlBmj4iWLcZP7wePwz20T8rQcP0CuFIbQAAAABJRU5ErkJggg==" alt="CC-By-4.0" /></a></p>
+</body>
+</html>
