@@ -1,0 +1,20 @@
+# Future Enterprise <wbr>Coding Standards
+
+> フューチャー株式会社が作成するエンタープライズ領域に特化したコーディング規約
+
+<span style="white-space: nowrap">フューチャー株式会社が作成する<wbr>エンタープライズ領域に特化した<wbr>コーディング規約</span>
+
+## Table of Contents
+
+
+### Other
+
+- [AWSインフラ命名規約](/coding-standards/documents/forAWSResource/AWSインフラリソース命名規約.md)
+- [Javaコーディング規約](/coding-standards/documents/forJava/Javaコーディング規約.md)
+- [Javaコーディング規約 for Java11](/coding-standards/documents/forJava/Javaコーディング規約_for_11.md)
+- [Javaコーディング規約 for Java17](/coding-standards/documents/forJava/Javaコーディング規約_for_17.md)
+- [Javaコーディング規約 for Java8](/coding-standards/documents/forJava/Javaコーディング規約_for_8.md)
+- [OpenAPI Specification 2.0規約](/coding-standards/documents/forOpenAPISpecification/OpenAPI_Specification_2.0.md)
+- [OpenAPI Specification 3.0.3規約](/coding-standards/documents/forOpenAPISpecification/OpenAPI_Specification_3.0.3.md)
+- [SQLコーディング規約（Oracle）](/coding-standards/documents/forSQL/SQLコーディング規約（Oracle）.md)
+- [SQLコーディング規約（PostgreSQL）](/coding-standards/documents/forSQL/SQLコーディング規約（PostgreSQL）.md)
