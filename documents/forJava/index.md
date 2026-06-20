@@ -14,14 +14,15 @@ hero:
       link: ./Javaコーディング規約.md
 ---
 
-一般的に行われているコーディング規約から、Stream API やラムダ式、最新の Java21 で追加された構文にも対応しています。
+一般的に行われているコーディング規約から、Stream API やラムダ式、最新の Java25 で追加された構文にも対応しています。
 
 # Java Coding Standards
 
-- [Javaコーディング規約](./Javaコーディング規約.md) ... Java21+ 向けのコーディング規約
+- [Javaコーディング規約](./Javaコーディング規約.md) ... Java25+ 向けのコーディング規約
 
 ## Old Versions
 
+- [Javaコーディング規約 for Java21](./Javaコーディング規約_for_21.md) ... Java21 向けのコーディング規約
 - [Javaコーディング規約 for Java17](./Javaコーディング規約_for_17.md) ... Java17 向けのコーディング規約
 - [Javaコーディング規約 for Java11](./Javaコーディング規約_for_11.md) ... Java11 向けのコーディング規約
 - [Javaコーディング規約 for Java8](./Javaコーディング規約_for_8.md) ... Java8 向けのコーディング規約
@@ -35,6 +36,8 @@ hero:
   - [Markdown](https://github.com/future-architect/coding-standards/blob/master/documents/forJava/Javaコーディング規約.md)
   - [HTML(Single File)](https://github.com/future-architect/coding-standards/blob/gh-pages/resources/Javaコーディング規約.html) （[ブラウザで見る](https://future-architect.github.io/coding-standards/resources/Javaコーディング規約.html)）
   - [Word](https://github.com/future-architect/coding-standards/raw/gh-pages/resources/Javaコーディング規約.docx)
+- for Java21
+  - [Markdown](https://github.com/future-architect/coding-standards/blob/master/documents/forJava/Javaコーディング規約_for_21.md)
 - for Java17
   - [Markdown](https://github.com/future-architect/coding-standards/blob/master/documents/forJava/Javaコーディング規約_for_17.md)
 - for Java11
