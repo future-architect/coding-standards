@@ -29,10 +29,10 @@ const starPath = `path("M 0 ${starSize / 2} l ${starSize * lengthRate} -${starSi
   left: v-bind(-starWidth + "px");
   filter: blur(3px);
   transform-origin: left 50%;
-  opacity: 0.1;
+  opacity: 0.15;
 }
 .dark .future-star__container {
-  opacity: 0.2;
+  opacity: 0.3;
 }
 .future-star--kind-1 {
   transform: rotate(-6deg);
@@ -42,29 +42,61 @@ const starPath = `path("M 0 ${starSize / 2} l ${starSize * lengthRate} -${starSi
 }
 .future-star {
   position: absolute;
-  background-color: #da0058;
+  /* 尾に向かって透明になるグラデーションで彗星らしい残像を出す */
+  background: linear-gradient(
+    90deg,
+    transparent,
+    #da0058 45%,
+    #ff4d88 90%,
+    #ffb3cd
+  );
   height: v-bind(starSize + "px");
   width: v-bind(starWidth + "px");
   clip-path: v-bind(starPath);
+  transform-origin: right center; /* 先端(右)を基点に尾が伸縮する */
+  opacity: 0;
 
-  animation-composition: add;
-  animation-name: slide-to-right;
-  animation-duration: 10s;
+  animation-name: star-streak;
+  animation-duration: 9s;
   animation-iteration-count: infinite;
-  animation-timing-function: linear;
+  /* 加速して飛び込み、減速して抜ける */
+  animation-timing-function: cubic-bezier(0.45, 0, 0.4, 1);
 }
 .future-star--kind-2 .future-star {
-  animation-delay: 250ms;
+  /* 2本目はわずかに遅らせて並走させる（飛翔中に必ず2本同時に見えるずれ幅） */
+  animation-delay: 150ms;
 }
-@keyframes slide-to-right {
+@keyframes star-streak {
   0% {
     left: 0;
+    opacity: 0;
+    transform: scaleX(0.5);
   }
-  50% {
+  2% {
+    opacity: 1;
+  }
+  8% {
+    /* 最高速付近で尾が伸びる */
+    transform: scaleX(1.2);
+  }
+  13% {
+    opacity: 1;
+  }
+  15% {
     left: 100%;
+    opacity: 0;
+    transform: scaleX(0.6);
   }
   100% {
     left: 100%;
+    opacity: 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .future-star {
+    animation: none;
+    left: 30%;
+    opacity: 0.6;
   }
 }
 </style>
