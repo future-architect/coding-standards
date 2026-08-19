@@ -1,5 +1,8 @@
 :root {
   --vp-home-hero-name-color: transparent;
+  /* ヒーロー背景を漂うオーロラの色斑（ライトは朝焼け風の淡いトーン） */
+  --hero-aurora-pink: rgba(229, 0, 79, 0.14);
+  --hero-aurora-blue: rgba(40, 70, 190, 0.12);
   --vp-home-hero-name-background: -webkit-linear-gradient(
     120deg,
     #0a1561 30%,
@@ -13,6 +16,9 @@
     #fff 30%,
     #e5004f
   );
+  /* ダークは夜空のオーロラ風に少し強める */
+  --hero-aurora-pink: rgba(229, 0, 79, 0.26);
+  --hero-aurora-blue: rgba(110, 130, 255, 0.18);
   /* 背景が透過である画像が、ダークモードで視認性が下がるための対応 */
   .img-bg-transparent img {
     filter: invert(1);
@@ -49,6 +55,94 @@
 /* ヒーローページタイトルの改行は<wbr>で調整するのでnowrapにする */
 .VPHero .main > .name {
   white-space: nowrap;
+}
+
+/* オーロラ背景: ブランドカラーの色斑がヒーロー背景をゆっくり漂う */
+.standards-home .VPHero {
+  position: relative;
+  /* 色斑のはみ出しを閉じ込め、擬似要素の z-index: -1 をヒーロー内に留める */
+  overflow: hidden;
+  isolation: isolate;
+}
+.standards-home .VPHero::before,
+.standards-home .VPHero::after {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  border-radius: 50%;
+  filter: blur(48px);
+  pointer-events: none;
+}
+.standards-home .VPHero::before {
+  width: 560px;
+  height: 360px;
+  left: 48%;
+  top: -80px;
+  background: radial-gradient(
+    circle at 45% 45%,
+    var(--hero-aurora-pink),
+    transparent 70%
+  );
+}
+.standards-home .VPHero::after {
+  width: 480px;
+  height: 380px;
+  left: 4%;
+  top: 120px;
+  background: radial-gradient(
+    circle at 55% 50%,
+    var(--hero-aurora-blue),
+    transparent 70%
+  );
+}
+
+/* ヒーロー要素の登場アニメーション */
+@media (prefers-reduced-motion: no-preference) {
+  .standards-home .VPHero .name,
+  .standards-home .VPHero .tagline,
+  .standards-home .VPHero .actions {
+    animation: hero-rise 0.8s cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .standards-home .VPHero .tagline {
+    animation-delay: 0.15s;
+  }
+  .standards-home .VPHero .actions {
+    animation-delay: 0.3s;
+  }
+
+  /* オーロラのドリフト（reduced-motion時は静止表示のまま） */
+  .standards-home .VPHero::before {
+    animation: hero-aurora-a 13s ease-in-out infinite alternate;
+  }
+  .standards-home .VPHero::after {
+    animation: hero-aurora-b 17s ease-in-out infinite alternate;
+  }
+}
+@keyframes hero-aurora-a {
+  from {
+    transform: translate(0, 0) scale(1);
+  }
+  to {
+    transform: translate(-120px, 40px) scale(1.25);
+  }
+}
+@keyframes hero-aurora-b {
+  from {
+    transform: translate(0, 0) scale(1.1);
+  }
+  to {
+    transform: translate(140px, -30px) scale(0.9);
+  }
+}
+@keyframes hero-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* メインコンテンツの幅を広げます。最大1920pxまでを許可します。 */

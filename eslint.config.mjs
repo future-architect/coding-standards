@@ -57,6 +57,8 @@ export default defineConfig([
           ignoreUrls: [
             // TODO なぜか Proxy環境で SocketError: other side closed となる。。。
             "http://www.oracle.com/technetwork/java/codeconvtoc-136057.html",
+            // ログインなしではみられなくなった？
+            "https://github.com/future-architect/coding-standards/stargazers",
             // サイトは削除されているがドキュメントとしては残すリンク
             "https://www.acroquest.co.jp/webworkshop/javacordingrule/Acroquest_JavaCodingStandard_6_7.pdf",
             "http://www.fedict.belgium.be/sites/default/files/downloads/Java_J2EE_conventions_and_guidelines_EN.pdf",
