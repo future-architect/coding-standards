@@ -33,7 +33,7 @@
     "eslint-config-prettier": "^10.0.0",
     "eslint-config-standard": "^17.1.0",
     "eslint-plugin-markdown-links": "^0.9.0",
-    "eslint-plugin-markdown-preferences": "^0.41.0",
+    "eslint-plugin-markdown-preferences": "^0.42.0",
     "eslint-plugin-vue": "^10.8.0",
     "markdown-it-footnote": "^4.0.0",
     "markdown-it-task-lists": "^2.1.1",
